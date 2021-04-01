@@ -1,4 +1,6 @@
 
+get_Rd_metadata <- utils::getFromNamespace (".Rd_get_metadata", "tools") # nolint
+
 #' Check path is an existing directory
 #' @noRd
 check_path <- function (path) {
