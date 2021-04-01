@@ -17,3 +17,13 @@ Path to extracted version of package
 Extract tarball of a package into temp directory and return path to extracted
 package
 }
+\examples{
+\dontrun{
+tarball <- "magrittr_2.0.1.tar.gz"
+u <- paste0 ("https://cran.r-project.org/src/contrib/",
+             tarball)
+dest <- file.path (tempdir (), tarball)
+download.file (u, dest)
+path <- extract_tarball (dest)
+}
+}
