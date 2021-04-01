@@ -27,7 +27,7 @@ pkgstats <- function (tarball) {
     list (cloc = s1,
           num_vignettes = num_vignettes,
           desc = s2,
-          rd = s3,
+          exported_fns = s3,
           non_exported_fns = fns)
 }
 
