@@ -22,13 +22,20 @@ pkgstats <- function (tarball) {
     s3 <- rd_stats (path)
 
     fns <- all_functions (path)
-    fns <- fns [which (!fns %in% s3$fn_name)]
+    fns$exported <- FALSE
+    index <- which (fns$fn_name %in% s3$fn_name)
+    fns$exported [which (fns$fn_name %in% s3$fn_name)] <- TRUE
+
+    # non-dplyr left_join:
+    index2 <- match (fns$fn_name [index], s3$fn_name)
+    fns$num_params <- fns$num_doclines <- NA_integer_
+    fns$num_params [index] <- s3$num_params [index2]
+    fns$num_doclines [index] <- s3$num_doclines [index2]
 
     list (cloc = s1,
           num_vignettes = num_vignettes,
           desc = s2,
-          exported_fns = s3,
-          non_exported_fns = fns)
+          functions = fns)
 }
 
 #' Get all exported and internal functions
@@ -38,17 +45,26 @@ all_functions <- function (path) {
     r_files <- normalizePath (list.files (file.path (path, "R"),
                                           full.names = TRUE))
 
-    eval1 <- function (i, e) {
-        p <- tryCatch (parse (file = i),
+    eval1 <- function (f) {
+        p <- tryCatch (parse (file = f),
                        error = function (err) "error")
         if ("error" %in% p)
             return (NULL)
 
-        eval (p, envir = e)
+        # All functions are parsed to length 3, while things like `"_PACKAGE"`
+        # statements are parsed, but have parse lengths < 3.
+        p <- p [which (vapply (p, length, integer (1)) > 2L)]
+
+        loc <- vapply (p, function (i)
+                       length (deparse (i)),
+                       integer (1))
+        nms <- vapply (p, function (i)
+                       paste0 (as.list (i) [[2]]),
+                       character (1))
+
+        data.frame (fn_name = nms,
+                    loc = loc)
     }
 
-    e <- new.env ()
-    fns <- lapply (r_files, function (i) eval1 (i, e)) # nolint
-
-    return (ls (envir = e))
+    do.call (rbind, lapply (r_files, eval1))
 }
