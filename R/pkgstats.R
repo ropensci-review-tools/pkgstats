@@ -28,9 +28,11 @@ pkgstats <- function (tarball) {
 
     # non-dplyr left_join:
     index2 <- match (fns$fn_name [index], s3$fn_name)
-    fns$num_params <- fns$num_doclines <- NA_integer_
-    fns$num_params [index] <- s3$num_params [index2]
+    fns$num_doclines <- fns$param_nchars_mn <-
+        fns$param_nchars_md <- NA_integer_
     fns$num_doclines [index] <- s3$num_doclines [index2]
+    fns$param_nchars_mn [index] <- s3$param_nchars_mn [index2]
+    fns$param_nchars_md [index] <- s3$param_nchars_md [index2]
 
     list (cloc = s1,
           num_vignettes = num_vignettes,

@@ -19,6 +19,9 @@ rd_stats <- function (path) {
                     ret <- nrow (i)
                 return (ret)    },
                 integer (1))
+    nchars <- lapply (params_sp, function (i) nchar (i$description))
+    nchars_mn <- vapply (nchars, mean, numeric (1))
+    nchars_md <- vapply (nchars, median, numeric (1))
 
     # excluce imported fns:
     nmspc <- file.path (path, "NAMESPACE")
@@ -31,8 +34,12 @@ rd_stats <- function (path) {
                                    gsub ("\\)$", "", i [2])))
     imports <- gsub ("\\\"", "", imports)
 
-    if (any (imports %in% names (n)))
-        n <- n [which (!names (n) %in% imports)]
+    if (any (imports %in% names (n))) {
+        index <- which (!names (n) %in% imports)
+        n <- n [index]
+        nchars_mn <- nchars_mn [index]
+        nchars_md <- nchars_md [index]
+    }
 
     doclines <- vapply (names (n), function (i)
                         params$doclines [params$alias == i] [1],
@@ -41,6 +48,8 @@ rd_stats <- function (path) {
     ret <- data.frame (fn_name = names (n),
                        num_params = unname (n),
                        num_doclines = doclines,
+                       param_nchars_mn = nchars_mn,
+                       param_nchars_md = nchars_md,
                        row.names = NULL)
 
     return (ret)
@@ -80,6 +89,8 @@ get_one_params <- function (man_file) {
                            alias = aliases)
     } else {
 
+        # This is not an accurate estimate of number of parameters; the real
+        # value is extracted in the main `all_functions` fn.
         params <- strsplit (params, "\\n\\n\\n") [[1]]
         params <- lapply (params, function (i) {
                               ret <- unlist (eval (parse (text = i)))
