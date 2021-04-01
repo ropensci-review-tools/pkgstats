@@ -10,3 +10,5 @@
 ^\.Rproj\.user$
 ^ideas$
 ^\.github$
+^\.pre-commit-config\.yaml$
+^codemeta\.json$
