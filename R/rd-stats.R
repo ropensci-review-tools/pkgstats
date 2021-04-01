@@ -10,7 +10,10 @@ rd_stats <- function (path) {
                             pattern = "\\.Rd$",
                             full.names = TRUE)
 
-    params <- do.call (rbind, lapply (rd_files, get_one_params))
+    suppressWarnings (
+        params <- lapply (rd_files, get_one_params)
+        )
+    params <- do.call (rbind, params)
     params_sp <- split (params, f = factor (params$alias))
 
     n <- vapply (params_sp, function (i) {
@@ -70,7 +73,19 @@ rd_is_fn <- function (rd) {
 get_one_params <- function (man_file) {
 
     res <- NULL
-    rd <- tools::parse_Rd (man_file)
+
+    #rd <- tools::parse_Rd (man_file)
+    # Rd comments (per sec 2.1 of Extensions manual) can muck up parsing, so
+    # must be removed
+    x <- readLines (man_file)
+    index1 <- grep ("[^0-9]%", x)
+    index2 <- grep ("\\\\%", x)
+    index <- index1 [which (!index1 %in% index2)]
+    x [index] <- gsub ("%.*$", "", x [index])
+    f <- tempfile (fileext = ".Rd")
+    writeLines (x, f)
+    rd <- tools::parse_Rd (f)
+    chk <- file.remove (f)
 
     out <- utils::capture.output (tools::Rd2txt (rd))
     doclines <- length (out [out != ""])
@@ -85,26 +100,33 @@ get_one_params <- function (man_file) {
     if (length (params) == 0) {
 
         res <- data.frame (parameter = "(none)",
-                           description = "",
+                           nchar = NA_integer_,
                            alias = aliases)
     } else {
+        params <- as.list (parse (text = params))
+        nms <- lapply (params, function (i) {
+                           i <- as.list (i)
+                           nm <- NA_character_
+                           desc <- NA_integer_
+                           if (length (i) >= 3) {
+                               nm <- unlist (eval (i [[2]]))
+                               desc <- unlist (eval (i [[3]]))
+                               if (is.null (nm))
+                                   nm <- "(NULL)"
+                           }
+                           list (par_name = nm,
+                                 nchars = sum (nchar (desc)))
+                              })
 
-        # This is not an accurate estimate of number of parameters; the real
-        # value is extracted in the main `all_functions` fn.
-        params <- strsplit (params, "\\n\\n\\n") [[1]]
-        params <- lapply (params, function (i) {
-                              # rm param comments, which are delimited with "%":
-                              p_i <- gsub ("\\%.*$", "", i)
-                              ret <- unlist (eval (parse (text = p_i)))
-                              ret <- c (ret [1],
-                                        paste0 (ret [-1], collapse = " "))
-                              return (ret)  })
-        params <- data.frame (do.call (rbind, params))
-        names (params) <- c ("parameter", "description")
+        par_name <- vapply (nms, function (i) i$par_name, character (1))
+        nchars <- vapply (nms, function (i) i$nchars, integer (1))
+
+        res <- data.frame (parameter = par_name,
+                           nchar = nchars)
 
         res <- lapply (aliases, function (i) {
-                           params$alias <- i
-                           return (params)  })
+                           res$alias <- i
+                           return (res)  })
 
         res <- do.call (rbind, res)
     }
