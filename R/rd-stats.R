@@ -22,9 +22,11 @@ rd_stats <- function (path) {
                     ret <- nrow (i)
                 return (ret)    },
                 integer (1))
-    nchars <- lapply (params_sp, function (i) nchar (i$description))
-    nchars_mn <- vapply (nchars, mean, numeric (1))
-    nchars_md <- vapply (nchars, median, numeric (1))
+    nchars <- lapply (params_sp, function (i) i$nchar)
+    nchars_mn <- vapply (params_sp, function (i)
+                         mean (i$nchar), numeric (1))
+    nchars_md <- vapply (params_sp, function (i)
+                         median (i$nchar), numeric (1))
 
     # excluce imported fns:
     nmspc <- file.path (path, "NAMESPACE")
