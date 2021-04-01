@@ -3,4 +3,5 @@
 export(cloc_stats)
 export(desc_stats)
 export(extract_tarball)
+export(pkgstats)
 export(rd_stats)

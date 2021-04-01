@@ -2,8 +2,8 @@
 % Please edit documentation in R/pkgstats-package.R
 \docType{package}
 \name{pkgstats-package}
-\alias{pkgstats}
 \alias{pkgstats-package}
+\alias{_PACKAGE}
 \title{pkgstats: Metrics of R Packages}
 \description{
 Metrics of R packages.
