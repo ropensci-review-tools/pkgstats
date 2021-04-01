@@ -46,6 +46,7 @@ all_functions <- function (path) {
                                           full.names = TRUE))
 
     eval1 <- function (f) {
+
         p <- tryCatch (parse (file = f),
                        error = function (err) "error")
         if ("error" %in% p)
@@ -61,9 +62,17 @@ all_functions <- function (path) {
         nms <- vapply (p, function (i)
                        paste0 (as.list (i) [[2]]),
                        character (1))
+        npars <- vapply (p, function (i) {
+                             call_i <- as.list (i) [[3]]
+                             if (length (call_i) < 2) # not a fn
+                                 return (NA_integer_)
+                             length (call_i [[2]])  },
+                             integer (1))
 
-        data.frame (fn_name = nms,
-                    loc = loc)
+        data.frame (file_name = rep (basename (f), length (p)),
+                    fn_name = nms,
+                    loc = loc,
+                    npars = npars)
     }
 
     do.call (rbind, lapply (r_files, eval1))
