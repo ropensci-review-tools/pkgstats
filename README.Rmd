@@ -12,3 +12,18 @@ feasibility. Requires a local mirror of the full CRAN archive - that is, all
 packages](https://cran.r-project.org/web/packages/available_packages_by_name.html),
 plus all of their [previous
 versions](https://cran.r-project.org/src/contrib/Archive).
+
+## Demonstration
+
+```{r demo}
+library (pkgstats)
+tarball <- "magrittr_2.0.1.tar.gz"
+u <- paste0 ("https://cran.r-project.org/src/contrib/",
+             tarball)
+f <- file.path (tempdir (), tarball)
+download.file (u, f)
+system.time (
+    p <- pkgstats (f)
+    )
+print (p)
+```
