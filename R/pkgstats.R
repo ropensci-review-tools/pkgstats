@@ -67,14 +67,16 @@ all_functions <- function (path) {
         npars <- vapply (p, function (i) {
                              call_i <- as.list (i) [[3]]
                              if (length (call_i) < 2) # not a fn
-                                 return (NA_integer_)
-                             length (call_i [[2]])  },
-                             integer (1))
+                                 return (rep (NA_integer_, 2))
+                             c2 <- call_i [[2]]
+                             c (length (c2), "..." %in% names (c2)) },
+                             integer (2))
 
         data.frame (file_name = rep (basename (f), length (p)),
                     fn_name = nms,
                     loc = loc,
-                    npars = npars)
+                    npars = npars [1, ],
+                    has_dots = as.logical (npars [2, ]))
     }
 
     do.call (rbind, lapply (r_files, eval1))
