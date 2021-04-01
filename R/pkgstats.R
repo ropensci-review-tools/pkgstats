@@ -62,7 +62,7 @@ all_functions <- function (path) {
                        length (deparse (i)),
                        integer (1))
         nms <- vapply (p, function (i)
-                       paste0 (as.list (i) [[2]]),
+                       paste0 (as.list (i) [[2]], collapse = ""),
                        character (1))
         npars <- vapply (p, function (i) {
                              call_i <- as.list (i) [[3]]
