@@ -22,8 +22,8 @@ package
 tarball <- "magrittr_2.0.1.tar.gz"
 u <- paste0 ("https://cran.r-project.org/src/contrib/",
              tarball)
-dest <- file.path (tempdir (), tarball)
-download.file (u, dest)
-path <- extract_tarball (dest)
+f <- file.path (tempdir (), tarball)
+download.file (u, f)
+path <- extract_tarball (f)
 }
 }

@@ -3,6 +3,15 @@
 #' @inheritParams extract_tarball
 #' @return List of statistics
 #' @export
+#' @examples
+#' \dontrun{
+#' tarball <- "magrittr_2.0.1.tar.gz"
+#' u <- paste0 ("https://cran.r-project.org/src/contrib/",
+#'              tarball)
+#' f <- file.path (tempdir (), tarball)
+#' download.file (u, f)
+#' pkgstats (f)
+#' }
 pkgstats <- function (tarball) {
 
     path <- extract_tarball (tarball)
