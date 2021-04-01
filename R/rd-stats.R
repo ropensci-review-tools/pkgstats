@@ -93,7 +93,9 @@ get_one_params <- function (man_file) {
         # value is extracted in the main `all_functions` fn.
         params <- strsplit (params, "\\n\\n\\n") [[1]]
         params <- lapply (params, function (i) {
-                              ret <- unlist (eval (parse (text = i)))
+                              # rm param comments, which are delimited with "%":
+                              p_i <- gsub ("\\%.*$", "", i)
+                              ret <- unlist (eval (parse (text = p_i)))
                               ret <- c (ret [1],
                                         paste0 (ret [-1], collapse = " "))
                               return (ret)  })
