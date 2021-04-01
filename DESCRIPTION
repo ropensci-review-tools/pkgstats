@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.0.0.016
+Version: 0.0.0.017
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
@@ -20,6 +20,8 @@ Suggests:
     rmarkdown
 VignetteBuilder: 
     knitr
+Remotes:
+    hrbrmstr/cloc
 Encoding: UTF-8
 Language: en-GB
 LazyData: true
