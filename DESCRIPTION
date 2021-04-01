@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.0.0.003
+Version: 0.0.0.004
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
@@ -13,7 +13,8 @@ BugReports: https://github.com/mpadge/pkgstats/issues
 Depends: 
     R (>= 3.5.0)
 Imports:
-    checkmate
+    checkmate,
+    cloc
 Suggests: 
     knitr,
     rmarkdown
