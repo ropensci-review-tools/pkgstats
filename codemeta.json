@@ -10,7 +10,7 @@
   "codeRepository": "https://github.com/mpadge/pkgstats",
   "issueTracker": "https://github.com/mpadge/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.0.6",
+  "version": "0.0.0.7",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -87,7 +87,7 @@
       "name": "cloc"
     }
   ],
-  "fileSize": "42.05KB",
-  "contIntegration": "https://travis-ci.org/mpadge/packgraph",
-  "developmentStatus": "https://www.repostatus.org/#concept"
+  "fileSize": "42.307KB",
+  "developmentStatus": "https://www.repostatus.org/#concept",
+  "readme": "https://github.com/mpadge/pkgstats/blob/main/README.md"
 }

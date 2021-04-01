@@ -17,9 +17,7 @@
 #' }
 cloc_stats <- function (path) {
 
-    if (!file.exists (path))
-        stop (paste0 ("path [", path, "] does not exist. ",
-                      "Did you first 'extract_tarball()'?"))
+    check_path (path)
 
     paths <- c (file.path (path, "R"),
                 file.path (path, "src"),
