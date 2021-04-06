@@ -26,8 +26,10 @@ cloc_stats <- function (path) {
 
     out <- lapply (paths, function (i) {
                        res <- NULL
-                       if (dir.exists (i))
+                       if (dir.exists (i)) {
                            res <- cloc::cloc (i)
+                           res <- res [which (res$language != "SUM"), , drop = FALSE]
+                       }
                        return (res) })
 
     do.call (rbind, out)
