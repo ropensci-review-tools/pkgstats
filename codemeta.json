@@ -10,13 +10,13 @@
   "codeRepository": "https://github.com/mpadge/pkgstats",
   "issueTracker": "https://github.com/mpadge/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.0.024",
+  "version": "0.0.0.025",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.0.4 (2021-02-15)",
+  "runtimePlatform": "R version 4.0.5 (2021-03-31)",
   "author": [
     {
       "@type": "Person",
@@ -86,9 +86,33 @@
       "identifier": "cloc",
       "name": "cloc",
       "sameAs": "https://github.com/hrbrmstr/cloc"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "readr",
+      "name": "readr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=readr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "withr",
+      "name": "withr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=withr"
     }
   ],
-  "fileSize": "47.032KB",
+  "fileSize": "63.473KB",
   "developmentStatus": "https://www.repostatus.org/#concept",
   "readme": "https://github.com/mpadge/pkgstats/blob/main/README.md"
 }
