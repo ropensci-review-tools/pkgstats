@@ -26,7 +26,7 @@ rd_stats <- function (path) {
     nchars_mn <- vapply (params_sp, function (i)
                          mean (i$nchar), numeric (1))
     nchars_md <- vapply (params_sp, function (i)
-                         median (i$nchar), numeric (1))
+                         stats::median (i$nchar), numeric (1))
 
     # excluce imported fns:
     nmspc <- file.path (path, "NAMESPACE")
