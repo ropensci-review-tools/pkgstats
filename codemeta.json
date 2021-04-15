@@ -10,7 +10,7 @@
   "codeRepository": "https://github.com/mpadge/pkgstats",
   "issueTracker": "https://github.com/mpadge/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.0.33",
+  "version": "0.0.0.34",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -89,6 +89,30 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "dplyr",
+      "name": "dplyr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=dplyr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "igraph",
+      "name": "igraph",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=igraph"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "readr",
       "name": "readr",
       "provider": {
@@ -112,7 +136,7 @@
       "sameAs": "https://CRAN.R-project.org/package=withr"
     }
   ],
-  "fileSize": "73.944KB",
+  "fileSize": "71.279KB",
   "developmentStatus": "https://www.repostatus.org/#concept",
   "readme": "https://github.com/mpadge/pkgstats/blob/main/README.md"
 }

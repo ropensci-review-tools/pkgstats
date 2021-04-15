@@ -5,6 +5,8 @@
 #' @export
 tags_data <- function (path) {
 
+    kind <- start <- NULL # no visible binding messages
+
     tags_r <- withr::with_dir (path, get_ctags ("R"))
     tags_src <- withr::with_dir (path, get_ctags ("src"))
 
@@ -28,8 +30,13 @@ tags_data <- function (path) {
                                          path)
     call_graph_src <- fn_var_call_graph_src (gtags)
 
-    return (rbind (call_graph_r,
-                   call_graph_src))
+    res <- rbind (call_graph_r, call_graph_src)
+    res <- res [which (!is.na (res$from)), ]
+
+    res <- add_igraph_stats (res)
+    res$line2 <- NULL
+
+    return (res)
 }
 
 #' Get tags for one directory within a package
@@ -170,4 +177,19 @@ fn_var_call_graph_src <- function (gtags) {
                 from = gtags$from,
                 to = gtags$tag,
                 language = gtags$language)
+}
+
+add_igraph_stats <- function (g) {
+
+    g_igr <- igraph::graph_from_data_frame (g [, c ("from", "to")],
+                                            directed = FALSE)
+    v <- igraph::V (g_igr)
+
+    cl <- igraph::clusters (g_igr)
+    index <- match (g$from, names (cl$membership))
+    g$cluster <- cl$membership [index]
+    btw <- igraph::betweenness (g_igr)
+    g$centrality <- btw [match (g$from, names (btw))]
+
+    return (g)
 }
