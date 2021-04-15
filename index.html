@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.027</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.030</span>
       </span>
     </div>
 
@@ -72,10 +72,26 @@
 <!-- badges: start -->
 
 <p>Historical statistics of every R package ever. Not all statistics of course, but a good go at balancing insightful statistics while ensuring computational feasibility. Requires a local mirror of the full CRAN archive - that is, all <a href="https://cran.r-project.org/web/packages/available_packages_by_name.html">current packages</a>, plus all of their <a href="https://cran.r-project.org/src/contrib/Archive">previous versions</a>.</p>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>The package can be installed with:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span> <span class="op">(</span><span class="st">"mpadge/pkgtest"</span><span class="op">)</span></code></pre></div>
+<p>And then loaded for use with</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span> <span class="op">(</span><span class="va"><a href="https://github.com/mpadge/pkgstats">pkgstats</a></span><span class="op">)</span></code></pre></div>
+<p>This package requires <a href="https://ctags.io"><code>ctags</code></a>, and includes a function to ensure your local installation works correctly. Please ensure you see the following prior to proceeding:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/ctags_test.html">ctags_test</a></span> <span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## ctags installation works as expected</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co">## [1] TRUE</span></span></code></pre></div>
+</div>
 <div id="demonstration" class="section level2">
 <h2 class="hasAnchor">
 <a href="#demonstration" class="anchor"></a>Demonstration</h2>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span> <span class="op">(</span><span class="va"><a href="https://github.com/mpadge/pkgstats">pkgstats</a></span><span class="op">)</span>
 <span class="va">tarball</span> <span class="op">&lt;-</span> <span class="st">"magrittr_2.0.1.tar.gz"</span>
 <span class="va">u</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span> <span class="op">(</span><span class="st">"https://cran.r-project.org/src/contrib/"</span>,
@@ -85,138 +101,131 @@
 <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span> <span class="op">(</span>
     <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pkgstats.html">pkgstats</a></span> <span class="op">(</span><span class="va">f</span><span class="op">)</span>
     <span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">##    user  system elapsed </span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="co">##   0.563   0.058   0.614</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">##    user  system elapsed </span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co">##   0.569   0.067   0.625</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span> <span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## $cloc</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co">##      source     language file_count file_count_pct loc    loc_pct blank_lines</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="co">## 1         R            R          7      0.5000000 163 0.50000000          52</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="co">## 2         R          SUM          7      0.5000000 163 0.50000000          52</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="co">## 3       src            C          2      0.3333333 447 0.46082474         121</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="co">## 4       src C/C++ Header          1      0.1666667  38 0.03917526          12</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="co">## 5       src          SUM          3      0.5000000 485 0.50000000         133</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="co">## 6 vignettes          Rmd          2      0.5000000 146 0.50000000         205</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a><span class="co">## 7 vignettes          SUM          2      0.5000000 146 0.50000000         205</span></span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="co">##   blank_line_pct comment_lines comment_line_pct</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a><span class="co">## 1     0.50000000           484       0.50000000</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a><span class="co">## 2     0.50000000           484       0.50000000</span></span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="co">## 3     0.45488722            22       0.47826087</span></span>
-<span id="cb4-14"><a href="#cb4-14"></a><span class="co">## 4     0.04511278             1       0.02173913</span></span>
-<span id="cb4-15"><a href="#cb4-15"></a><span class="co">## 5     0.50000000            23       0.50000000</span></span>
-<span id="cb4-16"><a href="#cb4-16"></a><span class="co">## 6     0.50000000           403       0.50000000</span></span>
-<span id="cb4-17"><a href="#cb4-17"></a><span class="co">## 7     0.50000000           403       0.50000000</span></span>
-<span id="cb4-18"><a href="#cb4-18"></a><span class="co">## </span></span>
-<span id="cb4-19"><a href="#cb4-19"></a><span class="co">## $num_vignettes</span></span>
-<span id="cb4-20"><a href="#cb4-20"></a><span class="co">## [1] 3</span></span>
-<span id="cb4-21"><a href="#cb4-21"></a><span class="co">## </span></span>
-<span id="cb4-22"><a href="#cb4-22"></a><span class="co">## $desc</span></span>
-<span id="cb4-23"><a href="#cb4-23"></a><span class="co">##              license</span></span>
-<span id="cb4-24"><a href="#cb4-24"></a><span class="co">## 1 MIT + file LICENSE</span></span>
-<span id="cb4-25"><a href="#cb4-25"></a><span class="co">##                                                                     urls aut</span></span>
-<span id="cb4-26"><a href="#cb4-26"></a><span class="co">## 1 https://magrittr.tidyverse.org,\nhttps://github.com/tidyverse/magrittr   2</span></span>
-<span id="cb4-27"><a href="#cb4-27"></a><span class="co">##   ctb fnd rev ths trl</span></span>
-<span id="cb4-28"><a href="#cb4-28"></a><span class="co">## 1   0   1   0   0   0</span></span>
-<span id="cb4-29"><a href="#cb4-29"></a><span class="co">## </span></span>
-<span id="cb4-30"><a href="#cb4-30"></a><span class="co">## $functions</span></span>
-<span id="cb4-31"><a href="#cb4-31"></a><span class="co">##       file_name                fn_name loc npars has_dots exported</span></span>
-<span id="cb4-32"><a href="#cb4-32"></a><span class="co">## 1     aliases.R                extract   1    NA       NA     TRUE</span></span>
-<span id="cb4-33"><a href="#cb4-33"></a><span class="co">## 2     aliases.R               extract2   1    NA       NA     TRUE</span></span>
-<span id="cb4-34"><a href="#cb4-34"></a><span class="co">## 3     aliases.R             use_series   1    NA       NA     TRUE</span></span>
-<span id="cb4-35"><a href="#cb4-35"></a><span class="co">## 4     aliases.R                    add   1    NA       NA     TRUE</span></span>
-<span id="cb4-36"><a href="#cb4-36"></a><span class="co">## 5     aliases.R               subtract   1    NA       NA     TRUE</span></span>
-<span id="cb4-37"><a href="#cb4-37"></a><span class="co">## 6     aliases.R            multiply_by   1    NA       NA     TRUE</span></span>
-<span id="cb4-38"><a href="#cb4-38"></a><span class="co">## 7     aliases.R     multiply_by_matrix   1    NA       NA     TRUE</span></span>
-<span id="cb4-39"><a href="#cb4-39"></a><span class="co">## 8     aliases.R              divide_by   1    NA       NA     TRUE</span></span>
-<span id="cb4-40"><a href="#cb4-40"></a><span class="co">## 9     aliases.R          divide_by_int   1    NA       NA     TRUE</span></span>
-<span id="cb4-41"><a href="#cb4-41"></a><span class="co">## 10    aliases.R         raise_to_power   1    NA       NA     TRUE</span></span>
-<span id="cb4-42"><a href="#cb4-42"></a><span class="co">## 11    aliases.R                    and   1    NA       NA     TRUE</span></span>
-<span id="cb4-43"><a href="#cb4-43"></a><span class="co">## 12    aliases.R                     or   1    NA       NA     TRUE</span></span>
-<span id="cb4-44"><a href="#cb4-44"></a><span class="co">## 13    aliases.R                    mod   1    NA       NA     TRUE</span></span>
-<span id="cb4-45"><a href="#cb4-45"></a><span class="co">## 14    aliases.R                  is_in   1    NA       NA     TRUE</span></span>
-<span id="cb4-46"><a href="#cb4-46"></a><span class="co">## 15    aliases.R                 equals   1    NA       NA     TRUE</span></span>
-<span id="cb4-47"><a href="#cb4-47"></a><span class="co">## 16    aliases.R        is_greater_than   1    NA       NA     TRUE</span></span>
-<span id="cb4-48"><a href="#cb4-48"></a><span class="co">## 17    aliases.R is_weakly_greater_than   1    NA       NA     TRUE</span></span>
-<span id="cb4-49"><a href="#cb4-49"></a><span class="co">## 18    aliases.R           is_less_than   1    NA       NA     TRUE</span></span>
-<span id="cb4-50"><a href="#cb4-50"></a><span class="co">## 19    aliases.R    is_weakly_less_than   1    NA       NA     TRUE</span></span>
-<span id="cb4-51"><a href="#cb4-51"></a><span class="co">## 20    aliases.R                    not   1    NA       NA     TRUE</span></span>
-<span id="cb4-52"><a href="#cb4-52"></a><span class="co">## 21    aliases.R              n'est pas   1    NA       NA     TRUE</span></span>
-<span id="cb4-53"><a href="#cb4-53"></a><span class="co">## 22    aliases.R           set_colnames   1    NA       NA     TRUE</span></span>
-<span id="cb4-54"><a href="#cb4-54"></a><span class="co">## 23    aliases.R           set_rownames   1    NA       NA     TRUE</span></span>
-<span id="cb4-55"><a href="#cb4-55"></a><span class="co">## 24    aliases.R              set_names   1    NA       NA     TRUE</span></span>
-<span id="cb4-56"><a href="#cb4-56"></a><span class="co">## 25    aliases.R              set_class   1    NA       NA     TRUE</span></span>
-<span id="cb4-57"><a href="#cb4-57"></a><span class="co">## 26    aliases.R                  inset   1    NA       NA     TRUE</span></span>
-<span id="cb4-58"><a href="#cb4-58"></a><span class="co">## 27    aliases.R                 inset2   1    NA       NA     TRUE</span></span>
-<span id="cb4-59"><a href="#cb4-59"></a><span class="co">## 28    aliases.R               set_attr   1    NA       NA     TRUE</span></span>
-<span id="cb4-60"><a href="#cb4-60"></a><span class="co">## 29    aliases.R         set_attributes   1    NA       NA     TRUE</span></span>
-<span id="cb4-61"><a href="#cb4-61"></a><span class="co">## 30 debug_pipe.R             debug_pipe   4     1    FALSE     TRUE</span></span>
-<span id="cb4-62"><a href="#cb4-62"></a><span class="co">## 31 debug_pipe.R             debug_fseq   8     2     TRUE     TRUE</span></span>
-<span id="cb4-63"><a href="#cb4-63"></a><span class="co">## 32 debug_pipe.R           undebug_fseq   4     1    FALSE     TRUE</span></span>
-<span id="cb4-64"><a href="#cb4-64"></a><span class="co">## 33    freduce.R                freduce  15     2    FALSE     TRUE</span></span>
-<span id="cb4-65"><a href="#cb4-65"></a><span class="co">## 34  functions.R              functions   5     1    FALSE     TRUE</span></span>
-<span id="cb4-66"><a href="#cb4-66"></a><span class="co">## 35  functions.R             print.fseq   9     2     TRUE     TRUE</span></span>
-<span id="cb4-67"><a href="#cb4-67"></a><span class="co">## 36    getters.R                [[.fseq   3     2     TRUE     TRUE</span></span>
-<span id="cb4-68"><a href="#cb4-68"></a><span class="co">## 37    getters.R                 [.fseq   6     2     TRUE     TRUE</span></span>
-<span id="cb4-69"><a href="#cb4-69"></a><span class="co">## 38   magrittr.R                .onLoad   3     2    FALSE    FALSE</span></span>
-<span id="cb4-70"><a href="#cb4-70"></a><span class="co">## 39       pipe.R                    %&gt;%   8     2    FALSE     TRUE</span></span>
-<span id="cb4-71"><a href="#cb4-71"></a><span class="co">## 40       pipe.R     pipe_eager_lexical   8     2    FALSE     TRUE</span></span>
-<span id="cb4-72"><a href="#cb4-72"></a><span class="co">## 41       pipe.R      pipe_lazy_masking   9     2    FALSE     TRUE</span></span>
-<span id="cb4-73"><a href="#cb4-73"></a><span class="co">## 42       pipe.R            pipe_nested   9     2    FALSE     TRUE</span></span>
-<span id="cb4-74"><a href="#cb4-74"></a><span class="co">## 43       pipe.R                   %&lt;&gt;%   8     2    FALSE     TRUE</span></span>
-<span id="cb4-75"><a href="#cb4-75"></a><span class="co">## 44       pipe.R                   %T&gt;%   8     2    FALSE     TRUE</span></span>
-<span id="cb4-76"><a href="#cb4-76"></a><span class="co">## 45       pipe.R                    %$%   8     2    FALSE     TRUE</span></span>
-<span id="cb4-77"><a href="#cb4-77"></a><span class="co">## 46       pipe.R             new_lambda   5     2    FALSE    FALSE</span></span>
-<span id="cb4-78"><a href="#cb4-78"></a><span class="co">## 47       pipe.R            lambda_fmls   1     2    FALSE    FALSE</span></span>
-<span id="cb4-79"><a href="#cb4-79"></a><span class="co">## 48       pipe.R             as_pipe_fn   3     2    FALSE    FALSE</span></span>
-<span id="cb4-80"><a href="#cb4-80"></a><span class="co">##    param_nchars_md param_nchars_mn num_doclines</span></span>
-<span id="cb4-81"><a href="#cb4-81"></a><span class="co">## 1              0.0             0.0           54</span></span>
-<span id="cb4-82"><a href="#cb4-82"></a><span class="co">## 2              0.0             0.0           54</span></span>
-<span id="cb4-83"><a href="#cb4-83"></a><span class="co">## 3              0.0             0.0           54</span></span>
-<span id="cb4-84"><a href="#cb4-84"></a><span class="co">## 4              0.0             0.0           54</span></span>
-<span id="cb4-85"><a href="#cb4-85"></a><span class="co">## 5              0.0             0.0           54</span></span>
-<span id="cb4-86"><a href="#cb4-86"></a><span class="co">## 6              0.0             0.0           54</span></span>
-<span id="cb4-87"><a href="#cb4-87"></a><span class="co">## 7              0.0             0.0           54</span></span>
-<span id="cb4-88"><a href="#cb4-88"></a><span class="co">## 8              0.0             0.0           54</span></span>
-<span id="cb4-89"><a href="#cb4-89"></a><span class="co">## 9              0.0             0.0           54</span></span>
-<span id="cb4-90"><a href="#cb4-90"></a><span class="co">## 10             0.0             0.0           54</span></span>
-<span id="cb4-91"><a href="#cb4-91"></a><span class="co">## 11             0.0             0.0           54</span></span>
-<span id="cb4-92"><a href="#cb4-92"></a><span class="co">## 12             0.0             0.0           54</span></span>
-<span id="cb4-93"><a href="#cb4-93"></a><span class="co">## 13             0.0             0.0           54</span></span>
-<span id="cb4-94"><a href="#cb4-94"></a><span class="co">## 14             0.0             0.0           54</span></span>
-<span id="cb4-95"><a href="#cb4-95"></a><span class="co">## 15             0.0             0.0           54</span></span>
-<span id="cb4-96"><a href="#cb4-96"></a><span class="co">## 16             0.0             0.0           54</span></span>
-<span id="cb4-97"><a href="#cb4-97"></a><span class="co">## 17             0.0             0.0           54</span></span>
-<span id="cb4-98"><a href="#cb4-98"></a><span class="co">## 18             0.0             0.0           54</span></span>
-<span id="cb4-99"><a href="#cb4-99"></a><span class="co">## 19             0.0             0.0           54</span></span>
-<span id="cb4-100"><a href="#cb4-100"></a><span class="co">## 20             0.0             0.0           54</span></span>
-<span id="cb4-101"><a href="#cb4-101"></a><span class="co">## 21             0.0             0.0           54</span></span>
-<span id="cb4-102"><a href="#cb4-102"></a><span class="co">## 22             0.0             0.0           54</span></span>
-<span id="cb4-103"><a href="#cb4-103"></a><span class="co">## 23             0.0             0.0           54</span></span>
-<span id="cb4-104"><a href="#cb4-104"></a><span class="co">## 24             0.0             0.0           54</span></span>
-<span id="cb4-105"><a href="#cb4-105"></a><span class="co">## 25             0.0             0.0           54</span></span>
-<span id="cb4-106"><a href="#cb4-106"></a><span class="co">## 26             0.0             0.0           54</span></span>
-<span id="cb4-107"><a href="#cb4-107"></a><span class="co">## 27             0.0             0.0           54</span></span>
-<span id="cb4-108"><a href="#cb4-108"></a><span class="co">## 28             0.0             0.0           54</span></span>
-<span id="cb4-109"><a href="#cb4-109"></a><span class="co">## 29             0.0             0.0           54</span></span>
-<span id="cb4-110"><a href="#cb4-110"></a><span class="co">## 30             7.0             7.0           11</span></span>
-<span id="cb4-111"><a href="#cb4-111"></a><span class="co">## 31            26.0            26.0           14</span></span>
-<span id="cb4-112"><a href="#cb4-112"></a><span class="co">## 32            26.0            26.0           14</span></span>
-<span id="cb4-113"><a href="#cb4-113"></a><span class="co">## 33            17.0            17.0           12</span></span>
-<span id="cb4-114"><a href="#cb4-114"></a><span class="co">## 34            35.0            35.0           11</span></span>
-<span id="cb4-115"><a href="#cb4-115"></a><span class="co">## 35            18.5            18.5           12</span></span>
-<span id="cb4-116"><a href="#cb4-116"></a><span class="co">## 36            43.5            43.5           19</span></span>
-<span id="cb4-117"><a href="#cb4-117"></a><span class="co">## 37            43.5            43.5           19</span></span>
-<span id="cb4-118"><a href="#cb4-118"></a><span class="co">## 38              NA              NA           NA</span></span>
-<span id="cb4-119"><a href="#cb4-119"></a><span class="co">## 39            40.5            40.5          114</span></span>
-<span id="cb4-120"><a href="#cb4-120"></a><span class="co">## 40            40.5            40.5           13</span></span>
-<span id="cb4-121"><a href="#cb4-121"></a><span class="co">## 41            40.5            40.5           13</span></span>
-<span id="cb4-122"><a href="#cb4-122"></a><span class="co">## 42            40.5            40.5           13</span></span>
-<span id="cb4-123"><a href="#cb4-123"></a><span class="co">## 43            54.0            54.0           42</span></span>
-<span id="cb4-124"><a href="#cb4-124"></a><span class="co">## 44            40.5            40.5           23</span></span>
-<span id="cb4-125"><a href="#cb4-125"></a><span class="co">## 45            43.5            43.5           26</span></span>
-<span id="cb4-126"><a href="#cb4-126"></a><span class="co">## 46              NA              NA           NA</span></span>
-<span id="cb4-127"><a href="#cb4-127"></a><span class="co">## 47              NA              NA           NA</span></span>
-<span id="cb4-128"><a href="#cb4-128"></a><span class="co">## 48              NA              NA           NA</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">## $cloc</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="co">## # A tibble: 4 x 10</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co">##   source    language     file_count file_count_pct   loc loc_pct blank_lines</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co">##   &lt;chr&gt;     &lt;chr&gt;             &lt;int&gt;          &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;       &lt;int&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="co">## 1 R         R                     7          0.5     163  0.5             52</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="co">## 2 src       C                     2          0.333   447  0.461          121</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="co">## 3 src       C/C++ Header          1          0.167    38  0.0392          12</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">## 4 vignettes Rmd                   2          0.5     146  0.5            205</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">## # … with 3 more variables: blank_line_pct &lt;dbl&gt;, comment_lines &lt;int&gt;,</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co">## #   comment_line_pct &lt;dbl&gt;</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">## </span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="co">## $num_vignettes</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co">## [1] 3</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="co">## </span></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="co">## $desc</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a><span class="co">##              license</span></span>
+<span id="cb8-17"><a href="#cb8-17"></a><span class="co">## 1 MIT + file LICENSE</span></span>
+<span id="cb8-18"><a href="#cb8-18"></a><span class="co">##                                                                     urls aut</span></span>
+<span id="cb8-19"><a href="#cb8-19"></a><span class="co">## 1 https://magrittr.tidyverse.org,\nhttps://github.com/tidyverse/magrittr   2</span></span>
+<span id="cb8-20"><a href="#cb8-20"></a><span class="co">##   ctb fnd rev ths trl</span></span>
+<span id="cb8-21"><a href="#cb8-21"></a><span class="co">## 1   0   1   0   0   0</span></span>
+<span id="cb8-22"><a href="#cb8-22"></a><span class="co">## </span></span>
+<span id="cb8-23"><a href="#cb8-23"></a><span class="co">## $functions</span></span>
+<span id="cb8-24"><a href="#cb8-24"></a><span class="co">##       file_name                fn_name loc npars has_dots exported</span></span>
+<span id="cb8-25"><a href="#cb8-25"></a><span class="co">## 1     aliases.R                extract   1    NA       NA     TRUE</span></span>
+<span id="cb8-26"><a href="#cb8-26"></a><span class="co">## 2     aliases.R               extract2   1    NA       NA     TRUE</span></span>
+<span id="cb8-27"><a href="#cb8-27"></a><span class="co">## 3     aliases.R             use_series   1    NA       NA     TRUE</span></span>
+<span id="cb8-28"><a href="#cb8-28"></a><span class="co">## 4     aliases.R                    add   1    NA       NA     TRUE</span></span>
+<span id="cb8-29"><a href="#cb8-29"></a><span class="co">## 5     aliases.R               subtract   1    NA       NA     TRUE</span></span>
+<span id="cb8-30"><a href="#cb8-30"></a><span class="co">## 6     aliases.R            multiply_by   1    NA       NA     TRUE</span></span>
+<span id="cb8-31"><a href="#cb8-31"></a><span class="co">## 7     aliases.R     multiply_by_matrix   1    NA       NA     TRUE</span></span>
+<span id="cb8-32"><a href="#cb8-32"></a><span class="co">## 8     aliases.R              divide_by   1    NA       NA     TRUE</span></span>
+<span id="cb8-33"><a href="#cb8-33"></a><span class="co">## 9     aliases.R          divide_by_int   1    NA       NA     TRUE</span></span>
+<span id="cb8-34"><a href="#cb8-34"></a><span class="co">## 10    aliases.R         raise_to_power   1    NA       NA     TRUE</span></span>
+<span id="cb8-35"><a href="#cb8-35"></a><span class="co">## 11    aliases.R                    and   1    NA       NA     TRUE</span></span>
+<span id="cb8-36"><a href="#cb8-36"></a><span class="co">## 12    aliases.R                     or   1    NA       NA     TRUE</span></span>
+<span id="cb8-37"><a href="#cb8-37"></a><span class="co">## 13    aliases.R                    mod   1    NA       NA     TRUE</span></span>
+<span id="cb8-38"><a href="#cb8-38"></a><span class="co">## 14    aliases.R                  is_in   1    NA       NA     TRUE</span></span>
+<span id="cb8-39"><a href="#cb8-39"></a><span class="co">## 15    aliases.R                 equals   1    NA       NA     TRUE</span></span>
+<span id="cb8-40"><a href="#cb8-40"></a><span class="co">## 16    aliases.R        is_greater_than   1    NA       NA     TRUE</span></span>
+<span id="cb8-41"><a href="#cb8-41"></a><span class="co">## 17    aliases.R is_weakly_greater_than   1    NA       NA     TRUE</span></span>
+<span id="cb8-42"><a href="#cb8-42"></a><span class="co">## 18    aliases.R           is_less_than   1    NA       NA     TRUE</span></span>
+<span id="cb8-43"><a href="#cb8-43"></a><span class="co">## 19    aliases.R    is_weakly_less_than   1    NA       NA     TRUE</span></span>
+<span id="cb8-44"><a href="#cb8-44"></a><span class="co">## 20    aliases.R                    not   1    NA       NA     TRUE</span></span>
+<span id="cb8-45"><a href="#cb8-45"></a><span class="co">## 21    aliases.R              n'est pas   1    NA       NA     TRUE</span></span>
+<span id="cb8-46"><a href="#cb8-46"></a><span class="co">## 22    aliases.R           set_colnames   1    NA       NA     TRUE</span></span>
+<span id="cb8-47"><a href="#cb8-47"></a><span class="co">## 23    aliases.R           set_rownames   1    NA       NA     TRUE</span></span>
+<span id="cb8-48"><a href="#cb8-48"></a><span class="co">## 24    aliases.R              set_names   1    NA       NA     TRUE</span></span>
+<span id="cb8-49"><a href="#cb8-49"></a><span class="co">## 25    aliases.R              set_class   1    NA       NA     TRUE</span></span>
+<span id="cb8-50"><a href="#cb8-50"></a><span class="co">## 26    aliases.R                  inset   1    NA       NA     TRUE</span></span>
+<span id="cb8-51"><a href="#cb8-51"></a><span class="co">## 27    aliases.R                 inset2   1    NA       NA     TRUE</span></span>
+<span id="cb8-52"><a href="#cb8-52"></a><span class="co">## 28    aliases.R               set_attr   1    NA       NA     TRUE</span></span>
+<span id="cb8-53"><a href="#cb8-53"></a><span class="co">## 29    aliases.R         set_attributes   1    NA       NA     TRUE</span></span>
+<span id="cb8-54"><a href="#cb8-54"></a><span class="co">## 30 debug_pipe.R             debug_pipe   4     1    FALSE     TRUE</span></span>
+<span id="cb8-55"><a href="#cb8-55"></a><span class="co">## 31 debug_pipe.R             debug_fseq   8     2     TRUE     TRUE</span></span>
+<span id="cb8-56"><a href="#cb8-56"></a><span class="co">## 32 debug_pipe.R           undebug_fseq   4     1    FALSE     TRUE</span></span>
+<span id="cb8-57"><a href="#cb8-57"></a><span class="co">## 33    freduce.R                freduce  15     2    FALSE     TRUE</span></span>
+<span id="cb8-58"><a href="#cb8-58"></a><span class="co">## 34  functions.R              functions   5     1    FALSE     TRUE</span></span>
+<span id="cb8-59"><a href="#cb8-59"></a><span class="co">## 35  functions.R             print.fseq   9     2     TRUE     TRUE</span></span>
+<span id="cb8-60"><a href="#cb8-60"></a><span class="co">## 36    getters.R                [[.fseq   3     2     TRUE     TRUE</span></span>
+<span id="cb8-61"><a href="#cb8-61"></a><span class="co">## 37    getters.R                 [.fseq   6     2     TRUE     TRUE</span></span>
+<span id="cb8-62"><a href="#cb8-62"></a><span class="co">## 38   magrittr.R                .onLoad   3     2    FALSE    FALSE</span></span>
+<span id="cb8-63"><a href="#cb8-63"></a><span class="co">## 39       pipe.R                    %&gt;%   8     2    FALSE     TRUE</span></span>
+<span id="cb8-64"><a href="#cb8-64"></a><span class="co">## 40       pipe.R     pipe_eager_lexical   8     2    FALSE     TRUE</span></span>
+<span id="cb8-65"><a href="#cb8-65"></a><span class="co">## 41       pipe.R      pipe_lazy_masking   9     2    FALSE     TRUE</span></span>
+<span id="cb8-66"><a href="#cb8-66"></a><span class="co">## 42       pipe.R            pipe_nested   9     2    FALSE     TRUE</span></span>
+<span id="cb8-67"><a href="#cb8-67"></a><span class="co">## 43       pipe.R                   %&lt;&gt;%   8     2    FALSE     TRUE</span></span>
+<span id="cb8-68"><a href="#cb8-68"></a><span class="co">## 44       pipe.R                   %T&gt;%   8     2    FALSE     TRUE</span></span>
+<span id="cb8-69"><a href="#cb8-69"></a><span class="co">## 45       pipe.R                    %$%   8     2    FALSE     TRUE</span></span>
+<span id="cb8-70"><a href="#cb8-70"></a><span class="co">## 46       pipe.R             new_lambda   5     2    FALSE    FALSE</span></span>
+<span id="cb8-71"><a href="#cb8-71"></a><span class="co">## 47       pipe.R            lambda_fmls   1     2    FALSE    FALSE</span></span>
+<span id="cb8-72"><a href="#cb8-72"></a><span class="co">## 48       pipe.R             as_pipe_fn   3     2    FALSE    FALSE</span></span>
+<span id="cb8-73"><a href="#cb8-73"></a><span class="co">##    param_nchars_md param_nchars_mn num_doclines</span></span>
+<span id="cb8-74"><a href="#cb8-74"></a><span class="co">## 1               NA              NA           54</span></span>
+<span id="cb8-75"><a href="#cb8-75"></a><span class="co">## 2               NA              NA           54</span></span>
+<span id="cb8-76"><a href="#cb8-76"></a><span class="co">## 3               NA              NA           54</span></span>
+<span id="cb8-77"><a href="#cb8-77"></a><span class="co">## 4               NA              NA           54</span></span>
+<span id="cb8-78"><a href="#cb8-78"></a><span class="co">## 5               NA              NA           54</span></span>
+<span id="cb8-79"><a href="#cb8-79"></a><span class="co">## 6               NA              NA           54</span></span>
+<span id="cb8-80"><a href="#cb8-80"></a><span class="co">## 7               NA              NA           54</span></span>
+<span id="cb8-81"><a href="#cb8-81"></a><span class="co">## 8               NA              NA           54</span></span>
+<span id="cb8-82"><a href="#cb8-82"></a><span class="co">## 9               NA              NA           54</span></span>
+<span id="cb8-83"><a href="#cb8-83"></a><span class="co">## 10              NA              NA           54</span></span>
+<span id="cb8-84"><a href="#cb8-84"></a><span class="co">## 11              NA              NA           54</span></span>
+<span id="cb8-85"><a href="#cb8-85"></a><span class="co">## 12              NA              NA           54</span></span>
+<span id="cb8-86"><a href="#cb8-86"></a><span class="co">## 13              NA              NA           54</span></span>
+<span id="cb8-87"><a href="#cb8-87"></a><span class="co">## 14              NA              NA           54</span></span>
+<span id="cb8-88"><a href="#cb8-88"></a><span class="co">## 15              NA              NA           54</span></span>
+<span id="cb8-89"><a href="#cb8-89"></a><span class="co">## 16              NA              NA           54</span></span>
+<span id="cb8-90"><a href="#cb8-90"></a><span class="co">## 17              NA              NA           54</span></span>
+<span id="cb8-91"><a href="#cb8-91"></a><span class="co">## 18              NA              NA           54</span></span>
+<span id="cb8-92"><a href="#cb8-92"></a><span class="co">## 19              NA              NA           54</span></span>
+<span id="cb8-93"><a href="#cb8-93"></a><span class="co">## 20              NA              NA           54</span></span>
+<span id="cb8-94"><a href="#cb8-94"></a><span class="co">## 21              NA              NA           54</span></span>
+<span id="cb8-95"><a href="#cb8-95"></a><span class="co">## 22              NA              NA           54</span></span>
+<span id="cb8-96"><a href="#cb8-96"></a><span class="co">## 23              NA              NA           54</span></span>
+<span id="cb8-97"><a href="#cb8-97"></a><span class="co">## 24              NA              NA           54</span></span>
+<span id="cb8-98"><a href="#cb8-98"></a><span class="co">## 25              NA              NA           54</span></span>
+<span id="cb8-99"><a href="#cb8-99"></a><span class="co">## 26              NA              NA           54</span></span>
+<span id="cb8-100"><a href="#cb8-100"></a><span class="co">## 27              NA              NA           54</span></span>
+<span id="cb8-101"><a href="#cb8-101"></a><span class="co">## 28              NA              NA           54</span></span>
+<span id="cb8-102"><a href="#cb8-102"></a><span class="co">## 29              NA              NA           54</span></span>
+<span id="cb8-103"><a href="#cb8-103"></a><span class="co">## 30             7.0             7.0           11</span></span>
+<span id="cb8-104"><a href="#cb8-104"></a><span class="co">## 31            26.0            26.0           14</span></span>
+<span id="cb8-105"><a href="#cb8-105"></a><span class="co">## 32            26.0            26.0           14</span></span>
+<span id="cb8-106"><a href="#cb8-106"></a><span class="co">## 33            17.0            17.0           12</span></span>
+<span id="cb8-107"><a href="#cb8-107"></a><span class="co">## 34            35.0            35.0           11</span></span>
+<span id="cb8-108"><a href="#cb8-108"></a><span class="co">## 35            18.5            18.5           12</span></span>
+<span id="cb8-109"><a href="#cb8-109"></a><span class="co">## 36            43.5            43.5           19</span></span>
+<span id="cb8-110"><a href="#cb8-110"></a><span class="co">## 37            43.5            43.5           19</span></span>
+<span id="cb8-111"><a href="#cb8-111"></a><span class="co">## 38              NA              NA           NA</span></span>
+<span id="cb8-112"><a href="#cb8-112"></a><span class="co">## 39            40.5            40.5          114</span></span>
+<span id="cb8-113"><a href="#cb8-113"></a><span class="co">## 40            40.5            40.5           13</span></span>
+<span id="cb8-114"><a href="#cb8-114"></a><span class="co">## 41            40.5            40.5           13</span></span>
+<span id="cb8-115"><a href="#cb8-115"></a><span class="co">## 42            40.5            40.5           13</span></span>
+<span id="cb8-116"><a href="#cb8-116"></a><span class="co">## 43            54.0            54.0           42</span></span>
+<span id="cb8-117"><a href="#cb8-117"></a><span class="co">## 44            40.5            40.5           23</span></span>
+<span id="cb8-118"><a href="#cb8-118"></a><span class="co">## 45            43.5            43.5           26</span></span>
+<span id="cb8-119"><a href="#cb8-119"></a><span class="co">## 46              NA              NA           NA</span></span>
+<span id="cb8-120"><a href="#cb8-120"></a><span class="co">## 47              NA              NA           NA</span></span>
+<span id="cb8-121"><a href="#cb8-121"></a><span class="co">## 48              NA              NA           NA</span></span></code></pre></div>
 </div>
 </div>
   </div>
