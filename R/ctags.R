@@ -10,10 +10,6 @@ ctags_data <- function (path) {
 
     fns <- tags [tags$kind == "function", ]
     fn_vars <- tags [tags$kind == "functionVar", ]
-    fn_vars <- fix_fnvar2fn (fn_vars, path)
-
-    fns <- rbind (fns, fn_vars [fn_vars$kind == "function", ])
-    fn_vars <- fn_vars [fn_vars$kind == "functionVar", ]
 
     call_graph <- fn_var_call_graph (fns, fn_vars, path)
 
@@ -44,32 +40,6 @@ get_ctags <- function () {
     tags$end <- as.integer (gsub ("^end\\:", "", tags$end))
 
     return (tags)
-}
-
-#' ctags sometimes mis-identifies R-language function calls with `kind` of
-#' "functionVar". This code identifies these and manually rectifies
-#' @noRd
-fix_fnvar2fn <- function (fn_vars, path) {
-
-    fn_var_tags <- unique (fn_vars$tag)
-
-    flist <- list.files (file.path (path, "R"), full.names = TRUE)
-
-    for (f in flist) {
-        x <- utils::getParseData (parse (file = f))
-        x <- x [which (!x$token == "expr"), ]
-
-        index <- which (x$text %in% fn_var_tags) 
-        j <- which (x$token [index + 1] == "LEFT_ASSIGN" &
-                    x$token [index + 2] == "FUNCTION")
-        new_fns <- unique (x$text [index [j]])
-        index <- which (fn_vars$tag %in% new_fns)
-        is_fn <- grep ("function\\s?\\(", fn_vars$content [index])
-        index <- index [is_fn]
-        fn_vars$kind [index] <- "function"
-    }
-
-    return (fn_vars)
 }
 
 fn_var_call_graph <- function (fns, fn_vars, path) {
