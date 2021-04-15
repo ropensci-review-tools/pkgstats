@@ -52,6 +52,16 @@ get_ctags <- function (d = "R") {
 
     # ctags fields defines at
     # https://docs.ctags.io/en/latest/man/ctags.1.html#extension-fields
+    # fields:
+    #   - e: Line number for end of object
+    #   - F: Name of source file
+    #   - K: Kind of tag as long name
+    #   - z: The kind key in kind field
+    #   - l: language
+    #   - n: Line number where `name` is defined
+    #   - N: Name of language object
+    #   - S: Language-specific signature of object
+    #   - t: type and name of a variable
 
     if (d == "R") {
         fields <- "eFKlnNt"
