@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.0.0.028
+Version: 0.0.0.030
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
@@ -25,8 +25,9 @@ VignetteBuilder:
 Remotes:
     hrbrmstr/cloc
 Encoding: UTF-8
-Language: en-GB
+Language: en-US
 LazyData: true
 NeedsCompilation: yes
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+SystemRequirements: ctags

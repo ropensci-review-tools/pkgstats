@@ -16,6 +16,32 @@ packages](https://cran.r-project.org/web/packages/available_packages_by_name.htm
 plus all of their [previous
 versions](https://cran.r-project.org/src/contrib/Archive).
 
+## Installation
+
+The package can be installed with:
+
+``` r
+remotes::install_github ("mpadge/pkgtest")
+```
+
+And then loaded for use with
+
+``` r
+library (pkgstats)
+```
+
+This package requires [`ctags`](https://ctags.io), and includes a
+function to ensure your local installation works correctly. Please
+ensure you see the following prior to proceeding:
+
+``` r
+ctags_test ()
+```
+
+    ## ctags installation works as expected
+
+    ## [1] TRUE
+
 ## Demonstration
 
 ``` r
@@ -31,29 +57,22 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.563   0.058   0.614
+    ##   0.569   0.067   0.625
 
 ``` r
 print (p)
 ```
 
     ## $cloc
-    ##      source     language file_count file_count_pct loc    loc_pct blank_lines
-    ## 1         R            R          7      0.5000000 163 0.50000000          52
-    ## 2         R          SUM          7      0.5000000 163 0.50000000          52
-    ## 3       src            C          2      0.3333333 447 0.46082474         121
-    ## 4       src C/C++ Header          1      0.1666667  38 0.03917526          12
-    ## 5       src          SUM          3      0.5000000 485 0.50000000         133
-    ## 6 vignettes          Rmd          2      0.5000000 146 0.50000000         205
-    ## 7 vignettes          SUM          2      0.5000000 146 0.50000000         205
-    ##   blank_line_pct comment_lines comment_line_pct
-    ## 1     0.50000000           484       0.50000000
-    ## 2     0.50000000           484       0.50000000
-    ## 3     0.45488722            22       0.47826087
-    ## 4     0.04511278             1       0.02173913
-    ## 5     0.50000000            23       0.50000000
-    ## 6     0.50000000           403       0.50000000
-    ## 7     0.50000000           403       0.50000000
+    ## # A tibble: 4 x 10
+    ##   source    language     file_count file_count_pct   loc loc_pct blank_lines
+    ##   <chr>     <chr>             <int>          <dbl> <int>   <dbl>       <int>
+    ## 1 R         R                     7          0.5     163  0.5             52
+    ## 2 src       C                     2          0.333   447  0.461          121
+    ## 3 src       C/C++ Header          1          0.167    38  0.0392          12
+    ## 4 vignettes Rmd                   2          0.5     146  0.5            205
+    ## # … with 3 more variables: blank_line_pct <dbl>, comment_lines <int>,
+    ## #   comment_line_pct <dbl>
     ## 
     ## $num_vignettes
     ## [1] 3
@@ -117,35 +136,35 @@ print (p)
     ## 47       pipe.R            lambda_fmls   1     2    FALSE    FALSE
     ## 48       pipe.R             as_pipe_fn   3     2    FALSE    FALSE
     ##    param_nchars_md param_nchars_mn num_doclines
-    ## 1              0.0             0.0           54
-    ## 2              0.0             0.0           54
-    ## 3              0.0             0.0           54
-    ## 4              0.0             0.0           54
-    ## 5              0.0             0.0           54
-    ## 6              0.0             0.0           54
-    ## 7              0.0             0.0           54
-    ## 8              0.0             0.0           54
-    ## 9              0.0             0.0           54
-    ## 10             0.0             0.0           54
-    ## 11             0.0             0.0           54
-    ## 12             0.0             0.0           54
-    ## 13             0.0             0.0           54
-    ## 14             0.0             0.0           54
-    ## 15             0.0             0.0           54
-    ## 16             0.0             0.0           54
-    ## 17             0.0             0.0           54
-    ## 18             0.0             0.0           54
-    ## 19             0.0             0.0           54
-    ## 20             0.0             0.0           54
-    ## 21             0.0             0.0           54
-    ## 22             0.0             0.0           54
-    ## 23             0.0             0.0           54
-    ## 24             0.0             0.0           54
-    ## 25             0.0             0.0           54
-    ## 26             0.0             0.0           54
-    ## 27             0.0             0.0           54
-    ## 28             0.0             0.0           54
-    ## 29             0.0             0.0           54
+    ## 1               NA              NA           54
+    ## 2               NA              NA           54
+    ## 3               NA              NA           54
+    ## 4               NA              NA           54
+    ## 5               NA              NA           54
+    ## 6               NA              NA           54
+    ## 7               NA              NA           54
+    ## 8               NA              NA           54
+    ## 9               NA              NA           54
+    ## 10              NA              NA           54
+    ## 11              NA              NA           54
+    ## 12              NA              NA           54
+    ## 13              NA              NA           54
+    ## 14              NA              NA           54
+    ## 15              NA              NA           54
+    ## 16              NA              NA           54
+    ## 17              NA              NA           54
+    ## 18              NA              NA           54
+    ## 19              NA              NA           54
+    ## 20              NA              NA           54
+    ## 21              NA              NA           54
+    ## 22              NA              NA           54
+    ## 23              NA              NA           54
+    ## 24              NA              NA           54
+    ## 25              NA              NA           54
+    ## 26              NA              NA           54
+    ## 27              NA              NA           54
+    ## 28              NA              NA           54
+    ## 29              NA              NA           54
     ## 30             7.0             7.0           11
     ## 31            26.0            26.0           14
     ## 32            26.0            26.0           14

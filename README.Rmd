@@ -13,6 +13,31 @@ packages](https://cran.r-project.org/web/packages/available_packages_by_name.htm
 plus all of their [previous
 versions](https://cran.r-project.org/src/contrib/Archive).
 
+## Installation
+
+The package can be installed with:
+```{r remotes, eval = FALSE}
+remotes::install_github ("mpadge/pkgtest")
+```
+And then loaded for use with
+```{r library, eval = FALSE}
+library (pkgstats)
+```
+```{r load_all, echo = FALSE, message = FALSE}
+devtools::load_all (export_all = FALSE)
+```
+
+
+
+This package requires [`ctags`](https://ctags.io), and includes a function to
+ensure your local installation works correctly. Please ensure you see the
+following prior to proceeding:
+
+```{r ctags-check}
+ctags_test ()
+```
+
+
 ## Demonstration
 
 ```{r demo}
