@@ -49,6 +49,8 @@ get_ctags <- function (d = "R") {
     path_dir <- file.path (getwd (), d)
     if (!dir.exists (path_dir))
         stop ("Directory [", path_dir, "] does not exist")
+    # tab-characters muck up parsing of tag content so have to be removed:
+    rm_tabs (path_dir)
 
     # ctags fields defines at
     # https://docs.ctags.io/en/latest/man/ctags.1.html#extension-fields
@@ -64,7 +66,7 @@ get_ctags <- function (d = "R") {
     #   - t: type and name of a variable
 
     if (d == "R") {
-        fields <- "eFKlnNt"
+        fields <- "eFKlnN"
     } else if (d == "src") {
         fields <- "eFKlnN"
     }
@@ -97,6 +99,19 @@ get_ctags <- function (d = "R") {
     tags$file <- gsub (paste0 (getwd (), .Platform$file.sep), "", tags$file)
 
     return (tags)
+}
+
+rm_tabs <- function (d) {
+
+    files <- list.files (d, full.names = TRUE, recursive = TRUE)
+
+    for (f in files) {
+        x <- suppressWarnings (readLines (f, encoding = "UTF-8"))
+        if (any (grepl ("\\t", x))) {
+            x <- gsub ("\\t", " ", x)
+            writeLines (x, con = f)
+        }
+    }
 }
 
 get_gtags <- function () {
