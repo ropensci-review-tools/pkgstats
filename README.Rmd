@@ -67,7 +67,6 @@ package](https://github.com/tidyverse/magrittr). The `system.time` call also
 shows that these statistics are extracted very quickly.
 
 ```{r demo}
-library (pkgstats)
 tarball <- "magrittr_2.0.1.tar.gz"
 u <- paste0 ("https://cran.r-project.org/src/contrib/",
              tarball)

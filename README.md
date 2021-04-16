@@ -77,7 +77,6 @@ package](https://github.com/tidyverse/magrittr). The `system.time` call
 also shows that these statistics are extracted very quickly.
 
 ``` r
-library (pkgstats)
 tarball <- "magrittr_2.0.1.tar.gz"
 u <- paste0 ("https://cran.r-project.org/src/contrib/",
              tarball)
@@ -89,7 +88,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.619   0.108   0.718
+    ##   0.645   0.080   0.714
 
 ``` r
 print (p)
@@ -122,54 +121,54 @@ print (p)
     ## 
     ## $objects
     ##        file_name                fn_name     kind language loc npars has_dots
-    ## 1      aliases.R                extract     <NA>        R   1    NA       NA
-    ## 2      aliases.R               extract2     <NA>        R   1    NA       NA
-    ## 3      aliases.R             use_series     <NA>        R   1    NA       NA
-    ## 4      aliases.R                    add     <NA>        R   1    NA       NA
-    ## 5      aliases.R               subtract     <NA>        R   1    NA       NA
-    ## 6      aliases.R            multiply_by     <NA>        R   1    NA       NA
-    ## 7      aliases.R     multiply_by_matrix     <NA>        R   1    NA       NA
-    ## 8      aliases.R              divide_by     <NA>        R   1    NA       NA
-    ## 9      aliases.R          divide_by_int     <NA>        R   1    NA       NA
-    ## 10     aliases.R         raise_to_power     <NA>        R   1    NA       NA
-    ## 11     aliases.R                    and     <NA>        R   1    NA       NA
-    ## 12     aliases.R                     or     <NA>        R   1    NA       NA
-    ## 13     aliases.R                    mod     <NA>        R   1    NA       NA
-    ## 14     aliases.R                  is_in     <NA>        R   1    NA       NA
-    ## 15     aliases.R                 equals     <NA>        R   1    NA       NA
-    ## 16     aliases.R        is_greater_than     <NA>        R   1    NA       NA
-    ## 17     aliases.R is_weakly_greater_than     <NA>        R   1    NA       NA
-    ## 18     aliases.R           is_less_than     <NA>        R   1    NA       NA
-    ## 19     aliases.R    is_weakly_less_than     <NA>        R   1    NA       NA
-    ## 20     aliases.R                    not     <NA>        R   1    NA       NA
-    ## 21     aliases.R              n'est pas     <NA>        R   1    NA       NA
-    ## 22     aliases.R           set_colnames     <NA>        R   1    NA       NA
-    ## 23     aliases.R           set_rownames     <NA>        R   1    NA       NA
-    ## 24     aliases.R              set_names     <NA>        R   1    NA       NA
-    ## 25     aliases.R              set_class     <NA>        R   1    NA       NA
-    ## 26     aliases.R                  inset     <NA>        R   1    NA       NA
-    ## 27     aliases.R                 inset2     <NA>        R   1    NA       NA
-    ## 28     aliases.R               set_attr     <NA>        R   1    NA       NA
-    ## 29     aliases.R         set_attributes     <NA>        R   1    NA       NA
-    ## 30  debug_pipe.R             debug_pipe     <NA>        R   4     1    FALSE
-    ## 31  debug_pipe.R             debug_fseq     <NA>        R   8     2     TRUE
-    ## 32  debug_pipe.R           undebug_fseq     <NA>        R   4     1    FALSE
-    ## 33     freduce.R                freduce     <NA>        R  15     2    FALSE
-    ## 34   functions.R              functions     <NA>        R   5     1    FALSE
-    ## 35   functions.R             print.fseq     <NA>        R   9     2     TRUE
-    ## 36     getters.R                [[.fseq     <NA>        R   3     2     TRUE
-    ## 37     getters.R                 [.fseq     <NA>        R   6     2     TRUE
-    ## 38    magrittr.R                .onLoad     <NA>        R   3     2    FALSE
-    ## 39        pipe.R                    %>%     <NA>        R   8     2    FALSE
-    ## 40        pipe.R     pipe_eager_lexical     <NA>        R   8     2    FALSE
-    ## 41        pipe.R      pipe_lazy_masking     <NA>        R   9     2    FALSE
-    ## 42        pipe.R            pipe_nested     <NA>        R   9     2    FALSE
-    ## 43        pipe.R                   %<>%     <NA>        R   8     2    FALSE
-    ## 44        pipe.R                   %T>%     <NA>        R   8     2    FALSE
-    ## 45        pipe.R                    %$%     <NA>        R   8     2    FALSE
-    ## 46        pipe.R             new_lambda     <NA>        R   5     2    FALSE
-    ## 47        pipe.R            lambda_fmls     <NA>        R   1     2    FALSE
-    ## 48        pipe.R             as_pipe_fn     <NA>        R   3     2    FALSE
+    ## 1      aliases.R                extract function        R   1    NA       NA
+    ## 2      aliases.R               extract2 function        R   1    NA       NA
+    ## 3      aliases.R             use_series function        R   1    NA       NA
+    ## 4      aliases.R                    add function        R   1    NA       NA
+    ## 5      aliases.R               subtract function        R   1    NA       NA
+    ## 6      aliases.R            multiply_by function        R   1    NA       NA
+    ## 7      aliases.R     multiply_by_matrix function        R   1    NA       NA
+    ## 8      aliases.R              divide_by function        R   1    NA       NA
+    ## 9      aliases.R          divide_by_int function        R   1    NA       NA
+    ## 10     aliases.R         raise_to_power function        R   1    NA       NA
+    ## 11     aliases.R                    and function        R   1    NA       NA
+    ## 12     aliases.R                     or function        R   1    NA       NA
+    ## 13     aliases.R                    mod function        R   1    NA       NA
+    ## 14     aliases.R                  is_in function        R   1    NA       NA
+    ## 15     aliases.R                 equals function        R   1    NA       NA
+    ## 16     aliases.R        is_greater_than function        R   1    NA       NA
+    ## 17     aliases.R is_weakly_greater_than function        R   1    NA       NA
+    ## 18     aliases.R           is_less_than function        R   1    NA       NA
+    ## 19     aliases.R    is_weakly_less_than function        R   1    NA       NA
+    ## 20     aliases.R                    not function        R   1    NA       NA
+    ## 21     aliases.R              n'est pas function        R   1    NA       NA
+    ## 22     aliases.R           set_colnames function        R   1    NA       NA
+    ## 23     aliases.R           set_rownames function        R   1    NA       NA
+    ## 24     aliases.R              set_names function        R   1    NA       NA
+    ## 25     aliases.R              set_class function        R   1    NA       NA
+    ## 26     aliases.R                  inset function        R   1    NA       NA
+    ## 27     aliases.R                 inset2 function        R   1    NA       NA
+    ## 28     aliases.R               set_attr function        R   1    NA       NA
+    ## 29     aliases.R         set_attributes function        R   1    NA       NA
+    ## 30  debug_pipe.R             debug_pipe function        R   4     1    FALSE
+    ## 31  debug_pipe.R             debug_fseq function        R   8     2     TRUE
+    ## 32  debug_pipe.R           undebug_fseq function        R   4     1    FALSE
+    ## 33     freduce.R                freduce function        R  15     2    FALSE
+    ## 34   functions.R              functions function        R   5     1    FALSE
+    ## 35   functions.R             print.fseq function        R   9     2     TRUE
+    ## 36     getters.R                [[.fseq function        R   3     2     TRUE
+    ## 37     getters.R                 [.fseq function        R   6     2     TRUE
+    ## 38    magrittr.R                .onLoad function        R   3     2    FALSE
+    ## 39        pipe.R                    %>% function        R   8     2    FALSE
+    ## 40        pipe.R     pipe_eager_lexical function        R   8     2    FALSE
+    ## 41        pipe.R      pipe_lazy_masking function        R   9     2    FALSE
+    ## 42        pipe.R            pipe_nested function        R   9     2    FALSE
+    ## 43        pipe.R                   %<>% function        R   8     2    FALSE
+    ## 44        pipe.R                   %T>% function        R   8     2    FALSE
+    ## 45        pipe.R                    %$% function        R   8     2    FALSE
+    ## 46        pipe.R             new_lambda function        R   5     2    FALSE
+    ## 47        pipe.R            lambda_fmls function        R   1     2    FALSE
+    ## 48        pipe.R             as_pipe_fn function        R   3     2    FALSE
     ## 110  src/utils.h       MAGRITTR_UTILS_H    macro      C++   1    NA       NA
     ## 74    src/pipe.c             R_NO_REMAP    macro        C   1    NA       NA
     ## 81   src/utils.c             R_NO_REMAP    macro        C   1    NA       NA
@@ -361,12 +360,12 @@ print (p)
     ## 1        R/pipe.R   297          new_lambda             freduce            R
     ## 2     R/getters.R    14           `[[.fseq`           functions            R
     ## 3     R/getters.R    23            `[.fseq`           functions            R
-    ## 4  R/debug_pipe.R    28          debug_fseq           functions            R
-    ## 5  R/debug_pipe.R    35          debug_fseq           functions            R
-    ## 6  R/debug_pipe.R    42        undebug_fseq           functions            R
-    ## 7  R/debug_pipe.R    43        undebug_fseq           functions            R
-    ## 8  R/debug_pipe.R    44        undebug_fseq           functions            R
-    ## 9   R/functions.R    26          print.fseq           functions            R
+    ## 4   R/functions.R    26          print.fseq           functions            R
+    ## 5  R/debug_pipe.R    28          debug_fseq           functions            R
+    ## 6  R/debug_pipe.R    35          debug_fseq           functions            R
+    ## 7  R/debug_pipe.R    42        undebug_fseq           functions            R
+    ## 8  R/debug_pipe.R    43        undebug_fseq           functions            R
+    ## 9  R/debug_pipe.R    44        undebug_fseq           functions            R
     ## 10    src/utils.c    77             r_parse         abort_parse   language:C
     ## 11    src/utils.c    80             r_parse         abort_parse   language:C
     ## 13     src/pipe.c   297        as_pipe_call             add_dot   language:C
