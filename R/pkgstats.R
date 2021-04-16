@@ -15,8 +15,11 @@
 #' }
 pkgstats <- function (path) {
 
-    if (grepl ("\\.tar\\.gz$", path))
+    tarball <- FALSE
+    if (grepl ("\\.tar\\.gz$", path)) {
+        tarball <- TRUE
         path <- extract_tarball (path)
+    }
 
     s1 <- cloc_stats (path)
     num_vignettes <- length (list.files (file.path (path, "vignettes")))
@@ -37,6 +40,9 @@ pkgstats <- function (path) {
     fns$param_nchars_md [index] <- s3$param_nchars_md [index2]
 
     tags <- tags_data (path)
+
+    if (tarball)
+        chk <- unlink (path, recursive = TRUE)
 
     list (cloc = s1,
           num_vignettes = num_vignettes,

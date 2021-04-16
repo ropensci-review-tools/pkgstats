@@ -10,7 +10,7 @@ tags_data <- function (path) {
     tags_r <- withr::with_dir (path, get_ctags ("R"))
     tags_src <- withr::with_dir (path, get_ctags ("src"))
     # does the code contain tab ("\t") characters?
-    has_tabs = attr (tags_r, "has_tabs") | attr (tags_src, "has_tabs")
+    has_tabs <- attr (tags_r, "has_tabs") | attr (tags_src, "has_tabs")
 
     gtags <- withr::with_dir (path, get_gtags ())
     ctags <- dplyr::arrange (tags_src, file, start)
@@ -118,7 +118,9 @@ get_ctags <- function (d = "R") {
 
 rm_tabs <- function (d) {
 
-    files <- list.files (d, full.names = TRUE, recursive = TRUE)
+    files <- normalizePath (list.files (d,
+                                        full.names = TRUE,
+                                        recursive = TRUE))
 
     has_tabs <- FALSE 
 
