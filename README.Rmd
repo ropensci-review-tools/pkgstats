@@ -36,8 +36,12 @@ see the following prior to proceeding:
 ctags_test ()
 ```
 
-
 ## Demonstration
+
+The following code demonstrates the output of the main function, `pkgstats`,
+applied to the relatively simple [`magrittr`
+package](https://github.com/tidyverse/magrittr). The `system.time` call also
+shows that these statistics are extracted very quickly.
 
 ```{r demo}
 library (pkgstats)

@@ -45,6 +45,11 @@ ctags_test ()
 
 ## Demonstration
 
+The following code demonstrates the output of the main function,
+`pkgstats`, applied to the relatively simple [`magrittr`
+package](https://github.com/tidyverse/magrittr). The `system.time` call
+also shows that these statistics are extracted very quickly.
+
 ``` r
 library (pkgstats)
 tarball <- "magrittr_2.0.1.tar.gz"
@@ -58,7 +63,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.882   0.099   0.966
+    ##   0.643   0.080   0.711
 
 ``` r
 print (p)
@@ -86,105 +91,244 @@ print (p)
     ##   ctb fnd rev ths trl
     ## 1   0   1   0   0   0
     ## 
-    ## $functions
-    ##       file_name                fn_name loc npars has_dots exported
-    ## 1     aliases.R                extract   1    NA       NA     TRUE
-    ## 2     aliases.R               extract2   1    NA       NA     TRUE
-    ## 3     aliases.R             use_series   1    NA       NA     TRUE
-    ## 4     aliases.R                    add   1    NA       NA     TRUE
-    ## 5     aliases.R               subtract   1    NA       NA     TRUE
-    ## 6     aliases.R            multiply_by   1    NA       NA     TRUE
-    ## 7     aliases.R     multiply_by_matrix   1    NA       NA     TRUE
-    ## 8     aliases.R              divide_by   1    NA       NA     TRUE
-    ## 9     aliases.R          divide_by_int   1    NA       NA     TRUE
-    ## 10    aliases.R         raise_to_power   1    NA       NA     TRUE
-    ## 11    aliases.R                    and   1    NA       NA     TRUE
-    ## 12    aliases.R                     or   1    NA       NA     TRUE
-    ## 13    aliases.R                    mod   1    NA       NA     TRUE
-    ## 14    aliases.R                  is_in   1    NA       NA     TRUE
-    ## 15    aliases.R                 equals   1    NA       NA     TRUE
-    ## 16    aliases.R        is_greater_than   1    NA       NA     TRUE
-    ## 17    aliases.R is_weakly_greater_than   1    NA       NA     TRUE
-    ## 18    aliases.R           is_less_than   1    NA       NA     TRUE
-    ## 19    aliases.R    is_weakly_less_than   1    NA       NA     TRUE
-    ## 20    aliases.R                    not   1    NA       NA     TRUE
-    ## 21    aliases.R              n'est pas   1    NA       NA     TRUE
-    ## 22    aliases.R           set_colnames   1    NA       NA     TRUE
-    ## 23    aliases.R           set_rownames   1    NA       NA     TRUE
-    ## 24    aliases.R              set_names   1    NA       NA     TRUE
-    ## 25    aliases.R              set_class   1    NA       NA     TRUE
-    ## 26    aliases.R                  inset   1    NA       NA     TRUE
-    ## 27    aliases.R                 inset2   1    NA       NA     TRUE
-    ## 28    aliases.R               set_attr   1    NA       NA     TRUE
-    ## 29    aliases.R         set_attributes   1    NA       NA     TRUE
-    ## 30 debug_pipe.R             debug_pipe   4     1    FALSE     TRUE
-    ## 31 debug_pipe.R             debug_fseq   8     2     TRUE     TRUE
-    ## 32 debug_pipe.R           undebug_fseq   4     1    FALSE     TRUE
-    ## 33    freduce.R                freduce  15     2    FALSE     TRUE
-    ## 34  functions.R              functions   5     1    FALSE     TRUE
-    ## 35  functions.R             print.fseq   9     2     TRUE     TRUE
-    ## 36    getters.R                [[.fseq   3     2     TRUE     TRUE
-    ## 37    getters.R                 [.fseq   6     2     TRUE     TRUE
-    ## 38   magrittr.R                .onLoad   3     2    FALSE    FALSE
-    ## 39       pipe.R                    %>%   8     2    FALSE     TRUE
-    ## 40       pipe.R     pipe_eager_lexical   8     2    FALSE     TRUE
-    ## 41       pipe.R      pipe_lazy_masking   9     2    FALSE     TRUE
-    ## 42       pipe.R            pipe_nested   9     2    FALSE     TRUE
-    ## 43       pipe.R                   %<>%   8     2    FALSE     TRUE
-    ## 44       pipe.R                   %T>%   8     2    FALSE     TRUE
-    ## 45       pipe.R                    %$%   8     2    FALSE     TRUE
-    ## 46       pipe.R             new_lambda   5     2    FALSE    FALSE
-    ## 47       pipe.R            lambda_fmls   1     2    FALSE    FALSE
-    ## 48       pipe.R             as_pipe_fn   3     2    FALSE    FALSE
-    ##    param_nchars_md param_nchars_mn num_doclines
-    ## 1               NA              NA           54
-    ## 2               NA              NA           54
-    ## 3               NA              NA           54
-    ## 4               NA              NA           54
-    ## 5               NA              NA           54
-    ## 6               NA              NA           54
-    ## 7               NA              NA           54
-    ## 8               NA              NA           54
-    ## 9               NA              NA           54
-    ## 10              NA              NA           54
-    ## 11              NA              NA           54
-    ## 12              NA              NA           54
-    ## 13              NA              NA           54
-    ## 14              NA              NA           54
-    ## 15              NA              NA           54
-    ## 16              NA              NA           54
-    ## 17              NA              NA           54
-    ## 18              NA              NA           54
-    ## 19              NA              NA           54
-    ## 20              NA              NA           54
-    ## 21              NA              NA           54
-    ## 22              NA              NA           54
-    ## 23              NA              NA           54
-    ## 24              NA              NA           54
-    ## 25              NA              NA           54
-    ## 26              NA              NA           54
-    ## 27              NA              NA           54
-    ## 28              NA              NA           54
-    ## 29              NA              NA           54
-    ## 30             7.0             7.0           11
-    ## 31            26.0            26.0           14
-    ## 32            26.0            26.0           14
-    ## 33            17.0            17.0           12
-    ## 34            35.0            35.0           11
-    ## 35            18.5            18.5           12
-    ## 36            43.5            43.5           19
-    ## 37            43.5            43.5           19
-    ## 38              NA              NA           NA
-    ## 39            40.5            40.5          114
-    ## 40            40.5            40.5           13
-    ## 41            40.5            40.5           13
-    ## 42            40.5            40.5           13
-    ## 43            54.0            54.0           42
-    ## 44            40.5            40.5           23
-    ## 45            43.5            43.5           26
-    ## 46              NA              NA           NA
-    ## 47              NA              NA           NA
-    ## 48              NA              NA           NA
+    ## $code_has_tabs
+    ## [1] TRUE
+    ## 
+    ## $objects
+    ##        file_name                fn_name     kind language loc npars has_dots
+    ## 1      aliases.R                extract     <NA>        R   1    NA       NA
+    ## 2      aliases.R               extract2     <NA>        R   1    NA       NA
+    ## 3      aliases.R             use_series     <NA>        R   1    NA       NA
+    ## 4      aliases.R                    add     <NA>        R   1    NA       NA
+    ## 5      aliases.R               subtract     <NA>        R   1    NA       NA
+    ## 6      aliases.R            multiply_by     <NA>        R   1    NA       NA
+    ## 7      aliases.R     multiply_by_matrix     <NA>        R   1    NA       NA
+    ## 8      aliases.R              divide_by     <NA>        R   1    NA       NA
+    ## 9      aliases.R          divide_by_int     <NA>        R   1    NA       NA
+    ## 10     aliases.R         raise_to_power     <NA>        R   1    NA       NA
+    ## 11     aliases.R                    and     <NA>        R   1    NA       NA
+    ## 12     aliases.R                     or     <NA>        R   1    NA       NA
+    ## 13     aliases.R                    mod     <NA>        R   1    NA       NA
+    ## 14     aliases.R                  is_in     <NA>        R   1    NA       NA
+    ## 15     aliases.R                 equals     <NA>        R   1    NA       NA
+    ## 16     aliases.R        is_greater_than     <NA>        R   1    NA       NA
+    ## 17     aliases.R is_weakly_greater_than     <NA>        R   1    NA       NA
+    ## 18     aliases.R           is_less_than     <NA>        R   1    NA       NA
+    ## 19     aliases.R    is_weakly_less_than     <NA>        R   1    NA       NA
+    ## 20     aliases.R                    not     <NA>        R   1    NA       NA
+    ## 21     aliases.R              n'est pas     <NA>        R   1    NA       NA
+    ## 22     aliases.R           set_colnames     <NA>        R   1    NA       NA
+    ## 23     aliases.R           set_rownames     <NA>        R   1    NA       NA
+    ## 24     aliases.R              set_names     <NA>        R   1    NA       NA
+    ## 25     aliases.R              set_class     <NA>        R   1    NA       NA
+    ## 26     aliases.R                  inset     <NA>        R   1    NA       NA
+    ## 27     aliases.R                 inset2     <NA>        R   1    NA       NA
+    ## 28     aliases.R               set_attr     <NA>        R   1    NA       NA
+    ## 29     aliases.R         set_attributes     <NA>        R   1    NA       NA
+    ## 30  debug_pipe.R             debug_pipe     <NA>        R   4     1    FALSE
+    ## 31  debug_pipe.R             debug_fseq     <NA>        R   8     2     TRUE
+    ## 32  debug_pipe.R           undebug_fseq     <NA>        R   4     1    FALSE
+    ## 33     freduce.R                freduce     <NA>        R  15     2    FALSE
+    ## 34   functions.R              functions     <NA>        R   5     1    FALSE
+    ## 35   functions.R             print.fseq     <NA>        R   9     2     TRUE
+    ## 36     getters.R                [[.fseq     <NA>        R   3     2     TRUE
+    ## 37     getters.R                 [.fseq     <NA>        R   6     2     TRUE
+    ## 38    magrittr.R                .onLoad     <NA>        R   3     2    FALSE
+    ## 39        pipe.R                    %>%     <NA>        R   8     2    FALSE
+    ## 40        pipe.R     pipe_eager_lexical     <NA>        R   8     2    FALSE
+    ## 41        pipe.R      pipe_lazy_masking     <NA>        R   9     2    FALSE
+    ## 42        pipe.R            pipe_nested     <NA>        R   9     2    FALSE
+    ## 43        pipe.R                   %<>%     <NA>        R   8     2    FALSE
+    ## 44        pipe.R                   %T>%     <NA>        R   8     2    FALSE
+    ## 45        pipe.R                    %$%     <NA>        R   8     2    FALSE
+    ## 46        pipe.R             new_lambda     <NA>        R   5     2    FALSE
+    ## 47        pipe.R            lambda_fmls     <NA>        R   1     2    FALSE
+    ## 48        pipe.R             as_pipe_fn     <NA>        R   3     2    FALSE
+    ## 110  src/utils.h       MAGRITTR_UTILS_H    macro      C++   1    NA       NA
+    ## 74    src/pipe.c             R_NO_REMAP    macro        C   1    NA       NA
+    ## 81   src/utils.c             R_NO_REMAP    macro        C   1    NA       NA
+    ## 91    src/pipe.c        R_init_magrittr function        C   4    NA       NA
+    ## 101  src/utils.c            abort_parse function        C   6    NA       NA
+    ## 111   src/pipe.c                add_dot function        C  16    NA       NA
+    ## 121   src/pipe.c           as_pipe_call function        C  13    NA       NA
+    ## 131   src/pipe.c    as_pipe_dollar_call function        C   3    NA       NA
+    ## 141   src/pipe.c       as_pipe_tee_call function        C   7    NA       NA
+    ## 151   src/pipe.c           call_entries variable        C   4    NA       NA
+    ## 161   src/pipe.c        calls_base_with variable        C   1    NA       NA
+    ## 171   src/pipe.c               chrs_dot variable        C   1    NA       NA
+    ## 181   src/pipe.c             clean_pipe function        C   9    NA       NA
+    ## 191   src/pipe.c           cleanup_info   struct        C   4    NA       NA
+    ## 201   src/pipe.c                    env   member        C   1    NA       NA
+    ## 211   src/pipe.c                    env   member        C   1    NA       NA
+    ## 221   src/pipe.c              eval_pipe function        C  18    NA       NA
+    ## 231   src/pipe.c         eval_pipe_lazy function        C  34    NA       NA
+    ## 241   src/pipe.c                 export    macro        C   1    NA       NA
+    ## 251   src/pipe.c                  exprs   member        C   1    NA       NA
+    ## 261   src/pipe.c            ext_entries variable        C   4    NA       NA
+    ## 271   src/pipe.c                is_bang function        C   3    NA       NA
+    ## 281   src/pipe.c              is_return function        C   3    NA       NA
+    ## 291   src/pipe.c         is_spliced_dot function        C  17    NA       NA
+    ## 301   src/pipe.c          magrittr_init function        C  36    NA       NA
+    ## 311  src/utils.c    magrittr_init_utils function        C  12    NA       NA
+    ## 321   src/pipe.c        magrittr_ns_env variable        C   1    NA       NA
+    ## 331   src/pipe.c          magrittr_pipe function        C  64    NA       NA
+    ## 341  src/utils.c   new_env__parent_node variable        C   1    NA       NA
+    ## 351  src/utils.c     new_env__size_node variable        C   1    NA       NA
+    ## 361  src/utils.c           new_env_call variable        C   1    NA       NA
+    ## 371   src/pipe.c             new_lambda function        C   7    NA       NA
+    ## 381   src/pipe.c                    old   member        C   1    NA       NA
+    ## 391   src/pipe.c        parse_pipe_call function        C  22    NA       NA
+    ## 401   src/pipe.c              pipe_info   struct        C   4    NA       NA
+    ## 411   src/pipe.c              pipe_kind     enum        C   7    NA       NA
+    ## 421   src/pipe.c              pipe_nest function        C  37    NA       NA
+    ## 431   src/pipe.c            pipe_unroll function        C  54    NA       NA
+    ## 441  src/utils.c          r__env_unbind function        C  23    NA       NA
+    ## 451  src/utils.c        r_env_bind_lazy function        C  18    NA       NA
+    ## 461  src/utils.h              r_env_get function      C++  11    NA       NA
+    ## 471  src/utils.h           r_env_unbind function      C++   8    NA       NA
+    ## 481  src/utils.h      r_new_environment function      C++   5    NA       NA
+    ## 49   src/utils.c                r_parse function        C  17    NA       NA
+    ## 50   src/utils.c           r_parse_eval function        C   5    NA       NA
+    ## 51    src/pipe.c            syms_assign variable        C   1    NA       NA
+    ## 52    src/pipe.c              syms_bang variable        C   1    NA       NA
+    ## 53    src/pipe.c             syms_curly variable        C   1    NA       NA
+    ## 54   src/utils.c    syms_delayed_assign variable        C   1    NA       NA
+    ## 55    src/pipe.c               syms_dot variable        C   1    NA       NA
+    ## 56    src/pipe.c               syms_env variable        C   1    NA       NA
+    ## 57   src/utils.c             syms_envir variable        C   1    NA       NA
+    ## 58   src/utils.c          syms_inherits variable        C   1    NA       NA
+    ## 59    src/pipe.c              syms_kind variable        C   1    NA       NA
+    ## 60    src/pipe.c              syms_lazy variable        C   1    NA       NA
+    ## 61    src/pipe.c               syms_lhs variable        C   1    NA       NA
+    ## 62   src/utils.c              syms_list variable        C   1    NA       NA
+    ## 63    src/pipe.c            syms_nested variable        C   1    NA       NA
+    ## 64    src/pipe.c        syms_new_lambda variable        C   1    NA       NA
+    ## 65    src/pipe.c             syms_paren variable        C   1    NA       NA
+    ## 66    src/pipe.c              syms_pipe variable        C   1    NA       NA
+    ## 67    src/pipe.c     syms_pipe_compound variable        C   1    NA       NA
+    ## 68    src/pipe.c       syms_pipe_dollar variable        C   1    NA       NA
+    ## 69    src/pipe.c          syms_pipe_tee variable        C   1    NA       NA
+    ## 70    src/pipe.c            syms_return variable        C   1    NA       NA
+    ## 71    src/pipe.c               syms_rhs variable        C   1    NA       NA
+    ## 72   src/utils.c                syms_rm variable        C   1    NA       NA
+    ## 73    src/pipe.c               syms_sym variable        C   1    NA       NA
+    ##     exported param_nchars_md param_nchars_mn num_doclines
+    ## 1       TRUE              NA              NA           54
+    ## 2       TRUE              NA              NA           54
+    ## 3       TRUE              NA              NA           54
+    ## 4       TRUE              NA              NA           54
+    ## 5       TRUE              NA              NA           54
+    ## 6       TRUE              NA              NA           54
+    ## 7       TRUE              NA              NA           54
+    ## 8       TRUE              NA              NA           54
+    ## 9       TRUE              NA              NA           54
+    ## 10      TRUE              NA              NA           54
+    ## 11      TRUE              NA              NA           54
+    ## 12      TRUE              NA              NA           54
+    ## 13      TRUE              NA              NA           54
+    ## 14      TRUE              NA              NA           54
+    ## 15      TRUE              NA              NA           54
+    ## 16      TRUE              NA              NA           54
+    ## 17      TRUE              NA              NA           54
+    ## 18      TRUE              NA              NA           54
+    ## 19      TRUE              NA              NA           54
+    ## 20      TRUE              NA              NA           54
+    ## 21      TRUE              NA              NA           54
+    ## 22      TRUE              NA              NA           54
+    ## 23      TRUE              NA              NA           54
+    ## 24      TRUE              NA              NA           54
+    ## 25      TRUE              NA              NA           54
+    ## 26      TRUE              NA              NA           54
+    ## 27      TRUE              NA              NA           54
+    ## 28      TRUE              NA              NA           54
+    ## 29      TRUE              NA              NA           54
+    ## 30      TRUE             7.0             7.0           11
+    ## 31      TRUE            26.0            26.0           14
+    ## 32      TRUE            26.0            26.0           14
+    ## 33      TRUE            17.0            17.0           12
+    ## 34      TRUE            35.0            35.0           11
+    ## 35      TRUE            18.5            18.5           12
+    ## 36      TRUE            43.5            43.5           19
+    ## 37      TRUE            43.5            43.5           19
+    ## 38     FALSE              NA              NA           NA
+    ## 39      TRUE            40.5            40.5          114
+    ## 40      TRUE            40.5            40.5           13
+    ## 41      TRUE            40.5            40.5           13
+    ## 42      TRUE            40.5            40.5           13
+    ## 43      TRUE            54.0            54.0           42
+    ## 44      TRUE            40.5            40.5           23
+    ## 45      TRUE            43.5            43.5           26
+    ## 46     FALSE              NA              NA           NA
+    ## 47     FALSE              NA              NA           NA
+    ## 48     FALSE              NA              NA           NA
+    ## 110    FALSE              NA              NA           NA
+    ## 74     FALSE              NA              NA           NA
+    ## 81     FALSE              NA              NA           NA
+    ## 91     FALSE              NA              NA           NA
+    ## 101    FALSE              NA              NA           NA
+    ## 111    FALSE              NA              NA           NA
+    ## 121    FALSE              NA              NA           NA
+    ## 131    FALSE              NA              NA           NA
+    ## 141    FALSE              NA              NA           NA
+    ## 151    FALSE              NA              NA           NA
+    ## 161    FALSE              NA              NA           NA
+    ## 171    FALSE              NA              NA           NA
+    ## 181    FALSE              NA              NA           NA
+    ## 191    FALSE              NA              NA           NA
+    ## 201    FALSE              NA              NA           NA
+    ## 211    FALSE              NA              NA           NA
+    ## 221    FALSE              NA              NA           NA
+    ## 231    FALSE              NA              NA           NA
+    ## 241    FALSE              NA              NA           NA
+    ## 251    FALSE              NA              NA           NA
+    ## 261    FALSE              NA              NA           NA
+    ## 271    FALSE              NA              NA           NA
+    ## 281    FALSE              NA              NA           NA
+    ## 291    FALSE              NA              NA           NA
+    ## 301    FALSE              NA              NA           NA
+    ## 311    FALSE              NA              NA           NA
+    ## 321    FALSE              NA              NA           NA
+    ## 331    FALSE              NA              NA           NA
+    ## 341    FALSE              NA              NA           NA
+    ## 351    FALSE              NA              NA           NA
+    ## 361    FALSE              NA              NA           NA
+    ## 371    FALSE              NA              NA           NA
+    ## 381    FALSE              NA              NA           NA
+    ## 391    FALSE              NA              NA           NA
+    ## 401    FALSE              NA              NA           NA
+    ## 411    FALSE              NA              NA           NA
+    ## 421    FALSE              NA              NA           NA
+    ## 431    FALSE              NA              NA           NA
+    ## 441    FALSE              NA              NA           NA
+    ## 451    FALSE              NA              NA           NA
+    ## 461    FALSE              NA              NA           NA
+    ## 471    FALSE              NA              NA           NA
+    ## 481    FALSE              NA              NA           NA
+    ## 49     FALSE              NA              NA           NA
+    ## 50     FALSE              NA              NA           NA
+    ## 51     FALSE              NA              NA           NA
+    ## 52     FALSE              NA              NA           NA
+    ## 53     FALSE              NA              NA           NA
+    ## 54     FALSE              NA              NA           NA
+    ## 55     FALSE              NA              NA           NA
+    ## 56     FALSE              NA              NA           NA
+    ## 57     FALSE              NA              NA           NA
+    ## 58     FALSE              NA              NA           NA
+    ## 59     FALSE              NA              NA           NA
+    ## 60     FALSE              NA              NA           NA
+    ## 61     FALSE              NA              NA           NA
+    ## 62     FALSE              NA              NA           NA
+    ## 63     FALSE              NA              NA           NA
+    ## 64     FALSE              NA              NA           NA
+    ## 65     FALSE              NA              NA           NA
+    ## 66     FALSE              NA              NA           NA
+    ## 67     FALSE              NA              NA           NA
+    ## 68     FALSE              NA              NA           NA
+    ## 69     FALSE              NA              NA           NA
+    ## 70     FALSE              NA              NA           NA
+    ## 71     FALSE              NA              NA           NA
+    ## 72     FALSE              NA              NA           NA
+    ## 73     FALSE              NA              NA           NA
     ## 
     ## $network
     ##              file line1                from                  to     language
@@ -233,49 +377,49 @@ print (p)
     ## 58     src/pipe.c   162      eval_pipe_lazy   r_new_environment language:C++
     ## 59    src/utils.c    89        r_parse_eval             r_parse   language:C
     ## 60    src/utils.c   123 magrittr_init_utils        r_parse_eval   language:C
-    ##    cluster centrality
-    ## 1        1         20
-    ## 2        2          0
-    ## 3        2          0
-    ## 4        2          0
-    ## 5        2          0
-    ## 6        2          0
-    ## 7        2          0
-    ## 8        2          0
-    ## 9        2          0
-    ## 10       3          3
-    ## 11       3          3
-    ## 13       1         54
-    ## 15       1        109
-    ## 16       1        109
-    ## 17       1          0
-    ## 19       1        109
-    ## 21       1        109
-    ## 23       1        171
-    ## 24       1        171
-    ## 25       1        171
-    ## 26       1         20
-    ## 28       1        171
-    ## 30       1        171
-    ## 31       1         20
-    ## 32       1         20
-    ## 33       1         20
-    ## 35       1         57
-    ## 36       1         38
-    ## 39       3          0
-    ## 42       1        171
-    ## 44       1        109
-    ## 45       1        171
-    ## 46       1        171
-    ## 47       1          0
-    ## 49       1        171
-    ## 51       1        171
-    ## 52       1         57
-    ## 53       1        171
-    ## 54       1        171
-    ## 55       1        171
-    ## 56       1        171
-    ## 57       1         20
-    ## 58       1         57
-    ## 59       3          4
-    ## 60       3          3
+    ##    cluster_dir centrality_dir cluster_undir centrality_undir
+    ## 1            1              1             1               20
+    ## 2            2              0             2                0
+    ## 3            2              0             2                0
+    ## 4            2              0             2                0
+    ## 5            2              0             2                0
+    ## 6            2              0             2                0
+    ## 7            2              0             2                0
+    ## 8            2              0             2                0
+    ## 9            2              0             2                0
+    ## 10           3              3             3                3
+    ## 11           3              3             3                3
+    ## 13           1              9             1               54
+    ## 15           1              7             1              109
+    ## 16           1              7             1              109
+    ## 17           1              0             1                0
+    ## 19           1              7             1              109
+    ## 21           1              7             1              109
+    ## 23           1              0             1              171
+    ## 24           1              0             1              171
+    ## 25           1              0             1              171
+    ## 26           1              1             1               20
+    ## 28           1              0             1              171
+    ## 30           1              0             1              171
+    ## 31           1              5             1               20
+    ## 32           1              5             1               20
+    ## 33           1              5             1               20
+    ## 35           1              3             1               57
+    ## 36           1              8             1               38
+    ## 39           3              0             3                0
+    ## 42           1              0             1              171
+    ## 44           1              7             1              109
+    ## 45           1              0             1              171
+    ## 46           1              0             1              171
+    ## 47           1              0             1                0
+    ## 49           1              0             1              171
+    ## 51           1              0             1              171
+    ## 52           1              3             1               57
+    ## 53           1              0             1              171
+    ## 54           1              0             1              171
+    ## 55           1              0             1              171
+    ## 56           1              0             1              171
+    ## 57           1              1             1               20
+    ## 58           1              3             1               57
+    ## 59           3              4             3                4
+    ## 60           3              3             3                3
