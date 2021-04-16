@@ -30,8 +30,9 @@ And then loaded for use with
 library (pkgstats)
 ```
 
-This package requires [`ctags`](https://ctags.io), and includes a
-function to ensure your local installation works correctly. Please
+This package requires both [`ctags`](https://ctags.io) and [GNU
+`global`](https://www.gnu.org/software/global/), and includes a function
+to ensure your local installation of `ctags` works correctly. Please
 ensure you see the following prior to proceeding:
 
 ``` r
@@ -57,7 +58,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.569   0.067   0.625
+    ##   0.882   0.099   0.966
 
 ``` r
 print (p)
@@ -184,3 +185,97 @@ print (p)
     ## 46              NA              NA           NA
     ## 47              NA              NA           NA
     ## 48              NA              NA           NA
+    ## 
+    ## $network
+    ##              file line1                from                  to     language
+    ## 1        R/pipe.R   297          new_lambda             freduce            R
+    ## 2     R/getters.R    14           `[[.fseq`           functions            R
+    ## 3     R/getters.R    23            `[.fseq`           functions            R
+    ## 4   R/functions.R    26          print.fseq           functions            R
+    ## 5  R/debug_pipe.R    28          debug_fseq           functions            R
+    ## 6  R/debug_pipe.R    35          debug_fseq           functions            R
+    ## 7  R/debug_pipe.R    42        undebug_fseq           functions            R
+    ## 8  R/debug_pipe.R    43        undebug_fseq           functions            R
+    ## 9  R/debug_pipe.R    44        undebug_fseq           functions            R
+    ## 10    src/utils.c    77             r_parse         abort_parse   language:C
+    ## 11    src/utils.c    80             r_parse         abort_parse   language:C
+    ## 13     src/pipe.c   297        as_pipe_call             add_dot   language:C
+    ## 15     src/pipe.c   235         pipe_unroll        as_pipe_call   language:C
+    ## 16     src/pipe.c   238         pipe_unroll        as_pipe_call   language:C
+    ## 17     src/pipe.c   310    as_pipe_tee_call        as_pipe_call   language:C
+    ## 19     src/pipe.c   240         pipe_unroll as_pipe_dollar_call   language:C
+    ## 21     src/pipe.c   239         pipe_unroll    as_pipe_tee_call   language:C
+    ## 23     src/pipe.c   118       magrittr_pipe          clean_pipe   language:C
+    ## 24     src/pipe.c   113       magrittr_pipe        cleanup_info   language:C
+    ## 25     src/pipe.c   118       magrittr_pipe        cleanup_info   language:C
+    ## 26     src/pipe.c   196          clean_pipe        cleanup_info   language:C
+    ## 28     src/pipe.c   118       magrittr_pipe           eval_pipe   language:C
+    ## 30     src/pipe.c   105       magrittr_pipe      eval_pipe_lazy   language:C
+    ## 31     src/pipe.c   324      is_spliced_dot             is_bang   language:C
+    ## 32     src/pipe.c   329      is_spliced_dot             is_bang   language:C
+    ## 33     src/pipe.c   334      is_spliced_dot             is_bang   language:C
+    ## 35     src/pipe.c   177      eval_pipe_lazy           is_return   language:C
+    ## 36     src/pipe.c   350             add_dot      is_spliced_dot   language:C
+    ## 39     src/pipe.c   415       magrittr_init magrittr_init_utils   language:C
+    ## 42     src/pipe.c    88       magrittr_pipe          new_lambda   language:C
+    ## 44     src/pipe.c   249         pipe_unroll     parse_pipe_call   language:C
+    ## 45     src/pipe.c   109       magrittr_pipe           pipe_info   language:C
+    ## 46     src/pipe.c   118       magrittr_pipe           pipe_info   language:C
+    ## 47     src/pipe.c   135           eval_pipe           pipe_info   language:C
+    ## 49     src/pipe.c    95       magrittr_pipe           pipe_nest   language:C
+    ## 51     src/pipe.c    84       magrittr_pipe         pipe_unroll   language:C
+    ## 52     src/pipe.c   168      eval_pipe_lazy     r_env_bind_lazy   language:C
+    ## 53     src/pipe.c    76       magrittr_pipe           r_env_get language:C++
+    ## 54     src/pipe.c    93       magrittr_pipe           r_env_get language:C++
+    ## 55     src/pipe.c   101       magrittr_pipe           r_env_get language:C++
+    ## 56     src/pipe.c   107       magrittr_pipe           r_env_get language:C++
+    ## 57     src/pipe.c   199          clean_pipe        r_env_unbind language:C++
+    ## 58     src/pipe.c   162      eval_pipe_lazy   r_new_environment language:C++
+    ## 59    src/utils.c    89        r_parse_eval             r_parse   language:C
+    ## 60    src/utils.c   123 magrittr_init_utils        r_parse_eval   language:C
+    ##    cluster centrality
+    ## 1        1         20
+    ## 2        2          0
+    ## 3        2          0
+    ## 4        2          0
+    ## 5        2          0
+    ## 6        2          0
+    ## 7        2          0
+    ## 8        2          0
+    ## 9        2          0
+    ## 10       3          3
+    ## 11       3          3
+    ## 13       1         54
+    ## 15       1        109
+    ## 16       1        109
+    ## 17       1          0
+    ## 19       1        109
+    ## 21       1        109
+    ## 23       1        171
+    ## 24       1        171
+    ## 25       1        171
+    ## 26       1         20
+    ## 28       1        171
+    ## 30       1        171
+    ## 31       1         20
+    ## 32       1         20
+    ## 33       1         20
+    ## 35       1         57
+    ## 36       1         38
+    ## 39       3          0
+    ## 42       1        171
+    ## 44       1        109
+    ## 45       1        171
+    ## 46       1        171
+    ## 47       1          0
+    ## 49       1        171
+    ## 51       1        171
+    ## 52       1         57
+    ## 53       1        171
+    ## 54       1        171
+    ## 55       1        171
+    ## 56       1        171
+    ## 57       1         20
+    ## 58       1         57
+    ## 59       3          4
+    ## 60       3          3

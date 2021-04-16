@@ -27,11 +27,10 @@ library (pkgstats)
 devtools::load_all (export_all = FALSE)
 ```
 
-
-
-This package requires [`ctags`](https://ctags.io), and includes a function to
-ensure your local installation works correctly. Please ensure you see the
-following prior to proceeding:
+This package requires both [`ctags`](https://ctags.io) and [GNU
+`global`](https://www.gnu.org/software/global/), and includes a function to
+ensure your local installation of `ctags` works correctly. Please ensure you
+see the following prior to proceeding:
 
 ```{r ctags-check}
 ctags_test ()
