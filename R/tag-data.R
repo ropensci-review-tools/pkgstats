@@ -30,13 +30,14 @@ tags_data <- function (path) {
                                          path)
     call_graph_src <- fn_var_call_graph_src (gtags)
 
-    res <- rbind (call_graph_r, call_graph_src)
-    res <- res [which (!is.na (res$from)), ]
+    network <- rbind (call_graph_r, call_graph_src)
+    network <- network [which (!is.na (network$from)), ]
 
-    res <- add_igraph_stats (res)
-    res$line2 <- NULL
+    network <- add_igraph_stats (network, directed = TRUE)
+    network <- add_igraph_stats (network, directed = FALSE)
+    network$line2 <- NULL
 
-    return (res)
+    return (network)
 }
 
 #' Get tags for one directory within a package
@@ -216,17 +217,21 @@ fn_var_call_graph_src <- function (gtags) {
                 language = gtags$language)
 }
 
-add_igraph_stats <- function (g) {
+add_igraph_stats <- function (g, directed = TRUE) {
 
     g_igr <- igraph::graph_from_data_frame (g [, c ("from", "to")],
-                                            directed = FALSE)
+                                            directed = directed)
     v <- igraph::V (g_igr)
 
     cl <- igraph::clusters (g_igr)
     index <- match (g$from, names (cl$membership))
-    g$cluster <- cl$membership [index]
+    if (directed)
+        nms <- c ("cluster_dir", "centrality_dir")
+    else
+        nms <- c ("cluster_undir", "centrality_undir")
+    g [nms [1]] <- cl$membership [index]
     btw <- igraph::betweenness (g_igr)
-    g$centrality <- btw [match (g$from, names (btw))]
+    g [nms [2]] <- btw [match (g$from, names (btw))]
 
     return (g)
 }
