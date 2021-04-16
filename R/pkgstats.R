@@ -36,13 +36,13 @@ pkgstats <- function (path) {
     fns$param_nchars_mn [index] <- s3$param_nchars_mn [index2]
     fns$param_nchars_md [index] <- s3$param_nchars_md [index2]
 
-    network <- tags_data (path)
+    tags <- tags_data (path)
 
     list (cloc = s1,
           num_vignettes = num_vignettes,
           desc = s2,
-          functions = fns,
-          network = network)
+          functions = add_src_to_fn_data (fns, tags$stats),
+          network = tags$network)
 }
 
 #' Get all exported and internal functions
@@ -85,4 +85,22 @@ all_functions <- function (path) {
     }
 
     do.call (rbind, lapply (r_files, eval1))
+}
+
+#' param src value of tags$stats from tags_data()
+#' @noRd
+add_src_to_fn_data <- function (fns, src) {
+
+    n <- grep ("fn_name", names (fns))
+    fns <- data.frame (fns [, seq (n)],
+                       kind = NA_character_,
+                       language = "R",
+                       fns [, seq (ncol (fns)) [-seq (n)]])
+
+    src$exported <- FALSE
+    nms <- names (fns) [which (!names (fns) %in% names (src))]
+    for (n in nms)
+        src [n] <- NA_integer_
+
+    return (rbind (fns, src))
 }

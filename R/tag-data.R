@@ -37,7 +37,8 @@ tags_data <- function (path) {
     network <- add_igraph_stats (network, directed = FALSE)
     network$line2 <- NULL
 
-    return (network)
+    return (list (network = network,
+                  stats = src_stats (tags_src)))
 }
 
 #' Get tags for one directory within a package
@@ -234,4 +235,19 @@ add_igraph_stats <- function (g, directed = TRUE) {
     g [nms [2]] <- btw [match (g$from, names (btw))]
 
     return (g)
+}
+
+#' convert tags_src into same format as the function summary of R code
+#' @param tags tags_src from main fn
+#' @noRd
+src_stats <- function (tags) {
+
+    res <- data.frame (file_name = tags$file,
+                       fn_name = tags$tag,
+                       kind = tags$kind,
+                       language = gsub ("^language:", "", tags$language),
+                       loc = tags$end - tags$start + 1,
+                       npars = NA_integer_,
+                       has_dots = NA)
+    res <- res [which (!is.na (res$loc)), ]
 }
