@@ -41,7 +41,8 @@ pkgstats <- function (path) {
     list (cloc = s1,
           num_vignettes = num_vignettes,
           desc = s2,
-          functions = add_src_to_fn_data (fns, tags$stats),
+          code_has_tabs = tags$has_tabs,
+          objects = add_src_to_fn_data (fns, tags$stats),
           network = tags$network)
 }
 

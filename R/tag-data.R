@@ -9,6 +9,8 @@ tags_data <- function (path) {
 
     tags_r <- withr::with_dir (path, get_ctags ("R"))
     tags_src <- withr::with_dir (path, get_ctags ("src"))
+    # does the code contain tab ("\t") characters?
+    has_tabs = attr (tags_r, "has_tabs") | attr (tags_src, "has_tabs")
 
     gtags <- withr::with_dir (path, get_gtags ())
     ctags <- dplyr::arrange (tags_src, file, start)
@@ -38,7 +40,8 @@ tags_data <- function (path) {
     network$line2 <- NULL
 
     return (list (network = network,
-                  stats = src_stats (tags_src)))
+                  stats = src_stats (tags_src),
+                  has_tabs = has_tabs))
 }
 
 #' Get tags for one directory within a package
@@ -52,7 +55,7 @@ get_ctags <- function (d = "R") {
     if (!dir.exists (path_dir))
         stop ("Directory [", path_dir, "] does not exist")
     # tab-characters muck up parsing of tag content so have to be removed:
-    rm_tabs (path_dir)
+    has_tabs <- rm_tabs (path_dir)
 
     # ctags fields defines at
     # https://docs.ctags.io/en/latest/man/ctags.1.html#extension-fields
@@ -108,6 +111,8 @@ get_ctags <- function (d = "R") {
     tags$end <- as.integer (gsub ("^end\\:", "", tags$end))
     tags$file <- gsub (paste0 (getwd (), .Platform$file.sep), "", tags$file)
 
+    attr (tags, "has_tabs") <- has_tabs
+
     return (tags)
 }
 
@@ -115,13 +120,19 @@ rm_tabs <- function (d) {
 
     files <- list.files (d, full.names = TRUE, recursive = TRUE)
 
+    has_tabs <- FALSE 
+
     for (f in files) {
         x <- suppressWarnings (readLines (f, encoding = "UTF-8"))
-        if (any (grepl ("\\t", x))) {
+        has_tabs_f <- any (grepl ("\\t", x))
+        if (has_tabs_f) {
             x <- gsub ("\\t", " ", x)
             writeLines (x, con = f)
         }
+        has_tabs <- has_tabs | has_tabs_f
     }
+
+    return (has_tabs)
 }
 
 get_gtags <- function () {
