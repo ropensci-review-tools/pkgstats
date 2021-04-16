@@ -157,7 +157,11 @@ fn_var_call_graph_r <- function (fns, fn_vars, path) {
         fns_index <- do.call (rbind, fns_index)
 
         f_full <- normalizePath (file.path (path, f))
-        pd <- utils::getParseData (parse (file = f_full))
+        # note: keep.source must be TRUE as it is, for example, switched off in
+        # `rmarkdown` environments, which means no parse data are returned by
+        # getParseData.
+        pd <- utils::getParseData (parse (file = f_full,
+                                          keep.source = TRUE))
         fn_calls <- pd [pd$text %in% fns$tag &
                         pd$token == "SYMBOL_FUNCTION_CALL", ]
         index <- match (fn_calls$line1, fns_index [, 2])
