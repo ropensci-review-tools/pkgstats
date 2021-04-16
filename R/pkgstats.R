@@ -100,7 +100,7 @@ add_src_to_fn_data <- function (fns, src) {
 
     n <- grep ("fn_name", names (fns))
     fns <- data.frame (fns [, seq (n)],
-                       kind = NA_character_,
+                       kind = "function",
                        language = "R",
                        fns [, seq (ncol (fns)) [-seq (n)]])
 
