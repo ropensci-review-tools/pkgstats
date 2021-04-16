@@ -16,6 +16,32 @@ packages](https://cran.r-project.org/web/packages/available_packages_by_name.htm
 plus all of their [previous
 versions](https://cran.r-project.org/src/contrib/Archive).
 
+## What statistics?
+
+Statistics are derived from these primary sources:
+
+1.  Summary of lines-of-code from
+    [`cloc`](https://github.com/hrbrmstr/cloc)
+2.  Brief summaries of package `DESCRIPTION` file and a couple of other
+    statistics
+3.  Summaries of all objects created via package code across multiple
+    languages and all directories containing source code (`./R`,
+    `./src`, and `./inst/include`).
+4.  A function call network derived from function definitions obtained
+    from [`ctags`](https::ctags.io), and references (“calls”) to those
+    obtained from [`gtags`](https://www.gnu.org/software/global/). This
+    network roughly connects every object making a call (as `from`) with
+    every object being called (`to`).
+
+A demonstration of typical output is shown below. And yes, static code
+analyses are frequently inadequate, and especially when applied to
+complex languages like C++, but they are nevertheless a darn sight
+better than nothing, and they do provide one of the only ways to
+construct function call networks across different languages. This
+package has been developed with the conviction that the benefits of
+being able to extract these networks at all outweigh any disadvantages
+arising through potential inaccuracy of static code analyses.
+
 ## Installation
 
 The package can be installed with:
@@ -63,7 +89,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.643   0.080   0.711
+    ##   0.619   0.108   0.718
 
 ``` r
 print (p)
@@ -335,12 +361,12 @@ print (p)
     ## 1        R/pipe.R   297          new_lambda             freduce            R
     ## 2     R/getters.R    14           `[[.fseq`           functions            R
     ## 3     R/getters.R    23            `[.fseq`           functions            R
-    ## 4   R/functions.R    26          print.fseq           functions            R
-    ## 5  R/debug_pipe.R    28          debug_fseq           functions            R
-    ## 6  R/debug_pipe.R    35          debug_fseq           functions            R
-    ## 7  R/debug_pipe.R    42        undebug_fseq           functions            R
-    ## 8  R/debug_pipe.R    43        undebug_fseq           functions            R
-    ## 9  R/debug_pipe.R    44        undebug_fseq           functions            R
+    ## 4  R/debug_pipe.R    28          debug_fseq           functions            R
+    ## 5  R/debug_pipe.R    35          debug_fseq           functions            R
+    ## 6  R/debug_pipe.R    42        undebug_fseq           functions            R
+    ## 7  R/debug_pipe.R    43        undebug_fseq           functions            R
+    ## 8  R/debug_pipe.R    44        undebug_fseq           functions            R
+    ## 9   R/functions.R    26          print.fseq           functions            R
     ## 10    src/utils.c    77             r_parse         abort_parse   language:C
     ## 11    src/utils.c    80             r_parse         abort_parse   language:C
     ## 13     src/pipe.c   297        as_pipe_call             add_dot   language:C
