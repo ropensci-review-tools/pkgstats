@@ -34,10 +34,13 @@ pkgstats <- function (tarball) {
     fns$param_nchars_mn [index] <- s3$param_nchars_mn [index2]
     fns$param_nchars_md [index] <- s3$param_nchars_md [index2]
 
+    network <- tags_data (path)
+
     list (cloc = s1,
           num_vignettes = num_vignettes,
           desc = s2,
-          functions = fns)
+          functions = fns,
+          network = network)
 }
 
 #' Get all exported and internal functions
