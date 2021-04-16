@@ -4,10 +4,11 @@
 \alias{pkgstats}
 \title{Collates statistics from one local tarball}
 \usage{
-pkgstats(tarball)
+pkgstats(path)
 }
 \arguments{
-\item{tarball}{Full path to local tarball of an R package}
+\item{path}{Either a path to a local source repository, or a local '.tar.gz'
+file containing code for an R package.}
 }
 \value{
 List of statistics

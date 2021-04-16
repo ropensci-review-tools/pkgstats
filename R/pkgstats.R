@@ -1,6 +1,7 @@
 #' Collates statistics from one local tarball
 #'
-#' @inheritParams extract_tarball
+#' @param path Either a path to a local source repository, or a local '.tar.gz'
+#' file containing code for an R package.
 #' @return List of statistics
 #' @export
 #' @examples
@@ -12,9 +13,10 @@
 #' download.file (u, f)
 #' pkgstats (f)
 #' }
-pkgstats <- function (tarball) {
+pkgstats <- function (path) {
 
-    path <- extract_tarball (tarball)
+    if (grepl ("\\.tar\\.gz$", path))
+        path <- extract_tarball (path)
 
     s1 <- cloc_stats (path)
     num_vignettes <- length (list.files (file.path (path, "vignettes")))
