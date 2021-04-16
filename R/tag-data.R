@@ -85,14 +85,22 @@ get_ctags <- function (d = "R") {
     x <- x [-which (grepl ("^\\!", x))]
     writeLines (x, con = f)
 
+    ctypes <- list (readr::col_character (),
+                    readr::col_character (),
+                    readr::col_character (),
+                    readr::col_character (),
+                    readr::col_character (),
+                    readr::col_character (),
+                    readr::col_character ())
+    cnames <- c ("tag", "file", "content", "kind", "start", "language", "end")
+
     suppressWarnings (
                       tags <- readr::read_delim (f,
                                                  delim = "\t",
-                                                 col_names = FALSE,
-                                                 col_types = readr::cols ())
+                                                 col_names = cnames,
+                                                 col_types = ctypes)
                       )
 
-    names (tags) <- c ("tag", "file", "content", "kind", "start", "language", "end")
 
     tags$start <- as.integer (gsub ("^line\\:", "", tags$start))
     tags$end <- as.integer (gsub ("^end\\:", "", tags$end))
