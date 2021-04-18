@@ -10,7 +10,7 @@
   "codeRepository": "https://github.com/mpadge/pkgstats",
   "issueTracker": "https://github.com/mpadge/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.0.51",
+  "version": "0.0.0.053",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -136,7 +136,7 @@
       "sameAs": "https://CRAN.R-project.org/package=withr"
     }
   ],
-  "fileSize": "95.398KB",
+  "fileSize": "95.463KB",
   "developmentStatus": "https://www.repostatus.org/#concept",
   "readme": "https://github.com/mpadge/pkgstats/blob/main/README.md",
   "relatedLink": "https://mpadge.github.io/pkgstats"

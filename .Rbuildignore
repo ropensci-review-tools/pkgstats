@@ -12,3 +12,5 @@
 ^\.github$
 ^\.pre-commit-config\.yaml$
 ^codemeta\.json$
+^docs$
+^pkgdown$
