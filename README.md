@@ -8,10 +8,11 @@ status](https://github.com/mpadge/pkgstats/workflows/R-CMD-check/badge.svg)](htt
 Concept](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 <!-- badges: end -->
 
-Historical statistics of every R package ever. Not all statistics of
-course, but a good go at balancing insightful statistics while ensuring
-computational feasibility. Requires a local mirror of the full CRAN
-archive - that is, all [current
+Extract summary statistics of R package structure and functionality.
+Also includes a script used to extract historical statistics of every R
+package ever. Not all statistics of course, but a good go at balancing
+insightful statistics while ensuring computational feasibility. Requires
+a local mirror of the full CRAN archive - that is, all [current
 packages](https://cran.r-project.org/web/packages/available_packages_by_name.html),
 plus all of their [previous
 versions](https://cran.r-project.org/src/contrib/Archive).
@@ -88,7 +89,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.645   0.080   0.714
+    ##   0.753   0.085   0.954
 
 ``` r
 print (p)
@@ -360,12 +361,12 @@ print (p)
     ## 1        R/pipe.R   297          new_lambda             freduce            R
     ## 2     R/getters.R    14           `[[.fseq`           functions            R
     ## 3     R/getters.R    23            `[.fseq`           functions            R
-    ## 4   R/functions.R    26          print.fseq           functions            R
-    ## 5  R/debug_pipe.R    28          debug_fseq           functions            R
-    ## 6  R/debug_pipe.R    35          debug_fseq           functions            R
-    ## 7  R/debug_pipe.R    42        undebug_fseq           functions            R
-    ## 8  R/debug_pipe.R    43        undebug_fseq           functions            R
-    ## 9  R/debug_pipe.R    44        undebug_fseq           functions            R
+    ## 4  R/debug_pipe.R    28          debug_fseq           functions            R
+    ## 5  R/debug_pipe.R    35          debug_fseq           functions            R
+    ## 6  R/debug_pipe.R    42        undebug_fseq           functions            R
+    ## 7  R/debug_pipe.R    43        undebug_fseq           functions            R
+    ## 8  R/debug_pipe.R    44        undebug_fseq           functions            R
+    ## 9   R/functions.R    26          print.fseq           functions            R
     ## 10    src/utils.c    77             r_parse         abort_parse   language:C
     ## 11    src/utils.c    80             r_parse         abort_parse   language:C
     ## 13     src/pipe.c   297        as_pipe_call             add_dot   language:C
