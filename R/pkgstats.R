@@ -47,7 +47,8 @@ pkgstats <- function (path) {
         chk <- unlink (path, recursive = TRUE)
 
     list (cloc = s1,
-          num_vignettes = c (num_vignettes, num_demos),
+          vignettes = c (vignettes = num_vignettes,
+                         demos = num_demos),
           data_stats = data_stats,
           desc = s2,
           code_has_tabs = tags$has_tabs,
