@@ -15,17 +15,22 @@ tags_data <- function (path) {
         files_have_tabs (tags_src) |
         files_have_tabs (tags_inst)
 
-    gtags <- withr::with_dir (path, get_gtags ())
-    ctags <- dplyr::arrange (rbind (tags_src, tags_inst), file, start)
-    ctags <- dplyr::filter (ctags, kind %in% c ("class", "function", "struct"))
-    gtags$from <- NA_character_
-    for (f in unique (ctags$file))
-        gtags <- gtags_from_one_file (ctags, gtags, f)
-    gtags <- gtags [which (gtags$tag %in% ctags$tag), ]
+    gtags <- NULL
 
-    langs <- tags_src [, c ("tag", "language")]
-    langs <- langs [which (!duplicated (langs)), ]
-    gtags$language <- langs$language [match (gtags$tag, langs$tag)]
+    if (!is.null (tags_src) | !is.null (tags_inst)) {
+
+        gtags <- withr::with_dir (path, get_gtags ())
+        ctags <- dplyr::arrange (rbind (tags_src, tags_inst), file, start)
+        ctags <- dplyr::filter (ctags, kind %in% c ("class", "function", "struct"))
+        gtags$from <- NA_character_
+        for (f in unique (ctags$file))
+            gtags <- gtags_from_one_file (ctags, gtags, f)
+        gtags <- gtags [which (gtags$tag %in% ctags$tag), ]
+
+        langs <- tags_src [, c ("tag", "language")]
+        langs <- langs [which (!duplicated (langs)), ]
+        gtags$language <- langs$language [match (gtags$tag, langs$tag)]
+    }
 
     fns_r <- tags_r [tags_r$kind == "function", ]
     fn_vars_r <- tags_r [tags_r$kind == "functionVar", ]
@@ -43,7 +48,7 @@ tags_data <- function (path) {
     network$line2 <- NULL
 
     return (list (network = network,
-                  stats = src_stats (rbind (tags_src, tags_inst)),
+                  stats = src_stats (rbind (tags_r, tags_src, tags_inst)),
                   has_tabs = has_tabs))
 }
 
@@ -152,11 +157,14 @@ get_gtags <- function () {
     for (i in 1:3)
         x <- sub (" +", "\t", x)
 
+    ctypes <- list (readr::col_character (),
+                    readr::col_double (),
+                    readr::col_character (),
+                    readr::col_character ())
     gtags <- readr::read_delim (x,
                                 delim = "\t",
-                                col_names = FALSE,
-                                col_types = readr::cols ())
-    names (gtags) <- c ("tag", "line", "file", "content")
+                                col_names = c ("tag", "line", "file", "content"),
+                                col_types = ctypes)
 
     # rm header files:
     gtags <- gtags [which (!grepl ("\\.h$", gtags$file)), ]
@@ -174,6 +182,10 @@ gtags_from_one_file <- function (ctags, gtags, f) {
     # always embedded within the main definition, so simply removing them reduces
     # line ranges to main definition only.
     ctags_f <- ctags_f [which (!duplicated (ctags_f$tag)), ]
+    # end lines are not always given, as in Fortran code
+    if (any (is.na (ctags_f$end)))
+        return (gtags)
+
     line_nums <- lapply (seq (nrow (ctags_f)), function (i) {
                              data.frame (n = i,
                                          l = seq (ctags_f$start [i],
