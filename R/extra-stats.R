@@ -34,7 +34,7 @@ get_num_demos <- function (path) {
 
 get_data_stats <- function (path) {
 
-    nd <- c (n = 0L, total_size = 0L)
+    nd <- c (n = 0L, total_size = 0L, median_size = 0L)
 
     if ("data" %in% list.files (path)) {
 
@@ -48,6 +48,7 @@ get_data_stats <- function (path) {
 
         nd [1] <- length (flist)
         nd [2] <- as.integer (sum (sizes))
+        nd [3] <- as.integer (stats::median (sizes))
     }
 
     return (nd)
