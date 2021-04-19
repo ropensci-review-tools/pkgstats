@@ -25,7 +25,9 @@ desc_stats <- function (path) {
 
     d <- data.frame (read.dcf (desc))
     license <- d$License
-    urls <- d$URL
+    urls <- NA_character_
+    if ("URL" %in% names (d))
+        urls <- d$URL
 
     if ("Authors.R" %in% names (d)) {
         authors <- eval (parse (text = d$Authors.R))
