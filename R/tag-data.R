@@ -11,8 +11,9 @@ tags_data <- function (path) {
     tags_src <- withr::with_dir (path, get_ctags ("src"))
     tags_inst <- withr::with_dir (path, get_ctags ("inst"))
     # does the code contain tab ("\t") characters?
-    has_tabs <- attr (tags_r, "has_tabs") | attr (tags_src, "has_tabs") |
-        attr (tags_inst, "has_tabs")
+    has_tabs <- files_have_tabs (tags_r) |
+        files_have_tabs (tags_src) |
+        files_have_tabs (tags_inst)
 
     gtags <- withr::with_dir (path, get_gtags ())
     ctags <- dplyr::arrange (rbind (tags_src, tags_inst), file, start)
@@ -268,4 +269,16 @@ src_stats <- function (tags) {
                        npars = NA_integer_,
                        has_dots = NA)
     res <- res [which (!is.na (res$loc)), ]
+}
+
+#' @param x result of one get_ctags call, which may be `NULL`
+files_have_tabs <- function (x) {
+
+    res <- FALSE
+    if (!is.null (x))
+        res <- attr (x, "has_tabs")
+    if (is.null (res))
+        res <- FALSE
+
+    return (res)
 }
