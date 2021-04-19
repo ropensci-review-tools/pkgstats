@@ -23,6 +23,8 @@ pkgstats <- function (path) {
 
     s1 <- cloc_stats (path)
     num_vignettes <- get_num_vignettes (path)
+    num_demos <- get_num_demos (path)
+    data_stats <- get_data_stats (path)
     s2 <- desc_stats (path)
     s3 <- rd_stats (path)
 
@@ -45,7 +47,8 @@ pkgstats <- function (path) {
         chk <- unlink (path, recursive = TRUE)
 
     list (cloc = s1,
-          num_vignettes = num_vignettes,
+          num_vignettes = c (num_vignettes, num_demos),
+          data_stats = data_stats,
           desc = s2,
           code_has_tabs = tags$has_tabs,
           objects = add_src_to_fn_data (fns, tags$stats),
@@ -110,24 +113,4 @@ add_src_to_fn_data <- function (fns, src) {
         src [n] <- NA_integer_
 
     return (rbind (fns, src))
-}
-
-get_num_vignettes <- function (path) {
-
-    nv <- 0
-
-    if ("build" %in% list.files (path)) {
-
-        flist <- list.files (file.path (path, "build"),
-                             full.names = TRUE)
-        vfile <- grep ("vignette", flist, value = TRUE)
-        if (length (vfile) > 0) {
-            nv <- nrow (readRDS (vfile [1]))
-        }
-    } else if ("vignettes" %in% list.files (path)) {
-        nv <- length (list.files (file.path (path, "vignettes"),
-                                  pattern = "\\.Rmd$|\\.Rnw"))
-    }
-
-    return (nv)
 }
