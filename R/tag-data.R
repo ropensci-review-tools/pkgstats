@@ -9,11 +9,13 @@ tags_data <- function (path) {
 
     tags_r <- withr::with_dir (path, get_ctags ("R"))
     tags_src <- withr::with_dir (path, get_ctags ("src"))
+    tags_inst <- withr::with_dir (path, get_ctags ("inst"))
     # does the code contain tab ("\t") characters?
-    has_tabs <- attr (tags_r, "has_tabs") | attr (tags_src, "has_tabs")
+    has_tabs <- attr (tags_r, "has_tabs") | attr (tags_src, "has_tabs") |
+        attr (tags_inst, "has_tabs")
 
     gtags <- withr::with_dir (path, get_gtags ())
-    ctags <- dplyr::arrange (tags_src, file, start)
+    ctags <- dplyr::arrange (rbind (tags_src, tags_inst), file, start)
     ctags <- dplyr::filter (ctags, kind %in% c ("class", "function", "struct"))
     gtags$from <- NA_character_
     for (f in unique (ctags$file))
@@ -40,7 +42,7 @@ tags_data <- function (path) {
     network$line2 <- NULL
 
     return (list (network = network,
-                  stats = src_stats (tags_src),
+                  stats = src_stats (rbind (tags_src, tags_inst)),
                   has_tabs = has_tabs))
 }
 
@@ -52,8 +54,11 @@ get_ctags <- function (d = "R") {
     d <- match.arg (d, c ("R", "src", "inst"))
 
     path_dir <- file.path (getwd (), d)
+    if (d == "inst")
+        path_dir <- file.path (path_dir, "include")
     if (!dir.exists (path_dir))
-        stop ("Directory [", path_dir, "] does not exist")
+        return (NULL)
+
     # tab-characters muck up parsing of tag content so have to be removed:
     has_tabs <- rm_tabs (path_dir)
 
@@ -72,7 +77,7 @@ get_ctags <- function (d = "R") {
 
     if (d == "R") {
         fields <- "eFKlnN"
-    } else if (d == "src") {
+    } else if (d %in% c ("src", "inst")) {
         fields <- "eFKlnN"
     }
 
