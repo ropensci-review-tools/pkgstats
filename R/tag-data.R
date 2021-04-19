@@ -161,10 +161,12 @@ get_gtags <- function () {
                     readr::col_double (),
                     readr::col_character (),
                     readr::col_character ())
-    gtags <- readr::read_delim (x,
-                                delim = "\t",
-                                col_names = c ("tag", "line", "file", "content"),
-                                col_types = ctypes)
+    suppressWarnings (
+        gtags <- readr::read_delim (x,
+                                    delim = "\t",
+                                    col_names = c ("tag", "line", "file", "content"),
+                                    col_types = ctypes)
+        )
 
     # rm header files:
     gtags <- gtags [which (!grepl ("\\.h$", gtags$file)), ]
@@ -182,7 +184,8 @@ gtags_from_one_file <- function (ctags, gtags, f) {
     # always embedded within the main definition, so simply removing them reduces
     # line ranges to main definition only.
     ctags_f <- ctags_f [which (!duplicated (ctags_f$tag)), ]
-    # end lines are not always given, as in Fortran code
+    # end lines are not always given, as in Fortran code for which ctags works
+    # but gtags does not
     if (any (is.na (ctags_f$end)))
         return (gtags)
 
