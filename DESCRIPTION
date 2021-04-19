@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.0.0.064
+Version: 0.0.0.065
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
@@ -13,6 +13,7 @@ BugReports: https://github.com/mpadge/pkgstats/issues
 Depends: 
     R (>= 3.5.0)
 Imports:
+    brio,
     checkmate,
     cloc,
     dplyr,

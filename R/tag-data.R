@@ -136,7 +136,7 @@ rm_tabs <- function (d) {
     has_tabs <- FALSE 
 
     for (f in files) {
-        x <- suppressWarnings (readLines (f, encoding = "UTF-8"))
+        x <- suppressWarnings (brio::read_lines (f))
         has_tabs_f <- any (grepl ("\\t", x))
         if (has_tabs_f) {
             x <- gsub ("\\t", " ", x)
@@ -287,6 +287,7 @@ src_stats <- function (tags) {
 }
 
 #' @param x result of one get_ctags call, which may be `NULL`
+#' @noRd
 files_have_tabs <- function (x) {
 
     res <- FALSE
