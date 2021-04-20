@@ -178,7 +178,7 @@ object_summary <- function (x) {
                 npars_exported_mn = npars_exported_mn,
                 npars_exported_md = npars_exported_md,
                 loc_per_fn_r_mn = loc_per_fn_r_mn,
-                loc_per_fn_r_mn = loc_per_fn_r_md,
+                loc_per_fn_r_md = loc_per_fn_r_md,
                 loc_per_fn_r_exp_mn = loc_per_fn_r_exp_mn,
                 loc_per_fn_r_exp_md = loc_per_fn_r_exp_md,
                 loc_per_fn_r_not_exp_mn = loc_per_fn_r_not_exp_mn,
@@ -239,6 +239,6 @@ network_summary <- function (x) {
                 centrality_undir_mn_no0 = centrality_undir_mn_no0,
                 centrality_undir_md_no0 = centrality_undir_md_no0,
                 node_degree_mn = mean (node_degree$n),
-                node_degree_mn = median (node_degree$n),
+                node_degree_md = median (node_degree$n),
                 node_degree_max = max (node_degree$n))
 }
