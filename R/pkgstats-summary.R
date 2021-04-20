@@ -54,18 +54,23 @@ cloc_summary <- function (x) {
 desc_summary <- function (x) {
 
     data.frame (
-                urls = s$desc$urls,
-                bugs = s$desc$bugs,
+                urls = x$urls,
+                bugs = x$bugs,
 
-                desc_n_aut = s$desc$aut,
-                desc_n_ctb = s$desc$ctb,
-                desc_n_fnd = s$desc$fnd,
-                desc_n_rev = s$desc$rev,
-                desc_n_ths = s$desc$ths,
-                desc_n_trl = s$desc$trl,
+                desc_n_aut = x$aut,
+                desc_n_ctb = x$ctb,
+                desc_n_fnd = x$fnd,
+                desc_n_rev = x$rev,
+                desc_n_ths = x$ths,
+                desc_n_trl = x$trl,
 
-                depends = s$desc$depends,
-                imports = s$desc$imports,
-                suggests = s$desc$suggests,
-                linking_to = s$desc$linking_to)
+                depends = x$depends,
+                imports = x$imports,
+                suggests = x$suggests,
+                linking_to = x$linking_to)
+}
+
+#' @param x the 'objects' components of 'pkgstats' output
+#' @noRd
+object_summary <- function (x) {
 }
