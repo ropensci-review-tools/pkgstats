@@ -60,12 +60,16 @@ desc_stats <- function (path) {
     sug <- extract_deps (d, "Suggests")
     lnk <- extract_deps (d, "LinkingTo")
 
+    bugs <- ifelse ("BugReports" %in% names (d),
+                    d$BugReports,
+                    NA_character_)
+
     data.frame (package = d$Package,
                 version = d$Version,
                 date = d$Date.Publication,
                 license = license,
                 urls = urls,
-                bugs = d$BugReports,
+                bugs = bugs,
                 n_aut,
                 depends = dep,
                 imports = imp,
