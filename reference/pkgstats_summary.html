@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get lines-of-code ('cloc') statistics for a package — cloc_stats • pkgstats</title>
+<title>Condense the output of pkgstats to summary statistics only — pkgstats_summary • pkgstats</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Get lines-of-code ('cloc') statistics for a package — cloc_stats" />
-<meta property="og:description" content="Get lines-of-code ('cloc') statistics for a package" />
+<meta property="og:title" content="Condense the output of pkgstats to summary statistics only — pkgstats_summary" />
+<meta property="og:description" content="Condense the output of pkgstats to summary statistics only" />
 
 
 
@@ -108,43 +108,32 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get lines-of-code ('cloc') statistics for a package</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mpadge/pkgstats/blob/master/R/cloc.R'><code>R/cloc.R</code></a></small>
-    <div class="hidden name"><code>cloc_stats.Rd</code></div>
+    <h1>Condense the output of <code>pkgstats</code> to summary statistics only</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mpadge/pkgstats/blob/master/R/pkgstats-summary.R'><code>R/pkgstats-summary.R</code></a></small>
+    <div class="hidden name"><code>pkgstats_summary.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Get lines-of-code ('cloc') statistics for a package</p>
+    <p>Condense the output of <code>pkgstats</code> to summary statistics only</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cloc_stats</span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>pkgstats_summary</span><span class='op'>(</span><span class='va'>s</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>path</th>
-      <td><p>Path to locally extracted tarball of package, obtained from
-<a href='extract_tarball.html'>extract_tarball</a>.</p></td>
+      <th>s</th>
+      <td><p>Output of <a href='pkgstats.html'>pkgstats</a>, containing full statistical data on one
+package.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A 'data.frame' with statistics from the four main directories (where
-present) of '/R', '/src', '/inst/include', and 'vignettes'</p>
+    <p>Summarised version of <code>s</code>, as a single row of a standardised
+<code>data.frame</code> object</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>tarball</span> <span class='op'>&lt;-</span> <span class='st'>"magrittr_2.0.1.tar.gz"</span>
-<span class='va'>u</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span> <span class='op'>(</span><span class='st'>"https://cran.r-project.org/src/contrib/"</span>,
-             <span class='va'>tarball</span><span class='op'>)</span>
-<span class='va'>dest</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span> <span class='op'>(</span><span class='op'>)</span>, <span class='va'>tarball</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span> <span class='op'>(</span><span class='va'>u</span>, <span class='va'>dest</span><span class='op'>)</span>
-<span class='va'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='extract_tarball.html'>extract_tarball</a></span> <span class='op'>(</span><span class='va'>dest</span><span class='op'>)</span>
-<span class='fu'>cloc_stats</span> <span class='op'>(</span><span class='va'>path</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
