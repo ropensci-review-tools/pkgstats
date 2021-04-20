@@ -35,12 +35,46 @@ pkgstats_summary <- function (s) {
 #' @noRd
 cloc_summary <- function (x) {
 
-    if (!"src" %in% x$source)
-        x <- rbind (x, c ("src", "-", 0L, 0, 0L, 0, 0L, 0, 0L, 0))
-    if (!"include" %in% x$source)
-        x <- rbind (x, c ("include", "-", 0L, 0, 0L, 0, 0L, 0, 0L, 0))
-    if (!"vignettes" %in% x$source)
-        x <- rbind (x, c ("vignettes", "-", 0L, 0, 0L, 0, 0L, 0, 0L, 0))
+    blank <- x [1, ]
+
+    col_nms <- c ("file_count",
+                  "file_count_pct",
+                  "loc",
+                  "loc_pct",
+                  "blank_lines",
+                  "blank_line_pct",
+                  "comment_lines",
+                  "comment_line_pct")
+    blank [col_nms] <- 0L
+
+
+    if (!"src" %in% x$source) {
+        src <- blank
+        src$source <- "src"
+        src$language <- "-"
+        x <- rbind (x, src)
+    }
+    if (!"include" %in% x$source) {
+        incl <- blank
+        incl$source <- "include"
+        incl$language <- "-"
+        x <- rbind (x, incl)
+    }
+    if (!"vignettes" %in% x$source) {
+        v <- blank
+        v$source <- "vignettes"
+        v$language <- "-"
+        x <- rbind (x, v)
+    }
+
+    # no pipes here
+    xg <- dplyr::group_by (x, source)
+    x <- dplyr::summarise (xg,
+                           source = source [1],
+                           file_count = sum (file_count),
+                           loc = sum (loc),
+                           blank_lines = sum (blank_lines),
+                           comment_lines = sum (comment_lines))
 
     data.frame (files_R = x$file_count [x$source == "R"],
                 files_src = x$file_count [x$source == "src"],
