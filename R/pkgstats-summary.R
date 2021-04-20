@@ -26,6 +26,8 @@ pkgstats_summary <- function (s) {
 
     out <- cbind (out, object_summary (s$objects))
 
+    out <- cbind (out, network_summary (s$network))
+
     return (out)
 }
 
@@ -48,7 +50,8 @@ cloc_summary <- function (x) {
                 comment_lines_R = x$comment_lines [x$source == "R"],
                 comment_lines_src = x$comment_lines [x$source == "src"],
                 comment_lines_inst = x$comment_lines [x$source == "include"],
-                comment_lines_vignettes = x$comment_lines [x$source == "vignettes"])
+                comment_lines_vignettes = x$comment_lines [x$source ==
+                                                           "vignettes"])
 }
 
 #' @param x the 'desc' components of 'pkgstats' output
@@ -85,6 +88,10 @@ object_summary <- function (x) {
     n_fns_r_exported <- length (which (fns_r$exported))
     n_fns_r_not_exported <- n_fns_r - n_fns_r_exported
 
+    n_fns_per_file_r <- nrow (fns_r) / length (unique (fns_r$file_name))
+    n_fns_per_file_src <- nrow (fns_not_r) /
+        length (unique (fns_not_r$file_name))
+
     index_exp <- which (fns_r$exported)
     index_not_exp <- which (!fns_r$exported)
 
@@ -96,10 +103,15 @@ object_summary <- function (x) {
     loc_per_fn_r_exp_md <- median (fns_r$loc [index_exp], na.rm = TRUE)
     loc_per_fn_r_not_exp_mn <- mean (fns_r$loc [index_not_exp], na.rm = TRUE)
     loc_per_fn_r_not_exp_md <- median (fns_r$loc [index_not_exp], na.rm = TRUE)
-    doclines_per_fn_exp_mn <- mean (fns_r$num_doclines [index_exp], na.rm = TRUE)
-    doclines_per_fn_exp_md <- median (fns_r$num_doclines [index_exp], na.rm = TRUE)
-    doclines_per_fn_not_exp_mn <- mean (fns_r$num_doclines [index_not_exp], na.rm = TRUE)
-    doclines_per_fn_not_exp_md <- median (fns_r$num_doclines [index_not_exp], na.rm = TRUE)
+
+    doclines_per_fn_exp_mn <- mean (fns_r$num_doclines [index_exp],
+                                    na.rm = TRUE)
+    doclines_per_fn_exp_md <- median (fns_r$num_doclines [index_exp],
+                                      na.rm = TRUE)
+    doclines_per_fn_not_exp_mn <- mean (fns_r$num_doclines [index_not_exp],
+                                        na.rm = TRUE)
+    doclines_per_fn_not_exp_md <- median (fns_r$num_doclines [index_not_exp],
+                                          na.rm = TRUE)
 
     # exract nchars-per-param for exported only:
     nchars_tot <- x$param_nchars_mn * x$npars
@@ -120,6 +132,8 @@ object_summary <- function (x) {
                 n_fns_r_exported = n_fns_r_exported,
                 n_fns_r_not_exported = n_fns_r_not_exported,
                 n_fns_src = n_fns_src,
+                n_fns_per_file_r = n_fns_per_file_r,
+                n_fns_per_file_src = n_fns_per_file_src,
                 npars_exported_mn = npars_exported_mn,
                 npars_exported_md = npars_exported_md,
                 loc_per_fn_r_mn = loc_per_fn_r_mn,
@@ -138,4 +152,52 @@ object_summary <- function (x) {
                 docchars_per_par_exp_mn = docchars_per_par_exp_mn,
                 docchars_per_par_exp_md = docchars_per_par_exp_md)
 
+}
+
+#' @param x the 'network' components of 'pkgstats' output
+#' @noRd
+network_summary <- function (x) {
+
+    n_clusters <- length (unique (x$cluster_dir))
+    n_edges <- nrow (x)
+
+    dirs <- vapply (x$file, function (i)
+                    strsplit (i, .Platform$file.sep) [[1]] [1],
+                    character (1),
+                    USE.NAMES = FALSE)
+    n_edges_r <- length (which (dirs == "R"))
+    n_edges_src <- length (which (dirs != "R"))
+
+    centrality_dir_mn <- mean (x$centrality_dir, na.rm = TRUE)
+    centrality_dir_mn_no0 <- mean (x$centrality_dir [x$centrality_dir > 0],
+                                   na.rm = TRUE)
+    centrality_dir_md <- median (x$centrality_dir, na.rm = TRUE)
+    centrality_dir_md_no0 <- median (x$centrality_dir [x$centrality_dir > 0],
+                                     na.rm = TRUE)
+
+    cu <- x$centrality_undir [x$centrality_undir > 0]
+    centrality_undir_mn <- mean (x$centrality_undir, na.rm = TRUE)
+    centrality_undir_mn_no0 <- mean (cu, na.rm = TRUE)
+    centrality_undir_md <- median (x$centrality_undir, na.rm = TRUE)
+    centrality_undir_md_no0 <- median (cu, na.rm = TRUE)
+
+    from <- to <- NULL # suppress no visible binding notes
+    node_degree <- dplyr::group_by (x, from)
+    node_degree <- dplyr::count (node_degree, to)
+
+    data.frame (n_edges = n_edges,
+                n_edges_r = n_edges_r,
+                n_edges_src = n_edges_src,
+                n_clusters = n_clusters,
+                centrality_dir_mn = centrality_dir_mn,
+                centrality_dir_md = centrality_dir_md,
+                centrality_dir_mn_no0 = centrality_dir_mn_no0,
+                centrality_dir_md_no0 = centrality_dir_md_no0,
+                centrality_undir_mn = centrality_undir_mn,
+                centrality_undir_md = centrality_undir_md,
+                centrality_undir_mn_no0 = centrality_undir_mn_no0,
+                centrality_undir_md_no0 = centrality_undir_md_no0,
+                node_degree_mn = mean (node_degree$n),
+                node_degree_mn = median (node_degree$n),
+                node_degree_max = max (node_degree$n))
 }
