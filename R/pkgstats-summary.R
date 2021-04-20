@@ -67,6 +67,8 @@ cloc_summary <- function (x) {
         x <- rbind (x, v)
     }
 
+    # suppress no visible binding notes
+    file_count <- loc <- blank_lines <- comment_lines <- NULL
     # no pipes here
     xg <- dplyr::group_by (x, source)
     x <- dplyr::summarise (xg,
@@ -137,22 +139,23 @@ object_summary <- function (x) {
     index_not_exp <- which (!fns_r$exported)
 
     npars_exported_mn <- mean (fns_r$npars [index_exp], na.rm = TRUE)
-    npars_exported_md <- median (fns_r$npars [index_exp], na.rm = TRUE)
+    npars_exported_md <- stats::median (fns_r$npars [index_exp], na.rm = TRUE)
     loc_per_fn_r_mn <- mean (fns_r$loc, na.rm = TRUE)
-    loc_per_fn_r_md <- median (fns_r$loc, na.rm = TRUE)
+    loc_per_fn_r_md <- stats::median (fns_r$loc, na.rm = TRUE)
     loc_per_fn_r_exp_mn <- mean (fns_r$loc [index_exp], na.rm = TRUE)
-    loc_per_fn_r_exp_md <- median (fns_r$loc [index_exp], na.rm = TRUE)
+    loc_per_fn_r_exp_md <- stats::median (fns_r$loc [index_exp], na.rm = TRUE)
     loc_per_fn_r_not_exp_mn <- mean (fns_r$loc [index_not_exp], na.rm = TRUE)
-    loc_per_fn_r_not_exp_md <- median (fns_r$loc [index_not_exp], na.rm = TRUE)
+    loc_per_fn_r_not_exp_md <- stats::median (fns_r$loc [index_not_exp],
+                                              na.rm = TRUE)
 
     doclines_per_fn_exp_mn <- mean (fns_r$num_doclines [index_exp],
                                     na.rm = TRUE)
-    doclines_per_fn_exp_md <- median (fns_r$num_doclines [index_exp],
-                                      na.rm = TRUE)
+    doclines_per_fn_exp_md <- stats::median (fns_r$num_doclines [index_exp],
+                                             na.rm = TRUE)
     doclines_per_fn_not_exp_mn <- mean (fns_r$num_doclines [index_not_exp],
                                         na.rm = TRUE)
-    doclines_per_fn_not_exp_md <- median (fns_r$num_doclines [index_not_exp],
-                                          na.rm = TRUE)
+    doclines_per_fn_not_exp_md <-
+        stats::median (fns_r$num_doclines [index_not_exp], na.rm = TRUE)
 
     # exract nchars-per-param for exported only:
     nchars_tot <- x$param_nchars_mn * x$npars
@@ -162,11 +165,11 @@ object_summary <- function (x) {
     npar <- x$npars [index_exp]
     index <- which (!is.na (nchar) & !is.na (npar))
     nchars_tot <- rep (nchar [index], times = npar [index])
-    docchars_per_par_exp_md <- median (nchars_tot, na.rm = TRUE)
+    docchars_per_par_exp_md <- stats::median (nchars_tot, na.rm = TRUE)
 
     n_fns_src <- nrow (fns_not_r)
     loc_per_fn_src_mn <- mean (fns_not_r$loc, na.rm = TRUE)
-    loc_per_fn_src_md <- median (fns_not_r$loc, na.rm = TRUE)
+    loc_per_fn_src_md <- stats::median (fns_not_r$loc, na.rm = TRUE)
     languages <- paste0 (unique (fns_not_r$language), collapse = ", ")
 
     data.frame (n_fns_r = n_fns_r,
@@ -212,15 +215,15 @@ network_summary <- function (x) {
     centrality_dir_mn <- mean (x$centrality_dir, na.rm = TRUE)
     centrality_dir_mn_no0 <- mean (x$centrality_dir [x$centrality_dir > 0],
                                    na.rm = TRUE)
-    centrality_dir_md <- median (x$centrality_dir, na.rm = TRUE)
-    centrality_dir_md_no0 <- median (x$centrality_dir [x$centrality_dir > 0],
-                                     na.rm = TRUE)
+    centrality_dir_md <- stats::median (x$centrality_dir, na.rm = TRUE)
+    centrality_dir_md_no0 <-
+        stats::median (x$centrality_dir [x$centrality_dir > 0], na.rm = TRUE)
 
     cu <- x$centrality_undir [x$centrality_undir > 0]
     centrality_undir_mn <- mean (x$centrality_undir, na.rm = TRUE)
     centrality_undir_mn_no0 <- mean (cu, na.rm = TRUE)
-    centrality_undir_md <- median (x$centrality_undir, na.rm = TRUE)
-    centrality_undir_md_no0 <- median (cu, na.rm = TRUE)
+    centrality_undir_md <- stats::median (x$centrality_undir, na.rm = TRUE)
+    centrality_undir_md_no0 <- stats::median (cu, na.rm = TRUE)
 
     from <- to <- NULL # suppress no visible binding notes
     node_degree <- dplyr::group_by (x, from)
@@ -239,6 +242,6 @@ network_summary <- function (x) {
                 centrality_undir_mn_no0 = centrality_undir_mn_no0,
                 centrality_undir_md_no0 = centrality_undir_md_no0,
                 node_degree_mn = mean (node_degree$n),
-                node_degree_md = median (node_degree$n),
+                node_degree_md = stats::median (node_degree$n),
                 node_degree_max = max (node_degree$n))
 }
