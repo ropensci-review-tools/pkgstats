@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.0.0.075
+Version: 0.0.0.077
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
@@ -16,8 +16,11 @@ Imports:
     brio,
     checkmate,
     cloc,
+    doParallel,
     dplyr,
     igraph,
+    parallel,
+    pbapply,
     readr,
     withr
 Suggests: 
