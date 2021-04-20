@@ -54,7 +54,38 @@ desc_stats <- function (path) {
     n_aut <- data.frame (matrix (n_aut, nrow = 1))
     names (n_aut) <- aut_types ()
 
-    data.frame (license = license,
+    # Dependencies:
+    dep <- extract_deps (d, "Depends")
+    imp <- extract_deps (d, "Imports")
+    sug <- extract_deps (d, "Suggests")
+    lnk <- extract_deps (d, "LinkingTo")
+
+    data.frame (package = d$Package,
+                version = d$Version,
+                date = d$Date.Publication,
+                license = license,
                 urls = urls,
-                n_aut)
+                bugs = d$BugReports,
+                n_aut,
+                depends = dep,
+                imports = imp,
+                suggests = sug,
+                linking_to = lnk)
+}
+
+extract_deps <- function (d, type = "Depends") {
+
+    res <- d [[type]]
+    if (type == "Depends")
+        res <- res [which (!grepl ("^R\\s", res))]
+    res <- ifelse (length (res) == 0, NA_character_, res)
+
+    res <- strsplit (res, ",") [[1]]
+    res <- vapply (res, function (i)
+                       strsplit (gsub ("^\\s+", "", i),
+                                 "\\s|\\\\n") [[1]] [1],
+                       character (1),
+                       USE.NAMES = FALSE)
+
+    return (paste0 (res, collapse = ", "))
 }
