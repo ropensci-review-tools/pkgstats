@@ -35,6 +35,13 @@ pkgstats_summary <- function (s) {
 #' @noRd
 cloc_summary <- function (x) {
 
+    if (!"src" %in% x$source)
+        x <- rbind (x, c ("src", "-", 0L, 0, 0L, 0, 0L, 0, 0L, 0))
+    if (!"include" %in% x$source)
+        x <- rbind (x, c ("include", "-", 0L, 0, 0L, 0, 0L, 0, 0L, 0))
+    if (!"vignettes" %in% x$source)
+        x <- rbind (x, c ("vignettes", "-", 0L, 0, 0L, 0, 0L, 0, 0L, 0))
+
     data.frame (files_R = x$file_count [x$source == "R"],
                 files_src = x$file_count [x$source == "src"],
                 files_inst = x$file_count [x$source == "include"],
