@@ -22,6 +22,7 @@ cloc_stats <- function (path) {
     paths <- c (file.path (path, "R"),
                 file.path (path, "src"),
                 file.path (path, "inst", "include"),
+                file.path (path, "tests"),
                 file.path (path, "vignettes"))
 
     out <- lapply (paths, function (i) {

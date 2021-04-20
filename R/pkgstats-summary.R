@@ -47,25 +47,23 @@ cloc_summary <- function (x) {
                   "comment_line_pct")
     blank [col_nms] <- 0L
 
+    add_if_missing <- function (x, type = "src") {
 
-    if (!"src" %in% x$source) {
-        src <- blank
-        src$source <- "src"
-        src$language <- "-"
-        x <- rbind (x, src)
+        if (!type %in% x$source) {
+
+            src <- blank
+            src$source <- type
+            src$language <- "-"
+            x <- rbind (x, src)
+        }
+
+        return (x)
     }
-    if (!"include" %in% x$source) {
-        incl <- blank
-        incl$source <- "include"
-        incl$language <- "-"
-        x <- rbind (x, incl)
-    }
-    if (!"vignettes" %in% x$source) {
-        v <- blank
-        v$source <- "vignettes"
-        v$language <- "-"
-        x <- rbind (x, v)
-    }
+
+    x <- add_if_missing (x, "src")
+    x <- add_if_missing (x, "include")
+    x <- add_if_missing (x, "vignettes")
+    x <- add_if_missing (x, "tests")
 
     # suppress no visible binding notes
     file_count <- loc <- blank_lines <- comment_lines <- NULL
@@ -82,19 +80,23 @@ cloc_summary <- function (x) {
                 files_src = x$file_count [x$source == "src"],
                 files_inst = x$file_count [x$source == "include"],
                 files_vignettes = x$file_count [x$source == "vignettes"],
+                files_tests = x$file_count [x$source == "tests"],
                 loc_R = x$loc [x$source == "R"],
                 loc_src = x$loc [x$source == "src"],
                 loc_inst = x$loc [x$source == "include"],
                 loc_vignettes = x$loc [x$source == "vignettes"],
+                loc_tests = x$loc [x$source == "tests"],
                 blank_lines_R = x$blank_lines [x$source == "R"],
                 blank_lines_src = x$blank_lines [x$source == "src"],
                 blank_lines_inst = x$blank_lines [x$source == "include"],
                 blank_lines_vignettes = x$blank_lines [x$source == "vignettes"],
+                blank_lines_tests = x$blank_lines [x$source == "tests"],
                 comment_lines_R = x$comment_lines [x$source == "R"],
                 comment_lines_src = x$comment_lines [x$source == "src"],
                 comment_lines_inst = x$comment_lines [x$source == "include"],
                 comment_lines_vignettes = x$comment_lines [x$source ==
-                                                           "vignettes"])
+                                                           "vignettes"],
+                comment_lines_tests = x$comment_lines [x$source == "tests"])
 }
 
 #' @param x the 'desc' components of 'pkgstats' output
