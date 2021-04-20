@@ -6,13 +6,9 @@
 <!-- badges: end -->
 
 Extract summary statistics of R package structure and functionality. Also
-includes a script used to extract historical statistics of every R package
-ever. Not all statistics of course, but a good go at balancing insightful
-statistics while ensuring computational feasibility. Requires a local mirror of
-the full CRAN archive - that is, all [current
-packages](https://cran.r-project.org/web/packages/available_packages_by_name.html),
-plus all of their [previous
-versions](https://cran.r-project.org/src/contrib/Archive).
+includes a function to extract statistics of all R packages from a local CRAN
+mirror. Not all statistics of course, but a good go at balancing
+insightful statistics while ensuring computational feasibility.
 
 ## What statistics?
 
