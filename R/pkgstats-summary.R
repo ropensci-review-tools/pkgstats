@@ -24,6 +24,8 @@ pkgstats_summary <- function (s) {
 
     out$code_has_tabs <- s$code_has_tabs
 
+    out <- cbind (out, object_summary (s$objects))
+
     return (out)
 }
 
@@ -73,4 +75,67 @@ desc_summary <- function (x) {
 #' @param x the 'objects' components of 'pkgstats' output
 #' @noRd
 object_summary <- function (x) {
+
+    fns <- x [x$kind == "function", ]
+    fns$num_doclines [is.na (fns$num_doclines)] <- 0L
+    fns_r <- fns [fns$language == "R", ]
+    fns_not_r <- fns [fns$language != "R", ]
+
+    n_fns_r <- nrow (fns_r)
+    n_fns_r_exported <- length (which (fns_r$exported))
+    n_fns_r_not_exported <- n_fns_r - n_fns_r_exported
+
+    index_exp <- which (fns_r$exported)
+    index_not_exp <- which (!fns_r$exported)
+
+    npars_exported_mn <- mean (fns_r$npars [index_exp], na.rm = TRUE)
+    npars_exported_md <- median (fns_r$npars [index_exp], na.rm = TRUE)
+    loc_per_fn_r_mn <- mean (fns_r$loc, na.rm = TRUE)
+    loc_per_fn_r_md <- median (fns_r$loc, na.rm = TRUE)
+    loc_per_fn_r_exp_mn <- mean (fns_r$loc [index_exp], na.rm = TRUE)
+    loc_per_fn_r_exp_md <- median (fns_r$loc [index_exp], na.rm = TRUE)
+    loc_per_fn_r_not_exp_mn <- mean (fns_r$loc [index_not_exp], na.rm = TRUE)
+    loc_per_fn_r_not_exp_md <- median (fns_r$loc [index_not_exp], na.rm = TRUE)
+    doclines_per_fn_exp_mn <- mean (fns_r$num_doclines [index_exp], na.rm = TRUE)
+    doclines_per_fn_exp_md <- median (fns_r$num_doclines [index_exp], na.rm = TRUE)
+    doclines_per_fn_not_exp_mn <- mean (fns_r$num_doclines [index_not_exp], na.rm = TRUE)
+    doclines_per_fn_not_exp_md <- median (fns_r$num_doclines [index_not_exp], na.rm = TRUE)
+
+    # exract nchars-per-param for exported only:
+    nchars_tot <- x$param_nchars_mn * x$npars
+    docchars_per_par_exp_mn <- sum (nchars_tot [index_exp], na.rm = TRUE) /
+        sum (x$npars [index_exp], na.rm = TRUE)
+    nchar <- x$param_nchars_mn [index_exp]
+    npar <- x$npars [index_exp]
+    index <- which (!is.na (nchar) & !is.na (npar))
+    nchars_tot <- rep (nchar [index], times = npar [index])
+    docchars_per_par_exp_md <- median (nchars_tot, na.rm = TRUE)
+
+    n_fns_src <- nrow (fns_not_r)
+    loc_per_fn_src_mn <- mean (fns_not_r$loc, na.rm = TRUE)
+    loc_per_fn_src_md <- median (fns_not_r$loc, na.rm = TRUE)
+    languages <- paste0 (unique (fns_not_r$language), collapse = ", ")
+
+    data.frame (n_fns_r = n_fns_r,
+                n_fns_r_exported = n_fns_r_exported,
+                n_fns_r_not_exported = n_fns_r_not_exported,
+                n_fns_src = n_fns_src,
+                npars_exported_mn = npars_exported_mn,
+                npars_exported_md = npars_exported_md,
+                loc_per_fn_r_mn = loc_per_fn_r_mn,
+                loc_per_fn_r_mn = loc_per_fn_r_md,
+                loc_per_fn_r_exp_mn = loc_per_fn_r_exp_mn,
+                loc_per_fn_r_exp_md = loc_per_fn_r_exp_md,
+                loc_per_fn_r_not_exp_mn = loc_per_fn_r_not_exp_mn,
+                loc_per_fn_r_not_exp_md = loc_per_fn_r_not_exp_md,
+                loc_per_fn_src_mn = loc_per_fn_src_mn,
+                loc_per_fn_src_md = loc_per_fn_src_md,
+                languages = languages,
+                doclines_per_fn_exp_mn = doclines_per_fn_exp_mn,
+                doclines_per_fn_exp_md = doclines_per_fn_exp_md,
+                doclines_per_fn_not_exp_mn = doclines_per_fn_not_exp_mn,
+                doclines_per_fn_not_exp_md = doclines_per_fn_not_exp_md,
+                docchars_per_par_exp_mn = docchars_per_par_exp_mn,
+                docchars_per_par_exp_md = docchars_per_par_exp_md)
+
 }
