@@ -14,7 +14,9 @@ rd_stats <- function (path) {
         params <- lapply (rd_files, get_one_params)
         )
     params <- do.call (rbind, params)
-    params_sp <- split (params, f = factor (params$alias))
+    params_sp <- NULL
+    if (!is.null (params))
+        params_sp <- split (params, f = factor (params$alias))
 
     n <- vapply (params_sp, function (i) {
                 ret <- 0L
