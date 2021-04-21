@@ -4,10 +4,14 @@
 \alias{pkgstats_from_archive}
 \title{Trawl a local CRAN archive and extract statistics from all packages}
 \usage{
-pkgstats_from_archive(path)
+pkgstats_from_archive(path, archive = TRUE)
 }
 \arguments{
 \item{path}{Path to local CRAN archive}
+
+\item{archive}{If \code{TRUE}, extract statistics for all packages in the
+\verb{/Archive} sub-directory, otherwise only statistics for main \code{tarballs}
+directory (that is, current packages only).}
 }
 \description{
 Trawl a local CRAN archive and extract statistics from all packages
