@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.085</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.088</span>
       </span>
     </div>
 
@@ -117,7 +117,7 @@
     <p>Trawl a local CRAN archive and extract statistics from all packages</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pkgstats_from_archive</span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>pkgstats_from_archive</span><span class='op'>(</span><span class='va'>path</span>, archive <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -125,6 +125,12 @@
     <tr>
       <th>path</th>
       <td><p>Path to local CRAN archive</p></td>
+    </tr>
+    <tr>
+      <th>archive</th>
+      <td><p>If <code>TRUE</code>, extract statistics for all packages in the
+<code>/Archive</code> sub-directory, otherwise only statistics for main <code>tarballs</code>
+directory (that is, current packages only).</p></td>
     </tr>
     </table>
 
