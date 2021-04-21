@@ -65,7 +65,7 @@ desc_stats <- function (path) {
                     NA_character_)
 
     desc_date <- ifelse ("Date.Publication" %in% names (d),
-                         d$Date.Publication,
+                         gsub ("\\sUTC$", "", d$Date.Publication),
                          paste0 (file.info (desc)$mtime))
 
     data.frame (package = d$Package,
