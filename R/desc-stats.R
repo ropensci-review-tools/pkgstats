@@ -64,9 +64,13 @@ desc_stats <- function (path) {
                     d$BugReports,
                     NA_character_)
 
+    desc_date <- ifelse ("Date.Publication" %in% names (d),
+                         d$Date.Publication,
+                         paste0 (file.info (desc)$mtime))
+
     data.frame (package = d$Package,
                 version = d$Version,
-                date = d$Date.Publication,
+                date = desc_date,
                 license = license,
                 urls = urls,
                 bugs = bugs,
