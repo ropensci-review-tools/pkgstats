@@ -19,9 +19,15 @@ pkgstats_from_archive <- function (path) {
     clusters <- parallel::makeCluster (ncl)
     doParallel::registerDoParallel (clusters)
 
-    res <- pbapply::pblapply (flist, function (i)
-                              pkgstats::pkgstats_summary (pkgstats::pkgstats (i)),
-                              cl = clusters)
+    res <- pbapply::pblapply (flist, function (i) {
+                                  s <- tryCatch (pkgstats (i),
+                                                 error = function (e) NULL)
+                                  res <- NULL
+                                  if (!is.null (s))
+                                      res <- pkgstats_summary (s)
+                                  return (res)
+                         },
+                         cl = clusters)
 
     parallel::stopCluster (clusters)
 
