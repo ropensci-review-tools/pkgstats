@@ -70,7 +70,6 @@ cloc_summary <- function (x) {
     # no pipes here
     xg <- dplyr::group_by (x, source)
     x <- dplyr::summarise (xg,
-                           source = source [1],
                            file_count = sum (file_count),
                            loc = sum (loc),
                            blank_lines = sum (blank_lines),
