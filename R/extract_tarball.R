@@ -49,11 +49,11 @@ rename_files_in_r <- function (path) {
     fr <- normalizePath (list.files (file.path (path, "R"),
                                      full.names = TRUE))
 
-    index <- which (!grepl ("\\.r$", fr))
+    index <- grep ("(\\s$|\\q$)", fr, ignore.case = TRUE)
+
+    chk <- TRUE
 
     if (length (index) > 0) {
-
-        chk <- NULL
 
         for (f in fr [index]) {
 
