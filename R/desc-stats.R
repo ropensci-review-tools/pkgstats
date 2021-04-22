@@ -84,16 +84,20 @@ desc_stats <- function (path) {
 extract_deps <- function (d, type = "Depends") {
 
     res <- d [[type]]
-    if (type == "Depends")
-        res <- res [which (!grepl ("^R\\s", res))]
     res <- ifelse (length (res) == 0, NA_character_, res)
-
     res <- strsplit (res, ",") [[1]]
+
+    if (type == "Depends") {
+        res <- res [which (!grepl ("^R(\\s|\\()", res))]
+        res <- ifelse (length (res) == 0, NA_character_, res)
+    }
+
     res <- vapply (res, function (i)
-                       strsplit (gsub ("^\\s+", "", i),
-                                 "\\s|\\\\n") [[1]] [1],
+                       strsplit (i, "\\(") [[1]] [1],
                        character (1),
                        USE.NAMES = FALSE)
+
+    res <- gsub ("^\\s+|\\s+$", "", res)
 
     return (paste0 (res, collapse = ", "))
 }
