@@ -40,7 +40,8 @@ get_data_stats <- function (path) {
 
         flist <- list.files (file.path (path, "data"),
                              full.names = TRUE,
-                             pattern = ".rda")
+                             pattern = "\\.rd",
+                             ignore.case = TRUE)
         sizes <- vapply (flist, function (i)
                          file.info (i)$size,
                          numeric (1),
