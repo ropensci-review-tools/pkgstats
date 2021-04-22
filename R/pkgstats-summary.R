@@ -60,6 +60,8 @@ cloc_summary <- function (x) {
         return (x)
     }
 
+    # R shouldn't ever be missing, but maybe? (BDR's boot pkg comes close)
+    x <- add_if_missing (x, "R") 
     x <- add_if_missing (x, "src")
     x <- add_if_missing (x, "include")
     x <- add_if_missing (x, "vignettes")
