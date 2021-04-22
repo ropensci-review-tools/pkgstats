@@ -43,6 +43,8 @@ pkgstats <- function (path) {
 
     tags <- tags_data (path)
 
+    translations <- get_translations (path)
+
     if (tarball)
         chk <- unlink (path, recursive = TRUE)
 
@@ -51,6 +53,7 @@ pkgstats <- function (path) {
                          demos = num_demos),
           data_stats = data_stats,
           desc = s2,
+          translations = translations,
           code_has_tabs = tags$has_tabs,
           objects = add_src_to_fn_data (fns, tags$stats),
           network = tags$network)

@@ -19,6 +19,7 @@ pkgstats_summary <- function (s) {
     out$num_data_files <- s$data_stats [1]
     out$data_size_total <- s$data_stats [2]
     out$data_size_median <- s$data_stats [3]
+    out$translations <- paste0 (s$translations, collapse = ", ")
 
     out <- cbind (out, desc_summary (s$desc))
 

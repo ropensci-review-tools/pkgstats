@@ -53,3 +53,21 @@ get_data_stats <- function (path) {
 
     return (nd)
 }
+
+# https://cran.r-project.org/doc/manuals/R-exts.html#Preparing-translations
+# https://cran.r-project.org/doc/manuals/R-admin.html#Localization-of-messages
+# https://developer.r-project.org/TranslationTeams.html
+get_translations <- function (path) {
+
+    ll <- NA_character_
+
+    po_dir <- normalizePath (file.path (path, "po"))
+
+    if (file.exists (po_dir)) {
+
+        ll <- gsub ("^R-|\\.po$", "",
+                    list.files (po_dir, pattern = "\\.po$"))
+    }
+
+    return (unique (ll))
+}
