@@ -23,7 +23,7 @@ ctags_test <- function () {
     system (cmd)
 
     # remove header lines:
-    x <- readLines (f_out)
+    x <- brio::read_lines (f_out)
     x <- x [-which (grepl ("^\\!", x))]
     writeLines (x, con = f_out)
 

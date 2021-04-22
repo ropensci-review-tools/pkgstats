@@ -26,7 +26,7 @@ get_num_demos <- function (path) {
     if ("demo" %in% list.files (path)) {
         
         dindex <- file.path (path, "demo", "00Index")
-        nd <- length (readLines (dindex))
+        nd <- length (brio::read_lines (dindex))
     }
 
     return (nd)
@@ -61,7 +61,7 @@ get_translations <- function (path) {
 
     ll <- NA_character_
 
-    po_dir <- normalizePath (file.path (path, "po"))
+    po_dir <- normalizePath (file.path (path, "po"), mustWork = FALSE)
 
     if (file.exists (po_dir)) {
 

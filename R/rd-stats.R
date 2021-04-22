@@ -33,7 +33,7 @@ rd_stats <- function (path) {
     # excluce imported fns:
     nmspc <- file.path (path, "NAMESPACE")
     checkmate::assert_file (nmspc)
-    nmspc <- readLines (nmspc)
+    nmspc <- brio::read_lines (nmspc)
 
     imports <- grep ("^importFrom", nmspc, value = TRUE)
     imports <- unlist (lapply (strsplit (imports, ","),
@@ -81,7 +81,7 @@ get_one_params <- function (man_file) {
     #rd <- tools::parse_Rd (man_file)
     # Rd comments (per sec 2.1 of Extensions manual) can muck up parsing, so
     # must be removed
-    x <- readLines (man_file)
+    x <- brio::read_lines (man_file)
     index1 <- grep ("[^0-9]%", x)
     index2 <- grep ("\\\\%", x)
     index <- index1 [which (!index1 %in% index2)]

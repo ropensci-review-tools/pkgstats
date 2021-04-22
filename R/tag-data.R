@@ -97,7 +97,7 @@ get_ctags <- function (d = "R") {
     system (cmd)
 
     # remove header lines:
-    x <- readLines (f)
+    x <- brio::read_lines (f)
     x <- x [-which (grepl ("^\\!", x))]
     writeLines (x, con = f)
 
