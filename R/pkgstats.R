@@ -106,15 +106,39 @@ all_functions <- function (path) {
 add_src_to_fn_data <- function (fns, src) {
 
     n <- grep ("fn_name", names (fns))
-    fns <- data.frame (fns [, seq (n)],
-                       kind = "function",
-                       language = "R",
-                       fns [, seq (ncol (fns)) [-seq (n)]])
 
-    src$exported <- FALSE
-    nms <- names (fns) [which (!names (fns) %in% names (src))]
-    for (n in nms)
-        src [n] <- NA_integer_
+    if (length (n) == 0) { # data-only packages
+
+        fns <- data.frame (file_name = NA_character_,
+                           fn_name = NA_character_,
+                           kind = NA_character_,
+                           language = NA_character_,
+                           loc = 0L,
+                           npars = NA_integer_,
+                           has_dots = FALSE,
+                           exported = FALSE,
+                           param_nchars_md = NA_integer_,
+                           param_nchars_mn = NA_integer_,
+                           num_doclines = NA_integer_)
+    } else {
+
+        fns <- data.frame (fns [, seq (n)], # file_name, fn_name
+                           kind = "function",
+                           language = "R",
+                           fns [, seq (ncol (fns)) [-seq (n)]])
+    }
+
+    if (all (is.na (src$file_name))) {
+
+        src <- NULL
+
+    } else {
+
+        src$exported <- FALSE
+        nms <- names (fns) [which (!names (fns) %in% names (src))]
+        for (n in nms)
+            src [n] <- NA_integer_
+    }
 
     return (rbind (fns, src))
 }

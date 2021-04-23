@@ -61,44 +61,62 @@ cloc_summary <- function (x) {
         return (x)
     }
 
+    has_code <- any (x$file_count > 0) # data-only pkgs may have no code at all
+
     # R shouldn't ever be missing, but maybe? (BDR's boot pkg comes close)
-    x <- add_if_missing (x, "R")
-    x <- add_if_missing (x, "src")
-    x <- add_if_missing (x, "include")
-    x <- add_if_missing (x, "vignettes")
-    x <- add_if_missing (x, "tests")
+    if (has_code) {
 
-    # suppress no visible binding notes
-    file_count <- loc <- blank_lines <- comment_lines <- NULL
-    # no pipes here
-    xg <- dplyr::group_by (x, source)
-    x <- dplyr::summarise (xg,
-                           file_count = sum (file_count),
-                           loc = sum (loc),
-                           blank_lines = sum (blank_lines),
-                           comment_lines = sum (comment_lines))
+        x <- add_if_missing (x, "R")
+        x <- add_if_missing (x, "src")
+        x <- add_if_missing (x, "include")
+        x <- add_if_missing (x, "vignettes")
+        x <- add_if_missing (x, "tests")
 
-    data.frame (files_R = x$file_count [x$source == "R"],
-                files_src = x$file_count [x$source == "src"],
-                files_inst = x$file_count [x$source == "include"],
-                files_vignettes = x$file_count [x$source == "vignettes"],
-                files_tests = x$file_count [x$source == "tests"],
-                loc_R = x$loc [x$source == "R"],
-                loc_src = x$loc [x$source == "src"],
-                loc_inst = x$loc [x$source == "include"],
-                loc_vignettes = x$loc [x$source == "vignettes"],
-                loc_tests = x$loc [x$source == "tests"],
-                blank_lines_R = x$blank_lines [x$source == "R"],
-                blank_lines_src = x$blank_lines [x$source == "src"],
-                blank_lines_inst = x$blank_lines [x$source == "include"],
-                blank_lines_vignettes = x$blank_lines [x$source == "vignettes"],
-                blank_lines_tests = x$blank_lines [x$source == "tests"],
-                comment_lines_R = x$comment_lines [x$source == "R"],
-                comment_lines_src = x$comment_lines [x$source == "src"],
-                comment_lines_inst = x$comment_lines [x$source == "include"],
-                comment_lines_vignettes = x$comment_lines [x$source ==
-                                                           "vignettes"],
-                comment_lines_tests = x$comment_lines [x$source == "tests"])
+        # suppress no visible binding notes
+        file_count <- loc <- blank_lines <- comment_lines <- NULL
+        # no pipes here
+        xg <- dplyr::group_by (x, source)
+        x <- dplyr::summarise (xg,
+                               file_count = sum (file_count),
+                               loc = sum (loc),
+                               blank_lines = sum (blank_lines),
+                               comment_lines = sum (comment_lines))
+    }
+
+    dirs <- c ("R", "src", "include", "vignettes", "tests")
+    for (d in dirs) {
+
+        tmp <- ifelse (has_code, x$file_count [x$source == d], 0L)
+        assign (paste0 ("files_", d), tmp)
+        tmp <- ifelse (has_code, x$loc [x$source == d], 0L)
+        assign (paste0 ("loc_", d), tmp)
+        tmp <- ifelse (has_code, x$blank_lines [x$source == d], 0L)
+        assign (paste0 ("blank_lines_", d), tmp)
+        tmp <- ifelse (has_code, x$comment_lines [x$source == d], 0L)
+        assign (paste0 ("comment_lines_", d), tmp)
+    }
+
+
+    data.frame (files_R = files_R,
+                files_src = files_src,
+                files_inst = files_include,
+                files_vignettes = files_vignettes,
+                files_tests = files_tests,
+                loc_R = loc_R,
+                loc_src = loc_src,
+                loc_inst = loc_include,
+                loc_vignettes = loc_vignettes,
+                loc_tests = loc_tests,
+                blank_lines_R = blank_lines_R,
+                blank_lines_src = blank_lines_src,
+                blank_lines_inst = blank_lines_include,
+                blank_lines_vignettes = blank_lines_vignettes,
+                blank_lines_tests = blank_lines_tests,
+                comment_lines_R = comment_lines_R,
+                comment_lines_src = comment_lines_src,
+                comment_lines_inst = comment_lines_include,
+                comment_lines_vignettes = comment_lines_vignettes,
+                comment_lines_tests = comment_lines_tests)
 }
 
 #' @param x the 'desc' components of 'pkgstats' output

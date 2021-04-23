@@ -21,7 +21,8 @@ tags_data <- function (path) {
 
         gtags <- withr::with_dir (path, get_gtags ())
         ctags <- dplyr::arrange (rbind (tags_src, tags_inst), file, start)
-        ctags <- dplyr::filter (ctags, kind %in% c ("class", "function", "struct"))
+        ctags <- dplyr::filter (ctags, kind %in%
+                                c ("class", "function", "struct"))
         gtags$from <- NA_character_
         for (f in unique (ctags$file))
             gtags <- gtags_from_one_file (ctags, gtags, f)
@@ -136,7 +137,7 @@ rm_tabs <- function (d) {
                                         full.names = TRUE,
                                         recursive = TRUE))
 
-    has_tabs <- FALSE 
+    has_tabs <- FALSE
 
     for (f in files) {
         x <- suppressWarnings (brio::read_lines (f))
@@ -166,9 +167,9 @@ get_gtags <- function () {
                     readr::col_character ())
     suppressWarnings (
         gtags <- readr::read_delim (x,
-                                    delim = "\t",
-                                    col_names = c ("tag", "line", "file", "content"),
-                                    col_types = ctypes)
+                            delim = "\t",
+                            col_names = c ("tag", "line", "file", "content"),
+                            col_types = ctypes)
         )
 
     # rm header files:
@@ -183,9 +184,9 @@ get_gtags <- function () {
 gtags_from_one_file <- function (ctags, gtags, f) {
 
     ctags_f <- ctags [ctags$file == f, ]
-    # tags are duplicated for things like class constructors. The duplications are
-    # always embedded within the main definition, so simply removing them reduces
-    # line ranges to main definition only.
+    # tags are duplicated for things like class constructors. The duplications
+    # are always embedded within the main definition, so simply removing them
+    # reduces line ranges to main definition only.
     ctags_f <- ctags_f [which (!duplicated (ctags_f$tag)), ]
     # end lines are not always given, as in Fortran code for which ctags works
     # but gtags does not
@@ -259,7 +260,6 @@ add_igraph_stats <- function (g, directed = TRUE) {
 
     g_igr <- igraph::graph_from_data_frame (g [, c ("from", "to")],
                                             directed = directed)
-    v <- igraph::V (g_igr)
 
     cl <- igraph::clusters (g_igr)
     index <- match (g$from, names (cl$membership))
@@ -279,14 +279,27 @@ add_igraph_stats <- function (g, directed = TRUE) {
 #' @noRd
 src_stats <- function (tags) {
 
-    res <- data.frame (file_name = tags$file,
-                       fn_name = tags$tag,
-                       kind = tags$kind,
-                       language = gsub ("^language:", "", tags$language),
-                       loc = tags$end - tags$start + 1,
+    res <- data.frame (file_name = NA_character_,
+                       fn_name = NA_character_,
+                       kind = NA_character_,
+                       language = NA_character_,
+                       loc = 0L,
                        npars = NA_integer_,
                        has_dots = NA)
-    res <- res [which (!is.na (res$loc)), ]
+
+    if (!is.null (tags)) {
+
+        res <- data.frame (file_name = tags$file,
+                           fn_name = tags$tag,
+                           kind = tags$kind,
+                           language = gsub ("^language:", "", tags$language),
+                           loc = tags$end - tags$start + 1,
+                           npars = NA_integer_,
+                           has_dots = NA)
+        res <- res [which (!is.na (res$loc)), ]
+    }
+
+    return (res)
 }
 
 #' @param x result of one get_ctags call, which may be `NULL`
