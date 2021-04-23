@@ -108,6 +108,8 @@ get_one_params <- function (man_file) {
                            alias = aliases)
     } else {
         params <- strsplit (params, "\\n") [[1]]
+        # rm lines with initial Rd comments, but params may still fail to parse
+        # when comments occur later in lines.
         params <- params [which (nchar (params) > 0 & !grepl ("^\\s?%", params))]
         params <- paste0 (params, collapse = "\n")
 
