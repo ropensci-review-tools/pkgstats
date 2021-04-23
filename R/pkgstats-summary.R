@@ -62,7 +62,7 @@ cloc_summary <- function (x) {
     }
 
     # R shouldn't ever be missing, but maybe? (BDR's boot pkg comes close)
-    x <- add_if_missing (x, "R") 
+    x <- add_if_missing (x, "R")
     x <- add_if_missing (x, "src")
     x <- add_if_missing (x, "include")
     x <- add_if_missing (x, "vignettes")
@@ -207,7 +207,7 @@ object_summary <- function (x) {
 network_summary <- function (x) {
 
     n_clusters <- length (unique (x$cluster_dir))
-    n_edges <- nrow (x)
+    n_edges <- ifelse (is.null (x), 0L, nrow (x))
 
     dirs <- vapply (x$file, function (i)
                     strsplit (i, .Platform$file.sep) [[1]] [1],
@@ -216,22 +216,46 @@ network_summary <- function (x) {
     n_edges_r <- length (which (dirs == "R"))
     n_edges_src <- length (which (dirs != "R"))
 
-    centrality_dir_mn <- mean (x$centrality_dir, na.rm = TRUE)
-    centrality_dir_mn_no0 <- mean (x$centrality_dir [x$centrality_dir > 0],
-                                   na.rm = TRUE)
-    centrality_dir_md <- stats::median (x$centrality_dir, na.rm = TRUE)
-    centrality_dir_md_no0 <-
-        stats::median (x$centrality_dir [x$centrality_dir > 0], na.rm = TRUE)
+    centrality_dir_mn <-
+        centrality_dir_mn_no0 <-
+        centrality_dir_md <-
+        centrality_dir_md_no0 <-
+        centrality_undir_mn <-
+        centrality_undir_mn_no0 <-
+        centrality_undir_md <-
+        centrality_undir_md_no0 <- NA_integer_
 
-    cu <- x$centrality_undir [x$centrality_undir > 0]
-    centrality_undir_mn <- mean (x$centrality_undir, na.rm = TRUE)
-    centrality_undir_mn_no0 <- mean (cu, na.rm = TRUE)
-    centrality_undir_md <- stats::median (x$centrality_undir, na.rm = TRUE)
-    centrality_undir_md_no0 <- stats::median (cu, na.rm = TRUE)
+    if (nrow (x) > 0) {
+
+        centrality_dir_mn <- mean (x$centrality_dir, na.rm = TRUE)
+        centrality_dir_mn_no0 <- mean (x$centrality_dir [x$centrality_dir > 0],
+                                       na.rm = TRUE)
+        centrality_dir_md <- stats::median (x$centrality_dir, na.rm = TRUE)
+        centrality_dir_md_no0 <-
+            stats::median (x$centrality_dir [x$centrality_dir > 0],
+                           na.rm = TRUE)
+
+        cu <- x$centrality_undir [x$centrality_undir > 0]
+        centrality_undir_mn <- mean (x$centrality_undir, na.rm = TRUE)
+        centrality_undir_mn_no0 <- mean (cu, na.rm = TRUE)
+        centrality_undir_md <- stats::median (x$centrality_undir, na.rm = TRUE)
+        centrality_undir_md_no0 <- stats::median (cu, na.rm = TRUE)
+    }
 
     from <- to <- NULL # suppress no visible binding notes
-    node_degree <- dplyr::group_by (x, from)
-    node_degree <- dplyr::count (node_degree, to)
+    node_degree <-
+        node_degree_mn <-
+        node_degree_md <-
+        node_degree_max <- 0L
+
+    if (nrow (x) > 0) {
+
+        node_degree <- dplyr::group_by (x, from)
+        node_degree <- dplyr::count (node_degree, to)
+        node_degree_mn <- mean (node_degree$n)
+        node_degree_md <- stats::median (node_degree$n)
+        node_degree_max <- max (node_degree$n)
+    }
 
     data.frame (n_edges = n_edges,
                 n_edges_r = n_edges_r,
@@ -245,7 +269,7 @@ network_summary <- function (x) {
                 centrality_undir_md = centrality_undir_md,
                 centrality_undir_mn_no0 = centrality_undir_mn_no0,
                 centrality_undir_md_no0 = centrality_undir_md_no0,
-                node_degree_mn = mean (node_degree$n),
-                node_degree_md = stats::median (node_degree$n),
-                node_degree_max = max (node_degree$n))
+                node_degree_mn = node_degree_mn,
+                node_degree_md = node_degree_md,
+                node_degree_max = node_degree_max)
 }
