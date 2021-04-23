@@ -136,6 +136,7 @@ rm_tabs <- function (d) {
     files <- normalizePath (list.files (d,
                                         full.names = TRUE,
                                         recursive = TRUE))
+    files <- files [which (!grepl ("(\\.r[[:alpha:]])|\\.o|\\.so", files))]
 
     has_tabs <- FALSE
 
