@@ -43,9 +43,12 @@ tags_data <- function (path) {
     network <- rbind (call_graph_r, call_graph_src)
     network <- network [which (!is.na (network$from)), ]
 
-    network <- add_igraph_stats (network, directed = TRUE)
-    network <- add_igraph_stats (network, directed = FALSE)
-    network$line2 <- NULL
+    if (nrow (network) > 0) {
+
+        network <- add_igraph_stats (network, directed = TRUE)
+        network <- add_igraph_stats (network, directed = FALSE)
+        network$line2 <- NULL
+    }
 
     return (list (network = network,
                   stats = src_stats (rbind (tags_r, tags_src, tags_inst)),
