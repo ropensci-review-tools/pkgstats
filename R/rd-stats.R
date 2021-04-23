@@ -107,7 +107,12 @@ get_one_params <- function (man_file) {
                            nchar = NA_integer_,
                            alias = aliases)
     } else {
-        params <- as.list (parse (text = params))
+        params <- strsplit (params, "\\n") [[1]]
+        params <- params [which (nchar (params) > 0 & !grepl ("^\\s?%", params))]
+        params <- paste0 (params, collapse = "\n")
+
+        params <- tryCatch (as.list (parse (text = params)),
+                            error = function (e) NULL)
         nms <- lapply (params, function (i) {
                            i <- as.list (i)
                            nm <- NA_character_
@@ -128,14 +133,17 @@ get_one_params <- function (man_file) {
         res <- data.frame (parameter = par_name,
                            nchar = nchars)
 
-        res <- lapply (aliases, function (i) {
-                           res$alias <- i
-                           return (res)  })
+        if (nrow (res) > 0) {
 
-        res <- do.call (rbind, res)
+            res <- lapply (aliases, function (i) {
+                               res$alias <- i
+                               return (res)  })
+            res <- do.call (rbind, res)
+            res$doclines <- doclines
+        } else {
+            res$doclines <- integer (0)
+        }
     }
-
-    res$doclines <- doclines
 
     return (res)
 }
