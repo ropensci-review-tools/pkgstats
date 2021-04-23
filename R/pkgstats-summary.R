@@ -96,6 +96,20 @@ cloc_summary <- function (x) {
         assign (paste0 ("comment_lines_", d), tmp)
     }
 
+    if (files_R == 0)
+        loc_R <- blank_lines_R <- comment_lines_R <- NA_integer_ # nolint
+    if (files_src == 0)
+        loc_src <- blank_lines_src <- comment_lines_src <- NA_integer_
+    if (files_include == 0)
+        loc_include <-
+            blank_lines_include <-
+            comment_lines_include <- NA_integer_
+    if (files_vignettes == 0)
+        loc_vignettes <-
+            blank_lines_vignettes <-
+            comment_lines_vignettes <- NA_integer_
+    if (files_tests == 0)
+        loc_tests <- blank_lines_tests <- comment_lines_R <- NA_integer_ # nolint
 
     data.frame (files_R = files_R,
                 files_src = files_src,
