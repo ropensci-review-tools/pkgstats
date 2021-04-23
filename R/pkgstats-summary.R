@@ -83,6 +83,10 @@ cloc_summary <- function (x) {
                                comment_lines = sum (comment_lines))
     }
 
+    # no visible binding for these vars, so avoid CHK notes:
+    files_R <- files_src <- files_include <-    # nolint
+        files_vignettes <- files_tests <- NULL
+
     dirs <- c ("R", "src", "include", "vignettes", "tests")
     for (d in dirs) {
 
@@ -109,7 +113,7 @@ cloc_summary <- function (x) {
             blank_lines_vignettes <-
             comment_lines_vignettes <- NA_integer_
     if (files_tests == 0)
-        loc_tests <- blank_lines_tests <- comment_lines_R <- NA_integer_ # nolint
+        loc_tests <- blank_lines_tests <- comment_lines_tests <- NA_integer_
 
     data.frame (files_R = files_R,
                 files_src = files_src,
