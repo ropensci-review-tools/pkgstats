@@ -105,7 +105,8 @@ get_one_params <- function (man_file) {
 
         res <- data.frame (parameter = "(none)",
                            nchar = NA_integer_,
-                           alias = aliases)
+                           alias = aliases,
+                           doclines = doclines)
     } else {
         params <- strsplit (params, "\\n") [[1]]
         # rm lines with initial Rd comments, but params may still fail to parse
@@ -142,10 +143,11 @@ get_one_params <- function (man_file) {
                                return (res)  })
             res <- do.call (rbind, res)
             res$doclines <- doclines
-        } else {
-            res$doclines <- integer (0)
         }
     }
+
+    if (!"doclines" %in% names (res))
+        res$doclines <- integer (0)
 
     return (res)
 }
