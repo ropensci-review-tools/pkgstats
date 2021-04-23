@@ -242,6 +242,8 @@ network_summary <- function (x) {
         centrality_undir_mn_no0 <-
         centrality_undir_md <-
         centrality_undir_md_no0 <- NA_integer_
+    num_terminal_edges_dir <-
+        num_terminal_edges_undir <- NA_integer_
 
     if (nrow (x) > 0) {
 
@@ -258,6 +260,9 @@ network_summary <- function (x) {
         centrality_undir_mn_no0 <- mean (cu, na.rm = TRUE)
         centrality_undir_md <- stats::median (x$centrality_undir, na.rm = TRUE)
         centrality_undir_md_no0 <- stats::median (cu, na.rm = TRUE)
+
+        num_terminal_edges_dir <- length (which (x$centrality_dir == 0))
+        num_terminal_edges_undir <- length (which (x$centrality_undir == 0))
     }
 
     from <- to <- NULL # suppress no visible binding notes
@@ -287,6 +292,8 @@ network_summary <- function (x) {
                 centrality_undir_md = centrality_undir_md,
                 centrality_undir_mn_no0 = centrality_undir_mn_no0,
                 centrality_undir_md_no0 = centrality_undir_md_no0,
+                num_terminal_edges_dir = num_terminal_edges_dir,
+                num_terminal_edges_undir = num_terminal_edges_undir,
                 node_degree_mn = node_degree_mn,
                 node_degree_md = node_degree_md,
                 node_degree_max = node_degree_max)
