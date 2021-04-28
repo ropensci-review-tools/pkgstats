@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.0.0.109
+Version: 0.0.0.110
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
@@ -26,7 +26,8 @@ Imports:
     withr
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    visNetwork
 LinkingTo: 
     cpp11
 VignetteBuilder: 

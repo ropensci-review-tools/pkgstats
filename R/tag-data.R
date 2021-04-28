@@ -30,7 +30,8 @@ tags_data <- function (path) {
 
         langs <- tags_src [, c ("tag", "language")]
         langs <- langs [which (!duplicated (langs)), ]
-        gtags$language <- langs$language [match (gtags$tag, langs$tag)]
+        gtags$language <- gsub ("^language\\:", "",
+                                langs$language [match (gtags$tag, langs$tag)])
     }
 
     fns_r <- tags_r [tags_r$kind == "function", ]
