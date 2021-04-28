@@ -75,7 +75,7 @@ network of package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.110</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.111</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@ network of package.</h1>
 network of package.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_network</span><span class='op'>(</span><span class='va'>s</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>plot_network</span><span class='op'>(</span><span class='va'>s</span>, plot <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -130,6 +130,11 @@ network of package.</p>
     <tr>
       <th>s</th>
       <td><p>Package statistics obtained from <a href='pkgstats.html'>pkgstats</a> function.</p></td>
+    </tr>
+    <tr>
+      <th>plot</th>
+      <td><p>If <code>FALSE</code>, simply return the <span class="pkg">visNetwork</span> object, without
+actually plotting it.</p></td>
     </tr>
     </table>
 
