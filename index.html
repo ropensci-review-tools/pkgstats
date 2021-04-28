@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.108</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.109</span>
       </span>
     </div>
 
@@ -49,7 +49,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/mpadge/pkgstats/">
+  <a href="https://github.com/ropenscilabs/pkgstats/">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -90,10 +90,10 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>The package can be installed with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span> <span class="op">(</span><span class="st">"mpadge/pkgtest"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span> <span class="op">(</span><span class="st">"ropenscilabs/pkgtest"</span><span class="op">)</span></code></pre></div>
 <p>And then loaded for use with</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span> <span class="op">(</span><span class="va"><a href="https://mpadge.github.io/pkgstats">pkgstats</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span> <span class="op">(</span><span class="va"><a href="https://ropenscilabs.github.io/pkgstats">pkgstats</a></span><span class="op">)</span></code></pre></div>
 <p>This package requires both <a href="https://ctags.io"><code>ctags</code></a> and <a href="https://www.gnu.org/software/global/">GNU <code>global</code></a>, and includes a function to ensure your local installation of <code>ctags</code> works correctly. Please ensure you see the following prior to proceeding:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/ctags_test.html">ctags_test</a></span> <span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -115,530 +115,534 @@
     <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pkgstats.html">pkgstats</a></span> <span class="op">(</span><span class="va">f</span><span class="op">)</span>
     <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">##    user  system elapsed </span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co">##   0.688   0.059   0.736</span></span></code></pre></div>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co">##   0.871   0.136   1.114</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span> <span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">## $cloc</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="co">## # A tibble: 4 x 10</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="co">## # A tibble: 5 x 10</span></span>
 <span id="cb8-3"><a href="#cb8-3"></a><span class="co">##   source    language     file_count file_count_pct   loc loc_pct blank_lines</span></span>
 <span id="cb8-4"><a href="#cb8-4"></a><span class="co">##   &lt;chr&gt;     &lt;chr&gt;             &lt;int&gt;          &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;       &lt;int&gt;</span></span>
 <span id="cb8-5"><a href="#cb8-5"></a><span class="co">## 1 R         R                     7          0.5     163  0.5             52</span></span>
 <span id="cb8-6"><a href="#cb8-6"></a><span class="co">## 2 src       C                     2          0.333   447  0.461          121</span></span>
 <span id="cb8-7"><a href="#cb8-7"></a><span class="co">## 3 src       C/C++ Header          1          0.167    38  0.0392          12</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="co">## 4 vignettes Rmd                   2          0.5     146  0.5            205</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="co">## # … with 3 more variables: blank_line_pct &lt;dbl&gt;, comment_lines &lt;int&gt;,</span></span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="co">## #   comment_line_pct &lt;dbl&gt;</span></span>
-<span id="cb8-11"><a href="#cb8-11"></a><span class="co">## </span></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="co">## $vignettes</span></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="co">## vignettes     demos </span></span>
-<span id="cb8-14"><a href="#cb8-14"></a><span class="co">##         2         0 </span></span>
-<span id="cb8-15"><a href="#cb8-15"></a><span class="co">## </span></span>
-<span id="cb8-16"><a href="#cb8-16"></a><span class="co">## $data_stats</span></span>
-<span id="cb8-17"><a href="#cb8-17"></a><span class="co">##           n  total_size median_size </span></span>
-<span id="cb8-18"><a href="#cb8-18"></a><span class="co">##           0           0           0 </span></span>
-<span id="cb8-19"><a href="#cb8-19"></a><span class="co">## </span></span>
-<span id="cb8-20"><a href="#cb8-20"></a><span class="co">## $desc</span></span>
-<span id="cb8-21"><a href="#cb8-21"></a><span class="co">##    package version                    date            license</span></span>
-<span id="cb8-22"><a href="#cb8-22"></a><span class="co">## 1 magrittr   2.0.1 2020-11-17 16:20:06 UTC MIT + file LICENSE</span></span>
-<span id="cb8-23"><a href="#cb8-23"></a><span class="co">##                                                                     urls</span></span>
-<span id="cb8-24"><a href="#cb8-24"></a><span class="co">## 1 https://magrittr.tidyverse.org,\nhttps://github.com/tidyverse/magrittr</span></span>
-<span id="cb8-25"><a href="#cb8-25"></a><span class="co">##                                           bugs aut ctb fnd rev ths trl depends</span></span>
-<span id="cb8-26"><a href="#cb8-26"></a><span class="co">## 1 https://github.com/tidyverse/magrittr/issues   2   0   1   0   0   0      NA</span></span>
-<span id="cb8-27"><a href="#cb8-27"></a><span class="co">##   imports                                suggests linking_to</span></span>
-<span id="cb8-28"><a href="#cb8-28"></a><span class="co">## 1      NA covr, knitr, rlang, rmarkdown, testthat         NA</span></span>
-<span id="cb8-29"><a href="#cb8-29"></a><span class="co">## </span></span>
-<span id="cb8-30"><a href="#cb8-30"></a><span class="co">## $code_has_tabs</span></span>
-<span id="cb8-31"><a href="#cb8-31"></a><span class="co">## [1] TRUE</span></span>
-<span id="cb8-32"><a href="#cb8-32"></a><span class="co">## </span></span>
-<span id="cb8-33"><a href="#cb8-33"></a><span class="co">## $objects</span></span>
-<span id="cb8-34"><a href="#cb8-34"></a><span class="co">##           file_name                fn_name        kind language loc npars</span></span>
-<span id="cb8-35"><a href="#cb8-35"></a><span class="co">## 1         aliases.R                extract    function        R   1    NA</span></span>
-<span id="cb8-36"><a href="#cb8-36"></a><span class="co">## 2         aliases.R               extract2    function        R   1    NA</span></span>
-<span id="cb8-37"><a href="#cb8-37"></a><span class="co">## 3         aliases.R             use_series    function        R   1    NA</span></span>
-<span id="cb8-38"><a href="#cb8-38"></a><span class="co">## 4         aliases.R                    add    function        R   1    NA</span></span>
-<span id="cb8-39"><a href="#cb8-39"></a><span class="co">## 5         aliases.R               subtract    function        R   1    NA</span></span>
-<span id="cb8-40"><a href="#cb8-40"></a><span class="co">## 6         aliases.R            multiply_by    function        R   1    NA</span></span>
-<span id="cb8-41"><a href="#cb8-41"></a><span class="co">## 7         aliases.R     multiply_by_matrix    function        R   1    NA</span></span>
-<span id="cb8-42"><a href="#cb8-42"></a><span class="co">## 8         aliases.R              divide_by    function        R   1    NA</span></span>
-<span id="cb8-43"><a href="#cb8-43"></a><span class="co">## 9         aliases.R          divide_by_int    function        R   1    NA</span></span>
-<span id="cb8-44"><a href="#cb8-44"></a><span class="co">## 10        aliases.R         raise_to_power    function        R   1    NA</span></span>
-<span id="cb8-45"><a href="#cb8-45"></a><span class="co">## 11        aliases.R                    and    function        R   1    NA</span></span>
-<span id="cb8-46"><a href="#cb8-46"></a><span class="co">## 12        aliases.R                     or    function        R   1    NA</span></span>
-<span id="cb8-47"><a href="#cb8-47"></a><span class="co">## 13        aliases.R                    mod    function        R   1    NA</span></span>
-<span id="cb8-48"><a href="#cb8-48"></a><span class="co">## 14        aliases.R                  is_in    function        R   1    NA</span></span>
-<span id="cb8-49"><a href="#cb8-49"></a><span class="co">## 15        aliases.R                 equals    function        R   1    NA</span></span>
-<span id="cb8-50"><a href="#cb8-50"></a><span class="co">## 16        aliases.R        is_greater_than    function        R   1    NA</span></span>
-<span id="cb8-51"><a href="#cb8-51"></a><span class="co">## 17        aliases.R is_weakly_greater_than    function        R   1    NA</span></span>
-<span id="cb8-52"><a href="#cb8-52"></a><span class="co">## 18        aliases.R           is_less_than    function        R   1    NA</span></span>
-<span id="cb8-53"><a href="#cb8-53"></a><span class="co">## 19        aliases.R    is_weakly_less_than    function        R   1    NA</span></span>
-<span id="cb8-54"><a href="#cb8-54"></a><span class="co">## 20        aliases.R                    not    function        R   1    NA</span></span>
-<span id="cb8-55"><a href="#cb8-55"></a><span class="co">## 21        aliases.R              n'est pas    function        R   1    NA</span></span>
-<span id="cb8-56"><a href="#cb8-56"></a><span class="co">## 22        aliases.R           set_colnames    function        R   1    NA</span></span>
-<span id="cb8-57"><a href="#cb8-57"></a><span class="co">## 23        aliases.R           set_rownames    function        R   1    NA</span></span>
-<span id="cb8-58"><a href="#cb8-58"></a><span class="co">## 24        aliases.R              set_names    function        R   1    NA</span></span>
-<span id="cb8-59"><a href="#cb8-59"></a><span class="co">## 25        aliases.R              set_class    function        R   1    NA</span></span>
-<span id="cb8-60"><a href="#cb8-60"></a><span class="co">## 26        aliases.R                  inset    function        R   1    NA</span></span>
-<span id="cb8-61"><a href="#cb8-61"></a><span class="co">## 27        aliases.R                 inset2    function        R   1    NA</span></span>
-<span id="cb8-62"><a href="#cb8-62"></a><span class="co">## 28        aliases.R               set_attr    function        R   1    NA</span></span>
-<span id="cb8-63"><a href="#cb8-63"></a><span class="co">## 29        aliases.R         set_attributes    function        R   1    NA</span></span>
-<span id="cb8-64"><a href="#cb8-64"></a><span class="co">## 30     debug_pipe.R             debug_pipe    function        R   4     1</span></span>
-<span id="cb8-65"><a href="#cb8-65"></a><span class="co">## 31     debug_pipe.R             debug_fseq    function        R   8     2</span></span>
-<span id="cb8-66"><a href="#cb8-66"></a><span class="co">## 32     debug_pipe.R           undebug_fseq    function        R   4     1</span></span>
-<span id="cb8-67"><a href="#cb8-67"></a><span class="co">## 33        freduce.R                freduce    function        R  15     2</span></span>
-<span id="cb8-68"><a href="#cb8-68"></a><span class="co">## 34      functions.R              functions    function        R   5     1</span></span>
-<span id="cb8-69"><a href="#cb8-69"></a><span class="co">## 35      functions.R             print.fseq    function        R   9     2</span></span>
-<span id="cb8-70"><a href="#cb8-70"></a><span class="co">## 36        getters.R                [[.fseq    function        R   3     2</span></span>
-<span id="cb8-71"><a href="#cb8-71"></a><span class="co">## 37        getters.R                 [.fseq    function        R   6     2</span></span>
-<span id="cb8-72"><a href="#cb8-72"></a><span class="co">## 38       magrittr.R                .onLoad    function        R   3     2</span></span>
-<span id="cb8-73"><a href="#cb8-73"></a><span class="co">## 39           pipe.R                    %&gt;%    function        R   8     2</span></span>
-<span id="cb8-74"><a href="#cb8-74"></a><span class="co">## 40           pipe.R     pipe_eager_lexical    function        R   8     2</span></span>
-<span id="cb8-75"><a href="#cb8-75"></a><span class="co">## 41           pipe.R      pipe_lazy_masking    function        R   9     2</span></span>
-<span id="cb8-76"><a href="#cb8-76"></a><span class="co">## 42           pipe.R            pipe_nested    function        R   9     2</span></span>
-<span id="cb8-77"><a href="#cb8-77"></a><span class="co">## 43           pipe.R                   %&lt;&gt;%    function        R   8     2</span></span>
-<span id="cb8-78"><a href="#cb8-78"></a><span class="co">## 44           pipe.R                   %T&gt;%    function        R   8     2</span></span>
-<span id="cb8-79"><a href="#cb8-79"></a><span class="co">## 45           pipe.R                    %$%    function        R   8     2</span></span>
-<span id="cb8-80"><a href="#cb8-80"></a><span class="co">## 46           pipe.R             new_lambda    function        R   5     2</span></span>
-<span id="cb8-81"><a href="#cb8-81"></a><span class="co">## 47           pipe.R            lambda_fmls    function        R   1     2</span></span>
-<span id="cb8-82"><a href="#cb8-82"></a><span class="co">## 48           pipe.R             as_pipe_fn    function        R   3     2</span></span>
-<span id="cb8-83"><a href="#cb8-83"></a><span class="co">## 156    R/magrittr.R                .onLoad    function        R   3    NA</span></span>
-<span id="cb8-84"><a href="#cb8-84"></a><span class="co">## 210        R/pipe.R                  `%$%`    function        R   8    NA</span></span>
-<span id="cb8-85"><a href="#cb8-85"></a><span class="co">## 310        R/pipe.R                 `%&lt;&gt;%`    function        R   8    NA</span></span>
-<span id="cb8-86"><a href="#cb8-86"></a><span class="co">## 410        R/pipe.R                  `%&gt;%`    function        R   8    NA</span></span>
-<span id="cb8-87"><a href="#cb8-87"></a><span class="co">## 510        R/pipe.R                 `%T&gt;%`    function        R   8    NA</span></span>
-<span id="cb8-88"><a href="#cb8-88"></a><span class="co">## 610     R/getters.R               `[.fseq`    function        R   7    NA</span></span>
-<span id="cb8-89"><a href="#cb8-89"></a><span class="co">## 710     R/getters.R              `[[.fseq`    function        R   4    NA</span></span>
-<span id="cb8-90"><a href="#cb8-90"></a><span class="co">## 84         R/pipe.R       `_function_list` functionVar        R   1    NA</span></span>
-<span id="cb8-91"><a href="#cb8-91"></a><span class="co">## 910     R/aliases.R            `n'est pas`   globalVar        R   1    NA</span></span>
-<span id="cb8-92"><a href="#cb8-92"></a><span class="co">## 1010    R/aliases.R                    add   globalVar        R   1    NA</span></span>
-<span id="cb8-93"><a href="#cb8-93"></a><span class="co">## 1110    R/aliases.R                    and   globalVar        R   1    NA</span></span>
-<span id="cb8-94"><a href="#cb8-94"></a><span class="co">## 1210  R/functions.R   anonFunc61e3f7090100    function        R   1    NA</span></span>
-<span id="cb8-95"><a href="#cb8-95"></a><span class="co">## 1310       R/pipe.R   anonFunce61bbebe0100    function        R   1    NA</span></span>
-<span id="cb8-96"><a href="#cb8-96"></a><span class="co">## 1410 R/debug_pipe.R   anonFunce7cdad840100    function        R   1    NA</span></span>
-<span id="cb8-97"><a href="#cb8-97"></a><span class="co">## 157        R/pipe.R             as_pipe_fn    function        R   3    NA</span></span>
-<span id="cb8-98"><a href="#cb8-98"></a><span class="co">## 161  R/debug_pipe.R             debug_fseq    function        R  11    NA</span></span>
-<span id="cb8-99"><a href="#cb8-99"></a><span class="co">## 171  R/debug_pipe.R             debug_pipe    function        R   5    NA</span></span>
-<span id="cb8-100"><a href="#cb8-100"></a><span class="co">## 181     R/aliases.R              divide_by   globalVar        R   1    NA</span></span>
-<span id="cb8-101"><a href="#cb8-101"></a><span class="co">## 191     R/aliases.R          divide_by_int   globalVar        R   1    NA</span></span>
-<span id="cb8-102"><a href="#cb8-102"></a><span class="co">## 201        R/pipe.R                    env functionVar        R   1    NA</span></span>
-<span id="cb8-103"><a href="#cb8-103"></a><span class="co">## 211        R/pipe.R                    env functionVar        R   1    NA</span></span>
-<span id="cb8-104"><a href="#cb8-104"></a><span class="co">## 221        R/pipe.R                    env functionVar        R   1    NA</span></span>
-<span id="cb8-105"><a href="#cb8-105"></a><span class="co">## 231        R/pipe.R                    env functionVar        R   1    NA</span></span>
-<span id="cb8-106"><a href="#cb8-106"></a><span class="co">## 241        R/pipe.R                    env functionVar        R   1    NA</span></span>
-<span id="cb8-107"><a href="#cb8-107"></a><span class="co">## 251        R/pipe.R                    env functionVar        R   1    NA</span></span>
-<span id="cb8-108"><a href="#cb8-108"></a><span class="co">## 261        R/pipe.R                    env functionVar        R   1    NA</span></span>
-<span id="cb8-109"><a href="#cb8-109"></a><span class="co">## 271     R/aliases.R                 equals   globalVar        R   1    NA</span></span>
-<span id="cb8-110"><a href="#cb8-110"></a><span class="co">## 281     R/aliases.R                extract   globalVar        R   1    NA</span></span>
-<span id="cb8-111"><a href="#cb8-111"></a><span class="co">## 291     R/aliases.R               extract2   globalVar        R   1    NA</span></span>
-<span id="cb8-112"><a href="#cb8-112"></a><span class="co">## 301   R/functions.R                  flist functionVar        R   1    NA</span></span>
-<span id="cb8-113"><a href="#cb8-113"></a><span class="co">## 311     R/freduce.R                freduce    function        R  16    NA</span></span>
-<span id="cb8-114"><a href="#cb8-114"></a><span class="co">## 321   R/functions.R              functions    function        R   6    NA</span></span>
-<span id="cb8-115"><a href="#cb8-115"></a><span class="co">## 351  R/debug_pipe.R                indices        list        R   1    NA</span></span>
-<span id="cb8-116"><a href="#cb8-116"></a><span class="co">## 361     R/aliases.R                  inset   globalVar        R   1    NA</span></span>
-<span id="cb8-117"><a href="#cb8-117"></a><span class="co">## 371     R/aliases.R                 inset2   globalVar        R   1    NA</span></span>
-<span id="cb8-118"><a href="#cb8-118"></a><span class="co">## 381     R/aliases.R        is_greater_than   globalVar        R   1    NA</span></span>
-<span id="cb8-119"><a href="#cb8-119"></a><span class="co">## 391     R/aliases.R                  is_in   globalVar        R   1    NA</span></span>
-<span id="cb8-120"><a href="#cb8-120"></a><span class="co">## 401     R/aliases.R           is_less_than   globalVar        R   1    NA</span></span>
-<span id="cb8-121"><a href="#cb8-121"></a><span class="co">## 411  R/debug_pipe.R         is_valid_index    function        R   1    NA</span></span>
-<span id="cb8-122"><a href="#cb8-122"></a><span class="co">## 421     R/aliases.R is_weakly_greater_than   globalVar        R   1    NA</span></span>
-<span id="cb8-123"><a href="#cb8-123"></a><span class="co">## 431     R/aliases.R    is_weakly_less_than   globalVar        R   1    NA</span></span>
-<span id="cb8-124"><a href="#cb8-124"></a><span class="co">## 441     R/freduce.R                      k functionVar        R   1    NA</span></span>
-<span id="cb8-125"><a href="#cb8-125"></a><span class="co">## 451        R/pipe.R                   kind functionVar        R   1    NA</span></span>
-<span id="cb8-126"><a href="#cb8-126"></a><span class="co">## 461        R/pipe.R                   kind functionVar        R   1    NA</span></span>
-<span id="cb8-127"><a href="#cb8-127"></a><span class="co">## 471        R/pipe.R                   kind functionVar        R   1    NA</span></span>
-<span id="cb8-128"><a href="#cb8-128"></a><span class="co">## 481        R/pipe.R                   kind functionVar        R   1    NA</span></span>
-<span id="cb8-129"><a href="#cb8-129"></a><span class="co">## 49         R/pipe.R                   kind functionVar        R   1    NA</span></span>
-<span id="cb8-130"><a href="#cb8-130"></a><span class="co">## 50         R/pipe.R                   kind functionVar        R   1    NA</span></span>
-<span id="cb8-131"><a href="#cb8-131"></a><span class="co">## 51         R/pipe.R                   kind functionVar        R   1    NA</span></span>
-<span id="cb8-132"><a href="#cb8-132"></a><span class="co">## 52         R/pipe.R            lambda_fmls   globalVar        R   1    NA</span></span>
-<span id="cb8-133"><a href="#cb8-133"></a><span class="co">## 53         R/pipe.R                   lazy functionVar        R   1    NA</span></span>
-<span id="cb8-134"><a href="#cb8-134"></a><span class="co">## 54         R/pipe.R                   lazy functionVar        R   1    NA</span></span>
-<span id="cb8-135"><a href="#cb8-135"></a><span class="co">## 55         R/pipe.R                   lazy functionVar        R   1    NA</span></span>
-<span id="cb8-136"><a href="#cb8-136"></a><span class="co">## 56         R/pipe.R                   lazy functionVar        R   1    NA</span></span>
-<span id="cb8-137"><a href="#cb8-137"></a><span class="co">## 57         R/pipe.R                   lazy functionVar        R   1    NA</span></span>
-<span id="cb8-138"><a href="#cb8-138"></a><span class="co">## 58      R/aliases.R                    mod   globalVar        R   1    NA</span></span>
-<span id="cb8-139"><a href="#cb8-139"></a><span class="co">## 59      R/aliases.R            multiply_by   globalVar        R   1    NA</span></span>
-<span id="cb8-140"><a href="#cb8-140"></a><span class="co">## 60      R/aliases.R     multiply_by_matrix   globalVar        R   1    NA</span></span>
-<span id="cb8-141"><a href="#cb8-141"></a><span class="co">## 61         R/pipe.R                 nested functionVar        R   1    NA</span></span>
-<span id="cb8-142"><a href="#cb8-142"></a><span class="co">## 62         R/pipe.R             new_lambda    function        R   8    NA</span></span>
-<span id="cb8-143"><a href="#cb8-143"></a><span class="co">## 63      R/aliases.R                    not   globalVar        R   1    NA</span></span>
-<span id="cb8-144"><a href="#cb8-144"></a><span class="co">## 64      R/aliases.R                     or   globalVar        R   1    NA</span></span>
-<span id="cb8-145"><a href="#cb8-145"></a><span class="co">## 65         R/pipe.R     pipe_eager_lexical    function        R   8    NA</span></span>
-<span id="cb8-146"><a href="#cb8-146"></a><span class="co">## 66         R/pipe.R      pipe_lazy_masking    function        R   9    NA</span></span>
-<span id="cb8-147"><a href="#cb8-147"></a><span class="co">## 67         R/pipe.R            pipe_nested    function        R   9    NA</span></span>
-<span id="cb8-148"><a href="#cb8-148"></a><span class="co">## 68    R/functions.R             print.fseq    function        R  10    NA</span></span>
-<span id="cb8-149"><a href="#cb8-149"></a><span class="co">## 69      R/aliases.R         raise_to_power   globalVar        R   1    NA</span></span>
-<span id="cb8-150"><a href="#cb8-150"></a><span class="co">## 70      R/aliases.R               set_attr   globalVar        R   1    NA</span></span>
-<span id="cb8-151"><a href="#cb8-151"></a><span class="co">## 71      R/aliases.R         set_attributes   globalVar        R   1    NA</span></span>
-<span id="cb8-152"><a href="#cb8-152"></a><span class="co">## 72      R/aliases.R              set_class   globalVar        R   1    NA</span></span>
-<span id="cb8-153"><a href="#cb8-153"></a><span class="co">## 73      R/aliases.R           set_colnames   globalVar        R   1    NA</span></span>
-<span id="cb8-154"><a href="#cb8-154"></a><span class="co">## 74      R/aliases.R              set_names   globalVar        R   1    NA</span></span>
-<span id="cb8-155"><a href="#cb8-155"></a><span class="co">## 75      R/aliases.R           set_rownames   globalVar        R   1    NA</span></span>
-<span id="cb8-156"><a href="#cb8-156"></a><span class="co">## 76      R/aliases.R               subtract   globalVar        R   1    NA</span></span>
-<span id="cb8-157"><a href="#cb8-157"></a><span class="co">## 77         R/pipe.R                    sym functionVar        R   1    NA</span></span>
-<span id="cb8-158"><a href="#cb8-158"></a><span class="co">## 78         R/pipe.R                    sym functionVar        R   1    NA</span></span>
-<span id="cb8-159"><a href="#cb8-159"></a><span class="co">## 79         R/pipe.R                    sym functionVar        R   1    NA</span></span>
-<span id="cb8-160"><a href="#cb8-160"></a><span class="co">## 80   R/debug_pipe.R           undebug_fseq    function        R   6    NA</span></span>
-<span id="cb8-161"><a href="#cb8-161"></a><span class="co">## 81      R/aliases.R             use_series   globalVar        R   1    NA</span></span>
-<span id="cb8-162"><a href="#cb8-162"></a><span class="co">## 82      R/getters.R                      y functionVar        R   1    NA</span></span>
-<span id="cb8-163"><a href="#cb8-163"></a><span class="co">## 83      src/utils.h       MAGRITTR_UTILS_H       macro      C++   1    NA</span></span>
-<span id="cb8-164"><a href="#cb8-164"></a><span class="co">## 89       src/pipe.c             R_NO_REMAP       macro        C   1    NA</span></span>
-<span id="cb8-165"><a href="#cb8-165"></a><span class="co">## 90      src/utils.c             R_NO_REMAP       macro        C   1    NA</span></span>
-<span id="cb8-166"><a href="#cb8-166"></a><span class="co">## 91       src/pipe.c        R_init_magrittr    function        C   4    NA</span></span>
-<span id="cb8-167"><a href="#cb8-167"></a><span class="co">## 92      src/utils.c            abort_parse    function        C   6    NA</span></span>
-<span id="cb8-168"><a href="#cb8-168"></a><span class="co">## 93       src/pipe.c                add_dot    function        C  16    NA</span></span>
-<span id="cb8-169"><a href="#cb8-169"></a><span class="co">## 94       src/pipe.c           as_pipe_call    function        C  13    NA</span></span>
-<span id="cb8-170"><a href="#cb8-170"></a><span class="co">## 95       src/pipe.c    as_pipe_dollar_call    function        C   3    NA</span></span>
-<span id="cb8-171"><a href="#cb8-171"></a><span class="co">## 96       src/pipe.c       as_pipe_tee_call    function        C   7    NA</span></span>
-<span id="cb8-172"><a href="#cb8-172"></a><span class="co">## 97       src/pipe.c           call_entries    variable        C   4    NA</span></span>
-<span id="cb8-173"><a href="#cb8-173"></a><span class="co">## 98       src/pipe.c        calls_base_with    variable        C   1    NA</span></span>
-<span id="cb8-174"><a href="#cb8-174"></a><span class="co">## 99       src/pipe.c               chrs_dot    variable        C   1    NA</span></span>
-<span id="cb8-175"><a href="#cb8-175"></a><span class="co">## 100      src/pipe.c             clean_pipe    function        C   9    NA</span></span>
-<span id="cb8-176"><a href="#cb8-176"></a><span class="co">## 101      src/pipe.c           cleanup_info      struct        C   4    NA</span></span>
-<span id="cb8-177"><a href="#cb8-177"></a><span class="co">## 102      src/pipe.c                    env      member        C   1    NA</span></span>
-<span id="cb8-178"><a href="#cb8-178"></a><span class="co">## 103      src/pipe.c                    env      member        C   1    NA</span></span>
-<span id="cb8-179"><a href="#cb8-179"></a><span class="co">## 104      src/pipe.c              eval_pipe    function        C  18    NA</span></span>
-<span id="cb8-180"><a href="#cb8-180"></a><span class="co">## 105      src/pipe.c         eval_pipe_lazy    function        C  34    NA</span></span>
-<span id="cb8-181"><a href="#cb8-181"></a><span class="co">## 106      src/pipe.c                 export       macro        C   1    NA</span></span>
-<span id="cb8-182"><a href="#cb8-182"></a><span class="co">## 107      src/pipe.c                  exprs      member        C   1    NA</span></span>
-<span id="cb8-183"><a href="#cb8-183"></a><span class="co">## 108      src/pipe.c            ext_entries    variable        C   4    NA</span></span>
-<span id="cb8-184"><a href="#cb8-184"></a><span class="co">## 109      src/pipe.c                is_bang    function        C   3    NA</span></span>
-<span id="cb8-185"><a href="#cb8-185"></a><span class="co">## 110      src/pipe.c              is_return    function        C   3    NA</span></span>
-<span id="cb8-186"><a href="#cb8-186"></a><span class="co">## 111      src/pipe.c         is_spliced_dot    function        C  17    NA</span></span>
-<span id="cb8-187"><a href="#cb8-187"></a><span class="co">## 112      src/pipe.c          magrittr_init    function        C  36    NA</span></span>
-<span id="cb8-188"><a href="#cb8-188"></a><span class="co">## 113     src/utils.c    magrittr_init_utils    function        C  12    NA</span></span>
-<span id="cb8-189"><a href="#cb8-189"></a><span class="co">## 114      src/pipe.c        magrittr_ns_env    variable        C   1    NA</span></span>
-<span id="cb8-190"><a href="#cb8-190"></a><span class="co">## 115      src/pipe.c          magrittr_pipe    function        C  64    NA</span></span>
-<span id="cb8-191"><a href="#cb8-191"></a><span class="co">## 116     src/utils.c   new_env__parent_node    variable        C   1    NA</span></span>
-<span id="cb8-192"><a href="#cb8-192"></a><span class="co">## 117     src/utils.c     new_env__size_node    variable        C   1    NA</span></span>
-<span id="cb8-193"><a href="#cb8-193"></a><span class="co">## 118     src/utils.c           new_env_call    variable        C   1    NA</span></span>
-<span id="cb8-194"><a href="#cb8-194"></a><span class="co">## 119      src/pipe.c             new_lambda    function        C   7    NA</span></span>
-<span id="cb8-195"><a href="#cb8-195"></a><span class="co">## 120      src/pipe.c                    old      member        C   1    NA</span></span>
-<span id="cb8-196"><a href="#cb8-196"></a><span class="co">## 121      src/pipe.c        parse_pipe_call    function        C  22    NA</span></span>
-<span id="cb8-197"><a href="#cb8-197"></a><span class="co">## 122      src/pipe.c              pipe_info      struct        C   4    NA</span></span>
-<span id="cb8-198"><a href="#cb8-198"></a><span class="co">## 123      src/pipe.c              pipe_kind        enum        C   7    NA</span></span>
-<span id="cb8-199"><a href="#cb8-199"></a><span class="co">## 124      src/pipe.c              pipe_nest    function        C  37    NA</span></span>
-<span id="cb8-200"><a href="#cb8-200"></a><span class="co">## 125      src/pipe.c            pipe_unroll    function        C  54    NA</span></span>
-<span id="cb8-201"><a href="#cb8-201"></a><span class="co">## 126     src/utils.c          r__env_unbind    function        C  23    NA</span></span>
-<span id="cb8-202"><a href="#cb8-202"></a><span class="co">## 127     src/utils.c        r_env_bind_lazy    function        C  18    NA</span></span>
-<span id="cb8-203"><a href="#cb8-203"></a><span class="co">## 128     src/utils.h              r_env_get    function      C++  11    NA</span></span>
-<span id="cb8-204"><a href="#cb8-204"></a><span class="co">## 129     src/utils.h           r_env_unbind    function      C++   8    NA</span></span>
-<span id="cb8-205"><a href="#cb8-205"></a><span class="co">## 130     src/utils.h      r_new_environment    function      C++   5    NA</span></span>
-<span id="cb8-206"><a href="#cb8-206"></a><span class="co">## 131     src/utils.c                r_parse    function        C  17    NA</span></span>
-<span id="cb8-207"><a href="#cb8-207"></a><span class="co">## 132     src/utils.c           r_parse_eval    function        C   5    NA</span></span>
-<span id="cb8-208"><a href="#cb8-208"></a><span class="co">## 133      src/pipe.c            syms_assign    variable        C   1    NA</span></span>
-<span id="cb8-209"><a href="#cb8-209"></a><span class="co">## 134      src/pipe.c              syms_bang    variable        C   1    NA</span></span>
-<span id="cb8-210"><a href="#cb8-210"></a><span class="co">## 135      src/pipe.c             syms_curly    variable        C   1    NA</span></span>
-<span id="cb8-211"><a href="#cb8-211"></a><span class="co">## 136     src/utils.c    syms_delayed_assign    variable        C   1    NA</span></span>
-<span id="cb8-212"><a href="#cb8-212"></a><span class="co">## 137      src/pipe.c               syms_dot    variable        C   1    NA</span></span>
-<span id="cb8-213"><a href="#cb8-213"></a><span class="co">## 138      src/pipe.c               syms_env    variable        C   1    NA</span></span>
-<span id="cb8-214"><a href="#cb8-214"></a><span class="co">## 139     src/utils.c             syms_envir    variable        C   1    NA</span></span>
-<span id="cb8-215"><a href="#cb8-215"></a><span class="co">## 140     src/utils.c          syms_inherits    variable        C   1    NA</span></span>
-<span id="cb8-216"><a href="#cb8-216"></a><span class="co">## 141      src/pipe.c              syms_kind    variable        C   1    NA</span></span>
-<span id="cb8-217"><a href="#cb8-217"></a><span class="co">## 142      src/pipe.c              syms_lazy    variable        C   1    NA</span></span>
-<span id="cb8-218"><a href="#cb8-218"></a><span class="co">## 143      src/pipe.c               syms_lhs    variable        C   1    NA</span></span>
-<span id="cb8-219"><a href="#cb8-219"></a><span class="co">## 144     src/utils.c              syms_list    variable        C   1    NA</span></span>
-<span id="cb8-220"><a href="#cb8-220"></a><span class="co">## 145      src/pipe.c            syms_nested    variable        C   1    NA</span></span>
-<span id="cb8-221"><a href="#cb8-221"></a><span class="co">## 146      src/pipe.c        syms_new_lambda    variable        C   1    NA</span></span>
-<span id="cb8-222"><a href="#cb8-222"></a><span class="co">## 147      src/pipe.c             syms_paren    variable        C   1    NA</span></span>
-<span id="cb8-223"><a href="#cb8-223"></a><span class="co">## 148      src/pipe.c              syms_pipe    variable        C   1    NA</span></span>
-<span id="cb8-224"><a href="#cb8-224"></a><span class="co">## 149      src/pipe.c     syms_pipe_compound    variable        C   1    NA</span></span>
-<span id="cb8-225"><a href="#cb8-225"></a><span class="co">## 150      src/pipe.c       syms_pipe_dollar    variable        C   1    NA</span></span>
-<span id="cb8-226"><a href="#cb8-226"></a><span class="co">## 151      src/pipe.c          syms_pipe_tee    variable        C   1    NA</span></span>
-<span id="cb8-227"><a href="#cb8-227"></a><span class="co">## 152      src/pipe.c            syms_return    variable        C   1    NA</span></span>
-<span id="cb8-228"><a href="#cb8-228"></a><span class="co">## 153      src/pipe.c               syms_rhs    variable        C   1    NA</span></span>
-<span id="cb8-229"><a href="#cb8-229"></a><span class="co">## 154     src/utils.c                syms_rm    variable        C   1    NA</span></span>
-<span id="cb8-230"><a href="#cb8-230"></a><span class="co">## 155      src/pipe.c               syms_sym    variable        C   1    NA</span></span>
-<span id="cb8-231"><a href="#cb8-231"></a><span class="co">##      has_dots exported param_nchars_md param_nchars_mn num_doclines</span></span>
-<span id="cb8-232"><a href="#cb8-232"></a><span class="co">## 1          NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-233"><a href="#cb8-233"></a><span class="co">## 2          NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-234"><a href="#cb8-234"></a><span class="co">## 3          NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-235"><a href="#cb8-235"></a><span class="co">## 4          NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-236"><a href="#cb8-236"></a><span class="co">## 5          NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-237"><a href="#cb8-237"></a><span class="co">## 6          NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-238"><a href="#cb8-238"></a><span class="co">## 7          NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-239"><a href="#cb8-239"></a><span class="co">## 8          NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-240"><a href="#cb8-240"></a><span class="co">## 9          NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-241"><a href="#cb8-241"></a><span class="co">## 10         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-242"><a href="#cb8-242"></a><span class="co">## 11         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-243"><a href="#cb8-243"></a><span class="co">## 12         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-244"><a href="#cb8-244"></a><span class="co">## 13         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-245"><a href="#cb8-245"></a><span class="co">## 14         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-246"><a href="#cb8-246"></a><span class="co">## 15         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-247"><a href="#cb8-247"></a><span class="co">## 16         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-248"><a href="#cb8-248"></a><span class="co">## 17         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-249"><a href="#cb8-249"></a><span class="co">## 18         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-250"><a href="#cb8-250"></a><span class="co">## 19         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-251"><a href="#cb8-251"></a><span class="co">## 20         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-252"><a href="#cb8-252"></a><span class="co">## 21         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-253"><a href="#cb8-253"></a><span class="co">## 22         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-254"><a href="#cb8-254"></a><span class="co">## 23         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-255"><a href="#cb8-255"></a><span class="co">## 24         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-256"><a href="#cb8-256"></a><span class="co">## 25         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-257"><a href="#cb8-257"></a><span class="co">## 26         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-258"><a href="#cb8-258"></a><span class="co">## 27         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-259"><a href="#cb8-259"></a><span class="co">## 28         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-260"><a href="#cb8-260"></a><span class="co">## 29         NA     TRUE              NA              NA           54</span></span>
-<span id="cb8-261"><a href="#cb8-261"></a><span class="co">## 30      FALSE     TRUE             7.0             7.0           11</span></span>
-<span id="cb8-262"><a href="#cb8-262"></a><span class="co">## 31       TRUE     TRUE            26.0            26.0           14</span></span>
-<span id="cb8-263"><a href="#cb8-263"></a><span class="co">## 32      FALSE     TRUE            26.0            26.0           14</span></span>
-<span id="cb8-264"><a href="#cb8-264"></a><span class="co">## 33      FALSE     TRUE            17.0            17.0           12</span></span>
-<span id="cb8-265"><a href="#cb8-265"></a><span class="co">## 34      FALSE     TRUE            35.0            35.0           11</span></span>
-<span id="cb8-266"><a href="#cb8-266"></a><span class="co">## 35       TRUE     TRUE            18.5            18.5           12</span></span>
-<span id="cb8-267"><a href="#cb8-267"></a><span class="co">## 36       TRUE     TRUE            43.5            43.5           19</span></span>
-<span id="cb8-268"><a href="#cb8-268"></a><span class="co">## 37       TRUE     TRUE            43.5            43.5           19</span></span>
-<span id="cb8-269"><a href="#cb8-269"></a><span class="co">## 38      FALSE    FALSE              NA              NA           NA</span></span>
-<span id="cb8-270"><a href="#cb8-270"></a><span class="co">## 39      FALSE     TRUE            40.5            40.5          114</span></span>
-<span id="cb8-271"><a href="#cb8-271"></a><span class="co">## 40      FALSE     TRUE            40.5            40.5           13</span></span>
-<span id="cb8-272"><a href="#cb8-272"></a><span class="co">## 41      FALSE     TRUE            40.5            40.5           13</span></span>
-<span id="cb8-273"><a href="#cb8-273"></a><span class="co">## 42      FALSE     TRUE            40.5            40.5           13</span></span>
-<span id="cb8-274"><a href="#cb8-274"></a><span class="co">## 43      FALSE     TRUE            54.0            54.0           42</span></span>
-<span id="cb8-275"><a href="#cb8-275"></a><span class="co">## 44      FALSE     TRUE            40.5            40.5           23</span></span>
-<span id="cb8-276"><a href="#cb8-276"></a><span class="co">## 45      FALSE     TRUE            43.5            43.5           26</span></span>
-<span id="cb8-277"><a href="#cb8-277"></a><span class="co">## 46      FALSE    FALSE              NA              NA           NA</span></span>
-<span id="cb8-278"><a href="#cb8-278"></a><span class="co">## 47      FALSE    FALSE              NA              NA           NA</span></span>
-<span id="cb8-279"><a href="#cb8-279"></a><span class="co">## 48      FALSE    FALSE              NA              NA           NA</span></span>
-<span id="cb8-280"><a href="#cb8-280"></a><span class="co">## 156        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-281"><a href="#cb8-281"></a><span class="co">## 210        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-282"><a href="#cb8-282"></a><span class="co">## 310        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-283"><a href="#cb8-283"></a><span class="co">## 410        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-284"><a href="#cb8-284"></a><span class="co">## 510        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-285"><a href="#cb8-285"></a><span class="co">## 610        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-286"><a href="#cb8-286"></a><span class="co">## 710        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-287"><a href="#cb8-287"></a><span class="co">## 84         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-288"><a href="#cb8-288"></a><span class="co">## 910        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-289"><a href="#cb8-289"></a><span class="co">## 1010       NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-290"><a href="#cb8-290"></a><span class="co">## 1110       NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-291"><a href="#cb8-291"></a><span class="co">## 1210       NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-292"><a href="#cb8-292"></a><span class="co">## 1310       NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-293"><a href="#cb8-293"></a><span class="co">## 1410       NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-294"><a href="#cb8-294"></a><span class="co">## 157        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-295"><a href="#cb8-295"></a><span class="co">## 161        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-296"><a href="#cb8-296"></a><span class="co">## 171        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-297"><a href="#cb8-297"></a><span class="co">## 181        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-298"><a href="#cb8-298"></a><span class="co">## 191        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-299"><a href="#cb8-299"></a><span class="co">## 201        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-300"><a href="#cb8-300"></a><span class="co">## 211        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-301"><a href="#cb8-301"></a><span class="co">## 221        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-302"><a href="#cb8-302"></a><span class="co">## 231        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-303"><a href="#cb8-303"></a><span class="co">## 241        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-304"><a href="#cb8-304"></a><span class="co">## 251        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-305"><a href="#cb8-305"></a><span class="co">## 261        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-306"><a href="#cb8-306"></a><span class="co">## 271        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-307"><a href="#cb8-307"></a><span class="co">## 281        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-308"><a href="#cb8-308"></a><span class="co">## 291        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-309"><a href="#cb8-309"></a><span class="co">## 301        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-310"><a href="#cb8-310"></a><span class="co">## 311        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-311"><a href="#cb8-311"></a><span class="co">## 321        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-312"><a href="#cb8-312"></a><span class="co">## 351        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-313"><a href="#cb8-313"></a><span class="co">## 361        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-314"><a href="#cb8-314"></a><span class="co">## 371        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-315"><a href="#cb8-315"></a><span class="co">## 381        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-316"><a href="#cb8-316"></a><span class="co">## 391        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-317"><a href="#cb8-317"></a><span class="co">## 401        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-318"><a href="#cb8-318"></a><span class="co">## 411        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-319"><a href="#cb8-319"></a><span class="co">## 421        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-320"><a href="#cb8-320"></a><span class="co">## 431        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-321"><a href="#cb8-321"></a><span class="co">## 441        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-322"><a href="#cb8-322"></a><span class="co">## 451        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-323"><a href="#cb8-323"></a><span class="co">## 461        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-324"><a href="#cb8-324"></a><span class="co">## 471        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-325"><a href="#cb8-325"></a><span class="co">## 481        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-326"><a href="#cb8-326"></a><span class="co">## 49         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-327"><a href="#cb8-327"></a><span class="co">## 50         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-328"><a href="#cb8-328"></a><span class="co">## 51         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-329"><a href="#cb8-329"></a><span class="co">## 52         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-330"><a href="#cb8-330"></a><span class="co">## 53         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-331"><a href="#cb8-331"></a><span class="co">## 54         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-332"><a href="#cb8-332"></a><span class="co">## 55         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-333"><a href="#cb8-333"></a><span class="co">## 56         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-334"><a href="#cb8-334"></a><span class="co">## 57         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-335"><a href="#cb8-335"></a><span class="co">## 58         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-336"><a href="#cb8-336"></a><span class="co">## 59         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-337"><a href="#cb8-337"></a><span class="co">## 60         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-338"><a href="#cb8-338"></a><span class="co">## 61         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-339"><a href="#cb8-339"></a><span class="co">## 62         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-340"><a href="#cb8-340"></a><span class="co">## 63         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-341"><a href="#cb8-341"></a><span class="co">## 64         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-342"><a href="#cb8-342"></a><span class="co">## 65         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-343"><a href="#cb8-343"></a><span class="co">## 66         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-344"><a href="#cb8-344"></a><span class="co">## 67         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-345"><a href="#cb8-345"></a><span class="co">## 68         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-346"><a href="#cb8-346"></a><span class="co">## 69         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-347"><a href="#cb8-347"></a><span class="co">## 70         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-348"><a href="#cb8-348"></a><span class="co">## 71         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-349"><a href="#cb8-349"></a><span class="co">## 72         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-350"><a href="#cb8-350"></a><span class="co">## 73         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-351"><a href="#cb8-351"></a><span class="co">## 74         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-352"><a href="#cb8-352"></a><span class="co">## 75         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-353"><a href="#cb8-353"></a><span class="co">## 76         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-354"><a href="#cb8-354"></a><span class="co">## 77         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-355"><a href="#cb8-355"></a><span class="co">## 78         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-356"><a href="#cb8-356"></a><span class="co">## 79         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-357"><a href="#cb8-357"></a><span class="co">## 80         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-358"><a href="#cb8-358"></a><span class="co">## 81         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-359"><a href="#cb8-359"></a><span class="co">## 82         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-360"><a href="#cb8-360"></a><span class="co">## 83         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-361"><a href="#cb8-361"></a><span class="co">## 89         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-362"><a href="#cb8-362"></a><span class="co">## 90         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-363"><a href="#cb8-363"></a><span class="co">## 91         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-364"><a href="#cb8-364"></a><span class="co">## 92         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-365"><a href="#cb8-365"></a><span class="co">## 93         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-366"><a href="#cb8-366"></a><span class="co">## 94         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-367"><a href="#cb8-367"></a><span class="co">## 95         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-368"><a href="#cb8-368"></a><span class="co">## 96         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-369"><a href="#cb8-369"></a><span class="co">## 97         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-370"><a href="#cb8-370"></a><span class="co">## 98         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-371"><a href="#cb8-371"></a><span class="co">## 99         NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-372"><a href="#cb8-372"></a><span class="co">## 100        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-373"><a href="#cb8-373"></a><span class="co">## 101        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-374"><a href="#cb8-374"></a><span class="co">## 102        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-375"><a href="#cb8-375"></a><span class="co">## 103        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-376"><a href="#cb8-376"></a><span class="co">## 104        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-377"><a href="#cb8-377"></a><span class="co">## 105        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-378"><a href="#cb8-378"></a><span class="co">## 106        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-379"><a href="#cb8-379"></a><span class="co">## 107        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-380"><a href="#cb8-380"></a><span class="co">## 108        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-381"><a href="#cb8-381"></a><span class="co">## 109        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-382"><a href="#cb8-382"></a><span class="co">## 110        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-383"><a href="#cb8-383"></a><span class="co">## 111        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-384"><a href="#cb8-384"></a><span class="co">## 112        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-385"><a href="#cb8-385"></a><span class="co">## 113        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-386"><a href="#cb8-386"></a><span class="co">## 114        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-387"><a href="#cb8-387"></a><span class="co">## 115        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-388"><a href="#cb8-388"></a><span class="co">## 116        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-389"><a href="#cb8-389"></a><span class="co">## 117        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-390"><a href="#cb8-390"></a><span class="co">## 118        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-391"><a href="#cb8-391"></a><span class="co">## 119        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-392"><a href="#cb8-392"></a><span class="co">## 120        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-393"><a href="#cb8-393"></a><span class="co">## 121        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-394"><a href="#cb8-394"></a><span class="co">## 122        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-395"><a href="#cb8-395"></a><span class="co">## 123        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-396"><a href="#cb8-396"></a><span class="co">## 124        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-397"><a href="#cb8-397"></a><span class="co">## 125        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-398"><a href="#cb8-398"></a><span class="co">## 126        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-399"><a href="#cb8-399"></a><span class="co">## 127        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-400"><a href="#cb8-400"></a><span class="co">## 128        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-401"><a href="#cb8-401"></a><span class="co">## 129        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-402"><a href="#cb8-402"></a><span class="co">## 130        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-403"><a href="#cb8-403"></a><span class="co">## 131        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-404"><a href="#cb8-404"></a><span class="co">## 132        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-405"><a href="#cb8-405"></a><span class="co">## 133        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-406"><a href="#cb8-406"></a><span class="co">## 134        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-407"><a href="#cb8-407"></a><span class="co">## 135        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-408"><a href="#cb8-408"></a><span class="co">## 136        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-409"><a href="#cb8-409"></a><span class="co">## 137        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-410"><a href="#cb8-410"></a><span class="co">## 138        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-411"><a href="#cb8-411"></a><span class="co">## 139        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-412"><a href="#cb8-412"></a><span class="co">## 140        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-413"><a href="#cb8-413"></a><span class="co">## 141        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-414"><a href="#cb8-414"></a><span class="co">## 142        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-415"><a href="#cb8-415"></a><span class="co">## 143        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-416"><a href="#cb8-416"></a><span class="co">## 144        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-417"><a href="#cb8-417"></a><span class="co">## 145        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-418"><a href="#cb8-418"></a><span class="co">## 146        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-419"><a href="#cb8-419"></a><span class="co">## 147        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-420"><a href="#cb8-420"></a><span class="co">## 148        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-421"><a href="#cb8-421"></a><span class="co">## 149        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-422"><a href="#cb8-422"></a><span class="co">## 150        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-423"><a href="#cb8-423"></a><span class="co">## 151        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-424"><a href="#cb8-424"></a><span class="co">## 152        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-425"><a href="#cb8-425"></a><span class="co">## 153        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-426"><a href="#cb8-426"></a><span class="co">## 154        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-427"><a href="#cb8-427"></a><span class="co">## 155        NA    FALSE              NA              NA           NA</span></span>
-<span id="cb8-428"><a href="#cb8-428"></a><span class="co">## </span></span>
-<span id="cb8-429"><a href="#cb8-429"></a><span class="co">## $network</span></span>
-<span id="cb8-430"><a href="#cb8-430"></a><span class="co">##              file line1                from                  to     language</span></span>
-<span id="cb8-431"><a href="#cb8-431"></a><span class="co">## 1        R/pipe.R   297          new_lambda             freduce            R</span></span>
-<span id="cb8-432"><a href="#cb8-432"></a><span class="co">## 2     R/getters.R    14           `[[.fseq`           functions            R</span></span>
-<span id="cb8-433"><a href="#cb8-433"></a><span class="co">## 3     R/getters.R    23            `[.fseq`           functions            R</span></span>
-<span id="cb8-434"><a href="#cb8-434"></a><span class="co">## 4   R/functions.R    26          print.fseq           functions            R</span></span>
-<span id="cb8-435"><a href="#cb8-435"></a><span class="co">## 5  R/debug_pipe.R    28          debug_fseq           functions            R</span></span>
-<span id="cb8-436"><a href="#cb8-436"></a><span class="co">## 6  R/debug_pipe.R    35          debug_fseq           functions            R</span></span>
-<span id="cb8-437"><a href="#cb8-437"></a><span class="co">## 7  R/debug_pipe.R    42        undebug_fseq           functions            R</span></span>
-<span id="cb8-438"><a href="#cb8-438"></a><span class="co">## 8  R/debug_pipe.R    43        undebug_fseq           functions            R</span></span>
-<span id="cb8-439"><a href="#cb8-439"></a><span class="co">## 9  R/debug_pipe.R    44        undebug_fseq           functions            R</span></span>
-<span id="cb8-440"><a href="#cb8-440"></a><span class="co">## 10    src/utils.c    77             r_parse         abort_parse   language:C</span></span>
-<span id="cb8-441"><a href="#cb8-441"></a><span class="co">## 11    src/utils.c    80             r_parse         abort_parse   language:C</span></span>
-<span id="cb8-442"><a href="#cb8-442"></a><span class="co">## 13     src/pipe.c   297        as_pipe_call             add_dot   language:C</span></span>
-<span id="cb8-443"><a href="#cb8-443"></a><span class="co">## 15     src/pipe.c   235         pipe_unroll        as_pipe_call   language:C</span></span>
-<span id="cb8-444"><a href="#cb8-444"></a><span class="co">## 16     src/pipe.c   238         pipe_unroll        as_pipe_call   language:C</span></span>
-<span id="cb8-445"><a href="#cb8-445"></a><span class="co">## 17     src/pipe.c   310    as_pipe_tee_call        as_pipe_call   language:C</span></span>
-<span id="cb8-446"><a href="#cb8-446"></a><span class="co">## 19     src/pipe.c   240         pipe_unroll as_pipe_dollar_call   language:C</span></span>
-<span id="cb8-447"><a href="#cb8-447"></a><span class="co">## 21     src/pipe.c   239         pipe_unroll    as_pipe_tee_call   language:C</span></span>
-<span id="cb8-448"><a href="#cb8-448"></a><span class="co">## 23     src/pipe.c   118       magrittr_pipe          clean_pipe   language:C</span></span>
-<span id="cb8-449"><a href="#cb8-449"></a><span class="co">## 24     src/pipe.c   113       magrittr_pipe        cleanup_info   language:C</span></span>
-<span id="cb8-450"><a href="#cb8-450"></a><span class="co">## 25     src/pipe.c   118       magrittr_pipe        cleanup_info   language:C</span></span>
-<span id="cb8-451"><a href="#cb8-451"></a><span class="co">## 26     src/pipe.c   196          clean_pipe        cleanup_info   language:C</span></span>
-<span id="cb8-452"><a href="#cb8-452"></a><span class="co">## 28     src/pipe.c   118       magrittr_pipe           eval_pipe   language:C</span></span>
-<span id="cb8-453"><a href="#cb8-453"></a><span class="co">## 30     src/pipe.c   105       magrittr_pipe      eval_pipe_lazy   language:C</span></span>
-<span id="cb8-454"><a href="#cb8-454"></a><span class="co">## 31     src/pipe.c   324      is_spliced_dot             is_bang   language:C</span></span>
-<span id="cb8-455"><a href="#cb8-455"></a><span class="co">## 32     src/pipe.c   329      is_spliced_dot             is_bang   language:C</span></span>
-<span id="cb8-456"><a href="#cb8-456"></a><span class="co">## 33     src/pipe.c   334      is_spliced_dot             is_bang   language:C</span></span>
-<span id="cb8-457"><a href="#cb8-457"></a><span class="co">## 35     src/pipe.c   177      eval_pipe_lazy           is_return   language:C</span></span>
-<span id="cb8-458"><a href="#cb8-458"></a><span class="co">## 36     src/pipe.c   350             add_dot      is_spliced_dot   language:C</span></span>
-<span id="cb8-459"><a href="#cb8-459"></a><span class="co">## 39     src/pipe.c   415       magrittr_init magrittr_init_utils   language:C</span></span>
-<span id="cb8-460"><a href="#cb8-460"></a><span class="co">## 42     src/pipe.c    88       magrittr_pipe          new_lambda   language:C</span></span>
-<span id="cb8-461"><a href="#cb8-461"></a><span class="co">## 44     src/pipe.c   249         pipe_unroll     parse_pipe_call   language:C</span></span>
-<span id="cb8-462"><a href="#cb8-462"></a><span class="co">## 45     src/pipe.c   109       magrittr_pipe           pipe_info   language:C</span></span>
-<span id="cb8-463"><a href="#cb8-463"></a><span class="co">## 46     src/pipe.c   118       magrittr_pipe           pipe_info   language:C</span></span>
-<span id="cb8-464"><a href="#cb8-464"></a><span class="co">## 47     src/pipe.c   135           eval_pipe           pipe_info   language:C</span></span>
-<span id="cb8-465"><a href="#cb8-465"></a><span class="co">## 49     src/pipe.c    95       magrittr_pipe           pipe_nest   language:C</span></span>
-<span id="cb8-466"><a href="#cb8-466"></a><span class="co">## 51     src/pipe.c    84       magrittr_pipe         pipe_unroll   language:C</span></span>
-<span id="cb8-467"><a href="#cb8-467"></a><span class="co">## 52     src/pipe.c   168      eval_pipe_lazy     r_env_bind_lazy   language:C</span></span>
-<span id="cb8-468"><a href="#cb8-468"></a><span class="co">## 53     src/pipe.c    76       magrittr_pipe           r_env_get language:C++</span></span>
-<span id="cb8-469"><a href="#cb8-469"></a><span class="co">## 54     src/pipe.c    93       magrittr_pipe           r_env_get language:C++</span></span>
-<span id="cb8-470"><a href="#cb8-470"></a><span class="co">## 55     src/pipe.c   101       magrittr_pipe           r_env_get language:C++</span></span>
-<span id="cb8-471"><a href="#cb8-471"></a><span class="co">## 56     src/pipe.c   107       magrittr_pipe           r_env_get language:C++</span></span>
-<span id="cb8-472"><a href="#cb8-472"></a><span class="co">## 57     src/pipe.c   199          clean_pipe        r_env_unbind language:C++</span></span>
-<span id="cb8-473"><a href="#cb8-473"></a><span class="co">## 58     src/pipe.c   162      eval_pipe_lazy   r_new_environment language:C++</span></span>
-<span id="cb8-474"><a href="#cb8-474"></a><span class="co">## 59    src/utils.c    89        r_parse_eval             r_parse   language:C</span></span>
-<span id="cb8-475"><a href="#cb8-475"></a><span class="co">## 60    src/utils.c   123 magrittr_init_utils        r_parse_eval   language:C</span></span>
-<span id="cb8-476"><a href="#cb8-476"></a><span class="co">##    cluster_dir centrality_dir cluster_undir centrality_undir</span></span>
-<span id="cb8-477"><a href="#cb8-477"></a><span class="co">## 1            1              1             1               20</span></span>
-<span id="cb8-478"><a href="#cb8-478"></a><span class="co">## 2            2              0             2                0</span></span>
-<span id="cb8-479"><a href="#cb8-479"></a><span class="co">## 3            2              0             2                0</span></span>
-<span id="cb8-480"><a href="#cb8-480"></a><span class="co">## 4            2              0             2                0</span></span>
-<span id="cb8-481"><a href="#cb8-481"></a><span class="co">## 5            2              0             2                0</span></span>
-<span id="cb8-482"><a href="#cb8-482"></a><span class="co">## 6            2              0             2                0</span></span>
-<span id="cb8-483"><a href="#cb8-483"></a><span class="co">## 7            2              0             2                0</span></span>
-<span id="cb8-484"><a href="#cb8-484"></a><span class="co">## 8            2              0             2                0</span></span>
-<span id="cb8-485"><a href="#cb8-485"></a><span class="co">## 9            2              0             2                0</span></span>
-<span id="cb8-486"><a href="#cb8-486"></a><span class="co">## 10           3              3             3                3</span></span>
-<span id="cb8-487"><a href="#cb8-487"></a><span class="co">## 11           3              3             3                3</span></span>
-<span id="cb8-488"><a href="#cb8-488"></a><span class="co">## 13           1              9             1               54</span></span>
-<span id="cb8-489"><a href="#cb8-489"></a><span class="co">## 15           1              7             1              109</span></span>
-<span id="cb8-490"><a href="#cb8-490"></a><span class="co">## 16           1              7             1              109</span></span>
-<span id="cb8-491"><a href="#cb8-491"></a><span class="co">## 17           1              0             1                0</span></span>
-<span id="cb8-492"><a href="#cb8-492"></a><span class="co">## 19           1              7             1              109</span></span>
-<span id="cb8-493"><a href="#cb8-493"></a><span class="co">## 21           1              7             1              109</span></span>
-<span id="cb8-494"><a href="#cb8-494"></a><span class="co">## 23           1              0             1              171</span></span>
-<span id="cb8-495"><a href="#cb8-495"></a><span class="co">## 24           1              0             1              171</span></span>
-<span id="cb8-496"><a href="#cb8-496"></a><span class="co">## 25           1              0             1              171</span></span>
-<span id="cb8-497"><a href="#cb8-497"></a><span class="co">## 26           1              1             1               20</span></span>
-<span id="cb8-498"><a href="#cb8-498"></a><span class="co">## 28           1              0             1              171</span></span>
-<span id="cb8-499"><a href="#cb8-499"></a><span class="co">## 30           1              0             1              171</span></span>
-<span id="cb8-500"><a href="#cb8-500"></a><span class="co">## 31           1              5             1               20</span></span>
-<span id="cb8-501"><a href="#cb8-501"></a><span class="co">## 32           1              5             1               20</span></span>
-<span id="cb8-502"><a href="#cb8-502"></a><span class="co">## 33           1              5             1               20</span></span>
-<span id="cb8-503"><a href="#cb8-503"></a><span class="co">## 35           1              3             1               57</span></span>
-<span id="cb8-504"><a href="#cb8-504"></a><span class="co">## 36           1              8             1               38</span></span>
-<span id="cb8-505"><a href="#cb8-505"></a><span class="co">## 39           3              0             3                0</span></span>
-<span id="cb8-506"><a href="#cb8-506"></a><span class="co">## 42           1              0             1              171</span></span>
-<span id="cb8-507"><a href="#cb8-507"></a><span class="co">## 44           1              7             1              109</span></span>
-<span id="cb8-508"><a href="#cb8-508"></a><span class="co">## 45           1              0             1              171</span></span>
-<span id="cb8-509"><a href="#cb8-509"></a><span class="co">## 46           1              0             1              171</span></span>
-<span id="cb8-510"><a href="#cb8-510"></a><span class="co">## 47           1              0             1                0</span></span>
-<span id="cb8-511"><a href="#cb8-511"></a><span class="co">## 49           1              0             1              171</span></span>
-<span id="cb8-512"><a href="#cb8-512"></a><span class="co">## 51           1              0             1              171</span></span>
-<span id="cb8-513"><a href="#cb8-513"></a><span class="co">## 52           1              3             1               57</span></span>
-<span id="cb8-514"><a href="#cb8-514"></a><span class="co">## 53           1              0             1              171</span></span>
-<span id="cb8-515"><a href="#cb8-515"></a><span class="co">## 54           1              0             1              171</span></span>
-<span id="cb8-516"><a href="#cb8-516"></a><span class="co">## 55           1              0             1              171</span></span>
-<span id="cb8-517"><a href="#cb8-517"></a><span class="co">## 56           1              0             1              171</span></span>
-<span id="cb8-518"><a href="#cb8-518"></a><span class="co">## 57           1              1             1               20</span></span>
-<span id="cb8-519"><a href="#cb8-519"></a><span class="co">## 58           1              3             1               57</span></span>
-<span id="cb8-520"><a href="#cb8-520"></a><span class="co">## 59           3              4             3                4</span></span>
-<span id="cb8-521"><a href="#cb8-521"></a><span class="co">## 60           3              3             3                3</span></span></code></pre></div>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">## 4 tests     R                    10          0.5     259  0.5            102</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">## 5 vignettes Rmd                   2          0.5     146  0.5            205</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co">## # … with 3 more variables: blank_line_pct &lt;dbl&gt;, comment_lines &lt;int&gt;,</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">## #   comment_line_pct &lt;dbl&gt;</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="co">## </span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co">## $vignettes</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="co">## vignettes     demos </span></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="co">##         2         0 </span></span>
+<span id="cb8-16"><a href="#cb8-16"></a><span class="co">## </span></span>
+<span id="cb8-17"><a href="#cb8-17"></a><span class="co">## $data_stats</span></span>
+<span id="cb8-18"><a href="#cb8-18"></a><span class="co">##           n  total_size median_size </span></span>
+<span id="cb8-19"><a href="#cb8-19"></a><span class="co">##           0           0           0 </span></span>
+<span id="cb8-20"><a href="#cb8-20"></a><span class="co">## </span></span>
+<span id="cb8-21"><a href="#cb8-21"></a><span class="co">## $desc</span></span>
+<span id="cb8-22"><a href="#cb8-22"></a><span class="co">##    package version                date            license</span></span>
+<span id="cb8-23"><a href="#cb8-23"></a><span class="co">## 1 magrittr   2.0.1 2020-11-17 16:20:06 MIT + file LICENSE</span></span>
+<span id="cb8-24"><a href="#cb8-24"></a><span class="co">##                                                                     urls</span></span>
+<span id="cb8-25"><a href="#cb8-25"></a><span class="co">## 1 https://magrittr.tidyverse.org,\nhttps://github.com/tidyverse/magrittr</span></span>
+<span id="cb8-26"><a href="#cb8-26"></a><span class="co">##                                           bugs aut ctb fnd rev ths trl depends</span></span>
+<span id="cb8-27"><a href="#cb8-27"></a><span class="co">## 1 https://github.com/tidyverse/magrittr/issues   2   0   1   0   0   0      NA</span></span>
+<span id="cb8-28"><a href="#cb8-28"></a><span class="co">##   imports                                suggests linking_to</span></span>
+<span id="cb8-29"><a href="#cb8-29"></a><span class="co">## 1      NA covr, knitr, rlang, rmarkdown, testthat         NA</span></span>
+<span id="cb8-30"><a href="#cb8-30"></a><span class="co">## </span></span>
+<span id="cb8-31"><a href="#cb8-31"></a><span class="co">## $translations</span></span>
+<span id="cb8-32"><a href="#cb8-32"></a><span class="co">## [1] NA</span></span>
+<span id="cb8-33"><a href="#cb8-33"></a><span class="co">## </span></span>
+<span id="cb8-34"><a href="#cb8-34"></a><span class="co">## $code_has_tabs</span></span>
+<span id="cb8-35"><a href="#cb8-35"></a><span class="co">## [1] TRUE</span></span>
+<span id="cb8-36"><a href="#cb8-36"></a><span class="co">## </span></span>
+<span id="cb8-37"><a href="#cb8-37"></a><span class="co">## $objects</span></span>
+<span id="cb8-38"><a href="#cb8-38"></a><span class="co">##           file_name                fn_name        kind language loc npars</span></span>
+<span id="cb8-39"><a href="#cb8-39"></a><span class="co">## 1         aliases.R                extract    function        R   1    NA</span></span>
+<span id="cb8-40"><a href="#cb8-40"></a><span class="co">## 2         aliases.R               extract2    function        R   1    NA</span></span>
+<span id="cb8-41"><a href="#cb8-41"></a><span class="co">## 3         aliases.R             use_series    function        R   1    NA</span></span>
+<span id="cb8-42"><a href="#cb8-42"></a><span class="co">## 4         aliases.R                    add    function        R   1    NA</span></span>
+<span id="cb8-43"><a href="#cb8-43"></a><span class="co">## 5         aliases.R               subtract    function        R   1    NA</span></span>
+<span id="cb8-44"><a href="#cb8-44"></a><span class="co">## 6         aliases.R            multiply_by    function        R   1    NA</span></span>
+<span id="cb8-45"><a href="#cb8-45"></a><span class="co">## 7         aliases.R     multiply_by_matrix    function        R   1    NA</span></span>
+<span id="cb8-46"><a href="#cb8-46"></a><span class="co">## 8         aliases.R              divide_by    function        R   1    NA</span></span>
+<span id="cb8-47"><a href="#cb8-47"></a><span class="co">## 9         aliases.R          divide_by_int    function        R   1    NA</span></span>
+<span id="cb8-48"><a href="#cb8-48"></a><span class="co">## 10        aliases.R         raise_to_power    function        R   1    NA</span></span>
+<span id="cb8-49"><a href="#cb8-49"></a><span class="co">## 11        aliases.R                    and    function        R   1    NA</span></span>
+<span id="cb8-50"><a href="#cb8-50"></a><span class="co">## 12        aliases.R                     or    function        R   1    NA</span></span>
+<span id="cb8-51"><a href="#cb8-51"></a><span class="co">## 13        aliases.R                    mod    function        R   1    NA</span></span>
+<span id="cb8-52"><a href="#cb8-52"></a><span class="co">## 14        aliases.R                  is_in    function        R   1    NA</span></span>
+<span id="cb8-53"><a href="#cb8-53"></a><span class="co">## 15        aliases.R                 equals    function        R   1    NA</span></span>
+<span id="cb8-54"><a href="#cb8-54"></a><span class="co">## 16        aliases.R        is_greater_than    function        R   1    NA</span></span>
+<span id="cb8-55"><a href="#cb8-55"></a><span class="co">## 17        aliases.R is_weakly_greater_than    function        R   1    NA</span></span>
+<span id="cb8-56"><a href="#cb8-56"></a><span class="co">## 18        aliases.R           is_less_than    function        R   1    NA</span></span>
+<span id="cb8-57"><a href="#cb8-57"></a><span class="co">## 19        aliases.R    is_weakly_less_than    function        R   1    NA</span></span>
+<span id="cb8-58"><a href="#cb8-58"></a><span class="co">## 20        aliases.R                    not    function        R   1    NA</span></span>
+<span id="cb8-59"><a href="#cb8-59"></a><span class="co">## 21        aliases.R              n'est pas    function        R   1    NA</span></span>
+<span id="cb8-60"><a href="#cb8-60"></a><span class="co">## 22        aliases.R           set_colnames    function        R   1    NA</span></span>
+<span id="cb8-61"><a href="#cb8-61"></a><span class="co">## 23        aliases.R           set_rownames    function        R   1    NA</span></span>
+<span id="cb8-62"><a href="#cb8-62"></a><span class="co">## 24        aliases.R              set_names    function        R   1    NA</span></span>
+<span id="cb8-63"><a href="#cb8-63"></a><span class="co">## 25        aliases.R              set_class    function        R   1    NA</span></span>
+<span id="cb8-64"><a href="#cb8-64"></a><span class="co">## 26        aliases.R                  inset    function        R   1    NA</span></span>
+<span id="cb8-65"><a href="#cb8-65"></a><span class="co">## 27        aliases.R                 inset2    function        R   1    NA</span></span>
+<span id="cb8-66"><a href="#cb8-66"></a><span class="co">## 28        aliases.R               set_attr    function        R   1    NA</span></span>
+<span id="cb8-67"><a href="#cb8-67"></a><span class="co">## 29        aliases.R         set_attributes    function        R   1    NA</span></span>
+<span id="cb8-68"><a href="#cb8-68"></a><span class="co">## 30     debug_pipe.R             debug_pipe    function        R   4     1</span></span>
+<span id="cb8-69"><a href="#cb8-69"></a><span class="co">## 31     debug_pipe.R             debug_fseq    function        R   8     2</span></span>
+<span id="cb8-70"><a href="#cb8-70"></a><span class="co">## 32     debug_pipe.R           undebug_fseq    function        R   4     1</span></span>
+<span id="cb8-71"><a href="#cb8-71"></a><span class="co">## 33        freduce.R                freduce    function        R  15     2</span></span>
+<span id="cb8-72"><a href="#cb8-72"></a><span class="co">## 34      functions.R              functions    function        R   5     1</span></span>
+<span id="cb8-73"><a href="#cb8-73"></a><span class="co">## 35      functions.R             print.fseq    function        R   9     2</span></span>
+<span id="cb8-74"><a href="#cb8-74"></a><span class="co">## 36        getters.R                [[.fseq    function        R   3     2</span></span>
+<span id="cb8-75"><a href="#cb8-75"></a><span class="co">## 37        getters.R                 [.fseq    function        R   6     2</span></span>
+<span id="cb8-76"><a href="#cb8-76"></a><span class="co">## 38       magrittr.R                .onLoad    function        R   3     2</span></span>
+<span id="cb8-77"><a href="#cb8-77"></a><span class="co">## 39           pipe.R                    %&gt;%    function        R   8     2</span></span>
+<span id="cb8-78"><a href="#cb8-78"></a><span class="co">## 40           pipe.R     pipe_eager_lexical    function        R   8     2</span></span>
+<span id="cb8-79"><a href="#cb8-79"></a><span class="co">## 41           pipe.R      pipe_lazy_masking    function        R   9     2</span></span>
+<span id="cb8-80"><a href="#cb8-80"></a><span class="co">## 42           pipe.R            pipe_nested    function        R   9     2</span></span>
+<span id="cb8-81"><a href="#cb8-81"></a><span class="co">## 43           pipe.R                   %&lt;&gt;%    function        R   8     2</span></span>
+<span id="cb8-82"><a href="#cb8-82"></a><span class="co">## 44           pipe.R                   %T&gt;%    function        R   8     2</span></span>
+<span id="cb8-83"><a href="#cb8-83"></a><span class="co">## 45           pipe.R                    %$%    function        R   8     2</span></span>
+<span id="cb8-84"><a href="#cb8-84"></a><span class="co">## 46           pipe.R             new_lambda    function        R   5     2</span></span>
+<span id="cb8-85"><a href="#cb8-85"></a><span class="co">## 47           pipe.R            lambda_fmls    function        R   1     2</span></span>
+<span id="cb8-86"><a href="#cb8-86"></a><span class="co">## 48           pipe.R             as_pipe_fn    function        R   3     2</span></span>
+<span id="cb8-87"><a href="#cb8-87"></a><span class="co">## 156    R/magrittr.R                .onLoad    function        R   3    NA</span></span>
+<span id="cb8-88"><a href="#cb8-88"></a><span class="co">## 210        R/pipe.R                  `%$%`    function        R   8    NA</span></span>
+<span id="cb8-89"><a href="#cb8-89"></a><span class="co">## 310        R/pipe.R                 `%&lt;&gt;%`    function        R   8    NA</span></span>
+<span id="cb8-90"><a href="#cb8-90"></a><span class="co">## 410        R/pipe.R                  `%&gt;%`    function        R   8    NA</span></span>
+<span id="cb8-91"><a href="#cb8-91"></a><span class="co">## 510        R/pipe.R                 `%T&gt;%`    function        R   8    NA</span></span>
+<span id="cb8-92"><a href="#cb8-92"></a><span class="co">## 610     R/getters.R               `[.fseq`    function        R   7    NA</span></span>
+<span id="cb8-93"><a href="#cb8-93"></a><span class="co">## 710     R/getters.R              `[[.fseq`    function        R   4    NA</span></span>
+<span id="cb8-94"><a href="#cb8-94"></a><span class="co">## 84         R/pipe.R       `_function_list` functionVar        R   1    NA</span></span>
+<span id="cb8-95"><a href="#cb8-95"></a><span class="co">## 910     R/aliases.R            `n'est pas`   globalVar        R   1    NA</span></span>
+<span id="cb8-96"><a href="#cb8-96"></a><span class="co">## 1010    R/aliases.R                    add   globalVar        R   1    NA</span></span>
+<span id="cb8-97"><a href="#cb8-97"></a><span class="co">## 1110    R/aliases.R                    and   globalVar        R   1    NA</span></span>
+<span id="cb8-98"><a href="#cb8-98"></a><span class="co">## 1210       R/pipe.R   anonFunc5530c81f0100    function        R   1    NA</span></span>
+<span id="cb8-99"><a href="#cb8-99"></a><span class="co">## 1310  R/functions.R   anonFunc66cb050a0100    function        R   1    NA</span></span>
+<span id="cb8-100"><a href="#cb8-100"></a><span class="co">## 1410 R/debug_pipe.R   anonFunc89967ba50100    function        R   1    NA</span></span>
+<span id="cb8-101"><a href="#cb8-101"></a><span class="co">## 157        R/pipe.R             as_pipe_fn    function        R   3    NA</span></span>
+<span id="cb8-102"><a href="#cb8-102"></a><span class="co">## 161  R/debug_pipe.R             debug_fseq    function        R  11    NA</span></span>
+<span id="cb8-103"><a href="#cb8-103"></a><span class="co">## 171  R/debug_pipe.R             debug_pipe    function        R   5    NA</span></span>
+<span id="cb8-104"><a href="#cb8-104"></a><span class="co">## 181     R/aliases.R              divide_by   globalVar        R   1    NA</span></span>
+<span id="cb8-105"><a href="#cb8-105"></a><span class="co">## 191     R/aliases.R          divide_by_int   globalVar        R   1    NA</span></span>
+<span id="cb8-106"><a href="#cb8-106"></a><span class="co">## 201        R/pipe.R                    env functionVar        R   1    NA</span></span>
+<span id="cb8-107"><a href="#cb8-107"></a><span class="co">## 211        R/pipe.R                    env functionVar        R   1    NA</span></span>
+<span id="cb8-108"><a href="#cb8-108"></a><span class="co">## 221        R/pipe.R                    env functionVar        R   1    NA</span></span>
+<span id="cb8-109"><a href="#cb8-109"></a><span class="co">## 231        R/pipe.R                    env functionVar        R   1    NA</span></span>
+<span id="cb8-110"><a href="#cb8-110"></a><span class="co">## 241        R/pipe.R                    env functionVar        R   1    NA</span></span>
+<span id="cb8-111"><a href="#cb8-111"></a><span class="co">## 251        R/pipe.R                    env functionVar        R   1    NA</span></span>
+<span id="cb8-112"><a href="#cb8-112"></a><span class="co">## 261        R/pipe.R                    env functionVar        R   1    NA</span></span>
+<span id="cb8-113"><a href="#cb8-113"></a><span class="co">## 271     R/aliases.R                 equals   globalVar        R   1    NA</span></span>
+<span id="cb8-114"><a href="#cb8-114"></a><span class="co">## 281     R/aliases.R                extract   globalVar        R   1    NA</span></span>
+<span id="cb8-115"><a href="#cb8-115"></a><span class="co">## 291     R/aliases.R               extract2   globalVar        R   1    NA</span></span>
+<span id="cb8-116"><a href="#cb8-116"></a><span class="co">## 301   R/functions.R                  flist functionVar        R   1    NA</span></span>
+<span id="cb8-117"><a href="#cb8-117"></a><span class="co">## 311     R/freduce.R                freduce    function        R  16    NA</span></span>
+<span id="cb8-118"><a href="#cb8-118"></a><span class="co">## 321   R/functions.R              functions    function        R   6    NA</span></span>
+<span id="cb8-119"><a href="#cb8-119"></a><span class="co">## 351  R/debug_pipe.R                indices        list        R   1    NA</span></span>
+<span id="cb8-120"><a href="#cb8-120"></a><span class="co">## 361     R/aliases.R                  inset   globalVar        R   1    NA</span></span>
+<span id="cb8-121"><a href="#cb8-121"></a><span class="co">## 371     R/aliases.R                 inset2   globalVar        R   1    NA</span></span>
+<span id="cb8-122"><a href="#cb8-122"></a><span class="co">## 381     R/aliases.R        is_greater_than   globalVar        R   1    NA</span></span>
+<span id="cb8-123"><a href="#cb8-123"></a><span class="co">## 391     R/aliases.R                  is_in   globalVar        R   1    NA</span></span>
+<span id="cb8-124"><a href="#cb8-124"></a><span class="co">## 401     R/aliases.R           is_less_than   globalVar        R   1    NA</span></span>
+<span id="cb8-125"><a href="#cb8-125"></a><span class="co">## 411  R/debug_pipe.R         is_valid_index    function        R   1    NA</span></span>
+<span id="cb8-126"><a href="#cb8-126"></a><span class="co">## 421     R/aliases.R is_weakly_greater_than   globalVar        R   1    NA</span></span>
+<span id="cb8-127"><a href="#cb8-127"></a><span class="co">## 431     R/aliases.R    is_weakly_less_than   globalVar        R   1    NA</span></span>
+<span id="cb8-128"><a href="#cb8-128"></a><span class="co">## 441     R/freduce.R                      k functionVar        R   1    NA</span></span>
+<span id="cb8-129"><a href="#cb8-129"></a><span class="co">## 451        R/pipe.R                   kind functionVar        R   1    NA</span></span>
+<span id="cb8-130"><a href="#cb8-130"></a><span class="co">## 461        R/pipe.R                   kind functionVar        R   1    NA</span></span>
+<span id="cb8-131"><a href="#cb8-131"></a><span class="co">## 471        R/pipe.R                   kind functionVar        R   1    NA</span></span>
+<span id="cb8-132"><a href="#cb8-132"></a><span class="co">## 481        R/pipe.R                   kind functionVar        R   1    NA</span></span>
+<span id="cb8-133"><a href="#cb8-133"></a><span class="co">## 49         R/pipe.R                   kind functionVar        R   1    NA</span></span>
+<span id="cb8-134"><a href="#cb8-134"></a><span class="co">## 50         R/pipe.R                   kind functionVar        R   1    NA</span></span>
+<span id="cb8-135"><a href="#cb8-135"></a><span class="co">## 51         R/pipe.R                   kind functionVar        R   1    NA</span></span>
+<span id="cb8-136"><a href="#cb8-136"></a><span class="co">## 52         R/pipe.R            lambda_fmls   globalVar        R   1    NA</span></span>
+<span id="cb8-137"><a href="#cb8-137"></a><span class="co">## 53         R/pipe.R                   lazy functionVar        R   1    NA</span></span>
+<span id="cb8-138"><a href="#cb8-138"></a><span class="co">## 54         R/pipe.R                   lazy functionVar        R   1    NA</span></span>
+<span id="cb8-139"><a href="#cb8-139"></a><span class="co">## 55         R/pipe.R                   lazy functionVar        R   1    NA</span></span>
+<span id="cb8-140"><a href="#cb8-140"></a><span class="co">## 56         R/pipe.R                   lazy functionVar        R   1    NA</span></span>
+<span id="cb8-141"><a href="#cb8-141"></a><span class="co">## 57         R/pipe.R                   lazy functionVar        R   1    NA</span></span>
+<span id="cb8-142"><a href="#cb8-142"></a><span class="co">## 58      R/aliases.R                    mod   globalVar        R   1    NA</span></span>
+<span id="cb8-143"><a href="#cb8-143"></a><span class="co">## 59      R/aliases.R            multiply_by   globalVar        R   1    NA</span></span>
+<span id="cb8-144"><a href="#cb8-144"></a><span class="co">## 60      R/aliases.R     multiply_by_matrix   globalVar        R   1    NA</span></span>
+<span id="cb8-145"><a href="#cb8-145"></a><span class="co">## 61         R/pipe.R                 nested functionVar        R   1    NA</span></span>
+<span id="cb8-146"><a href="#cb8-146"></a><span class="co">## 62         R/pipe.R             new_lambda    function        R   8    NA</span></span>
+<span id="cb8-147"><a href="#cb8-147"></a><span class="co">## 63      R/aliases.R                    not   globalVar        R   1    NA</span></span>
+<span id="cb8-148"><a href="#cb8-148"></a><span class="co">## 64      R/aliases.R                     or   globalVar        R   1    NA</span></span>
+<span id="cb8-149"><a href="#cb8-149"></a><span class="co">## 65         R/pipe.R     pipe_eager_lexical    function        R   8    NA</span></span>
+<span id="cb8-150"><a href="#cb8-150"></a><span class="co">## 66         R/pipe.R      pipe_lazy_masking    function        R   9    NA</span></span>
+<span id="cb8-151"><a href="#cb8-151"></a><span class="co">## 67         R/pipe.R            pipe_nested    function        R   9    NA</span></span>
+<span id="cb8-152"><a href="#cb8-152"></a><span class="co">## 68    R/functions.R             print.fseq    function        R  10    NA</span></span>
+<span id="cb8-153"><a href="#cb8-153"></a><span class="co">## 69      R/aliases.R         raise_to_power   globalVar        R   1    NA</span></span>
+<span id="cb8-154"><a href="#cb8-154"></a><span class="co">## 70      R/aliases.R               set_attr   globalVar        R   1    NA</span></span>
+<span id="cb8-155"><a href="#cb8-155"></a><span class="co">## 71      R/aliases.R         set_attributes   globalVar        R   1    NA</span></span>
+<span id="cb8-156"><a href="#cb8-156"></a><span class="co">## 72      R/aliases.R              set_class   globalVar        R   1    NA</span></span>
+<span id="cb8-157"><a href="#cb8-157"></a><span class="co">## 73      R/aliases.R           set_colnames   globalVar        R   1    NA</span></span>
+<span id="cb8-158"><a href="#cb8-158"></a><span class="co">## 74      R/aliases.R              set_names   globalVar        R   1    NA</span></span>
+<span id="cb8-159"><a href="#cb8-159"></a><span class="co">## 75      R/aliases.R           set_rownames   globalVar        R   1    NA</span></span>
+<span id="cb8-160"><a href="#cb8-160"></a><span class="co">## 76      R/aliases.R               subtract   globalVar        R   1    NA</span></span>
+<span id="cb8-161"><a href="#cb8-161"></a><span class="co">## 77         R/pipe.R                    sym functionVar        R   1    NA</span></span>
+<span id="cb8-162"><a href="#cb8-162"></a><span class="co">## 78         R/pipe.R                    sym functionVar        R   1    NA</span></span>
+<span id="cb8-163"><a href="#cb8-163"></a><span class="co">## 79         R/pipe.R                    sym functionVar        R   1    NA</span></span>
+<span id="cb8-164"><a href="#cb8-164"></a><span class="co">## 80   R/debug_pipe.R           undebug_fseq    function        R   6    NA</span></span>
+<span id="cb8-165"><a href="#cb8-165"></a><span class="co">## 81      R/aliases.R             use_series   globalVar        R   1    NA</span></span>
+<span id="cb8-166"><a href="#cb8-166"></a><span class="co">## 82      R/getters.R                      y functionVar        R   1    NA</span></span>
+<span id="cb8-167"><a href="#cb8-167"></a><span class="co">## 83      src/utils.h       MAGRITTR_UTILS_H       macro      C++   1    NA</span></span>
+<span id="cb8-168"><a href="#cb8-168"></a><span class="co">## 89       src/pipe.c             R_NO_REMAP       macro        C   1    NA</span></span>
+<span id="cb8-169"><a href="#cb8-169"></a><span class="co">## 90      src/utils.c             R_NO_REMAP       macro        C   1    NA</span></span>
+<span id="cb8-170"><a href="#cb8-170"></a><span class="co">## 91       src/pipe.c        R_init_magrittr    function        C   4    NA</span></span>
+<span id="cb8-171"><a href="#cb8-171"></a><span class="co">## 92      src/utils.c            abort_parse    function        C   6    NA</span></span>
+<span id="cb8-172"><a href="#cb8-172"></a><span class="co">## 93       src/pipe.c                add_dot    function        C  16    NA</span></span>
+<span id="cb8-173"><a href="#cb8-173"></a><span class="co">## 94       src/pipe.c           as_pipe_call    function        C  13    NA</span></span>
+<span id="cb8-174"><a href="#cb8-174"></a><span class="co">## 95       src/pipe.c    as_pipe_dollar_call    function        C   3    NA</span></span>
+<span id="cb8-175"><a href="#cb8-175"></a><span class="co">## 96       src/pipe.c       as_pipe_tee_call    function        C   7    NA</span></span>
+<span id="cb8-176"><a href="#cb8-176"></a><span class="co">## 97       src/pipe.c           call_entries    variable        C   4    NA</span></span>
+<span id="cb8-177"><a href="#cb8-177"></a><span class="co">## 98       src/pipe.c        calls_base_with    variable        C   1    NA</span></span>
+<span id="cb8-178"><a href="#cb8-178"></a><span class="co">## 99       src/pipe.c               chrs_dot    variable        C   1    NA</span></span>
+<span id="cb8-179"><a href="#cb8-179"></a><span class="co">## 100      src/pipe.c             clean_pipe    function        C   9    NA</span></span>
+<span id="cb8-180"><a href="#cb8-180"></a><span class="co">## 101      src/pipe.c           cleanup_info      struct        C   4    NA</span></span>
+<span id="cb8-181"><a href="#cb8-181"></a><span class="co">## 102      src/pipe.c                    env      member        C   1    NA</span></span>
+<span id="cb8-182"><a href="#cb8-182"></a><span class="co">## 103      src/pipe.c                    env      member        C   1    NA</span></span>
+<span id="cb8-183"><a href="#cb8-183"></a><span class="co">## 104      src/pipe.c              eval_pipe    function        C  18    NA</span></span>
+<span id="cb8-184"><a href="#cb8-184"></a><span class="co">## 105      src/pipe.c         eval_pipe_lazy    function        C  34    NA</span></span>
+<span id="cb8-185"><a href="#cb8-185"></a><span class="co">## 106      src/pipe.c                 export       macro        C   1    NA</span></span>
+<span id="cb8-186"><a href="#cb8-186"></a><span class="co">## 107      src/pipe.c                  exprs      member        C   1    NA</span></span>
+<span id="cb8-187"><a href="#cb8-187"></a><span class="co">## 108      src/pipe.c            ext_entries    variable        C   4    NA</span></span>
+<span id="cb8-188"><a href="#cb8-188"></a><span class="co">## 109      src/pipe.c                is_bang    function        C   3    NA</span></span>
+<span id="cb8-189"><a href="#cb8-189"></a><span class="co">## 110      src/pipe.c              is_return    function        C   3    NA</span></span>
+<span id="cb8-190"><a href="#cb8-190"></a><span class="co">## 111      src/pipe.c         is_spliced_dot    function        C  17    NA</span></span>
+<span id="cb8-191"><a href="#cb8-191"></a><span class="co">## 112      src/pipe.c          magrittr_init    function        C  36    NA</span></span>
+<span id="cb8-192"><a href="#cb8-192"></a><span class="co">## 113     src/utils.c    magrittr_init_utils    function        C  12    NA</span></span>
+<span id="cb8-193"><a href="#cb8-193"></a><span class="co">## 114      src/pipe.c        magrittr_ns_env    variable        C   1    NA</span></span>
+<span id="cb8-194"><a href="#cb8-194"></a><span class="co">## 115      src/pipe.c          magrittr_pipe    function        C  64    NA</span></span>
+<span id="cb8-195"><a href="#cb8-195"></a><span class="co">## 116     src/utils.c   new_env__parent_node    variable        C   1    NA</span></span>
+<span id="cb8-196"><a href="#cb8-196"></a><span class="co">## 117     src/utils.c     new_env__size_node    variable        C   1    NA</span></span>
+<span id="cb8-197"><a href="#cb8-197"></a><span class="co">## 118     src/utils.c           new_env_call    variable        C   1    NA</span></span>
+<span id="cb8-198"><a href="#cb8-198"></a><span class="co">## 119      src/pipe.c             new_lambda    function        C   7    NA</span></span>
+<span id="cb8-199"><a href="#cb8-199"></a><span class="co">## 120      src/pipe.c                    old      member        C   1    NA</span></span>
+<span id="cb8-200"><a href="#cb8-200"></a><span class="co">## 121      src/pipe.c        parse_pipe_call    function        C  22    NA</span></span>
+<span id="cb8-201"><a href="#cb8-201"></a><span class="co">## 122      src/pipe.c              pipe_info      struct        C   4    NA</span></span>
+<span id="cb8-202"><a href="#cb8-202"></a><span class="co">## 123      src/pipe.c              pipe_kind        enum        C   7    NA</span></span>
+<span id="cb8-203"><a href="#cb8-203"></a><span class="co">## 124      src/pipe.c              pipe_nest    function        C  37    NA</span></span>
+<span id="cb8-204"><a href="#cb8-204"></a><span class="co">## 125      src/pipe.c            pipe_unroll    function        C  54    NA</span></span>
+<span id="cb8-205"><a href="#cb8-205"></a><span class="co">## 126     src/utils.c          r__env_unbind    function        C  23    NA</span></span>
+<span id="cb8-206"><a href="#cb8-206"></a><span class="co">## 127     src/utils.c        r_env_bind_lazy    function        C  18    NA</span></span>
+<span id="cb8-207"><a href="#cb8-207"></a><span class="co">## 128     src/utils.h              r_env_get    function      C++  11    NA</span></span>
+<span id="cb8-208"><a href="#cb8-208"></a><span class="co">## 129     src/utils.h           r_env_unbind    function      C++   8    NA</span></span>
+<span id="cb8-209"><a href="#cb8-209"></a><span class="co">## 130     src/utils.h      r_new_environment    function      C++   5    NA</span></span>
+<span id="cb8-210"><a href="#cb8-210"></a><span class="co">## 131     src/utils.c                r_parse    function        C  17    NA</span></span>
+<span id="cb8-211"><a href="#cb8-211"></a><span class="co">## 132     src/utils.c           r_parse_eval    function        C   5    NA</span></span>
+<span id="cb8-212"><a href="#cb8-212"></a><span class="co">## 133      src/pipe.c            syms_assign    variable        C   1    NA</span></span>
+<span id="cb8-213"><a href="#cb8-213"></a><span class="co">## 134      src/pipe.c              syms_bang    variable        C   1    NA</span></span>
+<span id="cb8-214"><a href="#cb8-214"></a><span class="co">## 135      src/pipe.c             syms_curly    variable        C   1    NA</span></span>
+<span id="cb8-215"><a href="#cb8-215"></a><span class="co">## 136     src/utils.c    syms_delayed_assign    variable        C   1    NA</span></span>
+<span id="cb8-216"><a href="#cb8-216"></a><span class="co">## 137      src/pipe.c               syms_dot    variable        C   1    NA</span></span>
+<span id="cb8-217"><a href="#cb8-217"></a><span class="co">## 138      src/pipe.c               syms_env    variable        C   1    NA</span></span>
+<span id="cb8-218"><a href="#cb8-218"></a><span class="co">## 139     src/utils.c             syms_envir    variable        C   1    NA</span></span>
+<span id="cb8-219"><a href="#cb8-219"></a><span class="co">## 140     src/utils.c          syms_inherits    variable        C   1    NA</span></span>
+<span id="cb8-220"><a href="#cb8-220"></a><span class="co">## 141      src/pipe.c              syms_kind    variable        C   1    NA</span></span>
+<span id="cb8-221"><a href="#cb8-221"></a><span class="co">## 142      src/pipe.c              syms_lazy    variable        C   1    NA</span></span>
+<span id="cb8-222"><a href="#cb8-222"></a><span class="co">## 143      src/pipe.c               syms_lhs    variable        C   1    NA</span></span>
+<span id="cb8-223"><a href="#cb8-223"></a><span class="co">## 144     src/utils.c              syms_list    variable        C   1    NA</span></span>
+<span id="cb8-224"><a href="#cb8-224"></a><span class="co">## 145      src/pipe.c            syms_nested    variable        C   1    NA</span></span>
+<span id="cb8-225"><a href="#cb8-225"></a><span class="co">## 146      src/pipe.c        syms_new_lambda    variable        C   1    NA</span></span>
+<span id="cb8-226"><a href="#cb8-226"></a><span class="co">## 147      src/pipe.c             syms_paren    variable        C   1    NA</span></span>
+<span id="cb8-227"><a href="#cb8-227"></a><span class="co">## 148      src/pipe.c              syms_pipe    variable        C   1    NA</span></span>
+<span id="cb8-228"><a href="#cb8-228"></a><span class="co">## 149      src/pipe.c     syms_pipe_compound    variable        C   1    NA</span></span>
+<span id="cb8-229"><a href="#cb8-229"></a><span class="co">## 150      src/pipe.c       syms_pipe_dollar    variable        C   1    NA</span></span>
+<span id="cb8-230"><a href="#cb8-230"></a><span class="co">## 151      src/pipe.c          syms_pipe_tee    variable        C   1    NA</span></span>
+<span id="cb8-231"><a href="#cb8-231"></a><span class="co">## 152      src/pipe.c            syms_return    variable        C   1    NA</span></span>
+<span id="cb8-232"><a href="#cb8-232"></a><span class="co">## 153      src/pipe.c               syms_rhs    variable        C   1    NA</span></span>
+<span id="cb8-233"><a href="#cb8-233"></a><span class="co">## 154     src/utils.c                syms_rm    variable        C   1    NA</span></span>
+<span id="cb8-234"><a href="#cb8-234"></a><span class="co">## 155      src/pipe.c               syms_sym    variable        C   1    NA</span></span>
+<span id="cb8-235"><a href="#cb8-235"></a><span class="co">##      has_dots exported param_nchars_md param_nchars_mn num_doclines</span></span>
+<span id="cb8-236"><a href="#cb8-236"></a><span class="co">## 1          NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-237"><a href="#cb8-237"></a><span class="co">## 2          NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-238"><a href="#cb8-238"></a><span class="co">## 3          NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-239"><a href="#cb8-239"></a><span class="co">## 4          NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-240"><a href="#cb8-240"></a><span class="co">## 5          NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-241"><a href="#cb8-241"></a><span class="co">## 6          NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-242"><a href="#cb8-242"></a><span class="co">## 7          NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-243"><a href="#cb8-243"></a><span class="co">## 8          NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-244"><a href="#cb8-244"></a><span class="co">## 9          NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-245"><a href="#cb8-245"></a><span class="co">## 10         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-246"><a href="#cb8-246"></a><span class="co">## 11         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-247"><a href="#cb8-247"></a><span class="co">## 12         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-248"><a href="#cb8-248"></a><span class="co">## 13         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-249"><a href="#cb8-249"></a><span class="co">## 14         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-250"><a href="#cb8-250"></a><span class="co">## 15         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-251"><a href="#cb8-251"></a><span class="co">## 16         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-252"><a href="#cb8-252"></a><span class="co">## 17         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-253"><a href="#cb8-253"></a><span class="co">## 18         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-254"><a href="#cb8-254"></a><span class="co">## 19         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-255"><a href="#cb8-255"></a><span class="co">## 20         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-256"><a href="#cb8-256"></a><span class="co">## 21         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-257"><a href="#cb8-257"></a><span class="co">## 22         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-258"><a href="#cb8-258"></a><span class="co">## 23         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-259"><a href="#cb8-259"></a><span class="co">## 24         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-260"><a href="#cb8-260"></a><span class="co">## 25         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-261"><a href="#cb8-261"></a><span class="co">## 26         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-262"><a href="#cb8-262"></a><span class="co">## 27         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-263"><a href="#cb8-263"></a><span class="co">## 28         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-264"><a href="#cb8-264"></a><span class="co">## 29         NA     TRUE              NA              NA           54</span></span>
+<span id="cb8-265"><a href="#cb8-265"></a><span class="co">## 30      FALSE     TRUE             7.0             7.0           11</span></span>
+<span id="cb8-266"><a href="#cb8-266"></a><span class="co">## 31       TRUE     TRUE            26.0            26.0           14</span></span>
+<span id="cb8-267"><a href="#cb8-267"></a><span class="co">## 32      FALSE     TRUE            26.0            26.0           14</span></span>
+<span id="cb8-268"><a href="#cb8-268"></a><span class="co">## 33      FALSE     TRUE            17.0            17.0           12</span></span>
+<span id="cb8-269"><a href="#cb8-269"></a><span class="co">## 34      FALSE     TRUE            35.0            35.0           11</span></span>
+<span id="cb8-270"><a href="#cb8-270"></a><span class="co">## 35       TRUE     TRUE            18.5            18.5           12</span></span>
+<span id="cb8-271"><a href="#cb8-271"></a><span class="co">## 36       TRUE     TRUE            43.5            43.5           19</span></span>
+<span id="cb8-272"><a href="#cb8-272"></a><span class="co">## 37       TRUE     TRUE            43.5            43.5           19</span></span>
+<span id="cb8-273"><a href="#cb8-273"></a><span class="co">## 38      FALSE    FALSE              NA              NA           NA</span></span>
+<span id="cb8-274"><a href="#cb8-274"></a><span class="co">## 39      FALSE     TRUE            40.5            40.5          114</span></span>
+<span id="cb8-275"><a href="#cb8-275"></a><span class="co">## 40      FALSE     TRUE            40.5            40.5           13</span></span>
+<span id="cb8-276"><a href="#cb8-276"></a><span class="co">## 41      FALSE     TRUE            40.5            40.5           13</span></span>
+<span id="cb8-277"><a href="#cb8-277"></a><span class="co">## 42      FALSE     TRUE            40.5            40.5           13</span></span>
+<span id="cb8-278"><a href="#cb8-278"></a><span class="co">## 43      FALSE     TRUE            54.0            54.0           42</span></span>
+<span id="cb8-279"><a href="#cb8-279"></a><span class="co">## 44      FALSE     TRUE            40.5            40.5           23</span></span>
+<span id="cb8-280"><a href="#cb8-280"></a><span class="co">## 45      FALSE     TRUE            43.5            43.5           26</span></span>
+<span id="cb8-281"><a href="#cb8-281"></a><span class="co">## 46      FALSE    FALSE              NA              NA           NA</span></span>
+<span id="cb8-282"><a href="#cb8-282"></a><span class="co">## 47      FALSE    FALSE              NA              NA           NA</span></span>
+<span id="cb8-283"><a href="#cb8-283"></a><span class="co">## 48      FALSE    FALSE              NA              NA           NA</span></span>
+<span id="cb8-284"><a href="#cb8-284"></a><span class="co">## 156        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-285"><a href="#cb8-285"></a><span class="co">## 210        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-286"><a href="#cb8-286"></a><span class="co">## 310        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-287"><a href="#cb8-287"></a><span class="co">## 410        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-288"><a href="#cb8-288"></a><span class="co">## 510        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-289"><a href="#cb8-289"></a><span class="co">## 610        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-290"><a href="#cb8-290"></a><span class="co">## 710        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-291"><a href="#cb8-291"></a><span class="co">## 84         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-292"><a href="#cb8-292"></a><span class="co">## 910        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-293"><a href="#cb8-293"></a><span class="co">## 1010       NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-294"><a href="#cb8-294"></a><span class="co">## 1110       NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-295"><a href="#cb8-295"></a><span class="co">## 1210       NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-296"><a href="#cb8-296"></a><span class="co">## 1310       NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-297"><a href="#cb8-297"></a><span class="co">## 1410       NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-298"><a href="#cb8-298"></a><span class="co">## 157        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-299"><a href="#cb8-299"></a><span class="co">## 161        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-300"><a href="#cb8-300"></a><span class="co">## 171        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-301"><a href="#cb8-301"></a><span class="co">## 181        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-302"><a href="#cb8-302"></a><span class="co">## 191        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-303"><a href="#cb8-303"></a><span class="co">## 201        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-304"><a href="#cb8-304"></a><span class="co">## 211        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-305"><a href="#cb8-305"></a><span class="co">## 221        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-306"><a href="#cb8-306"></a><span class="co">## 231        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-307"><a href="#cb8-307"></a><span class="co">## 241        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-308"><a href="#cb8-308"></a><span class="co">## 251        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-309"><a href="#cb8-309"></a><span class="co">## 261        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-310"><a href="#cb8-310"></a><span class="co">## 271        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-311"><a href="#cb8-311"></a><span class="co">## 281        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-312"><a href="#cb8-312"></a><span class="co">## 291        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-313"><a href="#cb8-313"></a><span class="co">## 301        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-314"><a href="#cb8-314"></a><span class="co">## 311        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-315"><a href="#cb8-315"></a><span class="co">## 321        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-316"><a href="#cb8-316"></a><span class="co">## 351        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-317"><a href="#cb8-317"></a><span class="co">## 361        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-318"><a href="#cb8-318"></a><span class="co">## 371        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-319"><a href="#cb8-319"></a><span class="co">## 381        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-320"><a href="#cb8-320"></a><span class="co">## 391        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-321"><a href="#cb8-321"></a><span class="co">## 401        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-322"><a href="#cb8-322"></a><span class="co">## 411        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-323"><a href="#cb8-323"></a><span class="co">## 421        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-324"><a href="#cb8-324"></a><span class="co">## 431        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-325"><a href="#cb8-325"></a><span class="co">## 441        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-326"><a href="#cb8-326"></a><span class="co">## 451        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-327"><a href="#cb8-327"></a><span class="co">## 461        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-328"><a href="#cb8-328"></a><span class="co">## 471        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-329"><a href="#cb8-329"></a><span class="co">## 481        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-330"><a href="#cb8-330"></a><span class="co">## 49         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-331"><a href="#cb8-331"></a><span class="co">## 50         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-332"><a href="#cb8-332"></a><span class="co">## 51         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-333"><a href="#cb8-333"></a><span class="co">## 52         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-334"><a href="#cb8-334"></a><span class="co">## 53         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-335"><a href="#cb8-335"></a><span class="co">## 54         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-336"><a href="#cb8-336"></a><span class="co">## 55         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-337"><a href="#cb8-337"></a><span class="co">## 56         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-338"><a href="#cb8-338"></a><span class="co">## 57         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-339"><a href="#cb8-339"></a><span class="co">## 58         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-340"><a href="#cb8-340"></a><span class="co">## 59         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-341"><a href="#cb8-341"></a><span class="co">## 60         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-342"><a href="#cb8-342"></a><span class="co">## 61         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-343"><a href="#cb8-343"></a><span class="co">## 62         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-344"><a href="#cb8-344"></a><span class="co">## 63         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-345"><a href="#cb8-345"></a><span class="co">## 64         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-346"><a href="#cb8-346"></a><span class="co">## 65         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-347"><a href="#cb8-347"></a><span class="co">## 66         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-348"><a href="#cb8-348"></a><span class="co">## 67         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-349"><a href="#cb8-349"></a><span class="co">## 68         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-350"><a href="#cb8-350"></a><span class="co">## 69         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-351"><a href="#cb8-351"></a><span class="co">## 70         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-352"><a href="#cb8-352"></a><span class="co">## 71         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-353"><a href="#cb8-353"></a><span class="co">## 72         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-354"><a href="#cb8-354"></a><span class="co">## 73         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-355"><a href="#cb8-355"></a><span class="co">## 74         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-356"><a href="#cb8-356"></a><span class="co">## 75         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-357"><a href="#cb8-357"></a><span class="co">## 76         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-358"><a href="#cb8-358"></a><span class="co">## 77         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-359"><a href="#cb8-359"></a><span class="co">## 78         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-360"><a href="#cb8-360"></a><span class="co">## 79         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-361"><a href="#cb8-361"></a><span class="co">## 80         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-362"><a href="#cb8-362"></a><span class="co">## 81         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-363"><a href="#cb8-363"></a><span class="co">## 82         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-364"><a href="#cb8-364"></a><span class="co">## 83         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-365"><a href="#cb8-365"></a><span class="co">## 89         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-366"><a href="#cb8-366"></a><span class="co">## 90         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-367"><a href="#cb8-367"></a><span class="co">## 91         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-368"><a href="#cb8-368"></a><span class="co">## 92         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-369"><a href="#cb8-369"></a><span class="co">## 93         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-370"><a href="#cb8-370"></a><span class="co">## 94         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-371"><a href="#cb8-371"></a><span class="co">## 95         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-372"><a href="#cb8-372"></a><span class="co">## 96         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-373"><a href="#cb8-373"></a><span class="co">## 97         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-374"><a href="#cb8-374"></a><span class="co">## 98         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-375"><a href="#cb8-375"></a><span class="co">## 99         NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-376"><a href="#cb8-376"></a><span class="co">## 100        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-377"><a href="#cb8-377"></a><span class="co">## 101        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-378"><a href="#cb8-378"></a><span class="co">## 102        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-379"><a href="#cb8-379"></a><span class="co">## 103        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-380"><a href="#cb8-380"></a><span class="co">## 104        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-381"><a href="#cb8-381"></a><span class="co">## 105        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-382"><a href="#cb8-382"></a><span class="co">## 106        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-383"><a href="#cb8-383"></a><span class="co">## 107        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-384"><a href="#cb8-384"></a><span class="co">## 108        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-385"><a href="#cb8-385"></a><span class="co">## 109        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-386"><a href="#cb8-386"></a><span class="co">## 110        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-387"><a href="#cb8-387"></a><span class="co">## 111        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-388"><a href="#cb8-388"></a><span class="co">## 112        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-389"><a href="#cb8-389"></a><span class="co">## 113        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-390"><a href="#cb8-390"></a><span class="co">## 114        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-391"><a href="#cb8-391"></a><span class="co">## 115        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-392"><a href="#cb8-392"></a><span class="co">## 116        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-393"><a href="#cb8-393"></a><span class="co">## 117        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-394"><a href="#cb8-394"></a><span class="co">## 118        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-395"><a href="#cb8-395"></a><span class="co">## 119        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-396"><a href="#cb8-396"></a><span class="co">## 120        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-397"><a href="#cb8-397"></a><span class="co">## 121        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-398"><a href="#cb8-398"></a><span class="co">## 122        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-399"><a href="#cb8-399"></a><span class="co">## 123        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-400"><a href="#cb8-400"></a><span class="co">## 124        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-401"><a href="#cb8-401"></a><span class="co">## 125        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-402"><a href="#cb8-402"></a><span class="co">## 126        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-403"><a href="#cb8-403"></a><span class="co">## 127        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-404"><a href="#cb8-404"></a><span class="co">## 128        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-405"><a href="#cb8-405"></a><span class="co">## 129        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-406"><a href="#cb8-406"></a><span class="co">## 130        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-407"><a href="#cb8-407"></a><span class="co">## 131        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-408"><a href="#cb8-408"></a><span class="co">## 132        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-409"><a href="#cb8-409"></a><span class="co">## 133        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-410"><a href="#cb8-410"></a><span class="co">## 134        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-411"><a href="#cb8-411"></a><span class="co">## 135        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-412"><a href="#cb8-412"></a><span class="co">## 136        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-413"><a href="#cb8-413"></a><span class="co">## 137        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-414"><a href="#cb8-414"></a><span class="co">## 138        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-415"><a href="#cb8-415"></a><span class="co">## 139        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-416"><a href="#cb8-416"></a><span class="co">## 140        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-417"><a href="#cb8-417"></a><span class="co">## 141        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-418"><a href="#cb8-418"></a><span class="co">## 142        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-419"><a href="#cb8-419"></a><span class="co">## 143        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-420"><a href="#cb8-420"></a><span class="co">## 144        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-421"><a href="#cb8-421"></a><span class="co">## 145        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-422"><a href="#cb8-422"></a><span class="co">## 146        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-423"><a href="#cb8-423"></a><span class="co">## 147        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-424"><a href="#cb8-424"></a><span class="co">## 148        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-425"><a href="#cb8-425"></a><span class="co">## 149        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-426"><a href="#cb8-426"></a><span class="co">## 150        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-427"><a href="#cb8-427"></a><span class="co">## 151        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-428"><a href="#cb8-428"></a><span class="co">## 152        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-429"><a href="#cb8-429"></a><span class="co">## 153        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-430"><a href="#cb8-430"></a><span class="co">## 154        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-431"><a href="#cb8-431"></a><span class="co">## 155        NA    FALSE              NA              NA           NA</span></span>
+<span id="cb8-432"><a href="#cb8-432"></a><span class="co">## </span></span>
+<span id="cb8-433"><a href="#cb8-433"></a><span class="co">## $network</span></span>
+<span id="cb8-434"><a href="#cb8-434"></a><span class="co">##              file line1                from                  to     language</span></span>
+<span id="cb8-435"><a href="#cb8-435"></a><span class="co">## 1        R/pipe.R   297          new_lambda             freduce            R</span></span>
+<span id="cb8-436"><a href="#cb8-436"></a><span class="co">## 2     R/getters.R    14           `[[.fseq`           functions            R</span></span>
+<span id="cb8-437"><a href="#cb8-437"></a><span class="co">## 3     R/getters.R    23            `[.fseq`           functions            R</span></span>
+<span id="cb8-438"><a href="#cb8-438"></a><span class="co">## 4   R/functions.R    26          print.fseq           functions            R</span></span>
+<span id="cb8-439"><a href="#cb8-439"></a><span class="co">## 5  R/debug_pipe.R    28          debug_fseq           functions            R</span></span>
+<span id="cb8-440"><a href="#cb8-440"></a><span class="co">## 6  R/debug_pipe.R    35          debug_fseq           functions            R</span></span>
+<span id="cb8-441"><a href="#cb8-441"></a><span class="co">## 7  R/debug_pipe.R    42        undebug_fseq           functions            R</span></span>
+<span id="cb8-442"><a href="#cb8-442"></a><span class="co">## 8  R/debug_pipe.R    43        undebug_fseq           functions            R</span></span>
+<span id="cb8-443"><a href="#cb8-443"></a><span class="co">## 9  R/debug_pipe.R    44        undebug_fseq           functions            R</span></span>
+<span id="cb8-444"><a href="#cb8-444"></a><span class="co">## 10    src/utils.c    77             r_parse         abort_parse   language:C</span></span>
+<span id="cb8-445"><a href="#cb8-445"></a><span class="co">## 11    src/utils.c    80             r_parse         abort_parse   language:C</span></span>
+<span id="cb8-446"><a href="#cb8-446"></a><span class="co">## 13     src/pipe.c   297        as_pipe_call             add_dot   language:C</span></span>
+<span id="cb8-447"><a href="#cb8-447"></a><span class="co">## 15     src/pipe.c   235         pipe_unroll        as_pipe_call   language:C</span></span>
+<span id="cb8-448"><a href="#cb8-448"></a><span class="co">## 16     src/pipe.c   238         pipe_unroll        as_pipe_call   language:C</span></span>
+<span id="cb8-449"><a href="#cb8-449"></a><span class="co">## 17     src/pipe.c   310    as_pipe_tee_call        as_pipe_call   language:C</span></span>
+<span id="cb8-450"><a href="#cb8-450"></a><span class="co">## 19     src/pipe.c   240         pipe_unroll as_pipe_dollar_call   language:C</span></span>
+<span id="cb8-451"><a href="#cb8-451"></a><span class="co">## 21     src/pipe.c   239         pipe_unroll    as_pipe_tee_call   language:C</span></span>
+<span id="cb8-452"><a href="#cb8-452"></a><span class="co">## 23     src/pipe.c   118       magrittr_pipe          clean_pipe   language:C</span></span>
+<span id="cb8-453"><a href="#cb8-453"></a><span class="co">## 24     src/pipe.c   113       magrittr_pipe        cleanup_info   language:C</span></span>
+<span id="cb8-454"><a href="#cb8-454"></a><span class="co">## 25     src/pipe.c   118       magrittr_pipe        cleanup_info   language:C</span></span>
+<span id="cb8-455"><a href="#cb8-455"></a><span class="co">## 26     src/pipe.c   196          clean_pipe        cleanup_info   language:C</span></span>
+<span id="cb8-456"><a href="#cb8-456"></a><span class="co">## 28     src/pipe.c   118       magrittr_pipe           eval_pipe   language:C</span></span>
+<span id="cb8-457"><a href="#cb8-457"></a><span class="co">## 30     src/pipe.c   105       magrittr_pipe      eval_pipe_lazy   language:C</span></span>
+<span id="cb8-458"><a href="#cb8-458"></a><span class="co">## 31     src/pipe.c   324      is_spliced_dot             is_bang   language:C</span></span>
+<span id="cb8-459"><a href="#cb8-459"></a><span class="co">## 32     src/pipe.c   329      is_spliced_dot             is_bang   language:C</span></span>
+<span id="cb8-460"><a href="#cb8-460"></a><span class="co">## 33     src/pipe.c   334      is_spliced_dot             is_bang   language:C</span></span>
+<span id="cb8-461"><a href="#cb8-461"></a><span class="co">## 35     src/pipe.c   177      eval_pipe_lazy           is_return   language:C</span></span>
+<span id="cb8-462"><a href="#cb8-462"></a><span class="co">## 36     src/pipe.c   350             add_dot      is_spliced_dot   language:C</span></span>
+<span id="cb8-463"><a href="#cb8-463"></a><span class="co">## 39     src/pipe.c   415       magrittr_init magrittr_init_utils   language:C</span></span>
+<span id="cb8-464"><a href="#cb8-464"></a><span class="co">## 42     src/pipe.c    88       magrittr_pipe          new_lambda   language:C</span></span>
+<span id="cb8-465"><a href="#cb8-465"></a><span class="co">## 44     src/pipe.c   249         pipe_unroll     parse_pipe_call   language:C</span></span>
+<span id="cb8-466"><a href="#cb8-466"></a><span class="co">## 45     src/pipe.c   109       magrittr_pipe           pipe_info   language:C</span></span>
+<span id="cb8-467"><a href="#cb8-467"></a><span class="co">## 46     src/pipe.c   118       magrittr_pipe           pipe_info   language:C</span></span>
+<span id="cb8-468"><a href="#cb8-468"></a><span class="co">## 47     src/pipe.c   135           eval_pipe           pipe_info   language:C</span></span>
+<span id="cb8-469"><a href="#cb8-469"></a><span class="co">## 49     src/pipe.c    95       magrittr_pipe           pipe_nest   language:C</span></span>
+<span id="cb8-470"><a href="#cb8-470"></a><span class="co">## 51     src/pipe.c    84       magrittr_pipe         pipe_unroll   language:C</span></span>
+<span id="cb8-471"><a href="#cb8-471"></a><span class="co">## 52     src/pipe.c   168      eval_pipe_lazy     r_env_bind_lazy   language:C</span></span>
+<span id="cb8-472"><a href="#cb8-472"></a><span class="co">## 53     src/pipe.c    76       magrittr_pipe           r_env_get language:C++</span></span>
+<span id="cb8-473"><a href="#cb8-473"></a><span class="co">## 54     src/pipe.c    93       magrittr_pipe           r_env_get language:C++</span></span>
+<span id="cb8-474"><a href="#cb8-474"></a><span class="co">## 55     src/pipe.c   101       magrittr_pipe           r_env_get language:C++</span></span>
+<span id="cb8-475"><a href="#cb8-475"></a><span class="co">## 56     src/pipe.c   107       magrittr_pipe           r_env_get language:C++</span></span>
+<span id="cb8-476"><a href="#cb8-476"></a><span class="co">## 57     src/pipe.c   199          clean_pipe        r_env_unbind language:C++</span></span>
+<span id="cb8-477"><a href="#cb8-477"></a><span class="co">## 58     src/pipe.c   162      eval_pipe_lazy   r_new_environment language:C++</span></span>
+<span id="cb8-478"><a href="#cb8-478"></a><span class="co">## 59    src/utils.c    89        r_parse_eval             r_parse   language:C</span></span>
+<span id="cb8-479"><a href="#cb8-479"></a><span class="co">## 60    src/utils.c   123 magrittr_init_utils        r_parse_eval   language:C</span></span>
+<span id="cb8-480"><a href="#cb8-480"></a><span class="co">##    cluster_dir centrality_dir cluster_undir centrality_undir</span></span>
+<span id="cb8-481"><a href="#cb8-481"></a><span class="co">## 1            1              1             1               20</span></span>
+<span id="cb8-482"><a href="#cb8-482"></a><span class="co">## 2            2              0             2                0</span></span>
+<span id="cb8-483"><a href="#cb8-483"></a><span class="co">## 3            2              0             2                0</span></span>
+<span id="cb8-484"><a href="#cb8-484"></a><span class="co">## 4            2              0             2                0</span></span>
+<span id="cb8-485"><a href="#cb8-485"></a><span class="co">## 5            2              0             2                0</span></span>
+<span id="cb8-486"><a href="#cb8-486"></a><span class="co">## 6            2              0             2                0</span></span>
+<span id="cb8-487"><a href="#cb8-487"></a><span class="co">## 7            2              0             2                0</span></span>
+<span id="cb8-488"><a href="#cb8-488"></a><span class="co">## 8            2              0             2                0</span></span>
+<span id="cb8-489"><a href="#cb8-489"></a><span class="co">## 9            2              0             2                0</span></span>
+<span id="cb8-490"><a href="#cb8-490"></a><span class="co">## 10           3              3             3                3</span></span>
+<span id="cb8-491"><a href="#cb8-491"></a><span class="co">## 11           3              3             3                3</span></span>
+<span id="cb8-492"><a href="#cb8-492"></a><span class="co">## 13           1              9             1               54</span></span>
+<span id="cb8-493"><a href="#cb8-493"></a><span class="co">## 15           1              7             1              109</span></span>
+<span id="cb8-494"><a href="#cb8-494"></a><span class="co">## 16           1              7             1              109</span></span>
+<span id="cb8-495"><a href="#cb8-495"></a><span class="co">## 17           1              0             1                0</span></span>
+<span id="cb8-496"><a href="#cb8-496"></a><span class="co">## 19           1              7             1              109</span></span>
+<span id="cb8-497"><a href="#cb8-497"></a><span class="co">## 21           1              7             1              109</span></span>
+<span id="cb8-498"><a href="#cb8-498"></a><span class="co">## 23           1              0             1              171</span></span>
+<span id="cb8-499"><a href="#cb8-499"></a><span class="co">## 24           1              0             1              171</span></span>
+<span id="cb8-500"><a href="#cb8-500"></a><span class="co">## 25           1              0             1              171</span></span>
+<span id="cb8-501"><a href="#cb8-501"></a><span class="co">## 26           1              1             1               20</span></span>
+<span id="cb8-502"><a href="#cb8-502"></a><span class="co">## 28           1              0             1              171</span></span>
+<span id="cb8-503"><a href="#cb8-503"></a><span class="co">## 30           1              0             1              171</span></span>
+<span id="cb8-504"><a href="#cb8-504"></a><span class="co">## 31           1              5             1               20</span></span>
+<span id="cb8-505"><a href="#cb8-505"></a><span class="co">## 32           1              5             1               20</span></span>
+<span id="cb8-506"><a href="#cb8-506"></a><span class="co">## 33           1              5             1               20</span></span>
+<span id="cb8-507"><a href="#cb8-507"></a><span class="co">## 35           1              3             1               57</span></span>
+<span id="cb8-508"><a href="#cb8-508"></a><span class="co">## 36           1              8             1               38</span></span>
+<span id="cb8-509"><a href="#cb8-509"></a><span class="co">## 39           3              0             3                0</span></span>
+<span id="cb8-510"><a href="#cb8-510"></a><span class="co">## 42           1              0             1              171</span></span>
+<span id="cb8-511"><a href="#cb8-511"></a><span class="co">## 44           1              7             1              109</span></span>
+<span id="cb8-512"><a href="#cb8-512"></a><span class="co">## 45           1              0             1              171</span></span>
+<span id="cb8-513"><a href="#cb8-513"></a><span class="co">## 46           1              0             1              171</span></span>
+<span id="cb8-514"><a href="#cb8-514"></a><span class="co">## 47           1              0             1                0</span></span>
+<span id="cb8-515"><a href="#cb8-515"></a><span class="co">## 49           1              0             1              171</span></span>
+<span id="cb8-516"><a href="#cb8-516"></a><span class="co">## 51           1              0             1              171</span></span>
+<span id="cb8-517"><a href="#cb8-517"></a><span class="co">## 52           1              3             1               57</span></span>
+<span id="cb8-518"><a href="#cb8-518"></a><span class="co">## 53           1              0             1              171</span></span>
+<span id="cb8-519"><a href="#cb8-519"></a><span class="co">## 54           1              0             1              171</span></span>
+<span id="cb8-520"><a href="#cb8-520"></a><span class="co">## 55           1              0             1              171</span></span>
+<span id="cb8-521"><a href="#cb8-521"></a><span class="co">## 56           1              0             1              171</span></span>
+<span id="cb8-522"><a href="#cb8-522"></a><span class="co">## 57           1              1             1               20</span></span>
+<span id="cb8-523"><a href="#cb8-523"></a><span class="co">## 58           1              3             1               57</span></span>
+<span id="cb8-524"><a href="#cb8-524"></a><span class="co">## 59           3              4             3                4</span></span>
+<span id="cb8-525"><a href="#cb8-525"></a><span class="co">## 60           3              3             3                3</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -647,9 +651,9 @@
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/mpadge/pkgstats/">https://​github.com/​mpadge/​pkgstats/​</a>
+<li>Browse source code at <br><a href="https://github.com/ropenscilabs/pkgstats/">https://​github.com/​ropenscilabs/​pkgstats/​</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/mpadge/pkgstats/issues">https://​github.com/​mpadge/​pkgstats/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/ropenscilabs/pkgstats/issues">https://​github.com/​ropenscilabs/​pkgstats/​issues</a>
 </li>
 </ul>
 </div>
@@ -669,7 +673,7 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/mpadge/pkgstats/actions?query=workflow%3AR-CMD-check"><img src="https://github.com/mpadge/pkgstats/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://github.com/ropenscilabs/pkgstats/actions?query=workflow%3AR-CMD-check"><img src="https://github.com/ropenscilabs/pkgstats/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 <li><a href="https://www.repostatus.org/#concept"><img src="https://www.repostatus.org/badges/latest/concept.svg" alt="Project Status: Concept"></a></li>
 </ul>
 </div>
