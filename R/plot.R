@@ -3,9 +3,11 @@
 #' network of package.
 #'
 #' @param s Package statistics obtained from \link{pkgstats} function.
+#' @param plot If `FALSE`, simply return the \pkg{visNetwork} object, without
+#' actually plotting it.
 #' @return (Invisibly) A \pkg{visNetwork} representation of the package network.
 #' @export
-plot_network <- function (s) {
+plot_network <- function (s, plot = TRUE) {
 
     requireNamespace ("visNetwork")
 
@@ -51,7 +53,8 @@ plot_network <- function (s) {
     vn <- visNetwork::visEdges (vn, arrows = arrows)
     vn <- visNetwork::visLegend (vn, main = "Language")
 
-    print (vn)
+    if (plot)
+        print (vn)
 
     invisible (vn)
 }

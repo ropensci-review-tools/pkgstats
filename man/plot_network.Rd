@@ -5,10 +5,13 @@
 \title{Plot interactive \pkg{visNetwork} visualisation of object-relationship
 network of package.}
 \usage{
-plot_network(s)
+plot_network(s, plot = TRUE)
 }
 \arguments{
 \item{s}{Package statistics obtained from \link{pkgstats} function.}
+
+\item{plot}{If \code{FALSE}, simply return the \pkg{visNetwork} object, without
+actually plotting it.}
 }
 \value{
 (Invisibly) A \pkg{visNetwork} representation of the package network.
