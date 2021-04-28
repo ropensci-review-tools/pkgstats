@@ -1,7 +1,7 @@
 # pkgstats
 
 <!-- badges: start -->
-[![R build status](https://github.com/mpadge/pkgstats/workflows/R-CMD-check/badge.svg)](https://github.com/mpadge/pkgstats/actions?query=workflow%3AR-CMD-check)
+[![R build status](https://github.com/ropenscilabs/pkgstats/workflows/R-CMD-check/badge.svg)](https://github.com/ropenscilabs/pkgstats/actions?query=workflow%3AR-CMD-check)
 [![Project Status: Concept](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 <!-- badges: end -->
 
@@ -37,7 +37,7 @@ disadvantages arising through potential inaccuracy of static code analyses.
 
 The package can be installed with:
 ```{r remotes, eval = FALSE}
-remotes::install_github ("mpadge/pkgtest")
+remotes::install_github ("ropenscilabs/pkgtest")
 ```
 And then loaded for use with
 ```{r library, eval = FALSE}

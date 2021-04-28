@@ -11,9 +11,9 @@ Metrics of R packages.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://mpadge.github.io/pkgstats}
-  \item \url{https://github.com/mpadge/pkgstats}
-  \item Report bugs at \url{https://github.com/mpadge/pkgstats/issues}
+  \item \url{https://ropenscilabs.github.io/pkgstats}
+  \item \url{https://github.com/ropenscilabs/pkgstats}
+  \item Report bugs at \url{https://github.com/ropenscilabs/pkgstats/issues}
 }
 
 }

@@ -7,10 +7,10 @@
   "identifier": "pkgstats",
   "description": "Metrics of R packages.",
   "name": "pkgstats: Metrics of R Packages",
-  "codeRepository": "https://github.com/mpadge/pkgstats",
-  "issueTracker": "https://github.com/mpadge/pkgstats/issues",
+  "codeRepository": "https://github.com/ropenscilabs/pkgstats",
+  "issueTracker": "https://github.com/ropenscilabs/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.0.108",
+  "version": "0.0.0.109",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -181,8 +181,11 @@
       "identifier": "https://sysreqs.r-hub.io/get/cxx11"
     }
   ],
-  "fileSize": "317.463KB",
+  "fileSize": "2596.226KB",
   "developmentStatus": "https://www.repostatus.org/#concept",
-  "readme": "https://github.com/mpadge/pkgstats/blob/main/README.md",
-  "relatedLink": "https://mpadge.github.io/pkgstats"
+  "readme": "https://github.com/ropenscilabs/pkgstats/blob/main/README.md",
+  "relatedLink": [
+    "https://mpadge.github.io/pkgstats",
+    "https://ropenscilabs.github.io/pkgstats"
+  ]
 }

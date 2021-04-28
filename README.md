@@ -3,7 +3,7 @@
 <!-- badges: start -->
 
 [![R build
-status](https://github.com/mpadge/pkgstats/workflows/R-CMD-check/badge.svg)](https://github.com/mpadge/pkgstats/actions?query=workflow%3AR-CMD-check)
+status](https://github.com/ropenscilabs/pkgstats/workflows/R-CMD-check/badge.svg)](https://github.com/ropenscilabs/pkgstats/actions?query=workflow%3AR-CMD-check)
 [![Project Status:
 Concept](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 <!-- badges: end -->
@@ -45,7 +45,7 @@ arising through potential inaccuracy of static code analyses.
 The package can be installed with:
 
 ``` r
-remotes::install_github ("mpadge/pkgtest")
+remotes::install_github ("ropenscilabs/pkgtest")
 ```
 
 And then loaded for use with
@@ -86,20 +86,21 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.688   0.059   0.736
+    ##   0.871   0.136   1.114
 
 ``` r
 print (p)
 ```
 
     ## $cloc
-    ## # A tibble: 4 x 10
+    ## # A tibble: 5 x 10
     ##   source    language     file_count file_count_pct   loc loc_pct blank_lines
     ##   <chr>     <chr>             <int>          <dbl> <int>   <dbl>       <int>
     ## 1 R         R                     7          0.5     163  0.5             52
     ## 2 src       C                     2          0.333   447  0.461          121
     ## 3 src       C/C++ Header          1          0.167    38  0.0392          12
-    ## 4 vignettes Rmd                   2          0.5     146  0.5            205
+    ## 4 tests     R                    10          0.5     259  0.5            102
+    ## 5 vignettes Rmd                   2          0.5     146  0.5            205
     ## # … with 3 more variables: blank_line_pct <dbl>, comment_lines <int>,
     ## #   comment_line_pct <dbl>
     ## 
@@ -112,14 +113,17 @@ print (p)
     ##           0           0           0 
     ## 
     ## $desc
-    ##    package version                    date            license
-    ## 1 magrittr   2.0.1 2020-11-17 16:20:06 UTC MIT + file LICENSE
+    ##    package version                date            license
+    ## 1 magrittr   2.0.1 2020-11-17 16:20:06 MIT + file LICENSE
     ##                                                                     urls
     ## 1 https://magrittr.tidyverse.org,\nhttps://github.com/tidyverse/magrittr
     ##                                           bugs aut ctb fnd rev ths trl depends
     ## 1 https://github.com/tidyverse/magrittr/issues   2   0   1   0   0   0      NA
     ##   imports                                suggests linking_to
     ## 1      NA covr, knitr, rlang, rmarkdown, testthat         NA
+    ## 
+    ## $translations
+    ## [1] NA
     ## 
     ## $code_has_tabs
     ## [1] TRUE
@@ -185,9 +189,9 @@ print (p)
     ## 910     R/aliases.R            `n'est pas`   globalVar        R   1    NA
     ## 1010    R/aliases.R                    add   globalVar        R   1    NA
     ## 1110    R/aliases.R                    and   globalVar        R   1    NA
-    ## 1210  R/functions.R   anonFunc61e3f7090100    function        R   1    NA
-    ## 1310       R/pipe.R   anonFunce61bbebe0100    function        R   1    NA
-    ## 1410 R/debug_pipe.R   anonFunce7cdad840100    function        R   1    NA
+    ## 1210       R/pipe.R   anonFunc5530c81f0100    function        R   1    NA
+    ## 1310  R/functions.R   anonFunc66cb050a0100    function        R   1    NA
+    ## 1410 R/debug_pipe.R   anonFunc89967ba50100    function        R   1    NA
     ## 157        R/pipe.R             as_pipe_fn    function        R   3    NA
     ## 161  R/debug_pipe.R             debug_fseq    function        R  11    NA
     ## 171  R/debug_pipe.R             debug_pipe    function        R   5    NA
