@@ -3,11 +3,13 @@
 #' network of package.
 #'
 #' @param s Package statistics obtained from \link{pkgstats} function.
-#' @param plot If `FALSE`, simply return the \pkg{visNetwork} object, without
-#' actually plotting it.
+#' @param plot If `TRUE`, plot the network using \pkg{visNetwork} which opens an
+#' interactive browser pane.
+#' @param vis_save Name of local file in which to save `html` file of network
+#' visualisation (will override `plot` to `FALSE`).
 #' @return (Invisibly) A \pkg{visNetwork} representation of the package network.
 #' @export
-plot_network <- function (s, plot = TRUE) {
+plot_network <- function (s, plot = TRUE, vis_save = NULL) {
 
     requireNamespace ("visNetwork")
 
@@ -53,8 +55,31 @@ plot_network <- function (s, plot = TRUE) {
     vn <- visNetwork::visEdges (vn, arrows = arrows)
     vn <- visNetwork::visLegend (vn, main = "Language")
 
-    if (plot)
-        print (vn)
+    if (plot | !is.null (vis_save)) {
+
+        if (!is.null (vis_save)) {
+            if (!is.character (vis_save))
+                stop ("vis_save must be a character specifying a file name")
+            if (length (vis_save) > 1)
+                stop ("vis_save must be a single character")
+            if (!dir.exists (dirname (vis_save)))
+                stop ("directory [", dirname (vis_save),
+                      "] does not exist")
+
+            vis_save <- paste0 (tools::file_path_sans_ext (vis_save),
+                               ".html")
+            path <- strsplit (vis_save, .Platform$file.sep) [[1]]
+            # can't use normalizePath because that fails if path does not exist
+            path <- paste0 (path [-length (path)],
+                            collapse = .Platform$file.sep)
+            if (!file.exists (path))
+                dir.create (path, recursive = TRUE)
+            visNetwork::visSave (vn, vis_save, selfcontained = TRUE)
+
+        } else {
+            print (vn)
+        }
+    }
 
     invisible (vn)
 }
