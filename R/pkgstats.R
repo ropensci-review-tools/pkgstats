@@ -13,7 +13,7 @@
 #' download.file (u, f)
 #' pkgstats (f)
 #' }
-pkgstats <- function (path) {
+pkgstats <- function (path = ".") {
 
     tarball <- FALSE
     if (grepl ("\\.tar\\.gz$", path)) {

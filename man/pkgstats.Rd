@@ -4,7 +4,7 @@
 \alias{pkgstats}
 \title{Collates statistics from one local tarball}
 \usage{
-pkgstats(path)
+pkgstats(path = ".")
 }
 \arguments{
 \item{path}{Either a path to a local source repository, or a local '.tar.gz'
