@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.0.0.113
+Version: 0.0.0.114
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
@@ -40,4 +40,4 @@ LazyData: true
 NeedsCompilation: yes
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-SystemRequirements: ctags global, C++11
+SystemRequirements: ctags, global, C++11
