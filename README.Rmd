@@ -15,7 +15,7 @@ insightful statistics while ensuring computational feasibility.
 Statistics are derived from these primary sources:
 
 1. Summary of lines-of-code from [`cloc`](https://github.com/hrbrmstr/cloc)
-2. Brief summaries of package `DESCRIPTION` file and a couple of other statistics
+2. Summaries of package `DESCRIPTION` file and a couple of other statistics
 3. Summaries of all objects created via package code across multiple languages
    and all directories containing source code (`./R`, `./src`, and
    `./inst/include`).
@@ -25,13 +25,20 @@ Statistics are derived from these primary sources:
    connects every object making a call (as `from`) with every object being
    called (`to`).
 
-A demonstration of typical output is shown below. And yes, static code analyses
-are frequently inadequate, and especially when applied to complex languages
-like C++, but they are nevertheless a darn sight better than nothing, and they
-do provide one of the only ways to construct function call networks across
-different languages. This package has been developed with the conviction that
-the benefits of being able to extract these networks at all outweigh any
-disadvantages arising through potential inaccuracy of static code analyses.
+A demonstration of typical output is shown below, along with a detailed list of
+statistics aggregated by the internal [`pkgstats_summary()`
+function](https://ropenscilabs.github.io/pkgstats/reference/pkgstats_summary.html).
+
+## So this only performs static code analyses?
+
+Yes. And yes, static code analyses are frequently inadequate, especially when
+applied to complex languages like C++. They are nevertheless a darn sight
+better than nothing, and they do provide one of the only ways to construct
+function call networks across different languages. This package has been
+developed with the conviction that the benefits of being able to extract these
+networks at all outweigh any disadvantages arising through potential inaccuracy
+of static code analyses.
+
 
 ## Installation
 
@@ -72,5 +79,180 @@ download.file (u, f)
 system.time (
     p <- pkgstats (f)
     )
-print (p)
+names (p)
 ```
+
+The result is a list of various data extracted from the code. All except for
+`objects` and `network` represent summary data:
+
+```{r}
+p [!names (p) %in% c ("objects", "network")]
+```
+
+The `objects` and `network` items are described further below.
+
+
+### The `pkgstats_summary()` function
+
+A summary of the `pkgstats` data can be obtained from the 
+[`pkgstats_summary()`
+function](https://ropenscilabs.github.io/pkgstats/reference/pkgstats_summary.html):
+
+```{r summary, echo = TRUE}
+s <- pkgstats_summary (p)
+```
+
+This function reduces the result of the [`pkgstats()`
+function](https://ropenscilabs.github.io/pkgstats/reference/pkgstats.html) to
+a single line with `r ncol (s)` entries, represented as a `data.frame` with one
+row and that number of columns, enabling multiple packages to be compared by
+binding rows together. The following lists describe these `r ncol (s)`
+statistics (not in the order in which they actually appear), with variable
+names in parentheses after each description.
+
+**Package Summaries**
+
+- name (`package`)
+- Package version (`version`)
+- Package date, as modification time of `DESCRIPTION` file where not explicitly
+  stated (`date`)
+- License (`license`)
+- Languages, as a single comma-separated character value (`languages`).
+- List of translations where package includes translations files, given as list
+  of (spoken) language codes (`languages`).
+- Whether any files within the package include tab characters
+  (`code_has_tabs`), which is important because most static code parsers are
+  unable to accurately parse code which contains tabs.
+
+
+**Information from `DESCRIPTION` file**
+
+- Package URL(s) (`url`)
+- URL for BugReports (`bugs`)
+- Number of contributors with role of *author* (`desc_n_aut`), *contributor*
+  (`desc_n_ctb`), *funder* (`desc_n_fnd`), *reviewer* (`desc_n_rev`), *thesis
+  advisor* (`ths`), and *translator* (`trl`, relating to translation between
+  computer and not spoken languages).
+- Comma-separated character entries for all `depends`, `imports`, `suggests`,
+  and `linking_to` packages.
+
+Numbers of entries in each the of the last two kinds of items can be obtained
+from by a simple `strsplit` call, like this:
+
+```{r strsplit}
+length (strsplit (s$suggests, ", ") [[1]])
+```
+
+**Numbers of files and associated data**
+
+- Number of vignettes (`num_vignettes`)
+- Number of demos (`num_demos`)
+- Number of data files (`num_data_files`)
+- Total size of all package data (`data_size_total`)
+- Median size of package data files (`data_size_median`)
+- Numbers of files in main sub-directories (`files_R`, `files_src`,
+  `files_inst`, `files_vignettes`, `files_tests`), where numbers are
+  recursively counted in all sub-directories.
+
+**Statistics on lines of code**
+
+- Total lines of code in each sub-directory (`loc_R`, `loc_src`, `loc_ins`,
+  `loc_vignettes`, `loc_tests`).
+- Total numbers of blank lines in each sub-directory (`blank_lines_R`,
+  `blank_lines_src`, `blank_lines_inst`, `blank_lines_vignette`,
+  `blank_lines_tests`).
+- Total numbers of comment lines in each sub-directory (`comment_lines_R`,
+  `comment_lines_sr`, `comment_lines_inst`, `comment_lines_vignettes`,
+  `comment_lines_tests`).
+
+**Statistics on individual objects (including functions)**
+
+These statistics all refer to "functions", but actually represent more general
+"objects," such as global variables or class definitions, as detailed below.
+
+- Numbers of functions in R (`n_fns_r`)
+- Numbers of exported and non-exported R functions (`n_fns_r_exported`,
+  `n_fns_r_not_exported`)
+- Number of functions (or objects) in other computer languages (`n_fns_src`),
+  including functions in `src` and `inst/include` directories.
+- Number of functions (or objects) per individual file in R and in all other
+  (`src`) directories (`n_fns_per_file_r`, `n_fns_per_file_src`).
+- Median and mean numbers of parameters per exported R function
+  (`npars_exported_mn`, `npars_exported_md`).
+- Mean and median lines of code per function in R and other languages,
+  including distinction between exported and non-exported R functions
+  (`loc_per_fn_r_mn`, `loc_per_fn_r_md`, `loc_per_fn_r_exp_m`,
+  `loc_per_fn_r_exp_md`, `loc_per_fn_r_not_exp_mn`, `loc_per_fn_r_not_exp_m`,
+  `loc_per_fn_src_mn`, `loc_per_fn_src_md`).
+- Equivalent mean and median numbers of documentation lines per function
+  (`doclines_per_fn_exp_mn`, `doclines_per_fn_exp_md`,
+  `doclines_per_fn_not_exp_m`, `doclines_per_fn_not_exp_md`,
+  `docchars_per_par_exp_mn`, `docchars_per_par_exp_m`).
+
+**Network Statistics**
+
+The full structure of the `network` table is described below, with summary
+statistics including:
+
+- Number of edges, including distinction between languages (`n_edges`,
+  `n_edges_r`, `n_edges_sr`).
+- Number of distinct clusters in package network (`n_clusters`).
+- Mean and median centrality of all network edges, calculated from both
+  directed and undirected representations of network (`centrality_dir_mn`,
+  `centrality_dir_md`, `centrality_undir_mn`, `centrality_undir_md`).
+- Equivalent centrality values excluding edges with centrality of zero
+  (`centrality_dir_mn_no0`, `centrality_dir_md_no0`, `centrality_undir_mn_no0`,
+  `centrality_undir_md_no`).
+- Numbers of terminal edges (`num_terminal_edges_dir`,
+  `num_terminal_edges_undir`).
+- Summary statistics on node degree (`node_degree_m`, `node_degree_md`,
+  `node_degree_ma`)
+
+The following sub-sections provide further detail on the `objects` an `network`
+items, which could be used to extract additional statistics beyond those
+described immediately above.
+
+
+### Objects
+
+The `objects` item contains all code objects identified by
+[`ctags`](https://ctags.io). For R, those are primarily functions, but for
+other languages may be a variety of entities such as class or structure
+definitions, or sub-members thereof. Object tables look like this:
+
+```{r}
+head (p$objects)
+```
+
+There are a total of `r nrow (p$objects)` objects, which the following lines
+provide some insight into.
+
+```{r}
+table (p$objects$language)
+table (p$objects$kind)
+table (p$objects$kind [p$objects$language == "R"])
+table (p$objects$kind [p$objects$language == "C"])
+table (p$objects$kind [p$objects$language == "C++"])
+```
+
+### Network
+
+The `network` item details all relationships between objects, where generally
+reflects one object calling or otherwise depending on another object. Each row
+thus represents the edge of a network, with each entry in the `from` and `to`
+columns representing the network vertices or nodes.
+
+```{r}
+head (p$network)
+nrow (p$network)
+```
+
+The network table includes additional statistics on the centrality of each
+edge, measured as betweenness centrality assuming edges to be both directed
+(`centrality_dir`) and undirected (`centrality_undir`). More central edges
+reflect connections between objects that are more central to package
+functionality, and vice versa. The distinct components of the network are also
+represented by discrete cluster numbers, object both for directed and
+undirected versions of the network. Each distinct cluster number represents
+a distinct group of objects, internally related to other members of the same
+cluster, yet independent of all objects with different cluster numbers.
