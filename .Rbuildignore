@@ -14,3 +14,5 @@
 ^codemeta\.json$
 ^docs$
 ^pkgdown$
+.ropensci-staff
+^\.hooks$
