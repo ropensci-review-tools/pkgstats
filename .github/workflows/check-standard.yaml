@@ -64,6 +64,11 @@ jobs:
             eval sudo $cmd
           done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
 
+      - name: Extra deps
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install -y ctags global
+
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
