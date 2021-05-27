@@ -16,3 +16,4 @@
 ^pkgdown$
 .ropensci-staff
 ^\.hooks$
+^ctags$
