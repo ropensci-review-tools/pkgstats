@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.0.0.119
+Version: 0.0.0.120
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
@@ -25,8 +25,10 @@ Imports:
     readr,
     withr
 Suggests: 
+    here,
     knitr,
     rmarkdown,
+    testthat (>= 3.0.0),
     visNetwork
 LinkingTo: 
     cpp11
@@ -34,6 +36,7 @@ VignetteBuilder:
     knitr
 Remotes:
     hrbrmstr/cloc
+Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 LazyData: true
