@@ -19,6 +19,8 @@ tags_data <- function (path) {
 
     if (!is.null (tags_src) | !is.null (tags_inst)) {
 
+        no_gtags <- withr::with_dir (path, make_gtags ())
+
         gtags <- withr::with_dir (path, get_gtags ())
         ctags <- dplyr::arrange (rbind (tags_src, tags_inst), file, start)
         ctags <- dplyr::filter (ctags, kind %in%
@@ -32,6 +34,9 @@ tags_data <- function (path) {
         langs <- langs [which (!duplicated (langs)), ]
         gtags$language <- gsub ("^language\\:", "",
                                 langs$language [match (gtags$tag, langs$tag)])
+
+        if (no_gtags)
+            chk <- rm_gtags_files (path)
     }
 
     fns_r <- tags_r [tags_r$kind == "function", ]
@@ -154,9 +159,26 @@ rm_tabs <- function (d) {
     return (has_tabs)
 }
 
+#' Set up gtags files if not already used
+#'
+#' @return `TRUE` if there are no pre-existing gtags files; otherwise `FALSE`.
+#' @noRd
+make_gtags <- function () {
+
+    path <- normalizePath (".")
+    flist <- list.files (path,
+                         recursive = TRUE,
+                         full.names = TRUE,
+                         pattern = "GRTAGS$|GPATH$|GTAGS$")
+
+    if (length (flist) == 0)
+        system ("gtags")
+
+    return (length (flist) == 0)
+}
+
 get_gtags <- function () {
 
-    system ("gtags")
     x <- system ("global -rx  .", intern = TRUE)
     # these are fixed width, but only have 4 cols, so can just replace the first
     # 3 lots of space with single tab characters.
@@ -207,6 +229,24 @@ gtags_from_one_file <- function (ctags, gtags, f) {
     gtags$from [index] <- ctags_f$tag [items]
 
     return (gtags)
+}
+
+rm_gtags_files <- function (path) {
+
+    flist <- list.files (path,
+                         recursive = TRUE,
+                         full.names = TRUE,
+                         pattern = "GRTAGS$|GPATH$|GTAGS$")
+
+    ret <- NULL
+
+    if (length (flist) > 0) {
+
+        ret <- tryCatch (file.remove (flist),
+                         error = function (e) e)
+    }
+
+    return (ret)
 }
 
 fn_var_call_graph_r <- function (fns, fn_vars, path) {
