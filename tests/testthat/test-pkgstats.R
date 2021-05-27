@@ -17,7 +17,7 @@ test_that ("pkgstats", {
     expect_equal (nrow (s$cloc), 3L)
     expect_true (all (c ("R", "src", "tests") %in% s$cloc$source))
 
-    #expect_type (s$vignettes, "integer")
+    expect_type (s$vignettes, "integer")
     expect_named (s$vignettes)
     expect_length (s$vignettes, 2L)
 

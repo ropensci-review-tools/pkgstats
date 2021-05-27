@@ -1,7 +1,7 @@
 
 get_num_vignettes <- function (path) {
 
-    nv <- 0
+    nv <- 0L
 
     if ("build" %in% list.files (path)) {
 
@@ -21,7 +21,7 @@ get_num_vignettes <- function (path) {
 
 get_num_demos <- function (path) {
 
-    nd <- 0
+    nd <- 0L
 
     if ("demo" %in% list.files (path)) {
         
