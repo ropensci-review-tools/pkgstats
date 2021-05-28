@@ -16,4 +16,6 @@
 ^pkgdown$
 .ropensci-staff
 ^\.hooks$
+^inst/precommit$
+^inst/WORDLIST$
 ^ctags$
