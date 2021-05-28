@@ -29,7 +29,12 @@ extract_tarball <- function (tarball) {
     if (utils::untar (tarball, exdir = tempdir ()) != 0)
         stop ("Unable to extract tarball to 'tempdir'")
 
-    path <- normalizePath (file.path (tempdir (), flist [1]))
+    fdir <- vapply (flist, function (i)
+                    strsplit (i, .Platform$file.sep) [[1]] [1],
+                    character (1),
+                    USE.NAMES = FALSE)
+    fdir <- names (table (fdir)) [1]
+    path <- normalizePath (file.path (tempdir (), fdir))
 
     chk <- rename_files_in_r (path)
     if (!chk)
