@@ -1,6 +1,9 @@
 test_that ("pkgstats", {
 
-    expect_silent (s <- pkgstats (here::here ()))
+    path <- list.files (getwd (),
+                        full.names = TRUE,
+                        pattern = "demo")
+    expect_silent (s <- pkgstats (path))
     expect_type (s, "list")
 
     nms <- c ("cloc",
@@ -32,7 +35,7 @@ test_that ("pkgstats", {
     expect_length (s$code_has_tabs, 1L)
 
     expect_s3_class (s$objects, "data.frame")
-    #expect_true (nrow (s$objects) > 100L)
+    expect_true (nrow (s$objects) > 5L)
     nms <- c ("file_name",
               "fn_name",
               "kind",
@@ -47,7 +50,7 @@ test_that ("pkgstats", {
     expect_true (all (nms %in% names (s$objects)))
 
     expect_s3_class (s$network, "data.frame")
-    #expect_true (nrow (s$network) > 50L)
+    expect_true (nrow (s$network) == 1L)
     expect_true (nrow (s$network) < nrow (s$objects))
     nms <- c ("file",
               "line1",
@@ -58,5 +61,5 @@ test_that ("pkgstats", {
               "cluster_undir",
               "centrality_dir",
               "centrality_undir")
-    #expect_true (all (nms %in% names (s$network)))
+    expect_true (all (nms %in% names (s$network)))
 })

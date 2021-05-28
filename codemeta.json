@@ -10,7 +10,7 @@
   "codeRepository": "https://github.com/ropenscilabs/pkgstats",
   "issueTracker": "https://github.com/ropenscilabs/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.0.132",
+  "version": "0.0.0.133",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -37,18 +37,6 @@
     }
   ],
   "softwareSuggestions": [
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "here",
-      "name": "here",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=here"
-    },
     {
       "@type": "SoftwareApplication",
       "identifier": "knitr",
@@ -218,7 +206,7 @@
       "identifier": "https://sysreqs.r-hub.io/get/cxx11"
     }
   ],
-  "fileSize": "3283.057KB",
+  "fileSize": "2533.163KB",
   "developmentStatus": "https://www.repostatus.org/#concept",
   "readme": "https://github.com/ropenscilabs/pkgstats/blob/main/README.md",
   "relatedLink": [
