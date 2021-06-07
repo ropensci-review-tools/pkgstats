@@ -3,11 +3,13 @@
 \name{ctags_test}
 \alias{ctags_test}
 \title{test a 'ctags' installation using the example from
-https://github.com/universal-ctags/ctags/blob/master/man/ctags-lang-r.7.rst.in}
+https://github.com/universal-ctags/ctags/blob/master/man/ctags-lang-r.7.rst.in
+Also checks the GNU global installation}
 \usage{
 ctags_test()
 }
 \description{
 test a 'ctags' installation using the example from
 https://github.com/universal-ctags/ctags/blob/master/man/ctags-lang-r.7.rst.in
+Also checks the GNU global installation
 }

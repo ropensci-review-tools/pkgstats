@@ -1,5 +1,6 @@
 #' test a 'ctags' installation using the example from
 #' https://github.com/universal-ctags/ctags/blob/master/man/ctags-lang-r.7.rst.in
+#' Also checks the GNU global installation
 #' @export
 ctags_test <- function () {
     
@@ -49,6 +50,14 @@ ctags_test <- function () {
                          "functionVar")
 
     check <- all (tags$kind == expected_kinds)
+
+    gtags_test <- system2 ('gtags', args = list ('--gtagslabel="new ctags"'),
+                           stdout = TRUE, stderr = TRUE)
+    gtags_check <- length (gtags_test) == 0L
+    if (!gtags_check)
+        gtags_check <- any (grepl ("error", gtags_check, ignore.case = TRUE))
+
+    check <- check & gtags_check
 
     if (!check) {
         message ("ctags does not function as required; you may need to upgrade? see\n",
