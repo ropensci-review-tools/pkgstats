@@ -3,7 +3,7 @@
 #' Also checks the GNU global installation
 #' @export
 ctags_test <- function () {
-    
+
     f_in <- tempfile (fileext = ".R")
 
     x <- c ("G <- 1",                           # globalVar
@@ -51,7 +51,7 @@ ctags_test <- function () {
 
     check <- all (tags$kind == expected_kinds)
 
-    gtags_test <- system2 ('gtags', args = list ('--gtagslabel="new ctags"'),
+    gtags_test <- system2 ('gtags', args = list ('--gtagslabel="new ctags"'), # nolint
                            stdout = TRUE, stderr = TRUE)
     gtags_check <- length (gtags_test) == 0L
     if (!gtags_check)
@@ -60,8 +60,8 @@ ctags_test <- function () {
     check <- check & gtags_check
 
     if (!check) {
-        message ("ctags does not function as required; you may need to upgrade? see\n",
-                 "https://github.com/universal-ctags/ctags/blob/master/man/ctags-lang-r.7.rst.in\n",
+        message ("ctags does not function as required; you may need to upgrade? see\n",                 # nolint
+                 "https://github.com/universal-ctags/ctags/blob/master/man/ctags-lang-r.7.rst.in\n",    # nolint
                  "for expected output")
         ret <- FALSE
     } else {
