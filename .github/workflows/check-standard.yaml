@@ -84,7 +84,10 @@ jobs:
         run: |
           git clone https://github.com/universal-ctags/ctags.git
           cd ctags
-          make -f mk_mingw.mak
+          ./autogen.sh
+          ./configure --disable-external-sort --enable-static
+          make
+          #make -f mk_mingw.mak
 
       - name: Install dependencies
         run: |
