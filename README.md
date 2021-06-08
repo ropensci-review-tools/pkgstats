@@ -54,7 +54,6 @@ This package requires the system libraries
 these libraries on various operating systems are described in a
 [separate
 vignette](https://ropenscilabs.github.io/pkgstats/articles/installation.html).
-
 Once you’ve installed these libraries, the package itself can be
 installed with either of the following two lines:
 
@@ -100,7 +99,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.814   0.100   0.900
+    ##   0.921   0.107   1.017
 
 ``` r
 names (p)
