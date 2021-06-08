@@ -43,9 +43,17 @@ of static code analyses.
 
 ## Installation
 
-The package can be installed with:
+This package requires the system libraries
+[`ctags-universal`](https://ctags.io) and [GNU
+`global`](https://www.gnu.org/software/global/). Procedures to install these
+libraries on various operating systems are described in a separate vignette.
+
+Once you've installed these libraries, the package itself can be installed
+with either of the following two lines:
+
 ```{r remotes, eval = FALSE}
 remotes::install_github ("ropenscilabs/pkgtest")
+pak::pkg_install ("ropenscilabs/pkgtest")
 ```
 And then loaded for use with
 ```{r library, eval = FALSE}
@@ -55,14 +63,14 @@ library (pkgstats)
 devtools::load_all (export_all = FALSE)
 ```
 
-This package requires both [`ctags`](https://ctags.io) and [GNU
-`global`](https://www.gnu.org/software/global/), and includes a function to
-ensure your local installation of `ctags` works correctly. Please ensure you
-see the following prior to proceeding:
+The package includes a function to ensure your local installations of `universal-ctags`
+and `global` work correctly. Please ensure you see the following prior to
+proceeding:
 
 ```{r ctags-check}
 ctags_test ()
 ```
+
 
 ## Demonstration
 
