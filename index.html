@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.143</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.145</span>
       </span>
     </div>
 
@@ -45,6 +45,18 @@
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/installation.html">Installing ctags and GNU global</a>
+    </li>
+  </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -93,13 +105,15 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>The package can be installed with:</p>
+<p>This package requires the system libraries <a href="https://ctags.io"><code>ctags-universal</code></a> and <a href="https://www.gnu.org/software/global/">GNU <code>global</code></a>. Procedures to install these libraries on various operating systems are described in a separate vignette.</p>
+<p>Once you’ve installed these libraries, the package itself can be installed with either of the following two lines:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span> <span class="op">(</span><span class="st">"ropenscilabs/pkgtest"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span> <span class="op">(</span><span class="st">"ropenscilabs/pkgtest"</span><span class="op">)</span>
+<span class="fu">pak</span><span class="fu">::</span><span class="fu">pkg_install</span> <span class="op">(</span><span class="st">"ropenscilabs/pkgtest"</span><span class="op">)</span></code></pre></div>
 <p>And then loaded for use with</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span> <span class="op">(</span><span class="va"><a href="https://ropenscilabs.github.io/pkgstats">pkgstats</a></span><span class="op">)</span></code></pre></div>
-<p>This package requires both <a href="https://ctags.io"><code>ctags</code></a> and <a href="https://www.gnu.org/software/global/">GNU <code>global</code></a>, and includes a function to ensure your local installation of <code>ctags</code> works correctly. Please ensure you see the following prior to proceeding:</p>
+<p>The package includes a function to ensure your local installations of <code>universal-ctags</code> and <code>global</code> work correctly. Please ensure you see the following prior to proceeding:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/ctags_test.html">ctags_test</a></span> <span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## ctags installation works as expected</span></span>
@@ -120,7 +134,7 @@
     <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pkgstats.html">pkgstats</a></span> <span class="op">(</span><span class="va">f</span><span class="op">)</span>
     <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">##    user  system elapsed </span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co">##   0.782   0.105   0.874</span></span></code></pre></div>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co">##   0.945   0.083   1.015</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span> <span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">## [1] "cloc"          "vignettes"     "data_stats"    "desc"         </span></span>
@@ -285,20 +299,20 @@
 <p>The <code>network</code> item details all relationships between objects, where generally reflects one object calling or otherwise depending on another object. Each row thus represents the edge of a network, with each entry in the <code>from</code> and <code>to</code> columns representing the network vertices or nodes.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">network</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb27"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co">##             file line1         from        to language cluster_dir</span></span>
-<span id="cb27-2"><a href="#cb27-2"></a><span class="co">## 1       R/pipe.R   297   new_lambda   freduce        R           1</span></span>
-<span id="cb27-3"><a href="#cb27-3"></a><span class="co">## 2    R/getters.R    14    `[[.fseq` functions        R           2</span></span>
-<span id="cb27-4"><a href="#cb27-4"></a><span class="co">## 3    R/getters.R    23     `[.fseq` functions        R           2</span></span>
-<span id="cb27-5"><a href="#cb27-5"></a><span class="co">## 4 R/debug_pipe.R    28   debug_fseq functions        R           2</span></span>
-<span id="cb27-6"><a href="#cb27-6"></a><span class="co">## 5 R/debug_pipe.R    35   debug_fseq functions        R           2</span></span>
-<span id="cb27-7"><a href="#cb27-7"></a><span class="co">## 6 R/debug_pipe.R    42 undebug_fseq functions        R           2</span></span>
-<span id="cb27-8"><a href="#cb27-8"></a><span class="co">##   centrality_dir cluster_undir centrality_undir</span></span>
-<span id="cb27-9"><a href="#cb27-9"></a><span class="co">## 1              1             1               20</span></span>
-<span id="cb27-10"><a href="#cb27-10"></a><span class="co">## 2              0             2                0</span></span>
-<span id="cb27-11"><a href="#cb27-11"></a><span class="co">## 3              0             2                0</span></span>
-<span id="cb27-12"><a href="#cb27-12"></a><span class="co">## 4              0             2                0</span></span>
-<span id="cb27-13"><a href="#cb27-13"></a><span class="co">## 5              0             2                0</span></span>
-<span id="cb27-14"><a href="#cb27-14"></a><span class="co">## 6              0             2                0</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co">##             file line1       from        to language cluster_dir centrality_dir</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a><span class="co">## 1       R/pipe.R   297 new_lambda   freduce        R           1              1</span></span>
+<span id="cb27-3"><a href="#cb27-3"></a><span class="co">## 2    R/getters.R    14  `[[.fseq` functions        R           2              0</span></span>
+<span id="cb27-4"><a href="#cb27-4"></a><span class="co">## 3    R/getters.R    23   `[.fseq` functions        R           2              0</span></span>
+<span id="cb27-5"><a href="#cb27-5"></a><span class="co">## 4  R/functions.R    26 print.fseq functions        R           2              0</span></span>
+<span id="cb27-6"><a href="#cb27-6"></a><span class="co">## 5 R/debug_pipe.R    28 debug_fseq functions        R           2              0</span></span>
+<span id="cb27-7"><a href="#cb27-7"></a><span class="co">## 6 R/debug_pipe.R    35 debug_fseq functions        R           2              0</span></span>
+<span id="cb27-8"><a href="#cb27-8"></a><span class="co">##   cluster_undir centrality_undir</span></span>
+<span id="cb27-9"><a href="#cb27-9"></a><span class="co">## 1             1               20</span></span>
+<span id="cb27-10"><a href="#cb27-10"></a><span class="co">## 2             2                0</span></span>
+<span id="cb27-11"><a href="#cb27-11"></a><span class="co">## 3             2                0</span></span>
+<span id="cb27-12"><a href="#cb27-12"></a><span class="co">## 4             2                0</span></span>
+<span id="cb27-13"><a href="#cb27-13"></a><span class="co">## 5             2                0</span></span>
+<span id="cb27-14"><a href="#cb27-14"></a><span class="co">## 6             2                0</span></span></code></pre></div>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">network</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb29"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co">## [1] 45</span></span></code></pre></div>
