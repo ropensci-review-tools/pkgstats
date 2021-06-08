@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.146</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.147</span>
       </span>
     </div>
 
@@ -105,8 +105,7 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>This package requires the system libraries <a href="https://ctags.io"><code>ctags-universal</code></a> and <a href="https://www.gnu.org/software/global/">GNU <code>global</code></a>. Procedures to install these libraries on various operating systems are described in a <a href="https://ropenscilabs.github.io/pkgstats/articles/installation.html">separate vignette</a>.</p>
-<p>Once you’ve installed these libraries, the package itself can be installed with either of the following two lines:</p>
+<p>This package requires the system libraries <a href="https://ctags.io"><code>ctags-universal</code></a> and <a href="https://www.gnu.org/software/global/">GNU <code>global</code></a>. Procedures to install these libraries on various operating systems are described in a <a href="https://ropenscilabs.github.io/pkgstats/articles/installation.html">separate vignette</a>. Once you’ve installed these libraries, the package itself can be installed with either of the following two lines:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span> <span class="op">(</span><span class="st">"ropenscilabs/pkgtest"</span><span class="op">)</span>
 <span class="fu">pak</span><span class="fu">::</span><span class="fu">pkg_install</span> <span class="op">(</span><span class="st">"ropenscilabs/pkgtest"</span><span class="op">)</span></code></pre></div>
@@ -134,7 +133,7 @@
     <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pkgstats.html">pkgstats</a></span> <span class="op">(</span><span class="va">f</span><span class="op">)</span>
     <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">##    user  system elapsed </span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co">##   0.814   0.100   0.900</span></span></code></pre></div>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co">##   0.921   0.107   1.017</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span> <span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">## [1] "cloc"          "vignettes"     "data_stats"    "desc"         </span></span>
