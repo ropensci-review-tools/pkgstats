@@ -25,8 +25,8 @@ extract_tarball <- function (tarball) {
 
     flist <- utils::untar (tarball,
                            exdir = tempdir (),
-                           list = TRUE)
-    if (utils::untar (tarball, exdir = tempdir ()) != 0)
+                           list = TRUE, tar = 'internal')
+    if (utils::untar (tarball, exdir = tempdir (), tar = 'internal') != 0)
         stop ("Unable to extract tarball to 'tempdir'")
 
     fdir <- vapply (flist, function (i)
@@ -43,7 +43,7 @@ extract_tarball <- function (tarball) {
     return (path)
 }
 
-#' files in './R' directory may have suffixes of .q, .r, or .s 
+#' files in './R' directory may have suffixes of .q, .r, or .s
 #' https://cran.r-project.org/doc/manuals/R-exts.html#Package-subdirectories
 #' But parsers + cloc only recognise .R/.r, so rename any others
 #' Discovered via BDR's
