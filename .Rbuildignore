@@ -19,3 +19,5 @@
 ^inst/precommit$
 ^inst/WORDLIST$
 ^ctags$
+^inst/bin$
+^windows$
