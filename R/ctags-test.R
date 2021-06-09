@@ -55,8 +55,10 @@ ctags_test <- function () {
     if (ctags_check)
         ctags_check <- all (tags$kind == expected_kinds)
 
-    gtags_test <- system2 ('gtags', args = list ('--gtagslabel="new ctags"'), # nolint
-                           stdout = TRUE, stderr = TRUE)
+    gtags_test <- withr::with_dir (tempdir (),
+                                   system2 ("gtags",
+                                            args = list ('--gtagslabel="new ctags"'), # nolint
+                           stdout = TRUE, stderr = TRUE))
     gtags_check <- length (gtags_test) == 0L
     if (!gtags_check)
         gtags_check <- any (grepl ("error", gtags_check, ignore.case = TRUE))
