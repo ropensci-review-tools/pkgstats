@@ -1,0 +1,7 @@
+#!/bin/sh
+if [ `uname` = "Darwin" ] && [ ! -f "inst/bin/ctags" ]; then
+mkdir -p inst/bin
+curl -OLSs "https://autobrew.github.io/archive/high_sierra/universal-ctags-p5.9.20210530.0.tar.xz"
+tar xf "universal-ctags-p5.9.20210530.0.tar.xz" --strip-components=1 -C inst/bin
+unlink "universal-ctags-p5.9.20210530.0.tar.xz"
+fi
