@@ -1,6 +1,8 @@
-#' test a 'ctags' installation using the example from
-#' https://github.com/universal-ctags/ctags/blob/master/man/ctags-lang-r.7.rst.in
-#' Also checks the GNU global installation
+#' test a 'ctags' installation
+#'
+#' This uses the example from
+#' \url{https://github.com/universal-ctags/ctags/blob/master/man/ctags-lang-r.7.rst.in}
+#' and also checks the GNU global installation.
 #' @export
 ctags_test <- function () {
 
