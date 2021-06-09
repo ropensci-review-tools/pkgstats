@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.147</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.148</span>
       </span>
     </div>
 
@@ -61,7 +61,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ropenscilabs/pkgstats/">
+  <a href="https://github.com/ropensci-review-tools/pkgstats/">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -95,7 +95,7 @@
 <li>Summaries of all objects created via package code across multiple languages and all directories containing source code (<code>./R</code>, <code>./src</code>, and <code>./inst/include</code>).</li>
 <li>A function call network derived from function definitions obtained from <a href="https::ctags.io"><code>ctags</code></a>, and references (“calls”) to those obtained from <a href="https://www.gnu.org/software/global/"><code>gtags</code></a>. This network roughly connects every object making a call (as <code>from</code>) with every object being called (<code>to</code>).</li>
 </ol>
-<p>A demonstration of typical output is shown below, along with a detailed list of statistics aggregated by the internal <a href="https://ropenscilabs.github.io/pkgstats/reference/pkgstats_summary.html"><code>pkgstats_summary()</code> function</a>.</p>
+<p>A demonstration of typical output is shown below, along with a detailed list of statistics aggregated by the internal <a href="https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html"><code>pkgstats_summary()</code> function</a>.</p>
 </div>
 <div id="so-this-only-performs-static-code-analyses" class="section level2">
 <h2 class="hasAnchor">
@@ -105,13 +105,13 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>This package requires the system libraries <a href="https://ctags.io"><code>ctags-universal</code></a> and <a href="https://www.gnu.org/software/global/">GNU <code>global</code></a>. Procedures to install these libraries on various operating systems are described in a <a href="https://ropenscilabs.github.io/pkgstats/articles/installation.html">separate vignette</a>. Once you’ve installed these libraries, the package itself can be installed with either of the following two lines:</p>
+<p>This package requires the system libraries <a href="https://ctags.io"><code>ctags-universal</code></a> and <a href="https://www.gnu.org/software/global/">GNU <code>global</code></a>. Procedures to install these libraries on various operating systems are described in a <a href="https://ropensci-review-tools.github.io/pkgstats/articles/installation.html">separate vignette</a>. Once you’ve installed these libraries, the package itself can be installed with either of the following two lines:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span> <span class="op">(</span><span class="st">"ropenscilabs/pkgtest"</span><span class="op">)</span>
-<span class="fu">pak</span><span class="fu">::</span><span class="fu">pkg_install</span> <span class="op">(</span><span class="st">"ropenscilabs/pkgtest"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span> <span class="op">(</span><span class="st">"ropensci-review-tools/pkgtest"</span><span class="op">)</span>
+<span class="fu">pak</span><span class="fu">::</span><span class="fu">pkg_install</span> <span class="op">(</span><span class="st">"ropensci-review-tools/pkgtest"</span><span class="op">)</span></code></pre></div>
 <p>And then loaded for use with</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span> <span class="op">(</span><span class="va"><a href="https://ropenscilabs.github.io/pkgstats">pkgstats</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span> <span class="op">(</span><span class="va"><a href="https://ropensci-review-tools.github.io/pkgstats">pkgstats</a></span><span class="op">)</span></code></pre></div>
 <p>The package includes a function to ensure your local installations of <code>universal-ctags</code> and <code>global</code> work correctly. Please ensure you see the following prior to proceeding:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/ctags_test.html">ctags_test</a></span> <span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -133,7 +133,7 @@
     <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pkgstats.html">pkgstats</a></span> <span class="op">(</span><span class="va">f</span><span class="op">)</span>
     <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">##    user  system elapsed </span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co">##   0.921   0.107   1.017</span></span></code></pre></div>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co">##   0.859   0.095   1.020</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span> <span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">## [1] "cloc"          "vignettes"     "data_stats"    "desc"         </span></span>
@@ -180,10 +180,10 @@
 <div id="the-pkgstats_summary-function" class="section level3">
 <h3 class="hasAnchor">
 <a href="#the-pkgstats_summary-function" class="anchor"></a>The <code>pkgstats_summary()</code> function</h3>
-<p>A summary of the <code>pkgstats</code> data can be obtained from the <a href="https://ropenscilabs.github.io/pkgstats/reference/pkgstats_summary.html"><code>pkgstats_summary()</code> function</a>:</p>
+<p>A summary of the <code>pkgstats</code> data can be obtained from the <a href="https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html"><code>pkgstats_summary()</code> function</a>:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pkgstats_summary.html">pkgstats_summary</a></span> <span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
-<p>This function reduces the result of the <a href="https://ropenscilabs.github.io/pkgstats/reference/pkgstats.html"><code>pkgstats()</code> function</a> to a single line with 83 entries, represented as a <code>data.frame</code> with one row and that number of columns, enabling multiple packages to be compared by binding rows together. The following lists describe these 83 statistics (not in the order in which they actually appear), with variable names in parentheses after each description.</p>
+<p>This function reduces the result of the <a href="https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats.html"><code>pkgstats()</code> function</a> to a single line with 83 entries, represented as a <code>data.frame</code> with one row and that number of columns, enabling multiple packages to be compared by binding rows together. The following lists describe these 83 statistics (not in the order in which they actually appear), with variable names in parentheses after each description.</p>
 <p><strong>Package Summaries</strong></p>
 <ul>
 <li>name (<code>package</code>)</li>
@@ -298,20 +298,20 @@
 <p>The <code>network</code> item details all relationships between objects, where generally reflects one object calling or otherwise depending on another object. Each row thus represents the edge of a network, with each entry in the <code>from</code> and <code>to</code> columns representing the network vertices or nodes.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">network</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb27"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co">##             file line1         from        to language cluster_dir</span></span>
-<span id="cb27-2"><a href="#cb27-2"></a><span class="co">## 1       R/pipe.R   297   new_lambda   freduce        R           1</span></span>
-<span id="cb27-3"><a href="#cb27-3"></a><span class="co">## 2    R/getters.R    14    `[[.fseq` functions        R           2</span></span>
-<span id="cb27-4"><a href="#cb27-4"></a><span class="co">## 3    R/getters.R    23     `[.fseq` functions        R           2</span></span>
-<span id="cb27-5"><a href="#cb27-5"></a><span class="co">## 4 R/debug_pipe.R    28   debug_fseq functions        R           2</span></span>
-<span id="cb27-6"><a href="#cb27-6"></a><span class="co">## 5 R/debug_pipe.R    35   debug_fseq functions        R           2</span></span>
-<span id="cb27-7"><a href="#cb27-7"></a><span class="co">## 6 R/debug_pipe.R    42 undebug_fseq functions        R           2</span></span>
-<span id="cb27-8"><a href="#cb27-8"></a><span class="co">##   centrality_dir cluster_undir centrality_undir</span></span>
-<span id="cb27-9"><a href="#cb27-9"></a><span class="co">## 1              1             1               20</span></span>
-<span id="cb27-10"><a href="#cb27-10"></a><span class="co">## 2              0             2                0</span></span>
-<span id="cb27-11"><a href="#cb27-11"></a><span class="co">## 3              0             2                0</span></span>
-<span id="cb27-12"><a href="#cb27-12"></a><span class="co">## 4              0             2                0</span></span>
-<span id="cb27-13"><a href="#cb27-13"></a><span class="co">## 5              0             2                0</span></span>
-<span id="cb27-14"><a href="#cb27-14"></a><span class="co">## 6              0             2                0</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co">##             file line1       from        to language cluster_dir centrality_dir</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a><span class="co">## 1       R/pipe.R   297 new_lambda   freduce        R           1              1</span></span>
+<span id="cb27-3"><a href="#cb27-3"></a><span class="co">## 2    R/getters.R    14  `[[.fseq` functions        R           2              0</span></span>
+<span id="cb27-4"><a href="#cb27-4"></a><span class="co">## 3    R/getters.R    23   `[.fseq` functions        R           2              0</span></span>
+<span id="cb27-5"><a href="#cb27-5"></a><span class="co">## 4  R/functions.R    26 print.fseq functions        R           2              0</span></span>
+<span id="cb27-6"><a href="#cb27-6"></a><span class="co">## 5 R/debug_pipe.R    28 debug_fseq functions        R           2              0</span></span>
+<span id="cb27-7"><a href="#cb27-7"></a><span class="co">## 6 R/debug_pipe.R    35 debug_fseq functions        R           2              0</span></span>
+<span id="cb27-8"><a href="#cb27-8"></a><span class="co">##   cluster_undir centrality_undir</span></span>
+<span id="cb27-9"><a href="#cb27-9"></a><span class="co">## 1             1               20</span></span>
+<span id="cb27-10"><a href="#cb27-10"></a><span class="co">## 2             2                0</span></span>
+<span id="cb27-11"><a href="#cb27-11"></a><span class="co">## 3             2                0</span></span>
+<span id="cb27-12"><a href="#cb27-12"></a><span class="co">## 4             2                0</span></span>
+<span id="cb27-13"><a href="#cb27-13"></a><span class="co">## 5             2                0</span></span>
+<span id="cb27-14"><a href="#cb27-14"></a><span class="co">## 6             2                0</span></span></code></pre></div>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">network</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb29"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co">## [1] 45</span></span></code></pre></div>
@@ -325,9 +325,9 @@
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/ropenscilabs/pkgstats/">https://​github.com/​ropenscilabs/​pkgstats/​</a>
+<li>Browse source code at <br><a href="https://github.com/ropensci-review-tools/pkgstats/">https://​github.com/​ropensci-review-tools/​pkgstats/​</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/ropenscilabs/pkgstats/issues">https://​github.com/​ropenscilabs/​pkgstats/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/ropensci-review-tools/pkgstats/issues">https://​github.com/​ropensci-review-tools/​pkgstats/​issues</a>
 </li>
 </ul>
 </div>
@@ -347,8 +347,8 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/ropenscilabs/pkgstats/actions?query=workflow%3AR-CMD-check"><img src="https://github.com/ropenscilabs/pkgstats/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
-<li><a href="https://codecov.io/gh/ropenscilabs/pkgstats"><img src="https://codecov.io/gh/ropenscilabs/pkgstats/branch/main/graph/badge.svg" alt="codecov"></a></li>
+<li><a href="https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check"><img src="https://github.com/ropensci-review-tools/pkgstats/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://codecov.io/gh/ropensci-review-tools/pkgstats"><img src="https://codecov.io/gh/ropensci-review-tools/pkgstats/branch/main/graph/badge.svg" alt="codecov"></a></li>
 <li><a href="https://www.repostatus.org/#concept"><img src="https://www.repostatus.org/badges/latest/concept.svg" alt="Project Status: Concept"></a></li>
 </ul>
 </div>
