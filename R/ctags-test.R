@@ -51,7 +51,9 @@ ctags_test <- function () {
                          "nameattr",
                          "functionVar")
 
-    check <- all (tags$kind == expected_kinds)
+    check <- nrow (tags) == length (expected_kinds)
+    if (check)
+        check <- all (tags$kind == expected_kinds)
 
     gtags_test <- system2 ('gtags', args = list ('--gtagslabel="new ctags"'), # nolint
                            stdout = TRUE, stderr = TRUE)
