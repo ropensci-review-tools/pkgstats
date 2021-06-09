@@ -1,8 +1,8 @@
 # pkgstats
 
 <!-- badges: start -->
-[![R build status](https://github.com/ropenscilabs/pkgstats/workflows/R-CMD-check/badge.svg)](https://github.com/ropenscilabs/pkgstats/actions?query=workflow%3AR-CMD-check)
-[![codecov](https://codecov.io/gh/ropenscilabs/pkgstats/branch/main/graph/badge.svg)](https://codecov.io/gh/ropenscilabs/pkgstats)
+[![R build status](https://github.com/ropensci-review-tools/pkgstats/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check)
+[![codecov](https://codecov.io/gh/ropensci-review-tools/pkgstats/branch/main/graph/badge.svg)](https://codecov.io/gh/ropensci-review-tools/pkgstats)
 [![Project Status: Concept](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 <!-- badges: end -->
 
@@ -28,7 +28,7 @@ Statistics are derived from these primary sources:
 
 A demonstration of typical output is shown below, along with a detailed list of
 statistics aggregated by the internal [`pkgstats_summary()`
-function](https://ropenscilabs.github.io/pkgstats/reference/pkgstats_summary.html).
+function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html).
 
 ## So this only performs static code analyses?
 
@@ -47,13 +47,13 @@ This package requires the system libraries
 [`ctags-universal`](https://ctags.io) and [GNU
 `global`](https://www.gnu.org/software/global/). Procedures to install these
 libraries on various operating systems are described in a [separate
-vignette](https://ropenscilabs.github.io/pkgstats/articles/installation.html).
+vignette](https://ropensci-review-tools.github.io/pkgstats/articles/installation.html).
 Once you've installed these libraries, the package itself can be installed
 with either of the following two lines:
 
 ```{r remotes, eval = FALSE}
-remotes::install_github ("ropenscilabs/pkgtest")
-pak::pkg_install ("ropenscilabs/pkgtest")
+remotes::install_github ("ropensci-review-tools/pkgtest")
+pak::pkg_install ("ropensci-review-tools/pkgtest")
 ```
 And then loaded for use with
 ```{r library, eval = FALSE}
@@ -105,17 +105,17 @@ The `objects` and `network` items are described further below.
 
 A summary of the `pkgstats` data can be obtained from the 
 [`pkgstats_summary()`
-function](https://ropenscilabs.github.io/pkgstats/reference/pkgstats_summary.html):
+function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html):
 
 ```{r summary, echo = TRUE}
 s <- pkgstats_summary (p)
 ```
 
 This function reduces the result of the [`pkgstats()`
-function](https://ropenscilabs.github.io/pkgstats/reference/pkgstats.html) to
-a single line with `r ncol (s)` entries, represented as a `data.frame` with one
-row and that number of columns, enabling multiple packages to be compared by
-binding rows together. The following lists describe these `r ncol (s)`
+function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats.html)
+to a single line with `r ncol (s)` entries, represented as a `data.frame` with
+one row and that number of columns, enabling multiple packages to be compared
+by binding rows together. The following lists describe these `r ncol (s)`
 statistics (not in the order in which they actually appear), with variable
 names in parentheses after each description.
 

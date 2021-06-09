@@ -7,10 +7,10 @@
   "identifier": "pkgstats",
   "description": "Metrics of R packages.",
   "name": "pkgstats: Metrics of R Packages",
-  "codeRepository": "https://github.com/ropenscilabs/pkgstats",
-  "issueTracker": "https://github.com/ropenscilabs/pkgstats/issues",
+  "codeRepository": "https://github.com/ropensci-review-tools/pkgstats",
+  "issueTracker": "https://github.com/ropensci-review-tools/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.0.147",
+  "version": "0.0.0.148",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -206,12 +206,13 @@
       "identifier": "https://sysreqs.r-hub.io/get/cxx11"
     }
   ],
-  "fileSize": "4160.096KB",
+  "fileSize": "2780.881KB",
   "developmentStatus": "https://www.repostatus.org/#concept",
-  "readme": "https://github.com/ropenscilabs/pkgstats/blob/main/README.md",
+  "readme": "https://github.com/ropensci-review-tools/pkgstats/blob/main/README.md",
   "relatedLink": [
     "https://mpadge.github.io/pkgstats",
-    "https://ropenscilabs.github.io/pkgstats"
+    "https://ropenscilabs.github.io/pkgstats",
+    "https://ropensci-review-tools.github.io/pkgstats"
   ],
-  "contIntegration": "https://codecov.io/gh/ropenscilabs/pkgstats"
+  "contIntegration": "https://codecov.io/gh/ropensci-review-tools/pkgstats"
 }

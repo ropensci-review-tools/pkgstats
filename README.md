@@ -3,8 +3,8 @@
 <!-- badges: start -->
 
 [![R build
-status](https://github.com/ropenscilabs/pkgstats/workflows/R-CMD-check/badge.svg)](https://github.com/ropenscilabs/pkgstats/actions?query=workflow%3AR-CMD-check)
-[![codecov](https://codecov.io/gh/ropenscilabs/pkgstats/branch/main/graph/badge.svg)](https://codecov.io/gh/ropenscilabs/pkgstats)
+status](https://github.com/ropensci-review-tools/pkgstats/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check)
+[![codecov](https://codecov.io/gh/ropensci-review-tools/pkgstats/branch/main/graph/badge.svg)](https://codecov.io/gh/ropensci-review-tools/pkgstats)
 [![Project Status:
 Concept](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 <!-- badges: end -->
@@ -34,7 +34,7 @@ Statistics are derived from these primary sources:
 
 A demonstration of typical output is shown below, along with a detailed
 list of statistics aggregated by the internal [`pkgstats_summary()`
-function](https://ropenscilabs.github.io/pkgstats/reference/pkgstats_summary.html).
+function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html).
 
 ## So this only performs static code analyses?
 
@@ -53,13 +53,13 @@ This package requires the system libraries
 `global`](https://www.gnu.org/software/global/). Procedures to install
 these libraries on various operating systems are described in a
 [separate
-vignette](https://ropenscilabs.github.io/pkgstats/articles/installation.html).
+vignette](https://ropensci-review-tools.github.io/pkgstats/articles/installation.html).
 Once you’ve installed these libraries, the package itself can be
 installed with either of the following two lines:
 
 ``` r
-remotes::install_github ("ropenscilabs/pkgtest")
-pak::pkg_install ("ropenscilabs/pkgtest")
+remotes::install_github ("ropensci-review-tools/pkgtest")
+pak::pkg_install ("ropensci-review-tools/pkgtest")
 ```
 
 And then loaded for use with
@@ -99,7 +99,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.921   0.107   1.017
+    ##   0.859   0.095   1.020
 
 ``` r
 names (p)
@@ -157,14 +157,14 @@ The `objects` and `network` items are described further below.
 
 A summary of the `pkgstats` data can be obtained from the
 [`pkgstats_summary()`
-function](https://ropenscilabs.github.io/pkgstats/reference/pkgstats_summary.html):
+function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html):
 
 ``` r
 s <- pkgstats_summary (p)
 ```
 
 This function reduces the result of the [`pkgstats()`
-function](https://ropenscilabs.github.io/pkgstats/reference/pkgstats.html)
+function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats.html)
 to a single line with 83 entries, represented as a `data.frame` with one
 row and that number of columns, enabling multiple packages to be
 compared by binding rows together. The following lists describe these 83
@@ -363,20 +363,20 @@ nodes.
 head (p$network)
 ```
 
-    ##             file line1         from        to language cluster_dir
-    ## 1       R/pipe.R   297   new_lambda   freduce        R           1
-    ## 2    R/getters.R    14    `[[.fseq` functions        R           2
-    ## 3    R/getters.R    23     `[.fseq` functions        R           2
-    ## 4 R/debug_pipe.R    28   debug_fseq functions        R           2
-    ## 5 R/debug_pipe.R    35   debug_fseq functions        R           2
-    ## 6 R/debug_pipe.R    42 undebug_fseq functions        R           2
-    ##   centrality_dir cluster_undir centrality_undir
-    ## 1              1             1               20
-    ## 2              0             2                0
-    ## 3              0             2                0
-    ## 4              0             2                0
-    ## 5              0             2                0
-    ## 6              0             2                0
+    ##             file line1       from        to language cluster_dir centrality_dir
+    ## 1       R/pipe.R   297 new_lambda   freduce        R           1              1
+    ## 2    R/getters.R    14  `[[.fseq` functions        R           2              0
+    ## 3    R/getters.R    23   `[.fseq` functions        R           2              0
+    ## 4  R/functions.R    26 print.fseq functions        R           2              0
+    ## 5 R/debug_pipe.R    28 debug_fseq functions        R           2              0
+    ## 6 R/debug_pipe.R    35 debug_fseq functions        R           2              0
+    ##   cluster_undir centrality_undir
+    ## 1             1               20
+    ## 2             2                0
+    ## 3             2                0
+    ## 4             2                0
+    ## 5             2                0
+    ## 6             2                0
 
 ``` r
 nrow (p$network)
