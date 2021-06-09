@@ -51,9 +51,9 @@ ctags_test <- function () {
                          "nameattr",
                          "functionVar")
 
-    check <- nrow (tags) == length (expected_kinds)
-    if (check)
-        check <- all (tags$kind == expected_kinds)
+    ctags_check <- nrow (tags) == length (expected_kinds)
+    if (ctags_check)
+        ctags_check <- all (tags$kind == expected_kinds)
 
     gtags_test <- system2 ('gtags', args = list ('--gtagslabel="new ctags"'), # nolint
                            stdout = TRUE, stderr = TRUE)
@@ -61,7 +61,7 @@ ctags_test <- function () {
     if (!gtags_check)
         gtags_check <- any (grepl ("error", gtags_check, ignore.case = TRUE))
 
-    check <- check & gtags_check
+    check <- ctags_check & gtags_check
 
     if (!check) {
         message ("ctags does not function as required; you may need to upgrade? see\n",                 # nolint
