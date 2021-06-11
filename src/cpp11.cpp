@@ -11,13 +11,22 @@ extern "C" SEXP _pkgstats_cpp_parse_rd(SEXP flist) {
     return cpp11::as_sexp(cpp_parse_rd(cpp11::as_cpp<cpp11::decay_t<strings>>(flist)));
   END_CPP11
 }
+// whitespace.cpp
+writable::integers cpp_white_space(strings flist);
+extern "C" SEXP _pkgstats_cpp_white_space(SEXP flist) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(cpp_white_space(cpp11::as_cpp<cpp11::decay_t<strings>>(flist)));
+  END_CPP11
+}
 
 extern "C" {
 /* .Call calls */
 extern SEXP _pkgstats_cpp_parse_rd(SEXP);
+extern SEXP _pkgstats_cpp_white_space(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_pkgstats_cpp_parse_rd", (DL_FUNC) &_pkgstats_cpp_parse_rd, 1},
+    {"_pkgstats_cpp_parse_rd",    (DL_FUNC) &_pkgstats_cpp_parse_rd,    1},
+    {"_pkgstats_cpp_white_space", (DL_FUNC) &_pkgstats_cpp_white_space, 1},
     {NULL, NULL, 0}
 };
 }

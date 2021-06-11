@@ -3,3 +3,7 @@
 cpp_parse_rd <- function(flist) {
   .Call(`_pkgstats_cpp_parse_rd`, flist)
 }
+
+cpp_white_space <- function(flist) {
+  .Call(`_pkgstats_cpp_white_space`, flist)
+}
