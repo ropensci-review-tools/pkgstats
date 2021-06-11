@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract tarball of a package into temp directory and return path to extracted
-package — extract_tarball • pkgstats</title>
+<title>Statistics on white space in code — whitespace_stats • pkgstats</title>
 
 
 <!-- jquery -->
@@ -40,10 +39,8 @@ package — extract_tarball • pkgstats</title>
 
 
 
-<meta property="og:title" content="Extract tarball of a package into temp directory and return path to extracted
-package — extract_tarball" />
-<meta property="og:description" content="Extract tarball of a package into temp directory and return path to extracted
-package" />
+<meta property="og:title" content="Statistics on white space in code — whitespace_stats" />
+<meta property="og:description" content="Statistics on white space in code" />
 
 
 
@@ -111,42 +108,36 @@ package" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract tarball of a package into temp directory and return path to extracted
-package</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ropensci-review-tools/pkgstats/blob/master/R/extract_tarball.R'><code>R/extract_tarball.R</code></a></small>
-    <div class="hidden name"><code>extract_tarball.Rd</code></div>
+    <h1>Statistics on white space in code</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ropensci-review-tools/pkgstats/blob/master/R/whitespace.R'><code>R/whitespace.R</code></a></small>
+    <div class="hidden name"><code>whitespace_stats.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extract tarball of a package into temp directory and return path to extracted
-package</p>
+    <p>Statistics on white space in code</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_tarball</span><span class='op'>(</span><span class='va'>tarball</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>whitespace_stats</span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>tarball</th>
-      <td><p>Full path to local tarball of an R package</p></td>
+      <th>path</th>
+      <td><p>Directory to package being analysed</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Path to extracted version of package</p>
+    <p>A list of statistics for each of three directories, 'R', 'src', and
+'inst/include', each one having 5 statistics of total numbers of lines,
+numbers of empty lines, total numbers of white spaces, total numbers of
+characters, and indentation used in files in that directory.</p>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>tarball</span> <span class='op'>&lt;-</span> <span class='st'>"magrittr_2.0.1.tar.gz"</span>
-<span class='va'>u</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span> <span class='op'>(</span><span class='st'>"https://cran.r-project.org/src/contrib/"</span>,
-             <span class='va'>tarball</span><span class='op'>)</span>
-<span class='va'>f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span> <span class='op'>(</span><span class='op'>)</span>, <span class='va'>tarball</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span> <span class='op'>(</span><span class='va'>u</span>, <span class='va'>f</span><span class='op'>)</span>
-<span class='va'>path</span> <span class='op'>&lt;-</span> <span class='fu'>extract_tarball</span> <span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
+    <p>NA values are returned for directories which do not exist.</p>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
