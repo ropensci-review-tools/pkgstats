@@ -48,12 +48,24 @@ arising through potential inaccuracy of static code analyses.
 
 ## Installation
 
-This package requires the system libraries
-[`ctags-universal`](https://ctags.io) and [GNU
-`global`](https://www.gnu.org/software/global/), both of which will be
-automatically installed along with the package on both Windows and MacOS
-systems, for which running one of the following lines will install
-everything:
+The easiest way to install this package is via the associated
+[`r-universe`](https://ropensci-review-tools.r-universe.dev/ui#builds).
+As shown there, simply enable the universe with
+
+``` r
+options(repos = c(
+    ropenscireviewtools = 'https://ropensci-review-tools.r-universe.dev',
+    CRAN = 'https://cloud.r-project.org'))
+```
+
+And then install the usual way with,
+
+``` r
+install.packages('pkgstats')
+```
+
+Alternatively, the package can be installed by running one of the
+following lines:
 
 ``` r
 remotes::install_github ("ropensci-review-tools/pkgtest")
@@ -68,9 +80,13 @@ library (pkgstats)
 
 ### Installation on Linux systems
 
-Most Linux distributions do not include a sufficiently up-to-date
-version of [`ctags-universal`](https://ctags.io), and so it must be
-compiled from source with the following lines:
+This package requires the system libraries
+[`ctags-universal`](https://ctags.io) and [GNU
+`global`](https://www.gnu.org/software/global/), both of which are
+automatically installed along with the package on both Windows and MacOS
+systems. Most Linux distributions do not include a sufficiently
+up-to-date version of [`ctags-universal`](https://ctags.io), and so it
+must be compiled from source with the following lines:
 
 ``` bash
 git clone https://github.com/universal-ctags/ctags.git
@@ -115,7 +131,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.853   0.084   0.928
+    ##   0.913   0.117   1.029
 
 ``` r
 names (p)
