@@ -49,14 +49,14 @@ shown there, simply enable the universe with
 
 ```{r options, eval = FALSE}
 options(repos = c(
-    ropenscireviewtools = 'https://ropensci-review-tools.r-universe.dev',
-    CRAN = 'https://cloud.r-project.org'))
+    ropenscireviewtools = "https://ropensci-review-tools.r-universe.dev",
+    CRAN = "https://cloud.r-project.org"))
 ```
 
 And then install the usual way with,
 
 ```{r install, eval = FALSE}
-install.packages('pkgstats')
+install.packages("pkgstats")
 ```
 
 Alternatively, the package can be installed by running one of the following
