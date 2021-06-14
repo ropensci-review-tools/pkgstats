@@ -27,20 +27,11 @@ ClocStats cloc::file_cloc (std::string f)
     in_file.open (f.c_str (), std::ifstream::in);
     assert (!in_file.fail ());
 
-    /*
-     //
-    //*
-    //*
-     */
-
     const size_t n = file_nlines (in_file);
 
     std::string line;
 
     const std::string cmt_open = "/*", cmt_close = "*/";
-
-    const std::string junkstr = "/* plus some \
-                                 more*/";
 
     ClocStats stats (n);
     size_t i = 0;
