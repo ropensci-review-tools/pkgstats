@@ -105,17 +105,43 @@ std::vector <size_t> whitespace::get_quote_pos (const std::string &s)
     return qpos;
 }
 
+void whitespace::balance_block_cmts (std::vector <size_t> &opens,
+        std::vector <size_t> &closes)
+{
+
+    if (closes.size () > 0)
+    {
+        while (closes.size () >= opens.size ())
+        {
+            closes.erase (closes.begin ());
+            if (opens.size () > 0)
+                opens.erase (opens.begin ());
+            if (closes.size () == 0)
+                break;
+        }
+    }
+}
+
 Spaces whitespace::file_white_space (std::string f)
 {
     std::ifstream in_file;
     in_file.open (f.c_str (), std::ifstream::in);
     assert (!in_file.fail ());
 
+    /*
+     //
+    //*
+    //*
+     */
+
     const size_t n = file_nlines (in_file);
 
     std::string line;
 
     const std::string cmt_open = "/*", cmt_close = "*/";
+
+    const std::string junkstr = "/* plus some \
+                                 more*/";
 
     Spaces spaces (n);
     size_t i = 0;
@@ -135,17 +161,7 @@ Spaces whitespace::file_white_space (std::string f)
         qpos = whitespace::rm_syms_in_quotes (closes, qpos, in_quote);
         in_quote = qpos.size () == 1;
 
-        if (closes.size () > 0)
-        {
-            while (closes.size () >= opens.size ())
-            {
-                closes.erase (closes.begin ());
-                if (opens.size () > 0)
-                    opens.erase (opens.begin ());
-                if (closes.size () == 0)
-                    break;
-            }
-        }
+        whitespace::balance_block_cmts (opens, closes);
 
         bool white = true;
 

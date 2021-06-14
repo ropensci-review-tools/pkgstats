@@ -46,6 +46,9 @@ std::vector <size_t> rm_syms_in_quotes (std::vector <size_t> &sympos,
 
 std::vector <size_t> get_quote_pos (const std::string &s);
 
+void balance_block_cmts (std::vector <size_t> &opens,
+        std::vector <size_t> &closes);
+
 Spaces file_white_space (std::string f);
 
 } // end namespace whitespace
