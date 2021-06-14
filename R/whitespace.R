@@ -8,6 +8,7 @@ count_whitespace <- function (path) {
     if (dir.exists (path)) {
 
         flist <- normalizePath (list.files (path, full.names = TRUE))
+        flist <- flist [which (!grepl ("\\.o$|\\.so$", flist))]
         s <- cpp_white_space (flist)
 
         leading_white <- s [5:length (s)]
