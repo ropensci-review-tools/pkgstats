@@ -4,18 +4,18 @@
 
 #include "cpp11/declarations.hpp"
 
+// cloc.cpp
+writable::integers cpp_white_space(strings flist);
+extern "C" SEXP _pkgstats_cpp_white_space(SEXP flist) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(cpp_white_space(cpp11::as_cpp<cpp11::decay_t<strings>>(flist)));
+  END_CPP11
+}
 // rd_parse.cpp
 writable::integers cpp_parse_rd(strings flist);
 extern "C" SEXP _pkgstats_cpp_parse_rd(SEXP flist) {
   BEGIN_CPP11
     return cpp11::as_sexp(cpp_parse_rd(cpp11::as_cpp<cpp11::decay_t<strings>>(flist)));
-  END_CPP11
-}
-// whitespace.cpp
-writable::integers cpp_white_space(strings flist);
-extern "C" SEXP _pkgstats_cpp_white_space(SEXP flist) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(cpp_white_space(cpp11::as_cpp<cpp11::decay_t<strings>>(flist)));
   END_CPP11
 }
 

@@ -1,10 +1,10 @@
 #include "code-symbols.h"
-#include "whitespace.h"
+#include "cloc.h"
 
 #include <cpp11.hpp>
 using namespace cpp11;
 
-size_t whitespace::file_nlines (std::ifstream &in_file)
+size_t cloc::file_nlines (std::ifstream &in_file)
 {
     in_file.clear ();
     in_file.seekg (0L);
@@ -21,7 +21,7 @@ size_t whitespace::file_nlines (std::ifstream &in_file)
     return n;
 }
 
-Spaces whitespace::file_white_space (std::string f)
+ClocStats cloc::file_cloc (std::string f)
 {
     std::ifstream in_file;
     in_file.open (f.c_str (), std::ifstream::in);
@@ -42,14 +42,14 @@ Spaces whitespace::file_white_space (std::string f)
     const std::string junkstr = "/* plus some \
                                  more*/";
 
-    Spaces spaces (n);
+    ClocStats stats (n);
     size_t i = 0;
     bool in_quote = false, in_block_cmt = false;
 
     while (std::getline (in_file, line, '\n'))
     {
         if (line.length () == 0L)
-            spaces.empty_lines++;
+            stats.empty_lines++;
 
         std::vector <size_t> opens = codesymbols::get_sympos (line, cmt_open);
         std::vector <size_t> closes = codesymbols::get_sympos (line, cmt_close);
@@ -69,14 +69,14 @@ Spaces whitespace::file_white_space (std::string f)
             bool white_i = isspace (line [j]);
             white = white && white_i;
             if (white)
-                spaces.leading [i] = static_cast <int> (j);
-            spaces.white [i] += white_i;
-            spaces.nonwhite [i] += !white_i;
+                stats.leading [i] = static_cast <int> (j);
+            stats.white [i] += white_i;
+            stats.nonwhite [i] += !white_i;
         }
         i++;
     }
 
-    return spaces;
+    return stats;
 }
 
 // Returns a single vector with:
@@ -97,18 +97,18 @@ writable::integers cpp_white_space(strings flist)
 
     for (int f = 0; f < n; f++)
     {
-        Spaces spaces = whitespace::file_white_space (flist [f]);
+        ClocStats stats = cloc::file_cloc (flist [f]);
 
-        res [0] += spaces.nlines;
-        res [1] += spaces.empty_lines;
+        res [0] += stats.nlines;
+        res [1] += stats.empty_lines;
 
         res [2] += static_cast <int> (
-                std::accumulate (spaces.white.begin (),
-                    spaces.white.end (), 0L));
+                std::accumulate (stats.white.begin (),
+                    stats.white.end (), 0L));
         res [3] += static_cast <int> (
-                std::accumulate (spaces.nonwhite.begin (),
-                    spaces.nonwhite.end (), 0L));
-        for (auto i: spaces.leading)
+                std::accumulate (stats.nonwhite.begin (),
+                    stats.nonwhite.end (), 0L));
+        for (auto i: stats.leading)
             if (i < nleading)
                 res [4 + i]++;
     }
