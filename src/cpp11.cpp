@@ -5,10 +5,10 @@
 #include "cpp11/declarations.hpp"
 
 // cloc.cpp
-writable::integers cpp_white_space(strings flist);
-extern "C" SEXP _pkgstats_cpp_white_space(SEXP flist) {
+writable::integers cpp_cloc(strings flist);
+extern "C" SEXP _pkgstats_cpp_cloc(SEXP flist) {
   BEGIN_CPP11
-    return cpp11::as_sexp(cpp_white_space(cpp11::as_cpp<cpp11::decay_t<strings>>(flist)));
+    return cpp11::as_sexp(cpp_cloc(cpp11::as_cpp<cpp11::decay_t<strings>>(flist)));
   END_CPP11
 }
 // rd_parse.cpp
@@ -21,12 +21,12 @@ extern "C" SEXP _pkgstats_cpp_parse_rd(SEXP flist) {
 
 extern "C" {
 /* .Call calls */
+extern SEXP _pkgstats_cpp_cloc(SEXP);
 extern SEXP _pkgstats_cpp_parse_rd(SEXP);
-extern SEXP _pkgstats_cpp_white_space(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_pkgstats_cpp_parse_rd",    (DL_FUNC) &_pkgstats_cpp_parse_rd,    1},
-    {"_pkgstats_cpp_white_space", (DL_FUNC) &_pkgstats_cpp_white_space, 1},
+    {"_pkgstats_cpp_cloc",     (DL_FUNC) &_pkgstats_cpp_cloc,     1},
+    {"_pkgstats_cpp_parse_rd", (DL_FUNC) &_pkgstats_cpp_parse_rd, 1},
     {NULL, NULL, 0}
 };
 }

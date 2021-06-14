@@ -87,7 +87,7 @@ ClocStats cloc::file_cloc (std::string f)
 // - after that, a frequency table of first 50 counts of numbers of leading
 // white spaces on each line
 [[cpp11::register]]
-writable::integers cpp_white_space(strings flist)
+writable::integers cpp_cloc(strings flist)
 {
     const int nleading = 50;
     writable::integers res (nleading + 4L);
