@@ -72,6 +72,7 @@ Spaces file_white_space (std::string f)
         bool white = true;
 
         for (size_t j = 0; j < line.length (); j++) {
+
             white = white && isspace (line [j]);
             if (white)
                 spaces.leading [i] = static_cast <int> (j);
