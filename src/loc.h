@@ -15,7 +15,7 @@
 // - Total numbers of white spaces
 // - Total numbers of non-white spaces
 // Plus one additional value of total numbers of empty (white) lines.
-class ClocStats
+class LocStats
 {
     public:
 
@@ -23,7 +23,7 @@ class ClocStats
 
         std::vector <int> leading, white, nonwhite, doc;
 
-        ClocStats (const size_t n) {
+        LocStats (const size_t n) {
 
             nlines = static_cast <int> (n);
             empty_lines = 0L;
@@ -35,10 +35,10 @@ class ClocStats
         }
 };
 
-namespace cloc {
+namespace loc {
 
 size_t file_nlines (std::ifstream &in_file);
 
-ClocStats file_cloc (std::string f);
+LocStats file_loc (std::string f);
 
-} // end namespace cloc
+} // end namespace loc

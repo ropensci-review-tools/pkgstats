@@ -4,7 +4,7 @@
 #include <cpp11.hpp>
 using namespace cpp11;
 
-size_t cloc::file_nlines (std::ifstream &in_file)
+size_t loc::file_nlines (std::ifstream &in_file)
 {
     in_file.clear ();
     in_file.seekg (0L);
@@ -21,7 +21,7 @@ size_t cloc::file_nlines (std::ifstream &in_file)
     return n;
 }
 
-ClocStats cloc::file_cloc (std::string f)
+LocStats loc::file_loc (std::string f)
 {
     std::ifstream in_file;
     in_file.open (f.c_str (), std::ifstream::in);
@@ -33,7 +33,7 @@ ClocStats cloc::file_cloc (std::string f)
 
     const std::string cmt_open = "/*", cmt_close = "*/";
 
-    ClocStats stats (n);
+    LocStats stats (n);
     size_t i = 0;
     bool in_quote = false, in_block_cmt = false;
 
@@ -89,7 +89,7 @@ writable::integers cpp_loc(strings flist)
 
     for (int f = 0; f < n; f++)
     {
-        ClocStats stats = cloc::file_cloc (flist [f]);
+        LocStats stats = loc::file_loc (flist [f]);
 
         res [0] += stats.nlines;
         res [1] += stats.empty_lines;
