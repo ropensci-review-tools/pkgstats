@@ -21,7 +21,7 @@ class ClocStats
 
         int nlines, empty_lines;
 
-        std::vector <int> leading, white, nonwhite;
+        std::vector <int> leading, white, nonwhite, doc;
 
         ClocStats (const size_t n) {
 
@@ -31,6 +31,7 @@ class ClocStats
             leading.resize (n, 0L);
             white.resize (n, 0L);
             nonwhite.resize (n, 0L);
+            doc.resize (n, 0L);
         }
 };
 

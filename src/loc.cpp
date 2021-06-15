@@ -1,5 +1,5 @@
 #include "code-symbols.h"
-#include "cloc.h"
+#include "loc.h"
 
 #include <cpp11.hpp>
 using namespace cpp11;
@@ -52,6 +52,7 @@ ClocStats cloc::file_cloc (std::string f)
         in_quote = qpos.size () == 1;
 
         codesymbols::balance_block_cmts (opens, closes);
+        bool in_block_cmt = (opens.size () == 1 && closes.size () == 0);
 
         bool white = true;
 
@@ -78,7 +79,7 @@ ClocStats cloc::file_cloc (std::string f)
 // - after that, a frequency table of first 50 counts of numbers of leading
 // white spaces on each line
 [[cpp11::register]]
-writable::integers cpp_cloc(strings flist)
+writable::integers cpp_loc(strings flist)
 {
     const int nleading = 50;
     writable::integers res (nleading + 4L);
