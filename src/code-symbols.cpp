@@ -115,9 +115,9 @@ void codesymbols::balance_block_cmts (std::vector <size_t> &opens,
         std::vector <size_t> &closes)
 {
 
-    if (closes.size () > 0)
+    if (closes.size () > 0 && opens.size () > 0)
     {
-        while (closes.size () >= opens.size ())
+        while (closes.size () > opens.size () && opens.size () > 0)
         {
             closes.erase (closes.begin ());
             if (opens.size () > 0)

@@ -36,23 +36,46 @@ LocStats loc::file_loc (const std::string f,
 
     LocStats stats (n);
     size_t i = 0;
-    bool in_quote = false, in_block_cmt = false;
+    bool quote_start = false,
+         quote_end = false,
+         in_quote = false,
+         block_cmt_start = false,
+         block_cmt_end = false,
+         in_block_cmt = false;
+    // Three bool vars aren't necessary, but make the code easier to understand.
+
+    const bool has_block_cmts = cmt_open.size () > 0 && cmt_close.size () > 0;
 
     while (std::getline (in_file, line, '\n'))
     {
         const bool is_blank = codesymbols::line_is_blank (line);
 
-        std::vector <size_t> opens = codesymbols::get_sympos (line, cmt_open);
-        std::vector <size_t> closes = codesymbols::get_sympos (line, cmt_close);
-        std::vector <size_t> qpos = codesymbols::get_quote_pos (line);
+        if (has_block_cmts)
+        {
+            std::vector <size_t> opens = codesymbols::get_sympos (line, cmt_open);
+            std::vector <size_t> closes = codesymbols::get_sympos (line, cmt_close);
+            std::vector <size_t> qpos = codesymbols::get_quote_pos (line);
 
-        std::vector <size_t> temp = codesymbols::rm_syms_in_quotes (opens, qpos, in_quote);
-        in_quote = temp.size () == 1;
-        qpos = codesymbols::rm_syms_in_quotes (closes, qpos, in_quote);
-        in_quote = qpos.size () == 1;
+            std::vector <size_t> temp = codesymbols::rm_syms_in_quotes (opens, qpos, in_quote);
+            quote_start = temp.size () == 1;
+            qpos = codesymbols::rm_syms_in_quotes (closes, qpos, in_quote);
+            quote_end = qpos.size () == 1;
 
-        codesymbols::balance_block_cmts (opens, closes);
-        bool in_block_cmt = (opens.size () == 1 && closes.size () == 0);
+            in_quote = quote_start && !quote_end;
+            if (in_quote && quote_end)
+                in_quote = false;
+
+            codesymbols::balance_block_cmts (opens, closes);
+            block_cmt_start = (opens.size () == 1 && closes.size () == 0);
+
+            if (!in_block_cmt && block_cmt_start)
+                in_block_cmt = true;
+            block_cmt_end = closes.size () != 0;
+            if (block_cmt_end) {
+                block_cmt_start = false;
+                in_block_cmt = false;
+            }
+        }
 
         bool single_cmt = false;
         if (!in_quote && !in_block_cmt)
