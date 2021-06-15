@@ -12,6 +12,8 @@
 
 namespace codesymbols {
 
+bool line_is_blank (std::string &s);
+
 bool is_comment (std::string s, const std::string sym);
 
 std::vector <size_t> get_sympos (const std::string &s, const std::string &sym);

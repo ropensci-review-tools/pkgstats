@@ -40,8 +40,7 @@ LocStats loc::file_loc (const std::string f,
 
     while (std::getline (in_file, line, '\n'))
     {
-        if (line.length () == 0L)
-            stats.empty_lines++;
+        const bool is_blank = codesymbols::line_is_blank (line);
 
         std::vector <size_t> opens = codesymbols::get_sympos (line, cmt_open);
         std::vector <size_t> closes = codesymbols::get_sympos (line, cmt_close);
@@ -59,7 +58,9 @@ LocStats loc::file_loc (const std::string f,
         if (!in_quote && !in_block_cmt)
             single_cmt = codesymbols::is_comment (line, cmt);
 
-        if (in_block_cmt || single_cmt)
+        if (is_blank)
+            stats.empty_lines++;
+        else if (in_block_cmt || single_cmt)
             stats.ndoc++;
         else
             stats.ncode++;

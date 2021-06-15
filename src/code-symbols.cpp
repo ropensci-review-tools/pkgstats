@@ -1,5 +1,19 @@
 #include "code-symbols.h"
 
+// Check whether a line contains only space characters
+bool codesymbols::line_is_blank (std::string &s)
+{
+    if (s.size () == 0L)
+        return true;
+
+    bool blank = true;
+    //for (auto i = s.begin (); i != std::prev (s.end ()); i++)
+    for (auto i = s.begin (); i != s.end (); i++)
+        blank = blank && isspace (*i);
+
+    return blank;
+}
+
 // sym is simple comment symbol with no leading whitespace regex
 bool codesymbols::is_comment (std::string s, const std::string sym)
 {
