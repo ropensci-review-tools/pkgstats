@@ -102,6 +102,10 @@ loc_stats <- function (path) {
     s$language <- ftypes$type
     s$dir <- fdirs
 
+    # suprress no visible binding notes:
+    language <- nfiles <- nlines <- ncode <- 
+        ndoc <- nempty <- nspaces <- nchars <-  NULL
+
     s <- dplyr::group_by (s, language, dir) %>%
         dplyr::summarise (nfiles = length (nlines),
                           nlines = sum (nlines),

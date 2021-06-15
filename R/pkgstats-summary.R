@@ -36,6 +36,10 @@ pkgstats_summary <- function (s) {
 #' @noRd
 loc_summary <- function (x) {
 
+    # suprress no visible binding notes:
+    language <- nfiles <- nlines <- ncode <- 
+        ndoc <- nempty <- nspaces <- nchars <-  NULL
+
     xg <- dplyr::group_by (x, dir)
     x <- dplyr::summarise (xg,
                            nfiles = sum (nfiles),
@@ -76,7 +80,9 @@ loc_summary <- function (x) {
 
     # no visible binding for these vars, so avoid CHK notes:
     files_R <- files_src <- files_include <-    # nolint
-        files_vignettes <- files_tests <- NULL
+        files_vignettes <- files_tests <- 
+        rel_space_R <- rel_space_src <- rel_space_include <- 
+        rel_space_vignettes <- rel_space_tests <- NULL
 
     dirs <- c ("R", "src", "include", "vignettes", "tests")
     for (d in dirs) {
