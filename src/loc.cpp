@@ -120,11 +120,13 @@ writable::integers cpp_loc(const strings flist,
         const strings cmt_close,
         const strings cmt)
 {
+    const int n = static_cast <int> (flist.size ());
+
     const int nleading = 50;
-    writable::integers res (nleading + 6L);
+    writable::integers res (n * 6 + nleading);
     std::fill (res.begin (), res.end (), 0L);
 
-    const int n = static_cast <int> (flist.size ());
+    std::vector <int> leading (nleading, 0L);
 
     for (int f = 0; f < n; f++)
     {
@@ -133,21 +135,24 @@ writable::integers cpp_loc(const strings flist,
                 cmt_close [f],
                 cmt [f]);
 
-        res [0] += stats.nlines;
-        res [1] += stats.ncode;
-        res [2] += stats.ndoc;
-        res [3] += stats.empty_lines;
+        res [(f * 6) + 0] += stats.nlines;
+        res [(f * 6) + 1] += stats.ncode;
+        res [(f * 6) + 2] += stats.ndoc;
+        res [(f * 6) + 3] += stats.empty_lines;
 
-        res [4] += static_cast <int> (
+        res [(f * 6) + 4] += static_cast <int> (
                 std::accumulate (stats.white.begin (),
                     stats.white.end (), 0L));
-        res [5] += static_cast <int> (
+        res [(f * 6) + 5] += static_cast <int> (
                 std::accumulate (stats.nonwhite.begin (),
                     stats.nonwhite.end (), 0L));
         for (auto i: stats.leading)
             if (i < nleading)
-                res [6 + i]++;
+                leading [i]++;
     }
+
+    for (int i = 0; i < nleading; i++)
+        res [n * 6 + i] = leading [i];
 
     return res;
 }

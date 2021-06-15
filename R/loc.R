@@ -1,55 +1,4 @@
 
-#' Count Lines-Of-Code statitics from one specified directory
-#' @param path A directory
-#' @return A named vector of 5 values
-#' @noRd
-loc_stats1 <- function (path) {
-
-    if (dir.exists (path)) {
-
-        flist <- normalizePath (list.files (path, full.names = TRUE))
-        flist <- flist [which (!grepl ("\\.o$|\\.so$", flist))]
-        exts <- vapply (flist, function (i)
-                        utils::tail (strsplit (i, "\\.") [[1]], 1),
-                        character (1))
-        ftypes <- file_exts (exts)
-
-        # any non-parseable files (like .o, .so) then have NA extensions:
-        index <- which (!is.na (ftypes$ext))
-        ftypes <- ftypes [index, ]
-        flist <- flist [index]
-
-        # Remove regex-"^\\s*" from start of single-line comments
-        ftypes$cmt <- gsub ("\\^\\\\s\\*", "", ftypes$cmt)
-        # And reduce all comment symbols to actual symbols minus
-        # regex-formatting:
-        ftypes$cmt_open <- gsub ("\\\\", "", ftypes$cmt_open)
-        ftypes$cmt_close <- gsub ("\\\\", "", ftypes$cmt_close)
-        ftypes$cmt <- gsub ("\\\\", "", ftypes$cmt)
-
-        s <- cpp_loc (flist,
-                      ftypes$cmt_open,
-                      ftypes$cmt_close,
-                      ftypes$cmt)
-
-        leading_white <- s [8:length (s)] # rm 1st value
-        indentation = average_leading_white (leading_white)
-
-    } else {
-
-        s <- rep (NA_integer_, 4L)
-        indentation <- NA_integer_
-    }
-
-    c (nlines = s [1],
-       ncode = s [2],
-       ndoc = s [3],
-       nempty = s [4],
-       nspaces = s [5],
-       nchrars = s [5] + s [6],
-       indentation = indentation)
-}
-
 #' Find average amount of leading white space from a vector of all values of
 #' white space.
 #'
@@ -62,13 +11,11 @@ loc_stats1 <- function (path) {
 #' @noRd
 average_leading_white <- function (x) {
 
-    index <- seq_along (leading_white) [-1]
+    index <- seq_along (x) [-1]
 
-    delta <- rep (0, length (leading_white))
-    delta [1] <- leading_white [1] - leading_white [2]
-    delta [index] <- leading_white [index] -
-        leading_white [index - 1] -
-        leading_white [index + 1]
+    delta <- rep (0, length (x))
+    delta [1] <- x [1] - x [2]
+    delta [index] <- x [index] - x [index - 1] - x [index + 1]
     delta <- c (-1, delta)
     index <- which (delta > 0)
     delta_i <- delta [index]
@@ -77,6 +24,37 @@ average_leading_white <- function (x) {
     i <- which (delta_ratio > 1) [1]
 
     return (index [i])
+}
+
+#' Use internal file-type-dict.R to match files in flist to file types
+#' @param flist List of files to be analysed
+#' @return Modified version of the \link{file_exts} function containing one row
+#' for each file in flist, and including also the path to the file.
+#' @noRd
+get_file_types <- function (flist) {
+
+    exts <- vapply (flist, function (i)
+                    utils::tail (strsplit (i, "\\.") [[1]], 1),
+                    character (1))
+    ftypes <- file_exts (exts)
+
+    # any non-parseable files (like .o, .so) then have NA extensions:
+    index <- which (!is.na (ftypes$ext))
+    ftypes <- ftypes [index, ]
+    flist <- flist [index]
+
+    # Remove regex-"^\\s*" from start of single-line comments
+    ftypes$cmt <- gsub ("\\^\\\\s\\*", "", ftypes$cmt)
+    # And reduce all comment symbols to actual symbols minus
+    # regex-formatting:
+    ftypes$cmt_open <- gsub ("\\\\", "", ftypes$cmt_open)
+    ftypes$cmt_close <- gsub ("\\\\", "", ftypes$cmt_close)
+    ftypes$cmt <- gsub ("\\\\", "", ftypes$cmt)
+
+    ftypes$file <- flist
+    rownames (ftypes) <- NULL
+
+    return (ftypes)
 }
 
 #' Internal calculation of Lines-of-Code Statistics
@@ -97,15 +75,36 @@ loc_stats <- function (path) {
     paths <- file.path (path, dirs)
     paths [3] <- file.path (paths [3], "include")
 
-    dirs <- vapply (strsplit (paths, .Platform$file.sep),
-                    function (i) utils::tail (i, 1L),
-                    character (1))
-    stats <- lapply (dirs, function (i) {
-                         res <- loc_stats1 (file.path (path, i))
-                         names (res) <- paste0 (i, "_", names (res))
-                         return (res)   })
-    stats <- unlist (stats)
-    names (stats) <- gsub ("^include", "inst", names (stats))
+    flist <- list.files (paths,
+                         recursive = TRUE,
+                         full.names = TRUE)
 
-    return (stats)
+    ftypes <- get_file_types (flist)
+
+    s <- cpp_loc (ftypes$file,
+                  ftypes$cmt_open,
+                  ftypes$cmt_close,
+                  ftypes$cmt)
+
+    index <- seq_along (s) [-(seq (6 * nrow (ftypes)))]
+    leading_white <- s [index [-1]] # rm 1st value
+    indentation <- average_leading_white (leading_white)
+
+    index <- seq (6 * nrow (ftypes))
+    s <- data.frame (t (matrix (s [index], nrow = 6)))
+    names (s) <- c ("nlines", "ncode", "ndoc", "nempty", "nspaces", "nchars")
+    s$language <- ftypes$type
+
+    s <- dplyr::group_by (s, language) %>%
+        dplyr::summarise (nfiles = length (nlines),
+                          nlines = sum (nlines),
+                          ncode = sum (ncode),
+                          ndoc = sum (ndoc),
+                          nempty = sum (nempty),
+                          nspaces = sum (nspaces),
+                          nchars = sum (nchars),
+                          indentation = median (indentation))
+    s$indentation = indentation
+
+    return (s)
 }
