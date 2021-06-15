@@ -13,6 +13,12 @@ loc_stats1 <- function (path) {
                         utils::tail (strsplit (i, "\\.") [[1]], 1),
                         character (1))
         ftypes <- file_exts (exts)
+
+        # any non-parseable files (like .o, .so) then have NA extensions:
+        index <- which (!is.na (ftypes$ext))
+        ftypes <- ftypes [index, ]
+        flist <- flist [index]
+
         ftypes$cmt <- gsub ("\\^\\\\s\\*", "", ftypes$cmt)
         s <- cpp_loc (flist,
                       ftypes$cmt_open,
