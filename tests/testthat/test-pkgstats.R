@@ -6,7 +6,7 @@ test_that ("pkgstats", {
     expect_silent (s <- pkgstats (path))
     expect_type (s, "list")
 
-    nms <- c ("cloc",
+    nms <- c ("loc",
               "vignettes",
               "data_stats",
               "desc",
@@ -16,9 +16,9 @@ test_that ("pkgstats", {
               "network")
     expect_true (all (nms %in% names (s)))
 
-    expect_s3_class (s$cloc, "tbl_df")
-    expect_equal (nrow (s$cloc), 3L)
-    expect_true (all (c ("R", "src", "tests") %in% s$cloc$source))
+    expect_s3_class (s$loc, "tbl_df")
+    expect_equal (nrow (s$loc), 3L)
+    expect_true (all (c ("R", "src", "tests") %in% s$loc$dir))
 
     expect_type (s$vignettes, "integer")
     expect_named (s$vignettes)
