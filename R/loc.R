@@ -71,7 +71,7 @@ loc_stats <- function (path) {
 
     path <- normalizePath (path)
 
-    dirs <- c ("R", "src", "inst", "tests")
+    dirs <- c ("R", "src", "inst", "tests", "vignettes")
     paths <- file.path (path, dirs)
     paths [3] <- file.path (paths [3], "include")
 
