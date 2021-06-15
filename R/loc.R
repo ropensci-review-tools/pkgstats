@@ -106,15 +106,17 @@ loc_stats <- function (path) {
     language <- nfiles <- nlines <- ncode <- 
         ndoc <- nempty <- nspaces <- nchars <-  NULL
 
-    s <- dplyr::group_by (s, language, dir) %>%
-        dplyr::summarise (nfiles = length (nlines),
-                          nlines = sum (nlines),
-                          ncode = sum (ncode),
-                          ndoc = sum (ndoc),
-                          nempty = sum (nempty),
-                          nspaces = sum (nspaces),
-                          nchars = sum (nchars),
-                          .groups = "keep")
+    # No magrittr here
+    xg <- dplyr::group_by (s, language, dir)
+    x <- dplyr::summarise (xg,
+                           nfiles = length (nlines),
+                           nlines = sum (nlines),
+                           ncode = sum (ncode),
+                           ndoc = sum (ndoc),
+                           nempty = sum (nempty),
+                           nspaces = sum (nspaces),
+                           nchars = sum (nchars),
+                           .groups = "keep")
     s$indentation = indentation
 
     return (s)
