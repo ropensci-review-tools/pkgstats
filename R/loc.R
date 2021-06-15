@@ -81,6 +81,12 @@ loc_stats <- function (path) {
 
     ftypes <- get_file_types (flist)
 
+    fdirs <- gsub (paste0 (path, .Platform$file.sep), "", ftypes$file)
+    fdirs <- vapply (strsplit (fdirs, .Platform$file.sep), function (i)
+                     i [1],
+                     character (1),
+                     USE.NAMES = FALSE)
+
     s <- cpp_loc (ftypes$file,
                   ftypes$cmt_open,
                   ftypes$cmt_close,
@@ -94,8 +100,9 @@ loc_stats <- function (path) {
     s <- data.frame (t (matrix (s [index], nrow = 6)))
     names (s) <- c ("nlines", "ncode", "ndoc", "nempty", "nspaces", "nchars")
     s$language <- ftypes$type
+    s$dir <- fdirs
 
-    s <- dplyr::group_by (s, language) %>%
+    s <- dplyr::group_by (s, language, dir) %>%
         dplyr::summarise (nfiles = length (nlines),
                           nlines = sum (nlines),
                           ncode = sum (ncode),
@@ -103,7 +110,7 @@ loc_stats <- function (path) {
                           nempty = sum (nempty),
                           nspaces = sum (nspaces),
                           nchars = sum (nchars),
-                          indentation = median (indentation))
+                          .groups = "keep")
     s$indentation = indentation
 
     return (s)
