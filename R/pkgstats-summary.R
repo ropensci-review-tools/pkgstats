@@ -12,7 +12,7 @@ pkgstats_summary <- function (s) {
                        date = s$desc$date,
                        license = s$desc$license)
 
-    out <- cbind (out, cloc_summary (s$cloc))
+    out <- cbind (out, loc_summary (s$loc))
 
     out$num_vignettes <- s$vignettes [1]
     out$num_demos <- s$vignettes [2]
@@ -32,36 +32,37 @@ pkgstats_summary <- function (s) {
     return (out)
 }
 
-#' @param x the 'cloc` component of `pkgstats` output.
+#' @param x the 'loc` component of `pkgstats` output.
 #' @noRd
-cloc_summary <- function (x) {
+loc_summary <- function (x) {
+
+    xg <- dplyr::group_by (x, dir)
+    x <- dplyr::summarise (xg,
+                           nfiles = sum (nfiles),
+                           ncode = sum (ncode),
+                           ndoc = sum (ndoc),
+                           nempty = sum (nempty),
+                           nspaces = sum (nspaces),
+                           nchars = sum (nchars),
+                           indentation = median (indentation))
 
     blank <- x [1, ]
-
-    col_nms <- c ("file_count",
-                  "file_count_pct",
-                  "loc",
-                  "loc_pct",
-                  "blank_lines",
-                  "blank_line_pct",
-                  "comment_lines",
-                  "comment_line_pct")
+    col_nms <- names (blank) [which (!names (blank) == "dir")]
     blank [col_nms] <- 0L
 
     add_if_missing <- function (x, type = "src") {
 
-        if (!type %in% x$source) {
+        if (!type %in% x$dir) {
 
             src <- blank
-            src$source <- type
-            src$language <- "-"
+            src$dir <- type
             x <- rbind (x, src)
         }
 
         return (x)
     }
 
-    has_code <- any (x$file_count > 0) # data-only pkgs may have no code at all
+    has_code <- any (x$nfiles > 0) # data-only pkgs may have no code at all
 
     # R shouldn't ever be missing, but maybe? (BDR's boot pkg comes close)
     if (has_code) {
@@ -71,16 +72,6 @@ cloc_summary <- function (x) {
         x <- add_if_missing (x, "include")
         x <- add_if_missing (x, "vignettes")
         x <- add_if_missing (x, "tests")
-
-        # suppress no visible binding notes
-        file_count <- loc <- blank_lines <- comment_lines <- NULL
-        # no pipes here
-        xg <- dplyr::group_by (x, source)
-        x <- dplyr::summarise (xg,
-                               file_count = sum (file_count),
-                               loc = sum (loc),
-                               blank_lines = sum (blank_lines),
-                               comment_lines = sum (comment_lines))
     }
 
     # no visible binding for these vars, so avoid CHK notes:
@@ -90,14 +81,19 @@ cloc_summary <- function (x) {
     dirs <- c ("R", "src", "include", "vignettes", "tests")
     for (d in dirs) {
 
-        tmp <- ifelse (has_code, x$file_count [x$source == d], 0L)
+        tmp <- ifelse (has_code, x$nfiles [x$dir == d], 0L)
         assign (paste0 ("files_", d), tmp)
-        tmp <- ifelse (has_code, x$loc [x$source == d], 0L)
+        tmp <- ifelse (has_code, x$ncode [x$dir == d], 0L)
         assign (paste0 ("loc_", d), tmp)
-        tmp <- ifelse (has_code, x$blank_lines [x$source == d], 0L)
+        tmp <- ifelse (has_code, x$nempty [x$dir == d], 0L)
         assign (paste0 ("blank_lines_", d), tmp)
-        tmp <- ifelse (has_code, x$comment_lines [x$source == d], 0L)
+        tmp <- ifelse (has_code, x$ndoc [x$dir == d], 0L)
         assign (paste0 ("comment_lines_", d), tmp)
+        rel_space <- x$nspaces / x$nchars
+        di <- which (x$dir == d)
+        tmp <- ifelse (rel_space [di] != 0,
+                       rel_space [di], NA)
+        assign (paste0 ("rel_space_", d), tmp)
     }
 
     if (files_R == 0)
@@ -114,6 +110,8 @@ cloc_summary <- function (x) {
             comment_lines_vignettes <- NA_integer_
     if (files_tests == 0)
         loc_tests <- blank_lines_tests <- comment_lines_tests <- NA_integer_
+
+    indentation <- median (x$indentation [x$indentation > 0])
 
     data.frame (files_R = files_R,
                 files_src = files_src,
@@ -134,7 +132,13 @@ cloc_summary <- function (x) {
                 comment_lines_src = comment_lines_src,
                 comment_lines_inst = comment_lines_include,
                 comment_lines_vignettes = comment_lines_vignettes,
-                comment_lines_tests = comment_lines_tests)
+                comment_lines_tests = comment_lines_tests,
+                rel_space_R = rel_space_R,
+                rel_space_src = rel_space_src,
+                rel_space_inst = rel_space_include,
+                rel_space_vignettes = rel_space_vignettes,
+                rel_space_tests = rel_space_tests,
+                indentation = indentation)
 }
 
 #' @param x the 'desc' components of 'pkgstats' output

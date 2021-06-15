@@ -14,7 +14,7 @@ aut_types <- function () {
 
 #' Statistics from DESCRIPTION files
 #'
-#' @inheritParams cloc_stats
+#' @inheritParams loc_stats
 #' @export
 desc_stats <- function (path) {
 

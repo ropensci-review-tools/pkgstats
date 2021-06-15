@@ -21,7 +21,7 @@ pkgstats <- function (path = ".") {
         path <- extract_tarball (path)
     }
 
-    s1 <- cloc_stats (path)
+    s1 <- loc_stats (path)
     num_vignettes <- get_num_vignettes (path)
     num_demos <- get_num_demos (path)
     data_stats <- get_data_stats (path)
@@ -48,7 +48,7 @@ pkgstats <- function (path = ".") {
     if (tarball)
         chk <- unlink (path, recursive = TRUE)
 
-    list (cloc = s1,
+    list (loc = s1,
           vignettes = c (vignettes = num_vignettes,
                          demos = num_demos),
           data_stats = data_stats,

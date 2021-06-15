@@ -1,6 +1,6 @@
 #' Stats from '.Rd' files
 #'
-#' @inheritParams cloc_stats
+#' @inheritParams loc_stats
 #' @export
 rd_stats <- function (path) {
 

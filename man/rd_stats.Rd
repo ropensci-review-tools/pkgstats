@@ -7,8 +7,7 @@
 rd_stats(path)
 }
 \arguments{
-\item{path}{Path to locally extracted tarball of package, obtained from
-\link{extract_tarball}.}
+\item{path}{Directory to package being analysed}
 }
 \description{
 Stats from '.Rd' files
