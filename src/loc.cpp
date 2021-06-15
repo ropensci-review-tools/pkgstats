@@ -55,6 +55,15 @@ LocStats loc::file_loc (const std::string f,
         codesymbols::balance_block_cmts (opens, closes);
         bool in_block_cmt = (opens.size () == 1 && closes.size () == 0);
 
+        bool single_cmt = false;
+        if (!in_quote && !in_block_cmt)
+            single_cmt = codesymbols::is_comment (line, cmt);
+
+        if (in_block_cmt || single_cmt)
+            stats.ndoc++;
+        else
+            stats.ncode++;
+
         bool white = true;
 
         for (size_t j = 0; j < line.length (); j++) {
@@ -73,10 +82,12 @@ LocStats loc::file_loc (const std::string f,
 }
 
 // Returns a single vector with:
-// - first element = total number of lines in all files
-// - second element = total number of blank / empty lines
-// - third element = total number of spaces
-// - fourth element = total number of non-space characters
+// - [0] = total number of lines in all files
+// - [1] = number of lines of code
+// - [2] = number of lines of documentation (comments)
+// - [3] = total number of blank / empty lines
+// - [4] = total number of spaces
+// - [5] = total number of non-space characters
 // - after that, a frequency table of first 50 counts of numbers of leading
 // white spaces on each line
 [[cpp11::register]]
@@ -86,7 +97,7 @@ writable::integers cpp_loc(const strings flist,
         const strings cmt)
 {
     const int nleading = 50;
-    writable::integers res (nleading + 4L);
+    writable::integers res (nleading + 6L);
     std::fill (res.begin (), res.end (), 0L);
 
     const int n = static_cast <int> (flist.size ());
@@ -99,17 +110,19 @@ writable::integers cpp_loc(const strings flist,
                 cmt [f]);
 
         res [0] += stats.nlines;
-        res [1] += stats.empty_lines;
+        res [1] += stats.ncode;
+        res [2] += stats.ndoc;
+        res [3] += stats.empty_lines;
 
-        res [2] += static_cast <int> (
+        res [4] += static_cast <int> (
                 std::accumulate (stats.white.begin (),
                     stats.white.end (), 0L));
-        res [3] += static_cast <int> (
+        res [5] += static_cast <int> (
                 std::accumulate (stats.nonwhite.begin (),
                     stats.nonwhite.end (), 0L));
         for (auto i: stats.leading)
             if (i < nleading)
-                res [4 + i]++;
+                res [6 + i]++;
     }
 
     return res;

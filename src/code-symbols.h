@@ -12,6 +12,8 @@
 
 namespace codesymbols {
 
+bool is_comment (std::string s, const std::string sym);
+
 std::vector <size_t> get_sympos (const std::string &s, const std::string &sym);
 
 std::vector <size_t> rm_syms_in_quotes (std::vector <size_t> &sympos,

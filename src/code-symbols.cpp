@@ -1,5 +1,17 @@
 #include "code-symbols.h"
 
+// sym is simple comment symbol with no leading whitespace regex
+bool codesymbols::is_comment (std::string s, const std::string sym)
+{
+    if (s.size () == 0L)
+        return false;
+
+    while (s.size () > 0 && isspace (s [0]))
+        s = s.substr (1, s.size ());
+
+    return s.find (sym, 0L) == 0L;
+}
+
 std::vector <size_t> codesymbols::get_sympos (const std::string &s, const std::string &sym)
 {
     std::vector <size_t> out;

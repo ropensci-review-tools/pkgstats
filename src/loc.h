@@ -10,22 +10,34 @@
 #include <assert.h>
 #include <cctype> // isspace
 
-// Vectors holding values for each line in one file of:
-// - Numbers of leading white spaces
-// - Total numbers of white spaces
-// - Total numbers of non-white spaces
-// Plus one additional value of total numbers of empty (white) lines.
+/* This is a self-contained and highly restricted version of a Lines-Of-Code
+ * counting algorithm. It is nowhere near as comprehensive as libraries like 
+ * https://github.com/boyter/scc or https://github.com/XAMPPRocky/tokei. The
+ * intention is just to provide a self-contained version that counts the basic
+ * statistics necessary for statistical analyses of R packages. An additional
+ * intention is to quantify average white space within code, which conventional
+ * libraries such as those linked above do not do.
+ *
+ * The routine returns the following 'class` objects with vectors holding values
+ * for each line in one file of:
+ *  - Numbers of leading white spaces
+ *  - Total numbers of white spaces
+ *  - Total numbers of non-white spaces
+ * Plus one additional value of total numbers of empty (white) lines.
+ */
 class LocStats
 {
     public:
 
-        int nlines, empty_lines;
+        int nlines, ncode, ndoc, empty_lines;
 
         std::vector <int> leading, white, nonwhite, doc;
 
         LocStats (const size_t n) {
 
             nlines = static_cast <int> (n);
+            ncode = 0L;
+            ndoc = 0L;
             empty_lines = 0L;
 
             leading.resize (n, 0L);
