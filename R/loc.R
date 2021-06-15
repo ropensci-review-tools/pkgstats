@@ -1,5 +1,5 @@
 
-#' Count white space statitics from one specified directory
+#' Count Lines-Of-Code statitics from one specified directory
 #' @param path A directory
 #' @return A named vector of 5 values
 #' @noRd
@@ -19,7 +19,14 @@ loc_stats1 <- function (path) {
         ftypes <- ftypes [index, ]
         flist <- flist [index]
 
+        # Remove regex-"^\\s*" from start of single-line comments
         ftypes$cmt <- gsub ("\\^\\\\s\\*", "", ftypes$cmt)
+        # And reduce all comment symbols to actual symbols minus
+        # regex-formatting:
+        ftypes$cmt_open <- gsub ("\\\\", "", ftypes$cmt_open)
+        ftypes$cmt_close <- gsub ("\\\\", "", ftypes$cmt_close)
+        ftypes$cmt <- gsub ("\\\\", "", ftypes$cmt)
+
         s <- cpp_loc (flist,
                       ftypes$cmt_open,
                       ftypes$cmt_close,
