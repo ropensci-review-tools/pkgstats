@@ -108,7 +108,7 @@ loc_stats <- function (path) {
 
     # No magrittr here
     xg <- dplyr::group_by (s, language, dir)
-    x <- dplyr::summarise (xg,
+    s <- dplyr::summarise (xg,
                            nfiles = length (nlines),
                            nlines = sum (nlines),
                            ncode = sum (ncode),
