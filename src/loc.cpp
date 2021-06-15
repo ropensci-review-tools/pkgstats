@@ -21,7 +21,10 @@ size_t loc::file_nlines (std::ifstream &in_file)
     return n;
 }
 
-LocStats loc::file_loc (std::string f)
+LocStats loc::file_loc (const std::string f,
+        const std::string cmt_open,
+        const std::string cmt_close,
+        const std::string cmt)
 {
     std::ifstream in_file;
     in_file.open (f.c_str (), std::ifstream::in);
@@ -30,8 +33,6 @@ LocStats loc::file_loc (std::string f)
     const size_t n = file_nlines (in_file);
 
     std::string line;
-
-    const std::string cmt_open = "/*", cmt_close = "*/";
 
     LocStats stats (n);
     size_t i = 0;
@@ -79,7 +80,10 @@ LocStats loc::file_loc (std::string f)
 // - after that, a frequency table of first 50 counts of numbers of leading
 // white spaces on each line
 [[cpp11::register]]
-writable::integers cpp_loc(strings flist)
+writable::integers cpp_loc(const strings flist,
+        const strings cmt_open,
+        const strings cmt_close,
+        const strings cmt)
 {
     const int nleading = 50;
     writable::integers res (nleading + 4L);
@@ -89,7 +93,10 @@ writable::integers cpp_loc(strings flist)
 
     for (int f = 0; f < n; f++)
     {
-        LocStats stats = loc::file_loc (flist [f]);
+        LocStats stats = loc::file_loc (flist [f],
+                cmt_open [f],
+                cmt_close [f],
+                cmt [f]);
 
         res [0] += stats.nlines;
         res [1] += stats.empty_lines;

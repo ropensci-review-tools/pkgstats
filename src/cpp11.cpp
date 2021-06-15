@@ -5,10 +5,10 @@
 #include "cpp11/declarations.hpp"
 
 // loc.cpp
-writable::integers cpp_loc(strings flist);
-extern "C" SEXP _pkgstats_cpp_loc(SEXP flist) {
+writable::integers cpp_loc(const strings flist, const strings cmt_open, const strings cmt_close, const strings cmt);
+extern "C" SEXP _pkgstats_cpp_loc(SEXP flist, SEXP cmt_open, SEXP cmt_close, SEXP cmt) {
   BEGIN_CPP11
-    return cpp11::as_sexp(cpp_loc(cpp11::as_cpp<cpp11::decay_t<strings>>(flist)));
+    return cpp11::as_sexp(cpp_loc(cpp11::as_cpp<cpp11::decay_t<const strings>>(flist), cpp11::as_cpp<cpp11::decay_t<const strings>>(cmt_open), cpp11::as_cpp<cpp11::decay_t<const strings>>(cmt_close), cpp11::as_cpp<cpp11::decay_t<const strings>>(cmt)));
   END_CPP11
 }
 // rd_parse.cpp
@@ -21,11 +21,11 @@ extern "C" SEXP _pkgstats_cpp_parse_rd(SEXP flist) {
 
 extern "C" {
 /* .Call calls */
-extern SEXP _pkgstats_cpp_loc(SEXP);
+extern SEXP _pkgstats_cpp_loc(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _pkgstats_cpp_parse_rd(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_pkgstats_cpp_loc",      (DL_FUNC) &_pkgstats_cpp_loc,      1},
+    {"_pkgstats_cpp_loc",      (DL_FUNC) &_pkgstats_cpp_loc,      4},
     {"_pkgstats_cpp_parse_rd", (DL_FUNC) &_pkgstats_cpp_parse_rd, 1},
     {NULL, NULL, 0}
 };

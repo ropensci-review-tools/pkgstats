@@ -9,7 +9,14 @@ loc_stats1 <- function (path) {
 
         flist <- normalizePath (list.files (path, full.names = TRUE))
         flist <- flist [which (!grepl ("\\.o$|\\.so$", flist))]
-        s <- cpp_loc (flist)
+        exts <- vapply (flist, function (i)
+                        utils::tail (strsplit (i, "\\.") [[1]], 1),
+                        character (1))
+        ftypes <- file_exts (exts)
+        s <- cpp_loc (flist,
+                      ftypes$cmt_open,
+                      ftypes$cmt_close,
+                      ftypes$cmt)
 
         leading_white <- s [5:length (s)]
         indentation <- 1L + which.max (leading_white [-1])

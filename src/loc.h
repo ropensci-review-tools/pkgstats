@@ -39,6 +39,9 @@ namespace loc {
 
 size_t file_nlines (std::ifstream &in_file);
 
-LocStats file_loc (std::string f);
+LocStats file_loc (const std::string f,
+        const std::string cmt_open,
+        const std::string cmt_close,
+        const std::string cmt);
 
 } // end namespace loc
