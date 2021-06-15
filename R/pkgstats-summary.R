@@ -48,7 +48,7 @@ loc_summary <- function (x) {
                            nempty = sum (nempty),
                            nspaces = sum (nspaces),
                            nchars = sum (nchars),
-                           indentation = median (indentation))
+                           indentation = stats::median (indentation))
 
     blank <- x [1, ]
     col_nms <- names (blank) [which (!names (blank) == "dir")]
@@ -117,7 +117,7 @@ loc_summary <- function (x) {
     if (files_tests == 0)
         loc_tests <- blank_lines_tests <- comment_lines_tests <- NA_integer_
 
-    indentation <- median (x$indentation [x$indentation > 0])
+    indentation <- stats::median (x$indentation [x$indentation > 0])
 
     data.frame (files_R = files_R,
                 files_src = files_src,
