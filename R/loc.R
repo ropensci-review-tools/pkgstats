@@ -38,7 +38,9 @@ loc_stats1 <- function (path) {
 #' @export
 loc_stats <- function (path) {
 
-    dirs <- c ("R", "src", "inst")
+    path <- normalizePath (path)
+
+    dirs <- c ("R", "src", "inst", "tests")
     paths <- file.path (path, dirs)
     paths [3] <- file.path (paths [3], "include")
 
