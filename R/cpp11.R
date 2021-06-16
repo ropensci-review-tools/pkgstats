@@ -3,7 +3,3 @@
 cpp_loc <- function(flist, cmt_open, cmt_close, cmt) {
   .Call(`_pkgstats_cpp_loc`, flist, cmt_open, cmt_close, cmt)
 }
-
-cpp_parse_rd <- function(flist) {
-  .Call(`_pkgstats_cpp_parse_rd`, flist)
-}

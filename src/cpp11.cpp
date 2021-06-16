@@ -11,22 +11,13 @@ extern "C" SEXP _pkgstats_cpp_loc(SEXP flist, SEXP cmt_open, SEXP cmt_close, SEX
     return cpp11::as_sexp(cpp_loc(cpp11::as_cpp<cpp11::decay_t<const strings>>(flist), cpp11::as_cpp<cpp11::decay_t<const strings>>(cmt_open), cpp11::as_cpp<cpp11::decay_t<const strings>>(cmt_close), cpp11::as_cpp<cpp11::decay_t<const strings>>(cmt)));
   END_CPP11
 }
-// rd_parse.cpp
-writable::integers cpp_parse_rd(strings flist);
-extern "C" SEXP _pkgstats_cpp_parse_rd(SEXP flist) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(cpp_parse_rd(cpp11::as_cpp<cpp11::decay_t<strings>>(flist)));
-  END_CPP11
-}
 
 extern "C" {
 /* .Call calls */
 extern SEXP _pkgstats_cpp_loc(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _pkgstats_cpp_parse_rd(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_pkgstats_cpp_loc",      (DL_FUNC) &_pkgstats_cpp_loc,      4},
-    {"_pkgstats_cpp_parse_rd", (DL_FUNC) &_pkgstats_cpp_parse_rd, 1},
+    {"_pkgstats_cpp_loc", (DL_FUNC) &_pkgstats_cpp_loc, 4},
     {NULL, NULL, 0}
 };
 }
