@@ -19,8 +19,8 @@ feasibility.
 
 Statistics are derived from these primary sources:
 
-1.  Summary of lines-of-code from
-    [`cloc`](https://github.com/hrbrmstr/cloc)
+1.  Numbers of lines of code, documentation, and white space in each
+    directory and language
 2.  Summaries of package `DESCRIPTION` file and a couple of other
     statistics
 3.  Summaries of all objects created via package code across multiple
@@ -36,20 +36,10 @@ A demonstration of typical output is shown below, along with a detailed
 list of statistics aggregated by the internal [`pkgstats_summary()`
 function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html).
 
-## So this only performs static code analyses?
-
-Yes. And yes, static code analyses are frequently inadequate, especially
-when applied to complex languages like C++. They are nevertheless a darn
-sight better than nothing, and they do provide one of the only ways to
-construct function call networks across different languages. This
-package has been developed with the conviction that the benefits of
-being able to extract these networks at all outweigh any disadvantages
-arising through potential inaccuracy of static code analyses.
-
 ## Installation
 
-The easiest way to install this package is via the associated
-[`r-universe`](https://ropensci-review-tools.r-universe.dev/ui#builds).
+The easiest way to install this package is via the [associated
+`r-universe`](https://ropensci-review-tools.r-universe.dev/ui#builds).
 As shown there, simply enable the universe with
 
 ``` r
@@ -131,13 +121,13 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.931   0.079   1.005
+    ##   0.389   0.021   0.411
 
 ``` r
 names (p)
 ```
 
-    ## [1] "cloc"          "vignettes"     "data_stats"    "desc"         
+    ## [1] "loc"           "vignettes"     "data_stats"    "desc"         
     ## [5] "translations"  "code_has_tabs" "objects"       "network"
 
 The result is a list of various data extracted from the code. All except
@@ -147,17 +137,17 @@ for `objects` and `network` represent summary data:
 p [!names (p) %in% c ("objects", "network")]
 ```
 
-    ## $cloc
-    ## # A tibble: 5 x 10
-    ##   source    language     file_count file_count_pct   loc loc_pct blank_lines
-    ##   <chr>     <chr>             <int>          <dbl> <int>   <dbl>       <int>
-    ## 1 R         R                     7          0.5     163  0.5             52
-    ## 2 src       C                     2          0.333   447  0.461          121
-    ## 3 src       C/C++ Header          1          0.167    38  0.0392          12
-    ## 4 tests     R                    10          0.5     259  0.5            102
-    ## 5 vignettes Rmd                   2          0.5     146  0.5            205
-    ## # … with 3 more variables: blank_line_pct <dbl>, comment_lines <int>,
-    ## #   comment_line_pct <dbl>
+    ## $loc
+    ## # A tibble: 5 x 11
+    ## # Groups:   language, dir [5]
+    ##   language     dir       nfiles nlines ncode  ndoc nempty nspaces nchars nexpr
+    ##   <chr>        <chr>      <int>  <int> <int> <int>  <int>   <int>  <int> <dbl>
+    ## 1 C            src            2    590   447    22    121    1136  10826     1
+    ## 2 C/C++ Header src            1     51    38     1     12      72    761     1
+    ## 3 R            R              7    699   163   484     52    2835  15645     1
+    ## 4 R            tests         10    374   259    13    102     867   8527     2
+    ## 5 Rmd          vignettes      2    754   469    80    205    3793  19927     1
+    ## # … with 1 more variable: indentation <int>
     ## 
     ## $vignettes
     ## vignettes     demos 
@@ -183,7 +173,52 @@ p [!names (p) %in% c ("objects", "network")]
     ## $code_has_tabs
     ## [1] TRUE
 
-The `objects` and `network` items are described further below.
+The first item, `loc`, contains the following Lines-Of-Code and related
+statistics, separated into distinct combinations of computer language
+and directory:
+
+1.  `nfiles` = Numbers of files in each directory and language
+2.  `nlines` = Total numbers of lines of code
+3.  `ndoc` = Total numbers of documentation or comment lines
+4.  `nempty` = Total numbers of empty of blank lines
+5.  `nspaces` = Total numbers of white spaces in all code lines,
+    excluding leading indentation spaces
+6.  `nchars` = Total numbers of non-white-space characters in all code
+    lines
+7.  `nexpr` = Median numbers of nested expressions in all lines which
+    have any expressions (see below)
+8.  `indentation` = Number of spaces by which code is indented
+
+Numbers of nested expressions are counted as numbers of brackets of any
+type nested on a single line. The following line has one nested bracket:
+
+``` r
+x <- myfn ()
+```
+
+while the following has four:
+
+``` r
+x <- function () { return (myfn ()) }
+```
+
+Code with fewer nested expressions per line is generally easier to read,
+and this metric is provided as a relative indication of the general
+readability of code. A second relative indication may be extracted by
+converting numbers of spaces and characters to a measure of relative
+numbers of white spaces, noting that the `nchars` value quantifies total
+characters including white spaces.
+
+``` r
+index <- which (p$loc$dir %in% c ("R", "src")) # consider source code only
+sum (p$loc$nspaces [index]) / sum (p$loc$nchars [index])
+```
+
+    ## [1] 0.148465
+
+The `objects` and `network` items returned by the [`pkgstats()`
+function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats.html)
+are described further below.
 
 ### The `pkgstats_summary()` function
 
@@ -196,12 +231,18 @@ s <- pkgstats_summary (p)
 ```
 
 This function reduces the result of the [`pkgstats()`
-function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats.html)
-to a single line with 83 entries, represented as a `data.frame` with one
-row and that number of columns, enabling multiple packages to be
-compared by binding rows together. The following lists describe these 83
-statistics (not in the order in which they actually appear), with
-variable names in parentheses after each description.
+function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html)
+to a single line with 91 entries, represented as a `data.frame` with one
+row and that number of columns. This format is intended to enable
+summary statistics from multiple packages to be aggregated by simply
+binding rows together. While 91 statistics might seem like overkill, the
+[`pkgstats_summary()`
+function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html)
+aims to return as many usable statistics as possible in order to
+flexibly allow higher-level statistics to be derived through combination
+and aggregation. The following lists describe these 91 statistics (not
+in the order in which they actually appear), with variable names in
+parentheses after each description.
 
 **Package Summaries**
 
@@ -257,8 +298,19 @@ length (strsplit (s$suggests, ", ") [[1]])
     `blank_lines_src`, `blank_lines_inst`, `blank_lines_vignette`,
     `blank_lines_tests`).
 -   Total numbers of comment lines in each sub-directory
-    (`comment_lines_R`, `comment_lines_sr`, `comment_lines_inst`,
+    (`comment_lines_R`, `comment_lines_src`, `comment_lines_inst`,
     `comment_lines_vignettes`, `comment_lines_tests`).
+-   Measures of relative white space in each sub-directory
+    (`rel_space_R`, `rel_space_src`, `rel_space_inst`,
+    `rel_space_vignettes`, `rel_space_tests`), as well as an overall
+    measure for the `R/`, `src/`, and `inst/` directories (`rel_space`).
+-   The number of spaces used to indent code, noting that the tools used
+    to extract the `object` and `network` tables described below do not
+    work on code with tab-indentation, and `pkgstats` thus converts all
+    tab characters to a fixed number of spaces (with a default of 2;
+    `indentation`).
+-   The median number of nested expression per line of code, counting
+    only those lines which have any expressions (`nexpr`).
 
 **Statistics on individual objects (including functions)**
 
@@ -313,11 +365,11 @@ beyond those described immediately above.
 
 ### Objects
 
-The `objects` item contains all code objects identified by
-[`ctags`](https://ctags.io). For R, those are primarily functions, but
-for other languages may be a variety of entities such as class or
-structure definitions, or sub-members thereof. Object tables look like
-this:
+The `objects` item contains all code objects identified by the
+code-tagging library [`ctags`](https://ctags.io). For R, those are
+primarily functions, but for other languages may be a variety of
+entities such as class or structure definitions, or sub-members thereof.
+Object tables look like this:
 
 ``` r
 head (p$objects)
