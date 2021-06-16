@@ -153,11 +153,12 @@ writable::integers cpp_loc(const strings flist,
                     stats.nonwhite.end (), 0L));
         for (auto i: stats.leading)
             if (i < nleading)
-                leading [i]++;
+                leading [static_cast <size_t> (i)]++;
     }
 
-    for (int i = 0; i < nleading; i++)
-        res [n * 6 + i] = leading [i];
+    size_t ns = static_cast <size_t> (n);
+    for (size_t i = 0; i < static_cast <size_t> (nleading); i++)
+        res [ns * 6 + i] = leading [i];
 
     return res;
 }
