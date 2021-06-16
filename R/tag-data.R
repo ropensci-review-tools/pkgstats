@@ -137,7 +137,17 @@ get_ctags <- function (d = "R") {
     return (tags)
 }
 
-rm_tabs <- function (d) {
+#' Replace tab indentation with a fixed number of spaces
+#'
+#' This is necessary because the files produced by both ctags and global are
+#' unable to be propertly parsed when code contains tab indents.
+#' @param d A directory in which tab indents are to be replaced in all files
+#' @param nspaces The equivalent number of spaces with which to replace tab
+#' indentations.
+#' @noRd
+rm_tabs <- function (d, nspaces = 2) {
+
+    sp <- paste0 (rep (" ", nspaces), collapse = "")
 
     files <- normalizePath (list.files (d,
                                         full.names = TRUE,
@@ -150,7 +160,8 @@ rm_tabs <- function (d) {
         x <- suppressWarnings (brio::read_lines (f))
         has_tabs_f <- any (grepl ("\\t", x))
         if (has_tabs_f) {
-            x <- gsub ("\\t", " ", x)
+            x <- gsub ("^\\t", sp, x)
+            x <- gsub ("\\t", " ", x) # replace non-leading tabs with single
             writeLines (x, con = f)
         }
         has_tabs <- has_tabs | has_tabs_f
