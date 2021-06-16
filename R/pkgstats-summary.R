@@ -48,7 +48,7 @@ loc_summary <- function (x) {
                            nempty = sum (nempty),
                            nspaces = sum (nspaces),
                            nchars = sum (nchars),
-                           nexpr = median (nexpr), # no accurate, but acceptable here
+                           nexpr = stats::median (nexpr), # not accurate, but acceptable here
                            indentation = stats::median (indentation))
 
     blank <- x [1, ]

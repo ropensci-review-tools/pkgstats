@@ -113,8 +113,8 @@ loc_stats <- function (path) {
     s$dir <- fdirs
 
     # suprress no visible binding notes:
-    language <- nfiles <- nlines <- ncode <-
-        ndoc <- nempty <- nspaces <- nchars <-  NULL
+    language <- nfiles <- nlines <- ncode <- ndoc <-
+        nempty <- nspaces <- nchars <-  nbrackets <- NULL
 
     # No magrittr here, plus note final renaming of nbrackets to nexpr
     xg <- dplyr::group_by (s, language, dir)
