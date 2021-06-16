@@ -127,3 +127,21 @@ void codesymbols::balance_block_cmts (std::vector <size_t> &opens,
         }
     }
 }
+
+int codesymbols::count_brackets (std::string s)
+{
+    int n = 0L;
+
+    std::vector <std::string> brackets = {"(", "[", "{"};
+
+    for (auto b: brackets)
+    {
+        auto it = s.find (b);
+        while (it != std::string::npos) {
+            n++;
+            it = s.find (b, it + 1);
+        }
+    }
+
+    return n;
+}

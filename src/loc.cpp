@@ -102,6 +102,8 @@ LocStats loc::file_loc (const std::string f,
                 stats.nonwhite [i] += !white_i;
             }
         }
+        stats.brackets [i] = codesymbols::count_brackets (line);
+
         i++;
     }
 
