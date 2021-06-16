@@ -88,7 +88,7 @@ LocStats loc::file_loc (const std::string f,
         else
             stats.ncode++;
 
-        bool white = true;
+        bool white = true; // flag for leading white space
 
         for (size_t j = 0; j < line.length (); j++) {
 
@@ -96,8 +96,11 @@ LocStats loc::file_loc (const std::string f,
             white = white && white_i;
             if (white)
                 stats.leading [i] = static_cast <int> (j);
-            stats.white [i] += white_i;
-            stats.nonwhite [i] += !white_i;
+            else
+            {
+                stats.white [i] += white_i;
+                stats.nonwhite [i] += !white_i;
+            }
         }
         i++;
     }
