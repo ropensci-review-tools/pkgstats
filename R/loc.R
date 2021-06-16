@@ -92,13 +92,16 @@ loc_stats <- function (path) {
                   ftypes$cmt_close,
                   ftypes$cmt)
 
-    index <- seq_along (s) [-(seq (6 * nrow (ftypes)))]
+    nstats <- 7L # number of stats for each file, taken from src/loc.cpp
+
+    index <- seq_along (s) [-(seq (nstats * nrow (ftypes)))]
     leading_white <- s [index [-1]] # rm 1st value
     indentation <- average_leading_white (leading_white)
 
-    index <- seq (6 * nrow (ftypes))
-    s <- data.frame (t (matrix (s [index], nrow = 6)))
-    names (s) <- c ("nlines", "ncode", "ndoc", "nempty", "nspaces", "nchars")
+    index <- seq (nstats * nrow (ftypes))
+    s <- data.frame (t (matrix (s [index], nrow = nstats)))
+    names (s) <- c ("nlines", "ncode", "ndoc", "nempty", "nspaces", "nchars", "nbrackets")
+    s$nbrackets [s$nbrackets < 1] <- NA_integer_
     s$language <- ftypes$type
     s$dir <- fdirs
 
@@ -116,6 +119,7 @@ loc_stats <- function (path) {
                            nempty = sum (nempty),
                            nspaces = sum (nspaces),
                            nchars = sum (nchars),
+                           nbrackets = stats::median (nbrackets, na.rm = TRUE),
                            .groups = "keep")
     s$indentation = indentation
 

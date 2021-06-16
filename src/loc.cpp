@@ -46,6 +46,8 @@ LocStats loc::file_loc (const std::string f,
 
     const bool has_block_cmts = cmt_open.size () > 0 && cmt_close.size () > 0;
 
+    std::vector <int> brackt_count;
+
     while (std::getline (in_file, line, '\n'))
     {
         const bool is_blank = codesymbols::line_is_blank (line);
@@ -85,8 +87,12 @@ LocStats loc::file_loc (const std::string f,
             stats.empty_lines++;
         else if (in_block_cmt || single_cmt)
             stats.ndoc++;
-        else
+        else {
             stats.ncode++;
+            int nbr = codesymbols::count_brackets (line);
+            if (nbr > 0)
+                brackt_count.push_back (nbr);
+        }
 
         bool white = true; // flag for leading white space
 
@@ -102,10 +108,11 @@ LocStats loc::file_loc (const std::string f,
                 stats.nonwhite [i] += !white_i;
             }
         }
-        stats.brackets [i] = codesymbols::count_brackets (line);
 
         i++;
     }
+
+    stats.nbrackets = static_cast <int> (floor (median (brackt_count)));
 
     return stats;
 }
@@ -117,6 +124,7 @@ LocStats loc::file_loc (const std::string f,
 // - [3] = total number of blank / empty lines
 // - [4] = total number of spaces
 // - [5] = total number of non-space characters
+// - [6] = median number of brackets per line, only for lines with any brackets
 // - after that, a frequency table of first 50 counts of numbers of leading
 // white spaces on each line
 [[cpp11::register]]
@@ -126,9 +134,10 @@ writable::integers cpp_loc(const strings flist,
         const strings cmt)
 {
     const int n = static_cast <int> (flist.size ());
+    const int nstats = 7L;
 
     const int nleading = 50;
-    writable::integers res (n * 6 + nleading);
+    writable::integers res (n * nstats + nleading);
     std::fill (res.begin (), res.end (), 0L);
 
     std::vector <int> leading (nleading, 0L);
@@ -140,17 +149,18 @@ writable::integers cpp_loc(const strings flist,
                 cmt_close [f],
                 cmt [f]);
 
-        res [(f * 6) + 0] += stats.nlines;
-        res [(f * 6) + 1] += stats.ncode;
-        res [(f * 6) + 2] += stats.ndoc;
-        res [(f * 6) + 3] += stats.empty_lines;
+        res [(f * nstats) + 0] += stats.nlines;
+        res [(f * nstats) + 1] += stats.ncode;
+        res [(f * nstats) + 2] += stats.ndoc;
+        res [(f * nstats) + 3] += stats.empty_lines;
 
-        res [(f * 6) + 4] += static_cast <int> (
+        res [(f * nstats) + 4] += static_cast <int> (
                 std::accumulate (stats.white.begin (),
                     stats.white.end (), 0L));
-        res [(f * 6) + 5] += static_cast <int> (
+        res [(f * nstats) + 5] += static_cast <int> (
                 std::accumulate (stats.nonwhite.begin (),
                     stats.nonwhite.end (), 0L));
+        res [(f * nstats) + 6] = stats.nbrackets;
         for (auto i: stats.leading)
             if (i < nleading)
                 leading [static_cast <size_t> (i)]++;
@@ -158,7 +168,7 @@ writable::integers cpp_loc(const strings flist,
 
     size_t ns = static_cast <size_t> (n);
     for (size_t i = 0; i < static_cast <size_t> (nleading); i++)
-        res [ns * 6 + i] = leading [i];
+        res [ns * nstats + i] = leading [i];
 
     return res;
 }

@@ -10,6 +10,8 @@
 #include <assert.h>
 #include <cctype> // isspace
 
+#include "utils.h"
+
 /* This is a self-contained and highly restricted version of a Lines-Of-Code
  * counting algorithm. It is nowhere near as comprehensive as libraries like 
  * https://github.com/boyter/scc or https://github.com/XAMPPRocky/tokei. The
@@ -29,9 +31,9 @@ class LocStats
 {
     public:
 
-        int nlines, ncode, ndoc, empty_lines;
+        int nlines, ncode, ndoc, empty_lines, nbrackets;
 
-        std::vector <int> leading, white, nonwhite, doc, brackets;
+        std::vector <int> leading, white, nonwhite, doc;
 
         LocStats (const size_t n) {
 
@@ -39,12 +41,12 @@ class LocStats
             ncode = 0L;
             ndoc = 0L;
             empty_lines = 0L;
+            nbrackets = 0L;
 
             leading.resize (n, 0L);
             white.resize (n, 0L);
             nonwhite.resize (n, 0L);
             doc.resize (n, 0L);
-            brackets.resize (n, 0L);
         }
 };
 
