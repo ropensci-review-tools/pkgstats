@@ -13,7 +13,7 @@ plot_network <- function (s, plot = TRUE, vis_save = NULL) {
 
     requireNamespace ("visNetwork")
 
-    if (!all (c ("cloc", "vignettes", "data_stats", "desc",
+    if (!all (c ("loc", "vignettes", "data_stats", "desc",
                  "translations", "code_has_tabs",
                  "objects", "network") %in% names (s))) {
 
