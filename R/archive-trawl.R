@@ -28,7 +28,8 @@ pkgstats_from_archive <- function (path, archive = TRUE) {
                                   res <- NULL
                                   if (!is.null (s))
                                       res <- tryCatch (pkgstats_summary (s),
-                                                       error = function (e) NULL)
+                                                       error = function (e)
+                                                           NULL)
                                   return (res)
                          },
                          cl = clusters)

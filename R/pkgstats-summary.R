@@ -37,7 +37,7 @@ pkgstats_summary <- function (s) {
 loc_summary <- function (x) {
 
     # suprress no visible binding notes:
-    language <- nfiles <- nlines <- ncode <- 
+    language <- nfiles <- nlines <- ncode <-
         ndoc <- nempty <- nspaces <- nchars <-  NULL
 
     xg <- dplyr::group_by (x, dir)
@@ -80,7 +80,7 @@ loc_summary <- function (x) {
 
     files_R <- files_src <- files_inst <-    # nolint
         files_vignettes <- files_tests <- 0L
-    rel_space_R <- rel_space_src <- rel_space_inst <- 
+    rel_space_R <- rel_space_src <- rel_space_inst <- # nolint
         rel_space_vignettes <- rel_space_tests <- NA
 
     if (has_code) {
@@ -101,8 +101,6 @@ loc_summary <- function (x) {
         }
 
     }
-
-    index <- which (x$dir %in% c ("R", "src", "inst"))
 
     if (files_R == 0)
         loc_R <- blank_lines_R <- comment_lines_R <- NA_integer_ # nolint

@@ -24,7 +24,7 @@ rd_stats <- function (path) {
                     ret <- nrow (i)
                 return (ret)    },
                 integer (1))
-    nchars <- lapply (params_sp, function (i) i$nchar)
+
     nchars_mn <- vapply (params_sp, function (i)
                          mean (i$nchar), numeric (1))
     nchars_md <- vapply (params_sp, function (i)
@@ -89,7 +89,7 @@ get_one_params <- function (man_file) {
     f <- tempfile (fileext = ".Rd")
     writeLines (x, f)
     rd <- tools::parse_Rd (f)
-    chk <- file.remove (f)
+    chk <- file.remove (f) # nolint
 
     out <- utils::capture.output (tools::Rd2txt (rd))
     doclines <- length (out [out != ""])
@@ -111,7 +111,8 @@ get_one_params <- function (man_file) {
         params <- strsplit (params, "\\n") [[1]]
         # rm lines with initial Rd comments, but params may still fail to parse
         # when comments occur later in lines.
-        params <- params [which (nchar (params) > 0 & !grepl ("^\\s?%", params))]
+        params <- params [which (nchar (params) > 0 &
+                                 !grepl ("^\\s?%", params))]
         params <- paste0 (params, collapse = "\n")
 
         params <- tryCatch (as.list (parse (text = params)),

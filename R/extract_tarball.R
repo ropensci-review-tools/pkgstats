@@ -25,8 +25,8 @@ extract_tarball <- function (tarball) {
 
     flist <- utils::untar (tarball,
                            exdir = tempdir (),
-                           list = TRUE, tar = 'internal')
-    if (utils::untar (tarball, exdir = tempdir (), tar = 'internal') != 0)
+                           list = TRUE, tar = "internal")
+    if (utils::untar (tarball, exdir = tempdir (), tar = "internal") != 0)
         stop ("Unable to extract tarball to 'tempdir'")
 
     fdir <- vapply (flist, function (i)

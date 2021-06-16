@@ -24,7 +24,7 @@ get_num_demos <- function (path) {
     nd <- 0L
 
     if ("demo" %in% list.files (path)) {
-        
+
         dindex <- file.path (path, "demo", "00Index")
         nd <- length (brio::read_lines (dindex))
     }

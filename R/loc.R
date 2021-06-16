@@ -64,7 +64,7 @@ get_file_types <- function (flist) {
 #' 'inst/include', each one having 5 statistics of total numbers of lines,
 #' numbers of empty lines, total numbers of white spaces, total numbers of
 #' characters, and indentation used in files in that directory.
-#' 
+#'
 #' @note NA values are returned for directories which do not exist.
 #' @export
 loc_stats <- function (path) {
@@ -94,19 +94,26 @@ loc_stats <- function (path) {
 
     nstats <- 7L # number of stats for each file, taken from src/loc.cpp
 
-    index <- seq_along (s) [-(seq (nstats * nrow (ftypes)))]
+    index <- seq_along (s) [- (seq (nstats * nrow (ftypes)))]
     leading_white <- s [index [-1]] # rm 1st value
     indentation <- average_leading_white (leading_white)
 
     index <- seq (nstats * nrow (ftypes))
     s <- data.frame (t (matrix (s [index], nrow = nstats)))
-    names (s) <- c ("nlines", "ncode", "ndoc", "nempty", "nspaces", "nchars", "nbrackets")
+    names (s) <- c ("nlines",
+                    "ncode",
+                    "ndoc",
+                    "nempty",
+                    "nspaces",
+                    "nchars",
+                    "nbrackets")
+
     s$nbrackets [s$nbrackets < 1] <- NA_integer_
     s$language <- ftypes$type
     s$dir <- fdirs
 
     # suprress no visible binding notes:
-    language <- nfiles <- nlines <- ncode <- 
+    language <- nfiles <- nlines <- ncode <-
         ndoc <- nempty <- nspaces <- nchars <-  NULL
 
     # No magrittr here
@@ -121,7 +128,7 @@ loc_stats <- function (path) {
                            nchars = sum (nchars),
                            nbrackets = stats::median (nbrackets, na.rm = TRUE),
                            .groups = "keep")
-    s$indentation = indentation
+    s$indentation <- indentation
 
     return (s)
 }
