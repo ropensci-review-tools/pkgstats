@@ -48,6 +48,7 @@ loc_summary <- function (x) {
                            nempty = sum (nempty),
                            nspaces = sum (nspaces),
                            nchars = sum (nchars),
+                           nexpr = median (nexpr), # no accurate, but acceptable here
                            indentation = stats::median (indentation))
 
     blank <- x [1, ]
@@ -116,6 +117,8 @@ loc_summary <- function (x) {
         loc_tests <- blank_lines_tests <- comment_lines_tests <- NA_integer_
 
     indentation <- stats::median (x$indentation [x$indentation > 0])
+    nexpr <- x$nexpr [which (x$dir %in% c ("inst", "R", "src") & x$nexpr > 0)]
+    nexpr <- stats::median (nexpr)
 
     data.frame (files_R = files_R,
                 files_src = files_src,
@@ -143,7 +146,8 @@ loc_summary <- function (x) {
                 rel_space_inst = rel_space_inst,
                 rel_space_vignettes = rel_space_vignettes,
                 rel_space_tests = rel_space_tests,
-                indentation = indentation)
+                indentation = indentation,
+                nexpr = nexpr)
 }
 
 #' @param x the 'desc' components of 'pkgstats' output
