@@ -78,29 +78,30 @@ loc_summary <- function (x) {
         x <- add_if_missing (x, "tests")
     }
 
-    # no visible binding for these vars, so avoid CHK notes:
     files_R <- files_src <- files_include <-    # nolint
-        files_vignettes <- files_tests <- 
-        rel_space_R <- rel_space_src <- rel_space_include <- 
-        rel_space_vignettes <- rel_space_tests <- NULL
+        files_vignettes <- files_tests <- 0L
+    rel_space_R <- rel_space_src <- rel_space_include <- 
+        rel_space_vignettes <- rel_space_tests <- NA
 
-    dirs <- c ("R", "src", "include", "vignettes", "tests")
-    for (d in dirs) {
+    if (has_code) {
 
-        tmp <- ifelse (has_code, x$nfiles [x$dir == d], 0L)
-        assign (paste0 ("files_", d), tmp)
-        tmp <- ifelse (has_code, x$ncode [x$dir == d], 0L)
-        assign (paste0 ("loc_", d), tmp)
-        tmp <- ifelse (has_code, x$nempty [x$dir == d], 0L)
-        assign (paste0 ("blank_lines_", d), tmp)
-        tmp <- ifelse (has_code, x$ndoc [x$dir == d], 0L)
-        assign (paste0 ("comment_lines_", d), tmp)
         rel_space <- x$nspaces / x$nchars
-        di <- which (x$dir == d)
-        tmp <- ifelse (rel_space [di] != 0,
-                       rel_space [di], NA)
-        assign (paste0 ("rel_space_", d), tmp)
+        rel_space [rel_space == 0 | is.nan (rel_space)] <- NA
+
+        dirs <- c ("R", "src", "include", "vignettes", "tests")
+        for (d in dirs) {
+
+            assign (paste0 ("files_", d), x$nfiles [x$dir == d])
+            assign (paste0 ("loc_", d), x$ncode [x$dir == d])
+            assign (paste0 ("blank_lines_", d), x$nempty [x$dir == d])
+            assign (paste0 ("comment_lines_", d), x$ndoc [x$dir == d])
+
+            di <- which (x$dir == d)
+            assign (paste0 ("rel_space_", d), rel_space [di])
+        }
     }
+
+    index <- which (x$dir %in% c ("R", "src", "include"))
 
     if (files_R == 0)
         loc_R <- blank_lines_R <- comment_lines_R <- NA_integer_ # nolint
