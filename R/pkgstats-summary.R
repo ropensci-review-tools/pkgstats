@@ -73,14 +73,14 @@ loc_summary <- function (x) {
 
         x <- add_if_missing (x, "R")
         x <- add_if_missing (x, "src")
-        x <- add_if_missing (x, "include")
+        x <- add_if_missing (x, "inst")
         x <- add_if_missing (x, "vignettes")
         x <- add_if_missing (x, "tests")
     }
 
-    files_R <- files_src <- files_include <-    # nolint
+    files_R <- files_src <- files_inst <-    # nolint
         files_vignettes <- files_tests <- 0L
-    rel_space_R <- rel_space_src <- rel_space_include <- 
+    rel_space_R <- rel_space_src <- rel_space_inst <- 
         rel_space_vignettes <- rel_space_tests <- NA
 
     if (has_code) {
@@ -88,7 +88,7 @@ loc_summary <- function (x) {
         rel_space <- x$nspaces / x$nchars
         rel_space [rel_space == 0 | is.nan (rel_space)] <- NA
 
-        dirs <- c ("R", "src", "include", "vignettes", "tests")
+        dirs <- c ("R", "src", "inst", "vignettes", "tests")
         for (d in dirs) {
 
             assign (paste0 ("files_", d), x$nfiles [x$dir == d])
@@ -99,18 +99,17 @@ loc_summary <- function (x) {
             di <- which (x$dir == d)
             assign (paste0 ("rel_space_", d), rel_space [di])
         }
+
     }
 
-    index <- which (x$dir %in% c ("R", "src", "include"))
+    index <- which (x$dir %in% c ("R", "src", "inst"))
 
     if (files_R == 0)
         loc_R <- blank_lines_R <- comment_lines_R <- NA_integer_ # nolint
     if (files_src == 0)
         loc_src <- blank_lines_src <- comment_lines_src <- NA_integer_
-    if (files_include == 0)
-        loc_include <-
-            blank_lines_include <-
-            comment_lines_include <- NA_integer_
+    if (files_inst == 0)
+        loc_inst <- blank_lines_inst <- comment_lines_inst <- NA_integer_
     if (files_vignettes == 0)
         loc_vignettes <-
             blank_lines_vignettes <-
@@ -122,27 +121,28 @@ loc_summary <- function (x) {
 
     data.frame (files_R = files_R,
                 files_src = files_src,
-                files_inst = files_include,
+                files_inst = files_inst,
                 files_vignettes = files_vignettes,
                 files_tests = files_tests,
                 loc_R = loc_R,
                 loc_src = loc_src,
-                loc_inst = loc_include,
+                loc_inst = loc_inst,
                 loc_vignettes = loc_vignettes,
                 loc_tests = loc_tests,
                 blank_lines_R = blank_lines_R,
                 blank_lines_src = blank_lines_src,
-                blank_lines_inst = blank_lines_include,
+                blank_lines_inst = blank_lines_inst,
                 blank_lines_vignettes = blank_lines_vignettes,
                 blank_lines_tests = blank_lines_tests,
                 comment_lines_R = comment_lines_R,
                 comment_lines_src = comment_lines_src,
-                comment_lines_inst = comment_lines_include,
+                comment_lines_inst = comment_lines_inst,
                 comment_lines_vignettes = comment_lines_vignettes,
                 comment_lines_tests = comment_lines_tests,
+                rel_space = sum (x$nspaces) / sum (x$nchars),
                 rel_space_R = rel_space_R,
                 rel_space_src = rel_space_src,
-                rel_space_inst = rel_space_include,
+                rel_space_inst = rel_space_inst,
                 rel_space_vignettes = rel_space_vignettes,
                 rel_space_tests = rel_space_tests,
                 indentation = indentation)
