@@ -30,7 +30,7 @@ tags_data <- function (path) {
             gtags <- gtags_from_one_file (ctags, gtags, f)
         gtags <- gtags [which (gtags$tag %in% ctags$tag), ]
 
-        langs <- tags_src [, c ("tag", "language")]
+        langs <- ctags [, c ("tag", "language")]
         langs <- langs [which (!duplicated (langs)), ]
         gtags$language <- gsub ("^language\\:", "",
                                 langs$language [match (gtags$tag, langs$tag)])
