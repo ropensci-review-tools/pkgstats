@@ -116,7 +116,7 @@ loc_stats <- function (path) {
     language <- nfiles <- nlines <- ncode <-
         ndoc <- nempty <- nspaces <- nchars <-  NULL
 
-    # No magrittr here
+    # No magrittr here, plus note final renaming of nbrackets to nexpr
     xg <- dplyr::group_by (s, language, dir)
     s <- dplyr::summarise (xg,
                            nfiles = length (nlines),
@@ -126,7 +126,7 @@ loc_stats <- function (path) {
                            nempty = sum (nempty),
                            nspaces = sum (nspaces),
                            nchars = sum (nchars),
-                           nbrackets = stats::median (nbrackets, na.rm = TRUE),
+                           nexpr = stats::median (nbrackets, na.rm = TRUE),
                            .groups = "keep")
     s$indentation <- indentation
 
