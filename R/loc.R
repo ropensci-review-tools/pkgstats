@@ -92,7 +92,7 @@ loc_stats <- function (path) {
                   ftypes$cmt_close,
                   ftypes$cmt)
 
-    nstats <- 7L # number of stats for each file, taken from src/loc.cpp
+    nstats <- 8L # number of stats for each file, taken from src/loc.cpp
 
     index <- seq_along (s) [- (seq (nstats * nrow (ftypes)))]
     leading_white <- s [index [-1]] # rm 1st value
@@ -106,7 +106,8 @@ loc_stats <- function (path) {
                     "nempty",
                     "nspaces",
                     "nchars",
-                    "nbrackets")
+                    "nbrackets",
+                    "ntabs")
 
     s$nbrackets [s$nbrackets < 1] <- NA_integer_
     s$language <- ftypes$type
@@ -114,7 +115,7 @@ loc_stats <- function (path) {
 
     # suprress no visible binding notes:
     language <- nfiles <- nlines <- ncode <- ndoc <-
-        nempty <- nspaces <- nchars <-  nbrackets <- NULL
+        nempty <- nspaces <- nchars <-  nbrackets <- ntabs <- NULL
 
     # No magrittr here, plus note final renaming of nbrackets to nexpr
     xg <- dplyr::group_by (s, language, dir)
@@ -127,6 +128,7 @@ loc_stats <- function (path) {
                            nspaces = sum (nspaces),
                            nchars = sum (nchars),
                            nexpr = stats::median (nbrackets, na.rm = TRUE),
+                           ntabs = sum (ntabs),
                            .groups = "keep")
     s$indentation <- indentation
 

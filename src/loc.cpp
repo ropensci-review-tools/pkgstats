@@ -2,6 +2,7 @@
 #include "loc.h"
 
 #include <cpp11.hpp>
+#include <numeric>
 using namespace cpp11;
 
 size_t loc::file_nlines (std::ifstream &in_file)
@@ -94,6 +95,9 @@ LocStats loc::file_loc (const std::string f,
                 brackt_count.push_back (nbr);
         }
 
+        if (line [0] == '\t')
+            stats.tab [i] = 1L;
+
         bool white = true; // flag for leading white space
 
         for (size_t j = 0; j < line.length (); j++) {
@@ -125,6 +129,7 @@ LocStats loc::file_loc (const std::string f,
 // - [4] = total number of spaces
 // - [5] = total number of non-space characters
 // - [6] = median number of brackets per line, only for lines with any brackets
+// - [7] = total number of leading tab indentations
 // - after that, a frequency table of first 50 counts of numbers of leading
 // white spaces on each line
 [[cpp11::register]]
@@ -134,7 +139,7 @@ writable::integers cpp_loc(const strings flist,
         const strings cmt)
 {
     const int n = static_cast <int> (flist.size ());
-    const int nstats = 7L;
+    const int nstats = 8L;
 
     const int nleading = 50;
     writable::integers res (n * nstats + nleading);
@@ -161,6 +166,12 @@ writable::integers cpp_loc(const strings flist,
                 std::accumulate (stats.nonwhite.begin (),
                     stats.nonwhite.end (), 0L));
         res [(f * nstats) + 6] = stats.nbrackets;
+
+
+        res [(f * nstats) + 7] = static_cast <int> (
+                std::accumulate (stats.tab.begin (),
+                    stats.tab.end (), 0L));
+
         for (auto i: stats.leading)
             if (i < nleading)
                 leading [static_cast <size_t> (i)]++;

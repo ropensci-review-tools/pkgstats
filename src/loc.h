@@ -33,7 +33,7 @@ class LocStats
 
         int nlines, ncode, ndoc, empty_lines, nbrackets;
 
-        std::vector <int> leading, white, nonwhite, doc;
+        std::vector <int> leading, white, nonwhite, doc, tab;
 
         LocStats (const size_t n) {
 
@@ -47,6 +47,8 @@ class LocStats
             white.resize (n, 0L);
             nonwhite.resize (n, 0L);
             doc.resize (n, 0L);
+
+            tab.resize (n, 0L);
         }
 };
 
