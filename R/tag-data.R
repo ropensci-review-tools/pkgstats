@@ -152,7 +152,11 @@ rm_tabs <- function (d, nspaces = 2) {
     files <- normalizePath (list.files (d,
                                         full.names = TRUE,
                                         recursive = TRUE))
-    files <- files [which (!grepl ("(\\.r[[:alpha:]])|\\.o|\\.so", files))]
+    exts <- file_exts ()
+    exts$ext <- gsub ("+", "\\+", exts$ext, fixed = TRUE)
+    exts$ext <- gsub ("-", "\\-", exts$ext, fixed = TRUE)
+    exts <- paste0 (exts$ext, "$", collapse = "|")
+    files <- files [grep (exts, files)]
 
     has_tabs <- FALSE
 
