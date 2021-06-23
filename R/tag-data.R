@@ -157,6 +157,7 @@ rm_tabs <- function (d, nspaces = 2) {
     exts$ext <- gsub ("-", "\\-", exts$ext, fixed = TRUE)
     exts <- paste0 (exts$ext, "$", collapse = "|")
     files <- files [grep (exts, files)]
+    files <- files [which (!grepl ("^Makevars", files))]
 
     has_tabs <- FALSE
 
