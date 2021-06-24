@@ -19,10 +19,6 @@ tags_data <- function (path, has_tabs = NULL) {
     tags_r <- withr::with_dir (path, get_ctags ("R", has_tabs))
     tags_src <- withr::with_dir (path, get_ctags ("src", has_tabs))
     tags_inst <- withr::with_dir (path, get_ctags ("inst", has_tabs))
-    # does the code contain tab ("\t") characters?
-    has_tabs <- files_have_tabs (tags_r) |
-        files_have_tabs (tags_src) |
-        files_have_tabs (tags_inst)
 
     gtags <- NULL
 
@@ -67,8 +63,7 @@ tags_data <- function (path, has_tabs = NULL) {
     }
 
     return (list (network = network,
-                  stats = src_stats (rbind (tags_r, tags_src, tags_inst)),
-                  has_tabs = has_tabs))
+                  stats = src_stats (rbind (tags_r, tags_src, tags_inst))))
 }
 
 #' Get tags for one directory within a package
@@ -89,7 +84,9 @@ get_ctags <- function (d = "R", has_tabs) {
     # tempdir() and the new path returned
     pathsub <- getwd () # Path to substitute out of file names given by ctags
     if (has_tabs) {
-        path_dir <- rm_tabs (path_dir)
+        path_dir <- file.path (rm_tabs (path_dir), d)
+        if (d == "inst")
+            path_dir <- file.path (path_dir, "include")
         pathsub <- path_dir
     }
 
@@ -155,7 +152,10 @@ get_ctags <- function (d = "R", has_tabs) {
 #' Replace tab indentation with a fixed number of spaces
 #'
 #' This is necessary because the files produced by both ctags and global are
-#' unable to be propertly parsed when code contains tab indents.
+#' unable to be propertly parsed when code contains tab indents. Because this
+#' function modifies code, the entire directory, `d`, is copied to `tempdir()`,
+#' and the resultant path returned.
+#'
 #' @param d A directory in which tab indents are to be replaced in all files
 #' @param nspaces The equivalent number of spaces with which to replace tab
 #' indentations. This parameter has no effect on results.
@@ -166,7 +166,7 @@ rm_tabs <- function (d, nspaces = 2) {
                     collapse = "")
     tmpd <- file.path (tempdir (), tmpd)
     dir.create (tmpd, recursive = TRUE)
-    chk <- file.copy (d, tmpd, recursive = TRUE)
+    chk <- file.copy (d, tmpd, recursive = TRUE) # copies 'd' as sub-dir of tmpd
     if (any (!chk))
         stop ("Unable to copy files from [", d, "] to tempdir()")
 
@@ -376,19 +376,6 @@ src_stats <- function (tags) {
                            has_dots = NA)
         res <- res [which (!is.na (res$loc)), ]
     }
-
-    return (res)
-}
-
-#' @param x result of one get_ctags call, which may be `NULL`
-#' @noRd
-files_have_tabs <- function (x) {
-
-    res <- FALSE
-    if (!is.null (x))
-        res <- attr (x, "has_tabs")
-    if (is.null (res))
-        res <- FALSE
 
     return (res)
 }

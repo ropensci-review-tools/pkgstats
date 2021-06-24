@@ -22,6 +22,8 @@ pkgstats <- function (path = ".") {
     }
 
     s1 <- loc_stats (path)
+    has_tabs <- any (s1$ntabs > 0L) # passed to tags_data below
+
     num_vignettes <- get_num_vignettes (path)
     num_demos <- get_num_demos (path)
     data_stats <- get_data_stats (path)
@@ -41,7 +43,7 @@ pkgstats <- function (path = ".") {
     fns$param_nchars_mn [index] <- s3$param_nchars_mn [index2]
     fns$param_nchars_md [index] <- s3$param_nchars_md [index2]
 
-    tags <- tags_data (path)
+    tags <- tags_data (path, has_tabs)
 
     translations <- get_translations (path)
 
@@ -54,7 +56,6 @@ pkgstats <- function (path = ".") {
           data_stats = data_stats,
           desc = s2,
           translations = translations,
-          code_has_tabs = tags$has_tabs,
           objects = add_src_to_fn_data (fns, tags$stats),
           network = tags$network)
 }
