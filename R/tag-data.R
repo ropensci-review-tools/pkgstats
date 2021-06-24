@@ -84,9 +84,14 @@ get_ctags <- function (d = "R", has_tabs) {
     if (!dir.exists (path_dir))
         return (NULL)
 
-    # tab-characters muck up parsing of tag content so have to be removed:
-    if (has_tabs)
-        has_tabs <- rm_tabs (path_dir)
+    # tab-characters muck up parsing of tag content so have to be removed.
+    # This requires modifying the code, so the whole directory is copied to
+    # tempdir() and the new path returned
+    pathsub <- getwd () # Path to substitute out of file names given by ctags
+    if (has_tabs) {
+        path_dir <- rm_tabs (path_dir)
+        pathsub <- path_dir
+    }
 
     # ctags fields defines at
     # https://docs.ctags.io/en/latest/man/ctags.1.html#extension-fields
@@ -140,7 +145,7 @@ get_ctags <- function (d = "R", has_tabs) {
 
     tags$start <- as.integer (gsub ("^line\\:", "", tags$start))
     tags$end <- as.integer (gsub ("^end\\:", "", tags$end))
-    tags$file <- gsub (paste0 (getwd (), .Platform$file.sep), "", tags$file)
+    tags$file <- gsub (paste0 (pathsub, .Platform$file.sep), "", tags$file)
 
     attr (tags, "has_tabs") <- has_tabs
 
@@ -153,13 +158,21 @@ get_ctags <- function (d = "R", has_tabs) {
 #' unable to be propertly parsed when code contains tab indents.
 #' @param d A directory in which tab indents are to be replaced in all files
 #' @param nspaces The equivalent number of spaces with which to replace tab
-#' indentations.
+#' indentations. This parameter has no effect on results.
 #' @noRd
 rm_tabs <- function (d, nspaces = 2) {
 
+    tmpd <- paste0 (sample (c (letters, LETTERS), size = 8, replace = TRUE),
+                    collapse = "")
+    tmpd <- file.path (tempdir (), tmpd)
+    dir.create (tmpd, recursive = TRUE)
+    chk <- file.copy (d, tmpd, recursive = TRUE)
+    if (any (!chk))
+        stop ("Unable to copy files from [", d, "] to tempdir()")
+
     sp <- paste0 (rep (" ", nspaces), collapse = "")
 
-    files <- normalizePath (list.files (d,
+    files <- normalizePath (list.files (tmpd,
                                         full.names = TRUE,
                                         recursive = TRUE))
     exts <- file_exts ()
@@ -169,20 +182,17 @@ rm_tabs <- function (d, nspaces = 2) {
     files <- files [grep (exts, files)]
     files <- files [which (!grepl ("^Makevars", files))]
 
-    has_tabs <- FALSE
-
     for (f in files) {
         x <- suppressWarnings (brio::read_lines (f))
-        has_tabs_f <- any (grepl ("\\t", x))
-        if (has_tabs_f) {
+        has_tabs <- any (grepl ("\\t", x))
+        if (has_tabs) {
             x <- gsub ("^\\t", sp, x)
             x <- gsub ("\\t", " ", x) # replace non-leading tabs with single
             writeLines (x, con = f)
         }
-        has_tabs <- has_tabs | has_tabs_f
     }
 
-    return (has_tabs)
+    return (tmpd)
 }
 
 #' Set up gtags files if not already used
