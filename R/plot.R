@@ -14,8 +14,7 @@ plot_network <- function (s, plot = TRUE, vis_save = NULL) {
     requireNamespace ("visNetwork")
 
     if (!all (c ("loc", "vignettes", "data_stats", "desc",
-                 "translations", "code_has_tabs",
-                 "objects", "network") %in% names (s))) {
+                 "translations", "objects", "network") %in% names (s))) {
 
         stop ("'s' must be a 'pkgstats' object obtained ",
               "from the 'pkgstats' function")
