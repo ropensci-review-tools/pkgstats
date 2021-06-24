@@ -352,3 +352,8 @@ represented by discrete cluster numbers, object both for directed and
 undirected versions of the network. Each distinct cluster number represents
 a distinct group of objects, internally related to other members of the same
 cluster, yet independent of all objects with different cluster numbers.
+
+The network can be viewed as an interactive [`vis.js`](https://visjs.org/)
+network through passing the result of `pkgstats` -- here, `p` -- to the
+[`plot_network()`
+function](https://docs.ropensci.org/pkgstats/reference/plot_network.html)

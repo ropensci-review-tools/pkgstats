@@ -121,7 +121,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.567   0.037   0.604
+    ##   0.571   0.038   0.609
 
 ``` r
 names (p)
@@ -445,20 +445,20 @@ nodes.
 head (p$network)
 ```
 
-    ##             file line1         from        to language cluster_dir
-    ## 1       R/pipe.R   297   new_lambda   freduce        R           1
-    ## 2    R/getters.R    14    `[[.fseq` functions        R           2
-    ## 3    R/getters.R    23     `[.fseq` functions        R           2
-    ## 4 R/debug_pipe.R    28   debug_fseq functions        R           2
-    ## 5 R/debug_pipe.R    35   debug_fseq functions        R           2
-    ## 6 R/debug_pipe.R    42 undebug_fseq functions        R           2
-    ##   centrality_dir cluster_undir centrality_undir
-    ## 1              1             1               20
-    ## 2              0             2                0
-    ## 3              0             2                0
-    ## 4              0             2                0
-    ## 5              0             2                0
-    ## 6              0             2                0
+    ##             file line1       from        to language cluster_dir centrality_dir
+    ## 1       R/pipe.R   297 new_lambda   freduce        R           1              1
+    ## 2    R/getters.R    14  `[[.fseq` functions        R           2              0
+    ## 3    R/getters.R    23   `[.fseq` functions        R           2              0
+    ## 4  R/functions.R    26 print.fseq functions        R           2              0
+    ## 5 R/debug_pipe.R    28 debug_fseq functions        R           2              0
+    ## 6 R/debug_pipe.R    35 debug_fseq functions        R           2              0
+    ##   cluster_undir centrality_undir
+    ## 1             1               20
+    ## 2             2                0
+    ## 3             2                0
+    ## 4             2                0
+    ## 5             2                0
+    ## 6             2                0
 
 ``` r
 nrow (p$network)
@@ -476,3 +476,8 @@ for directed and undirected versions of the network. Each distinct
 cluster number represents a distinct group of objects, internally
 related to other members of the same cluster, yet independent of all
 objects with different cluster numbers.
+
+The network can be viewed as an interactive
+[`vis.js`](https://visjs.org/) network through passing the result of
+`pkgstats` – here, `p` – to the [`plot_network()`
+function](https://docs.ropensci.org/pkgstats/reference/plot_network.html)
