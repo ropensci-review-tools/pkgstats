@@ -121,14 +121,14 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.389   0.021   0.411
+    ##   0.567   0.037   0.604
 
 ``` r
 names (p)
 ```
 
-    ## [1] "loc"           "vignettes"     "data_stats"    "desc"         
-    ## [5] "translations"  "code_has_tabs" "objects"       "network"
+    ## [1] "loc"          "vignettes"    "data_stats"   "desc"         "translations"
+    ## [6] "objects"      "network"
 
 The result is a list of various data extracted from the code. All except
 for `objects` and `network` represent summary data:
@@ -138,15 +138,15 @@ p [!names (p) %in% c ("objects", "network")]
 ```
 
     ## $loc
-    ## # A tibble: 5 x 11
+    ## # A tibble: 5 x 12
     ## # Groups:   language, dir [5]
-    ##   language     dir       nfiles nlines ncode  ndoc nempty nspaces nchars nexpr
-    ##   <chr>        <chr>      <int>  <int> <int> <int>  <int>   <int>  <int> <dbl>
-    ## 1 C            src            2    590   447    22    121    1136  10826     1
-    ## 2 C/C++ Header src            1     51    38     1     12      72    761     1
-    ## 3 R            R              7    699   163   484     52    2835  15645     1
-    ## 4 R            tests         10    374   259    13    102     867   8527     2
-    ## 5 Rmd          vignettes      2    754   469    80    205    3793  19927     1
+    ##   language   dir     nfiles nlines ncode  ndoc nempty nspaces nchars nexpr ntabs
+    ##   <chr>      <chr>    <int>  <int> <int> <int>  <int>   <int>  <int> <dbl> <int>
+    ## 1 C          src          2    590   447    22    121    1136  10826     1     0
+    ## 2 C/C++ Hea… src          1     51    38     1     12      72    761     1     0
+    ## 3 R          R            7    699   163   484     52    2835  15645     1     1
+    ## 4 R          tests       10    374   259    13    102     867   8527     2     4
+    ## 5 Rmd        vignet…      2    754   469    80    205    3793  19927     1     0
     ## # … with 1 more variable: indentation <int>
     ## 
     ## $vignettes
@@ -169,25 +169,24 @@ p [!names (p) %in% c ("objects", "network")]
     ## 
     ## $translations
     ## [1] NA
-    ## 
-    ## $code_has_tabs
-    ## [1] TRUE
 
 The first item, `loc`, contains the following Lines-Of-Code and related
 statistics, separated into distinct combinations of computer language
 and directory:
 
 1.  `nfiles` = Numbers of files in each directory and language
-2.  `nlines` = Total numbers of lines of code
-3.  `ndoc` = Total numbers of documentation or comment lines
-4.  `nempty` = Total numbers of empty of blank lines
-5.  `nspaces` = Total numbers of white spaces in all code lines,
+2.  `nlines` = Total numbers of lines in all files
+3.  `nlines` = Total numbers of lines of code
+4.  `ndoc` = Total numbers of documentation or comment lines
+5.  `nempty` = Total numbers of empty of blank lines
+6.  `nspaces` = Total numbers of white spaces in all code lines,
     excluding leading indentation spaces
-6.  `nchars` = Total numbers of non-white-space characters in all code
+7.  `nchars` = Total numbers of non-white-space characters in all code
     lines
-7.  `nexpr` = Median numbers of nested expressions in all lines which
+8.  `nexpr` = Median numbers of nested expressions in all lines which
     have any expressions (see below)
-8.  `indentation` = Number of spaces by which code is indented
+9.  `ntabs` = Number of lines of code with initial tab indentation
+10. `indentation` = Number of spaces by which code is indented
 
 Numbers of nested expressions are counted as numbers of brackets of any
 type nested on a single line. The following line has one nested bracket:
@@ -203,11 +202,11 @@ x <- function () { return (myfn ()) }
 ```
 
 Code with fewer nested expressions per line is generally easier to read,
-and this metric is provided as a relative indication of the general
-readability of code. A second relative indication may be extracted by
-converting numbers of spaces and characters to a measure of relative
-numbers of white spaces, noting that the `nchars` value quantifies total
-characters including white spaces.
+and this metric is provided as one indication of the general readability
+of code. A second relative indication may be extracted by converting
+numbers of spaces and characters to a measure of relative numbers of
+white spaces, noting that the `nchars` value quantifies total characters
+including white spaces.
 
 ``` r
 index <- which (p$loc$dir %in% c ("R", "src")) # consider source code only
@@ -216,14 +215,18 @@ sum (p$loc$nspaces [index]) / sum (p$loc$nchars [index])
 
     ## [1] 0.148465
 
+Finally, the `ntabs` statistic can be used to identify whether code uses
+tab characters as indentation, otherwise the `indentation` statistics
+indicate median numbers of white spaces by which code is indented.
+
 The `objects` and `network` items returned by the [`pkgstats()`
 function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats.html)
 are described further below.
 
 ### The `pkgstats_summary()` function
 
-A summary of the `pkgstats` data can be obtained from the
-[`pkgstats_summary()`
+A summary of the `pkgstats` data can be obtained by submitting the
+object returned from `pkgstats()` to the [`pkgstats_summary()`
 function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html):
 
 ``` r
@@ -232,17 +235,17 @@ s <- pkgstats_summary (p)
 
 This function reduces the result of the [`pkgstats()`
 function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html)
-to a single line with 91 entries, represented as a `data.frame` with one
+to a single line with 90 entries, represented as a `data.frame` with one
 row and that number of columns. This format is intended to enable
 summary statistics from multiple packages to be aggregated by simply
-binding rows together. While 91 statistics might seem like overkill, the
+binding rows together. While 90 statistics might seem like overkill, the
 [`pkgstats_summary()`
 function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html)
-aims to return as many usable statistics as possible in order to
+aims to return as many usable raw statistics as possible in order to
 flexibly allow higher-level statistics to be derived through combination
-and aggregation. The following lists describe these 91 statistics (not
-in the order in which they actually appear), with variable names in
-parentheses after each description.
+and aggregation. These 90 statistics can be roughly grouped into the
+following categories (not shown in the order in which they actually
+appear), with variable names in parentheses after each description.
 
 **Package Summaries**
 
@@ -252,12 +255,9 @@ parentheses after each description.
     explicitly stated (`date`)
 -   License (`license`)
 -   Languages, as a single comma-separated character value
-    (`languages`).
+    (`languages`), and excluding `R` itself.
 -   List of translations where package includes translations files,
-    given as list of (spoken) language codes (`languages`).
--   Whether any files within the package include tab characters
-    (`code_has_tabs`), which is important because most static code
-    parsers are unable to accurately parse code which contains tabs.
+    given as list of (spoken) language codes (`translations`).
 
 **Information from `DESCRIPTION` file**
 
@@ -288,7 +288,8 @@ length (strsplit (s$suggests, ", ") [[1]])
 -   Median size of package data files (`data_size_median`)
 -   Numbers of files in main sub-directories (`files_R`, `files_src`,
     `files_inst`, `files_vignettes`, `files_tests`), where numbers are
-    recursively counted in all sub-directories.
+    recursively counted in all sub-directories, and where `inst` only
+    counts files in the `inst/include` sub-directory.
 
 **Statistics on lines of code**
 
@@ -304,11 +305,8 @@ length (strsplit (s$suggests, ", ") [[1]])
     (`rel_space_R`, `rel_space_src`, `rel_space_inst`,
     `rel_space_vignettes`, `rel_space_tests`), as well as an overall
     measure for the `R/`, `src/`, and `inst/` directories (`rel_space`).
--   The number of spaces used to indent code, noting that the tools used
-    to extract the `object` and `network` tables described below do not
-    work on code with tab-indentation, and `pkgstats` thus converts all
-    tab characters to a fixed number of spaces (with a default of 2;
-    `indentation`).
+-   The number of spaces used to indent code (`indentation`), with
+    values of -1 indicating indentation with tab characters.
 -   The median number of nested expression per line of code, counting
     only those lines which have any expressions (`nexpr`).
 
@@ -322,7 +320,7 @@ detailed below.
 -   Numbers of exported and non-exported R functions
     (`n_fns_r_exported`, `n_fns_r_not_exported`)
 -   Number of functions (or objects) in other computer languages
-    (`n_fns_src`), including functions in `src` and `inst/include`
+    (`n_fns_src`), including functions in both `src` and `inst/include`
     directories.
 -   Number of functions (or objects) per individual file in R and in all
     other (`src`) directories (`n_fns_per_file_r`,
@@ -345,7 +343,7 @@ The full structure of the `network` table is described below, with
 summary statistics including:
 
 -   Number of edges, including distinction between languages (`n_edges`,
-    `n_edges_r`, `n_edges_sr`).
+    `n_edges_r`, `n_edges_src`).
 -   Number of distinct clusters in package network (`n_clusters`).
 -   Mean and median centrality of all network edges, calculated from
     both directed and undirected representations of network
@@ -356,12 +354,12 @@ summary statistics including:
     `centrality_undir_mn_no0`, `centrality_undir_md_no`).
 -   Numbers of terminal edges (`num_terminal_edges_dir`,
     `num_terminal_edges_undir`).
--   Summary statistics on node degree (`node_degree_m`,
-    `node_degree_md`, `node_degree_ma`)
+-   Summary statistics on node degree (`node_degree_mn`,
+    `node_degree_md`, `node_degree_max`)
 
 The following sub-sections provide further detail on the `objects` an
 `network` items, which could be used to extract additional statistics
-beyond those described immediately above.
+beyond those described here.
 
 ### Objects
 
@@ -447,20 +445,20 @@ nodes.
 head (p$network)
 ```
 
-    ##             file line1       from        to language cluster_dir centrality_dir
-    ## 1       R/pipe.R   297 new_lambda   freduce        R           1              1
-    ## 2    R/getters.R    14  `[[.fseq` functions        R           2              0
-    ## 3    R/getters.R    23   `[.fseq` functions        R           2              0
-    ## 4  R/functions.R    26 print.fseq functions        R           2              0
-    ## 5 R/debug_pipe.R    28 debug_fseq functions        R           2              0
-    ## 6 R/debug_pipe.R    35 debug_fseq functions        R           2              0
-    ##   cluster_undir centrality_undir
-    ## 1             1               20
-    ## 2             2                0
-    ## 3             2                0
-    ## 4             2                0
-    ## 5             2                0
-    ## 6             2                0
+    ##             file line1         from        to language cluster_dir
+    ## 1       R/pipe.R   297   new_lambda   freduce        R           1
+    ## 2    R/getters.R    14    `[[.fseq` functions        R           2
+    ## 3    R/getters.R    23     `[.fseq` functions        R           2
+    ## 4 R/debug_pipe.R    28   debug_fseq functions        R           2
+    ## 5 R/debug_pipe.R    35   debug_fseq functions        R           2
+    ## 6 R/debug_pipe.R    42 undebug_fseq functions        R           2
+    ##   centrality_dir cluster_undir centrality_undir
+    ## 1              1             1               20
+    ## 2              0             2                0
+    ## 3              0             2                0
+    ## 4              0             2                0
+    ## 5              0             2                0
+    ## 6              0             2                0
 
 ``` r
 nrow (p$network)
