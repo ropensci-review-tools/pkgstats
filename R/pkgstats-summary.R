@@ -23,8 +23,6 @@ pkgstats_summary <- function (s) {
 
     out <- cbind (out, desc_summary (s$desc))
 
-    out$code_has_tabs <- s$code_has_tabs
-
     out <- cbind (out, object_summary (s$objects))
 
     out <- cbind (out, network_summary (s$network))
