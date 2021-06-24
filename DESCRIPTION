@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.0.0.219
+Version: 0.0.0.220
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
@@ -8,7 +8,7 @@ Authors@R:
            email = "mark.padgham@email.com")
 Description: Metrics of R packages.
 License: GPL-3
-URL: https://ropensci-review-tools.github.io/pkgstats,
+URL: https://docs.ropensci.org/pkgstats/,
     https://github.com/ropensci-review-tools/pkgstats
 BugReports: https://github.com/ropensci-review-tools/pkgstats/issues
 Depends: 
