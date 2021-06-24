@@ -82,12 +82,13 @@ get_ctags <- function (d = "R", has_tabs) {
     # tab-characters muck up parsing of tag content so have to be removed.
     # This requires modifying the code, so the whole directory is copied to
     # tempdir() and the new path returned
-    pathsub <- getwd () # Path to substitute out of file names given by ctags
+    wd <- path_sub <- getwd () # Path to substitute out of file names given by ctags
     if (has_tabs) {
-        path_dir <- file.path (rm_tabs (path_dir), d)
+        path_sub <- path_dir <- rm_tabs (path_dir)
+        path_dir <- file.path (path_dir, d)
         if (d == "inst")
             path_dir <- file.path (path_dir, "include")
-        pathsub <- path_dir
+        wd <- setwd (path_dir)
     }
 
     # ctags fields defines at
@@ -142,9 +143,11 @@ get_ctags <- function (d = "R", has_tabs) {
 
     tags$start <- as.integer (gsub ("^line\\:", "", tags$start))
     tags$end <- as.integer (gsub ("^end\\:", "", tags$end))
-    tags$file <- gsub (paste0 (pathsub, .Platform$file.sep), "", tags$file)
+    tags$file <- gsub (paste0 (path_sub, .Platform$file.sep), "", tags$file)
 
     attr (tags, "has_tabs") <- has_tabs
+
+    setwd (wd) # called via withr::with_path anyway, so doesn't really matter
 
     return (tags)
 }
