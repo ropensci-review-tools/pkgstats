@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.217</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.220</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@
 <li>Summaries of all objects created via package code across multiple languages and all directories containing source code (<code>./R</code>, <code>./src</code>, and <code>./inst/include</code>).</li>
 <li>A function call network derived from function definitions obtained from <a href="https::ctags.io"><code>ctags</code></a>, and references (“calls”) to those obtained from <a href="https://www.gnu.org/software/global/"><code>gtags</code></a>. This network roughly connects every object making a call (as <code>from</code>) with every object being called (<code>to</code>).</li>
 </ol>
-<p>A demonstration of typical output is shown below, along with a detailed list of statistics aggregated by the internal <a href="https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html"><code>pkgstats_summary()</code> function</a>.</p>
+<p>A demonstration of typical output is shown below, along with a detailed list of statistics aggregated by the internal <a href="https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html"><code>pkgstats_summary()</code> function</a>.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -101,7 +101,7 @@
 <span class="fu">pak</span><span class="fu">::</span><span class="fu">pkg_install</span> <span class="op">(</span><span class="st">"ropensci-review-tools/pkgtest"</span><span class="op">)</span></code></pre></div>
 <p>The package can then loaded for use with</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span> <span class="op">(</span><span class="va"><a href="https://ropensci-review-tools.github.io/pkgstats">pkgstats</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span> <span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/pkgstats/">pkgstats</a></span><span class="op">)</span></code></pre></div>
 <div id="installation-on-linux-systems" class="section level3">
 <h3 class="hasAnchor">
 <a href="#installation-on-linux-systems" class="anchor"></a>Installation on Linux systems</h3>
@@ -134,7 +134,7 @@
     <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pkgstats.html">pkgstats</a></span> <span class="op">(</span><span class="va">f</span><span class="op">)</span>
     <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">##    user  system elapsed </span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="co">##   0.567   0.037   0.604</span></span></code></pre></div>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co">##   0.571   0.039   0.607</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span> <span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">## [1] "loc"          "vignettes"    "data_stats"   "desc"         "translations"</span></span>
@@ -209,14 +209,14 @@
 <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">loc</span><span class="op">$</span><span class="va">nspaces</span> <span class="op">[</span><span class="va">index</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">loc</span><span class="op">$</span><span class="va">nchars</span> <span class="op">[</span><span class="va">index</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb17"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co">## [1] 0.148465</span></span></code></pre></div>
 <p>Finally, the <code>ntabs</code> statistic can be used to identify whether code uses tab characters as indentation, otherwise the <code>indentation</code> statistics indicate median numbers of white spaces by which code is indented.</p>
-<p>The <code>objects</code> and <code>network</code> items returned by the <a href="https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats.html"><code>pkgstats()</code> function</a> are described further below.</p>
+<p>The <code>objects</code> and <code>network</code> items returned by the <a href="https://docs.ropensci.org/pkgstats/reference/pkgstats.html"><code>pkgstats()</code> function</a> are described further below.</p>
 <div id="the-pkgstats_summary-function" class="section level3">
 <h3 class="hasAnchor">
 <a href="#the-pkgstats_summary-function" class="anchor"></a>The <code>pkgstats_summary()</code> function</h3>
-<p>A summary of the <code>pkgstats</code> data can be obtained by submitting the object returned from <code><a href="reference/pkgstats.html">pkgstats()</a></code> to the <a href="https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html"><code>pkgstats_summary()</code> function</a>:</p>
+<p>A summary of the <code>pkgstats</code> data can be obtained by submitting the object returned from <code><a href="reference/pkgstats.html">pkgstats()</a></code> to the <a href="https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html"><code>pkgstats_summary()</code> function</a>:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pkgstats_summary.html">pkgstats_summary</a></span> <span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
-<p>This function reduces the result of the <a href="https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html"><code>pkgstats()</code> function</a> to a single line with 90 entries, represented as a <code>data.frame</code> with one row and that number of columns. This format is intended to enable summary statistics from multiple packages to be aggregated by simply binding rows together. While 90 statistics might seem like overkill, the <a href="https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html"><code>pkgstats_summary()</code> function</a> aims to return as many usable raw statistics as possible in order to flexibly allow higher-level statistics to be derived through combination and aggregation. These 90 statistics can be roughly grouped into the following categories (not shown in the order in which they actually appear), with variable names in parentheses after each description.</p>
+<p>This function reduces the result of the <a href="https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html"><code>pkgstats()</code> function</a> to a single line with 90 entries, represented as a <code>data.frame</code> with one row and that number of columns. This format is intended to enable summary statistics from multiple packages to be aggregated by simply binding rows together. While 90 statistics might seem like overkill, the <a href="https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html"><code>pkgstats_summary()</code> function</a> aims to return as many usable raw statistics as possible in order to flexibly allow higher-level statistics to be derived through combination and aggregation. These 90 statistics can be roughly grouped into the following categories (not shown in the order in which they actually appear), with variable names in parentheses after each description.</p>
 <p><strong>Package Summaries</strong></p>
 <ul>
 <li>name (<code>package</code>)</li>
@@ -333,24 +333,25 @@
 <p>The <code>network</code> item details all relationships between objects, where generally reflects one object calling or otherwise depending on another object. Each row thus represents the edge of a network, with each entry in the <code>from</code> and <code>to</code> columns representing the network vertices or nodes.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">network</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb34"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="co">##             file line1         from        to language cluster_dir</span></span>
-<span id="cb34-2"><a href="#cb34-2"></a><span class="co">## 1       R/pipe.R   297   new_lambda   freduce        R           1</span></span>
-<span id="cb34-3"><a href="#cb34-3"></a><span class="co">## 2    R/getters.R    14    `[[.fseq` functions        R           2</span></span>
-<span id="cb34-4"><a href="#cb34-4"></a><span class="co">## 3    R/getters.R    23     `[.fseq` functions        R           2</span></span>
-<span id="cb34-5"><a href="#cb34-5"></a><span class="co">## 4 R/debug_pipe.R    28   debug_fseq functions        R           2</span></span>
-<span id="cb34-6"><a href="#cb34-6"></a><span class="co">## 5 R/debug_pipe.R    35   debug_fseq functions        R           2</span></span>
-<span id="cb34-7"><a href="#cb34-7"></a><span class="co">## 6 R/debug_pipe.R    42 undebug_fseq functions        R           2</span></span>
-<span id="cb34-8"><a href="#cb34-8"></a><span class="co">##   centrality_dir cluster_undir centrality_undir</span></span>
-<span id="cb34-9"><a href="#cb34-9"></a><span class="co">## 1              1             1               20</span></span>
-<span id="cb34-10"><a href="#cb34-10"></a><span class="co">## 2              0             2                0</span></span>
-<span id="cb34-11"><a href="#cb34-11"></a><span class="co">## 3              0             2                0</span></span>
-<span id="cb34-12"><a href="#cb34-12"></a><span class="co">## 4              0             2                0</span></span>
-<span id="cb34-13"><a href="#cb34-13"></a><span class="co">## 5              0             2                0</span></span>
-<span id="cb34-14"><a href="#cb34-14"></a><span class="co">## 6              0             2                0</span></span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="co">##             file line1       from        to language cluster_dir centrality_dir</span></span>
+<span id="cb34-2"><a href="#cb34-2"></a><span class="co">## 1       R/pipe.R   297 new_lambda   freduce        R           1              1</span></span>
+<span id="cb34-3"><a href="#cb34-3"></a><span class="co">## 2    R/getters.R    14  `[[.fseq` functions        R           2              0</span></span>
+<span id="cb34-4"><a href="#cb34-4"></a><span class="co">## 3    R/getters.R    23   `[.fseq` functions        R           2              0</span></span>
+<span id="cb34-5"><a href="#cb34-5"></a><span class="co">## 4  R/functions.R    26 print.fseq functions        R           2              0</span></span>
+<span id="cb34-6"><a href="#cb34-6"></a><span class="co">## 5 R/debug_pipe.R    28 debug_fseq functions        R           2              0</span></span>
+<span id="cb34-7"><a href="#cb34-7"></a><span class="co">## 6 R/debug_pipe.R    35 debug_fseq functions        R           2              0</span></span>
+<span id="cb34-8"><a href="#cb34-8"></a><span class="co">##   cluster_undir centrality_undir</span></span>
+<span id="cb34-9"><a href="#cb34-9"></a><span class="co">## 1             1               20</span></span>
+<span id="cb34-10"><a href="#cb34-10"></a><span class="co">## 2             2                0</span></span>
+<span id="cb34-11"><a href="#cb34-11"></a><span class="co">## 3             2                0</span></span>
+<span id="cb34-12"><a href="#cb34-12"></a><span class="co">## 4             2                0</span></span>
+<span id="cb34-13"><a href="#cb34-13"></a><span class="co">## 5             2                0</span></span>
+<span id="cb34-14"><a href="#cb34-14"></a><span class="co">## 6             2                0</span></span></code></pre></div>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">network</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb36"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co">## [1] 45</span></span></code></pre></div>
 <p>The network table includes additional statistics on the centrality of each edge, measured as betweenness centrality assuming edges to be both directed (<code>centrality_dir</code>) and undirected (<code>centrality_undir</code>). More central edges reflect connections between objects that are more central to package functionality, and vice versa. The distinct components of the network are also represented by discrete cluster numbers, object both for directed and undirected versions of the network. Each distinct cluster number represents a distinct group of objects, internally related to other members of the same cluster, yet independent of all objects with different cluster numbers.</p>
+<p>The network can be viewed as an interactive <a href="https://visjs.org/"><code>vis.js</code></a> network through passing the result of <code>pkgstats</code> – here, <code>p</code> – to the <a href="https://docs.ropensci.org/pkgstats/reference/plot_network.html"><code>plot_network()</code> function</a></p>
 </div>
 </div>
 </div>
