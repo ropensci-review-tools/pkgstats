@@ -11,7 +11,6 @@ test_that ("pkgstats", {
               "data_stats",
               "desc",
               "translations",
-              "code_has_tabs",
               "objects",
               "network")
     expect_true (all (nms %in% names (s)))
@@ -35,8 +34,6 @@ test_that ("pkgstats", {
     expect_s3_class (s$desc, "data.frame")
     expect_equal (nrow (s$desc), 1L)
     expect_type (s$translations, "character")
-    expect_type (s$code_has_tabs, "logical")
-    expect_length (s$code_has_tabs, 1L)
 
     expect_s3_class (s$objects, "data.frame")
     expect_true (nrow (s$objects) > 5L)
