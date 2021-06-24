@@ -2,14 +2,23 @@
 #' use ctags and gtags to parse call data
 #'
 #' @param path Path to local repository
+#' @param has_tabs A logical flag indicating whether or not the code contains
+#' any tab characters. This can be determined from \link{loc_stats}, which has a
+#' `tabs` column. If not given, that value will be extracted from internally
+#' calling that function.
 #' @export
-tags_data <- function (path) {
+tags_data <- function (path, has_tabs = NULL) {
+
+    if (is.null (has_tabs))
+        has_tabs <- any (loc_stats (path)$ntabs > 0L)
+    else if (!is.logical (has_tabs) | length (has_tabs) > 1L)
+        stop ("has_tabs must either be NULL or a single logical value")
 
     kind <- start <- NULL # no visible binding messages
 
-    tags_r <- withr::with_dir (path, get_ctags ("R"))
-    tags_src <- withr::with_dir (path, get_ctags ("src"))
-    tags_inst <- withr::with_dir (path, get_ctags ("inst"))
+    tags_r <- withr::with_dir (path, get_ctags ("R", has_tabs))
+    tags_src <- withr::with_dir (path, get_ctags ("src", has_tabs))
+    tags_inst <- withr::with_dir (path, get_ctags ("inst", has_tabs))
     # does the code contain tab ("\t") characters?
     has_tabs <- files_have_tabs (tags_r) |
         files_have_tabs (tags_src) |
@@ -65,7 +74,7 @@ tags_data <- function (path) {
 #' Get tags for one directory within a package
 #' @param d the directory
 #' @noRd
-get_ctags <- function (d = "R") {
+get_ctags <- function (d = "R", has_tabs) {
 
     d <- match.arg (d, c ("R", "src", "inst"))
 
@@ -76,7 +85,8 @@ get_ctags <- function (d = "R") {
         return (NULL)
 
     # tab-characters muck up parsing of tag content so have to be removed:
-    has_tabs <- rm_tabs (path_dir)
+    if (has_tabs)
+        has_tabs <- rm_tabs (path_dir)
 
     # ctags fields defines at
     # https://docs.ctags.io/en/latest/man/ctags.1.html#extension-fields

@@ -4,10 +4,15 @@
 \alias{tags_data}
 \title{use ctags and gtags to parse call data}
 \usage{
-tags_data(path)
+tags_data(path, has_tabs = NULL)
 }
 \arguments{
 \item{path}{Path to local repository}
+
+\item{has_tabs}{A logical flag indicating whether or not the code contains
+any tab characters. This can be determined from \link{loc_stats}, which has a
+\code{tabs} column. If not given, that value will be extracted from internally
+calling that function.}
 }
 \description{
 use ctags and gtags to parse call data
