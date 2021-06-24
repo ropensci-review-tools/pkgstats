@@ -34,7 +34,7 @@ Statistics are derived from these primary sources:
 
 A demonstration of typical output is shown below, along with a detailed
 list of statistics aggregated by the internal [`pkgstats_summary()`
-function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html).
+function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html).
 
 ## Installation
 
@@ -121,7 +121,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.571   0.038   0.609
+    ##   0.571   0.039   0.607
 
 ``` r
 names (p)
@@ -220,27 +220,27 @@ tab characters as indentation, otherwise the `indentation` statistics
 indicate median numbers of white spaces by which code is indented.
 
 The `objects` and `network` items returned by the [`pkgstats()`
-function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats.html)
+function](https://docs.ropensci.org/pkgstats/reference/pkgstats.html)
 are described further below.
 
 ### The `pkgstats_summary()` function
 
 A summary of the `pkgstats` data can be obtained by submitting the
 object returned from `pkgstats()` to the [`pkgstats_summary()`
-function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html):
+function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html):
 
 ``` r
 s <- pkgstats_summary (p)
 ```
 
 This function reduces the result of the [`pkgstats()`
-function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html)
+function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
 to a single line with 90 entries, represented as a `data.frame` with one
 row and that number of columns. This format is intended to enable
 summary statistics from multiple packages to be aggregated by simply
 binding rows together. While 90 statistics might seem like overkill, the
 [`pkgstats_summary()`
-function](https://ropensci-review-tools.github.io/pkgstats/reference/pkgstats_summary.html)
+function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
 aims to return as many usable raw statistics as possible in order to
 flexibly allow higher-level statistics to be derived through combination
 and aggregation. These 90 statistics can be roughly grouped into the
