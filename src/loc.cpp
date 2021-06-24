@@ -90,7 +90,9 @@ LocStats loc::file_loc (const std::string f,
             stats.ndoc++;
         else {
             stats.ncode++;
-            int nbr = codesymbols::count_brackets (line);
+            const int nbr_op = codesymbols::count_brackets (line, true);
+            const int nbr_cl = codesymbols::count_brackets (line, true);
+            const int nbr = std::min (nbr_op, nbr_cl);
             if (nbr > 0)
                 brackt_count.push_back (nbr);
         }

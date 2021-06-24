@@ -128,11 +128,15 @@ void codesymbols::balance_block_cmts (std::vector <size_t> &opens,
     }
 }
 
-int codesymbols::count_brackets (std::string s)
+int codesymbols::count_brackets (std::string s, bool open)
 {
     int n = 0L;
 
-    std::vector <std::string> brackets = {"(", "[", "{"};
+    std::vector <std::string> brackets;
+    if (open)
+        brackets = {"(", "[", "{"};
+    else
+        brackets = {")", "]", "}"};
 
     for (auto b: brackets)
     {

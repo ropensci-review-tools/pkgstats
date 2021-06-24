@@ -27,6 +27,6 @@ std::vector <size_t> get_quote_pos (const std::string &s);
 void balance_block_cmts (std::vector <size_t> &opens,
         std::vector <size_t> &closes);
 
-int count_brackets (std::string s);
+int count_brackets (std::string s, bool open = true);
 
 } // end namespace whitespace
