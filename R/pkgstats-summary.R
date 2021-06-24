@@ -40,6 +40,8 @@ loc_summary <- function (x) {
     language <- nfiles <- nlines <- ncode <-
         ndoc <- nempty <- nspaces <- nchars <-  NULL
 
+    indentation <- loc_indentation (x)
+
     xg <- dplyr::group_by (x, dir)
     x <- dplyr::summarise (xg,
                            nfiles = sum (nfiles),
@@ -48,8 +50,8 @@ loc_summary <- function (x) {
                            nempty = sum (nempty),
                            nspaces = sum (nspaces),
                            nchars = sum (nchars),
-                           nexpr = stats::median (nexpr), # not accurate, but acceptable here
-                           indentation = stats::median (indentation))
+                           nexpr = stats::median (nexpr))
+    # nexpr is not truly accurate, but acceptable here
 
     blank <- x [1, ]
     col_nms <- names (blank) [which (!names (blank) == "dir")]
@@ -116,7 +118,6 @@ loc_summary <- function (x) {
     if (files_tests == 0)
         loc_tests <- blank_lines_tests <- comment_lines_tests <- NA_integer_
 
-    indentation <- stats::median (x$indentation [x$indentation > 0])
     nexpr <- x$nexpr [which (x$dir %in% c ("inst", "R", "src") & x$nexpr > 0)]
     nexpr <- stats::median (nexpr)
 
@@ -148,6 +149,31 @@ loc_summary <- function (x) {
                 rel_space_tests = rel_space_tests,
                 indentation = indentation,
                 nexpr = nexpr)
+}
+
+#' Median indentation from `loc` object
+#'
+#' @param x The "loc" item returned from main `pkgstats` fn
+#' @param tab_threshold If numbers of initial tab characters in relation to
+#' total lines of code is greater than this, then code is considered to be
+#' tab-indented.
+#' @return A positive integer quantifying median indentation of code, or a value
+#' of -1L for tab-indentation.
+#'
+#' @note Indentation metrics are not truly accurate here, but likely good
+#' enough. The `loc` object has single values of median indentation per file,
+#' and numbers of files in each directory. These values are converted into
+#' repeated sequences to obtain a subsequent approximation of the true median.
+#' @noRd
+loc_indentation <- function (x, tab_threshold = 0.1) {
+
+    index <- which (x$ncode > 0)
+    tabs_per_line <- mean (x$ntabs [index] / x$ncode [index], na.rm = TRUE)
+    if (tabs_per_line > tab_threshold)
+        return (-1L)
+
+    indents <- rep (x$indentation, times = x$nfiles)
+    return (stats::median (indents))
 }
 
 #' @param x the 'desc' components of 'pkgstats' output
