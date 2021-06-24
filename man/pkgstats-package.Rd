@@ -11,7 +11,7 @@ Metrics of R packages.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://ropensci-review-tools.github.io/pkgstats}
+  \item \url{https://docs.ropensci.org/pkgstats/}
   \item \url{https://github.com/ropensci-review-tools/pkgstats}
   \item Report bugs at \url{https://github.com/ropensci-review-tools/pkgstats/issues}
 }

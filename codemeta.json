@@ -10,7 +10,7 @@
   "codeRepository": "https://github.com/ropensci-review-tools/pkgstats",
   "issueTracker": "https://github.com/ropensci-review-tools/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.0.220",
+  "version": "0.0.0.221",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -120,12 +120,6 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "cloc",
-      "name": "cloc",
-      "sameAs": "https://github.com/hrbrmstr/cloc"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "doParallel",
       "name": "doParallel",
       "provider": {
@@ -206,7 +200,7 @@
       "identifier": "https://sysreqs.r-hub.io/get/cxx11"
     }
   ],
-  "fileSize": "3033.935KB",
+  "fileSize": "3033.885KB",
   "developmentStatus": "https://www.repostatus.org/#concept",
   "readme": "https://github.com/ropensci-review-tools/pkgstats/blob/main/README.md",
   "relatedLink": [
