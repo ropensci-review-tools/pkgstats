@@ -166,6 +166,9 @@ loc_summary <- function (x) {
 loc_indentation <- function (x, tab_threshold = 0.1) {
 
     index <- which (x$ncode > 0)
+    if (length (index) == 0) # data-only pkgs with no code
+        return (NA_integer_)
+
     tabs_per_line <- mean (x$ntabs [index] / x$ncode [index], na.rm = TRUE)
     if (tabs_per_line > tab_threshold)
         return (-1L)
