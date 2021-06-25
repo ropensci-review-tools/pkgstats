@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.239</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.241</span>
       </span>
     </div>
 
@@ -117,7 +117,12 @@
     <p>Trawl a local CRAN archive and extract statistics from all packages</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pkgstats_from_archive</span><span class='op'>(</span><span class='va'>path</span>, archive <span class='op'>=</span> <span class='cn'>TRUE</span>, prev_results <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>pkgstats_from_archive</span><span class='op'>(</span>
+  <span class='va'>path</span>,
+  archive <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  prev_results <span class='op'>=</span> <span class='cn'>NULL</span>,
+  results_file <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -138,6 +143,13 @@ directory (that is, current packages only).</p></td>
 Submitting previous results will ensure that only newer packages not present
 in previous result will be analysed, with new results simply appended to
 previous results.</p></td>
+    </tr>
+    <tr>
+      <th>results_file</th>
+      <td><p>Can be used to specify the name or full path of a <code>.Rds</code>
+file to which results should be saved once they have been generated. The
+'.Rds' extension will be automatically appended, and any other extensions
+will be ignored.</p></td>
     </tr>
     </table>
 
