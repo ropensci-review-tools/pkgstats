@@ -128,6 +128,8 @@ get_ctags <- function (d = "R", has_tabs) {
                    path_dir)
     system (cmd, ignore.stderr = TRUE)
 
+    setwd (wd) # called via withr::with_path anyway, so doesn't really matter
+
     # remove header lines:
     x <- brio::read_lines (f)
     x <- x [-which (grepl ("^\\!", x))]
@@ -149,6 +151,9 @@ get_ctags <- function (d = "R", has_tabs) {
                                                  col_types = ctypes)
                       )
 
+    if (nrow (tags) == 0)
+        return (NULL)
+
     # rm svg files
     tag_exts <- tools::file_ext (tags$file)
     tags <- tags [which (!tools::file_ext (tags$file) == "svg"), ]
@@ -158,8 +163,6 @@ get_ctags <- function (d = "R", has_tabs) {
     tags$file <- gsub (paste0 (path_sub, .Platform$file.sep), "", tags$file)
 
     attr (tags, "has_tabs") <- has_tabs
-
-    setwd (wd) # called via withr::with_path anyway, so doesn't really matter
 
     return (tags)
 }
