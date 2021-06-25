@@ -207,13 +207,25 @@ object_summary <- function (x) {
     fns_r <- fns [fns$language == "R", ]
     fns_not_r <- fns [fns$language != "R", ]
 
-    n_fns_r <- nrow (fns_r)
-    n_fns_r_exported <- length (which (fns_r$exported))
+    n_fns_r <- length (which (!is.na (fns_r$fn_name)))
+    n_fns_r_exported <- length (which (!is.na (fns_r$exported)))
     n_fns_r_not_exported <- n_fns_r - n_fns_r_exported
+    repl0withNA <- function (x) {
+        if (x == 0L)
+            x <- NA_integer_
+        return (x)
+    }
+    n_fns_r <- repl0withNA (n_fns_r)
+    n_fns_r_exported <- repl0withNA (n_fns_r_exported)
+    n_fns_r_not_exported <- repl0withNA (n_fns_r_not_exported)
 
-    n_fns_per_file_r <- nrow (fns_r) / length (unique (fns_r$file_name))
-    n_fns_per_file_src <- nrow (fns_not_r) /
-        length (unique (fns_not_r$file_name))
+    get_n_fns_per_file <- function (f) {
+        index <- which (!is.na (f$file_name))
+        n_files <- length (unique (f$file_name [index]))
+        ifelse (n_files == 0L, NA_integer_, n_fns / n_files)
+    }
+    n_fns_per_file_r <- get_n_fns_per_file (fns_r)
+    n_fns_per_file_src <- get_n_fns_per_file (fns_not_r)
 
     index_exp <- which (fns_r$exported)
     index_not_exp <- which (!fns_r$exported)
@@ -247,7 +259,8 @@ object_summary <- function (x) {
     nchars_tot <- rep (nchar [index], times = npar [index])
     docchars_per_par_exp_md <- stats::median (nchars_tot, na.rm = TRUE)
 
-    n_fns_src <- nrow (fns_not_r)
+    n_fns_src <- length (which (!is.na (fns_not_r$fn_name)))
+    n_fns_src <- repl0withNA (n_fns_src)
     loc_per_fn_src_mn <- mean (fns_not_r$loc, na.rm = TRUE)
     loc_per_fn_src_md <- stats::median (fns_not_r$loc, na.rm = TRUE)
     languages <- paste0 (unique (fns_not_r$language), collapse = ", ")
