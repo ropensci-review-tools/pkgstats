@@ -74,15 +74,14 @@ get_ctags <- function (d = "R", has_tabs) {
     d <- match.arg (d, c ("R", "src", "inst"))
 
     path_dir <- file.path (getwd (), d)
-    if (d == "inst")
-        path_dir <- file.path (path_dir, "include")
     if (!dir.exists (path_dir))
         return (NULL)
 
     # tab-characters muck up parsing of tag content so have to be removed.
     # This requires modifying the code, so the whole directory is copied to
-    # tempdir() and the new path returned
-    wd <- path_sub <- getwd () # Path to substitute out of file names given by ctags
+    # tempdir() and the new path returned. `path_sub` in the following is the
+    # path to substitute out of file names given by ctags
+    wd <- path_sub <- getwd () 
     if (has_tabs) {
         path_sub <- path_dir <- rm_tabs (path_dir)
         path_dir <- file.path (path_dir, d)
@@ -178,6 +177,11 @@ rm_tabs <- function (d, nspaces = 2) {
     files <- normalizePath (list.files (tmpd,
                                         full.names = TRUE,
                                         recursive = TRUE))
+    if (grepl (paste0 (.Platform$file.sep, "inst"), d)) {
+        ptn <- paste0 (.Platform$file.sep, "include", .Platform$file.sep)
+        files <- grep (ptn, files, fixed = TRUE, value = TRUE)
+    }
+
     exts <- file_exts ()
     exts$ext <- gsub ("+", "\\+", exts$ext, fixed = TRUE)
     exts$ext <- gsub ("-", "\\-", exts$ext, fixed = TRUE)
