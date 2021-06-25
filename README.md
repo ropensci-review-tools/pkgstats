@@ -87,6 +87,11 @@ make
 sudo make install
 ```
 
+If `sudo` is unavailable, it may be necessary to use a different
+`prefix` argument on `configure`, such as `--prefix=/<user>/bin`, in
+which case it may also be necessary to run `hash -d ctags` after
+installation to ensure that the configure path is found.
+
 [GNU `global`](https://www.gnu.org/software/global/) can generally be
 installed from most Linux package managers, for example through
 `apt-get install global` for Ubuntu, or `pacman -S global` for
@@ -121,7 +126,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.571   0.039   0.607
+    ##   0.542   0.044   0.585
 
 ``` r
 names (p)
@@ -445,20 +450,20 @@ nodes.
 head (p$network)
 ```
 
-    ##             file line1       from        to language cluster_dir centrality_dir
-    ## 1       R/pipe.R   297 new_lambda   freduce        R           1              1
-    ## 2    R/getters.R    14  `[[.fseq` functions        R           2              0
-    ## 3    R/getters.R    23   `[.fseq` functions        R           2              0
-    ## 4  R/functions.R    26 print.fseq functions        R           2              0
-    ## 5 R/debug_pipe.R    28 debug_fseq functions        R           2              0
-    ## 6 R/debug_pipe.R    35 debug_fseq functions        R           2              0
-    ##   cluster_undir centrality_undir
-    ## 1             1               20
-    ## 2             2                0
-    ## 3             2                0
-    ## 4             2                0
-    ## 5             2                0
-    ## 6             2                0
+    ##             file line1         from        to language cluster_dir
+    ## 1       R/pipe.R   297   new_lambda   freduce        R           1
+    ## 2    R/getters.R    14    `[[.fseq` functions        R           2
+    ## 3    R/getters.R    23     `[.fseq` functions        R           2
+    ## 4 R/debug_pipe.R    28   debug_fseq functions        R           2
+    ## 5 R/debug_pipe.R    35   debug_fseq functions        R           2
+    ## 6 R/debug_pipe.R    42 undebug_fseq functions        R           2
+    ##   centrality_dir cluster_undir centrality_undir
+    ## 1              1             1               20
+    ## 2              0             2                0
+    ## 3              0             2                0
+    ## 4              0             2                0
+    ## 5              0             2                0
+    ## 6              0             2                0
 
 ``` r
 nrow (p$network)

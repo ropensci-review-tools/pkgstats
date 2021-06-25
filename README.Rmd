@@ -87,6 +87,11 @@ make
 sudo make install
 ```
 
+If `sudo` is unavailable, it may be necessary to use a different `prefix`
+argument on `configure`, such as `--prefix=/<user>/bin`, in which case it may
+also be necessary to run `hash -d ctags` after installation to ensure that the
+configure path is found.
+
 [GNU `global`](https://www.gnu.org/software/global/) can generally be installed
 from most Linux package managers, for example through `apt-get install global`
 for Ubuntu, or `pacman -S global` for Archlinux. This `pkgstats` package
