@@ -4,7 +4,12 @@
 \alias{pkgstats_from_archive}
 \title{Trawl a local CRAN archive and extract statistics from all packages}
 \usage{
-pkgstats_from_archive(path, archive = TRUE, prev_results = NULL)
+pkgstats_from_archive(
+  path,
+  archive = TRUE,
+  prev_results = NULL,
+  results_file = NULL
+)
 }
 \arguments{
 \item{path}{Path to local CRAN archive}
@@ -17,6 +22,11 @@ directory (that is, current packages only).}
 Submitting previous results will ensure that only newer packages not present
 in previous result will be analysed, with new results simply appended to
 previous results.}
+
+\item{results_file}{Can be used to specify the name or full path of a \code{.Rds}
+file to which results should be saved once they have been generated. The
+'.Rds' extension will be automatically appended, and any other extensions
+will be ignored.}
 }
 \value{
 A \code{data.frame} object with one row for each package containing

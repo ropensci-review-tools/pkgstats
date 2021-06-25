@@ -9,12 +9,17 @@
 #' Submitting previous results will ensure that only newer packages not present
 #' in previous result will be analysed, with new results simply appended to
 #' previous results.
+#' @param results_file Can be used to specify the name or full path of a `.Rds`
+#' file to which results should be saved once they have been generated. The
+#' '.Rds' extension will be automatically appended, and any other extensions
+#' will be ignored.
 #'
 #' @return A `data.frame` object with one row for each package containing
 #' summary statistics generated from the \link{pkgstats_summary} function.
 #'
 #' @export
-pkgstats_from_archive <- function (path, archive = TRUE, prev_results = NULL) {
+pkgstats_from_archive <- function (path, archive = TRUE, prev_results = NULL,
+                                   results_file = NULL) {
 
     if (!grepl ("tarball", path)) {
         if (!dir.exists (file.path (path, "tarballs")))
@@ -75,8 +80,18 @@ pkgstats_from_archive <- function (path, archive = TRUE, prev_results = NULL) {
     out <- rbind (out, res)
     rownames (out) <- NULL
 
-    if (!is.null (res))
-        saveRDS (out, "pkgstats-results.Rds")
+    if (!is.null (res) & !is.null (results_file)) {
+
+        results_path <- gsub (basename (results_file), "",
+                              results_file)
+        if (!dir.exists (results_path))
+            stop ("Directory [", results_path, "] does not exist")
+
+        results_file <- paste0 (tools::file_path_sans_ext (results_file),
+                                ".Rds")
+
+        saveRDS (out, results_file)
+    }
 
     invisible (out)
 }
