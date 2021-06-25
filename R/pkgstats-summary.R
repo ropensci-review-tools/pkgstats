@@ -371,7 +371,6 @@ network_summary <- function (x) {
                 num_terminal_edges_undir = num_terminal_edges_undir,
                 node_degree_mn = node_degree_mn,
                 node_degree_md = node_degree_md,
-                node_degree_max = node_degree_max,
-                gtags_okay = attr (x, "gtags_okay")
+                node_degree_max = node_degree_max
                 )
 }

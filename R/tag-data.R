@@ -21,23 +21,20 @@ tags_data <- function (path, has_tabs = NULL) {
     tags_inst <- withr::with_dir (path, get_ctags ("inst", has_tabs))
 
     gtags <- NULL
-    gtags_okay <- TRUE
 
     if (!is.null (tags_src) | !is.null (tags_inst)) {
 
         no_gtags <- withr::with_dir (path, make_gtags ())
 
+        # gtags does not parse R code, so may return NULL if there is no code in
+        # other languages
         gtags <- withr::with_dir (path, get_gtags ())
-        # gtags may fail to parse some packages, such as "rms"
-        # network will still be able to be constructed for R directory from
-        # ctags, but will exclude src and inst directories
-        gtags_okay <- !is.null (gtags)
 
         ctags <- dplyr::arrange (rbind (tags_src, tags_inst), file, start)
         ctags <- dplyr::filter (ctags, kind %in%
                                 c ("class", "function", "struct"))
 
-        if (gtags_okay) {
+        if (!is.null (gtags)) {
 
             gtags$from <- NA_character_
             for (f in unique (ctags$file))
@@ -47,7 +44,7 @@ tags_data <- function (path, has_tabs = NULL) {
             langs <- ctags [, c ("tag", "language")]
             langs <- langs [which (!duplicated (langs)), ]
             gtags$language <- gsub ("^language\\:", "",
-                                    langs$language [match (gtags$tag, langs$tag)])
+                                langs$language [match (gtags$tag, langs$tag)])
         }
 
         if (no_gtags)
@@ -72,11 +69,8 @@ tags_data <- function (path, has_tabs = NULL) {
         network$line2 <- NULL
     }
 
-    ret <- list (network = network,
-                 stats = src_stats (rbind (tags_r, tags_src, tags_inst)))
-    attr (ret$network, "gtags_okay") <- gtags_okay
-
-    return (ret)
+    return (list (network = network,
+                  stats = src_stats (rbind (tags_r, tags_src, tags_inst))))
 }
 
 #' Get tags for one directory within a package
@@ -93,7 +87,7 @@ get_ctags <- function (d = "R", has_tabs) {
     # This requires modifying the code, so the whole directory is copied to
     # tempdir() and the new path returned. `path_sub` in the following is the
     # path to substitute out of file names given by ctags
-    wd <- path_sub <- getwd () 
+    wd <- path_sub <- getwd ()
     if (has_tabs) {
         path_sub <- path_dir <- rm_tabs (path_dir)
         path_dir <- file.path (path_dir, d)
@@ -155,7 +149,6 @@ get_ctags <- function (d = "R", has_tabs) {
         return (NULL)
 
     # rm svg files
-    tag_exts <- tools::file_ext (tags$file)
     tags <- tags [which (!tools::file_ext (tags$file) == "svg"), ]
 
     tags$start <- as.integer (gsub ("^line\\:", "", tags$start))
