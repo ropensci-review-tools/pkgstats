@@ -70,11 +70,13 @@ pkgstats_from_archive <- function (path, archive = TRUE, prev_results = NULL) {
         parallel::stopCluster (clusters)
 
         res <- do.call (rbind, res)
-
-        saveRDS (res, "pkgstats-results.Rds")
     }
 
     out <- rbind (out, res)
+    rownames (out) <- NULL
+
+    if (!is.null (res))
+        saveRDS (out, "pkgstats-results.Rds")
 
     invisible (out)
 }
