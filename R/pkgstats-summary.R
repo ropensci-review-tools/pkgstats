@@ -210,7 +210,7 @@ object_summary <- function (x) {
     n_fns_r <- length (which (!is.na (fns_r$fn_name)))
     n_fns_r_exported <- length (which (!is.na (fns_r$exported)))
     n_fns_r_not_exported <- n_fns_r - n_fns_r_exported
-    repl0withNA <- function (x) {
+    repl0withNA <- function (x) { # nolint
         if (x == 0L)
             x <- NA_integer_
         return (x)
@@ -222,6 +222,7 @@ object_summary <- function (x) {
     get_n_fns_per_file <- function (f) {
         index <- which (!is.na (f$file_name))
         n_files <- length (unique (f$file_name [index]))
+        n_fns <- length (unique (f$fn_name [index]))
         ifelse (n_files == 0L, NA_integer_, n_fns / n_files)
     }
     n_fns_per_file_r <- get_n_fns_per_file (fns_r)
