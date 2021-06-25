@@ -119,7 +119,8 @@ loc_summary <- function (x) {
     nexpr <- x$nexpr [which (x$dir %in% c ("inst", "R", "src") & x$nexpr > 0)]
     nexpr <- stats::median (nexpr)
 
-    data.frame (files_R = files_R,
+    data.frame (
+                files_R = files_R,
                 files_src = files_src,
                 files_inst = files_inst,
                 files_vignettes = files_vignettes,
@@ -146,7 +147,8 @@ loc_summary <- function (x) {
                 rel_space_vignettes = rel_space_vignettes,
                 rel_space_tests = rel_space_tests,
                 indentation = indentation,
-                nexpr = nexpr)
+                nexpr = nexpr
+                )
 }
 
 #' Median indentation from `loc` object
@@ -352,7 +354,8 @@ network_summary <- function (x) {
         node_degree_max <- max (node_degree$n)
     }
 
-    data.frame (n_edges = n_edges,
+    data.frame (
+                n_edges = n_edges,
                 n_edges_r = n_edges_r,
                 n_edges_src = n_edges_src,
                 n_clusters = n_clusters,
@@ -368,5 +371,7 @@ network_summary <- function (x) {
                 num_terminal_edges_undir = num_terminal_edges_undir,
                 node_degree_mn = node_degree_mn,
                 node_degree_md = node_degree_md,
-                node_degree_max = node_degree_max)
+                node_degree_max = node_degree_max,
+                gtags_okay = attr (x, "gtags_okay") | n_edges_src == 0
+                )
 }
