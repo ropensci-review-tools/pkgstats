@@ -126,7 +126,7 @@ get_ctags <- function (d = "R", has_tabs) {
                    f,
                    " ",
                    path_dir)
-    system (cmd)
+    system (cmd, ignore.stderr = TRUE)
 
     # remove header lines:
     x <- brio::read_lines (f)
