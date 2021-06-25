@@ -110,8 +110,11 @@ loc_stats <- function (path) {
                     "ntabs")
 
     s$nbrackets [s$nbrackets < 1] <- NA_integer_
-    s$language <- ftypes$type
-    s$dir <- fdirs
+    s$language <- s$dir <- ""
+    if (nrow (ftypes) > 0) { # data pkgs may have no code
+        s$language <- ftypes$type
+        s$dir <- fdirs
+    }
 
     # suprress no visible binding notes:
     language <- nfiles <- nlines <- ncode <- ndoc <-
@@ -120,7 +123,7 @@ loc_stats <- function (path) {
     # No magrittr here, plus note final renaming of nbrackets to nexpr
     xg <- dplyr::group_by (s, language, dir)
     s <- dplyr::summarise (xg,
-                           nfiles = length (nlines),
+                           nfiles = length (which (nlines > 0)),
                            nlines = sum (nlines),
                            ncode = sum (ncode),
                            ndoc = sum (ndoc),
