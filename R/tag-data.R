@@ -21,24 +21,34 @@ tags_data <- function (path, has_tabs = NULL) {
     tags_inst <- withr::with_dir (path, get_ctags ("inst", has_tabs))
 
     gtags <- NULL
+    gtags_okay <- FALSE
 
     if (!is.null (tags_src) | !is.null (tags_inst)) {
 
         no_gtags <- withr::with_dir (path, make_gtags ())
 
         gtags <- withr::with_dir (path, get_gtags ())
+        # gtags may fail to parse some packages, such as "rms"
+        # network will still be able to be constructed for R directory from
+        # ctags, but will exclude src and inst directories
+        if (is.null (gtags))
+            gtags_okay <- FALSE
+
         ctags <- dplyr::arrange (rbind (tags_src, tags_inst), file, start)
         ctags <- dplyr::filter (ctags, kind %in%
                                 c ("class", "function", "struct"))
-        gtags$from <- NA_character_
-        for (f in unique (ctags$file))
-            gtags <- gtags_from_one_file (ctags, gtags, f)
-        gtags <- gtags [which (gtags$tag %in% ctags$tag), ]
 
-        langs <- ctags [, c ("tag", "language")]
-        langs <- langs [which (!duplicated (langs)), ]
-        gtags$language <- gsub ("^language\\:", "",
-                                langs$language [match (gtags$tag, langs$tag)])
+        if (gtags_okay) {
+            gtags$from <- NA_character_
+            for (f in unique (ctags$file))
+                gtags <- gtags_from_one_file (ctags, gtags, f)
+            gtags <- gtags [which (gtags$tag %in% ctags$tag), ]
+
+            langs <- ctags [, c ("tag", "language")]
+            langs <- langs [which (!duplicated (langs)), ]
+            gtags$language <- gsub ("^language\\:", "",
+                                    langs$language [match (gtags$tag, langs$tag)])
+        }
 
         if (no_gtags)
             chk <- rm_gtags_files (path)
@@ -62,8 +72,11 @@ tags_data <- function (path, has_tabs = NULL) {
         network$line2 <- NULL
     }
 
-    return (list (network = network,
-                  stats = src_stats (rbind (tags_r, tags_src, tags_inst))))
+    ret <- list (network = network,
+                 stats = src_stats (rbind (tags_r, tags_src, tags_inst)))
+    attr (ret$network, "gtags_okay") <- gtags_okay
+
+    return (ret)
 }
 
 #' Get tags for one directory within a package
@@ -71,11 +84,10 @@ tags_data <- function (path, has_tabs = NULL) {
 #' @noRd
 get_ctags <- function (d = "R", has_tabs) {
 
-    d <- match.arg (d, c ("R", "src", "inst"))
+    if (!dir.exists (file.path (getwd (), d)))
+        return (NULL)
 
     path_dir <- file.path (getwd (), d)
-    if (!dir.exists (path_dir))
-        return (NULL)
 
     # tab-characters muck up parsing of tag content so have to be removed.
     # This requires modifying the code, so the whole directory is copied to
@@ -85,8 +97,6 @@ get_ctags <- function (d = "R", has_tabs) {
     if (has_tabs) {
         path_sub <- path_dir <- rm_tabs (path_dir)
         path_dir <- file.path (path_dir, d)
-        if (d == "inst")
-            path_dir <- file.path (path_dir, "include")
         wd <- setwd (path_dir)
     }
 
@@ -177,10 +187,6 @@ rm_tabs <- function (d, nspaces = 2) {
     files <- normalizePath (list.files (tmpd,
                                         full.names = TRUE,
                                         recursive = TRUE))
-    if (grepl (paste0 (.Platform$file.sep, "inst"), d)) {
-        ptn <- paste0 (.Platform$file.sep, "include", .Platform$file.sep)
-        files <- grep (ptn, files, fixed = TRUE, value = TRUE)
-    }
 
     exts <- file_exts ()
     exts$ext <- gsub ("+", "\\+", exts$ext, fixed = TRUE)
@@ -223,6 +229,10 @@ make_gtags <- function () {
 get_gtags <- function () {
 
     x <- system ("global -rx  .", intern = TRUE)
+    # global may fail to parse files, as happens for example with "rms" package
+    if (length (x) == 0)
+        return (NULL)
+
     # these are fixed width, but only have 4 cols, so can just replace the first
     # 3 lots of space with single tab characters.
     for (i in 1:3)
