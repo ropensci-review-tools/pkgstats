@@ -31,14 +31,14 @@ tags_data <- function (path, has_tabs = NULL) {
         # gtags may fail to parse some packages, such as "rms"
         # network will still be able to be constructed for R directory from
         # ctags, but will exclude src and inst directories
-        if (is.null (gtags))
-            gtags_okay <- FALSE
+        gtags_okay <- !is.null (gtags)
 
         ctags <- dplyr::arrange (rbind (tags_src, tags_inst), file, start)
         ctags <- dplyr::filter (ctags, kind %in%
                                 c ("class", "function", "struct"))
 
         if (gtags_okay) {
+
             gtags$from <- NA_character_
             for (f in unique (ctags$file))
                 gtags <- gtags_from_one_file (ctags, gtags, f)
