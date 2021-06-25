@@ -45,16 +45,18 @@ extract_tarball <- function (tarball) {
 
 #' files in './R' directory may have suffixes of .q, .r, or .s
 #' https://cran.r-project.org/doc/manuals/R-exts.html#Package-subdirectories
-#' But parsers + cloc only recognise .R/.r, so rename any others
+#' But parsers + cloc only recognise .R/.r, as does gtags, so rename any others
 #' Discovered via BDR's
 #' https://cran.r-project.org/web/packages/boot/index.html
+#' The `rms` package also has loads of '.s' code, which cloc's dictionary
+#' identifies as assembly
 #' @noRd
 rename_files_in_r <- function (path) {
 
     fr <- normalizePath (list.files (file.path (path, "R"),
                                      full.names = TRUE))
 
-    index <- grep ("(\\s$|\\q$)", fr, ignore.case = TRUE)
+    index <- grep ("(\\.s$|\\.q$)", fr, ignore.case = TRUE)
 
     chk <- TRUE
 
