@@ -21,7 +21,7 @@ tags_data <- function (path, has_tabs = NULL) {
     tags_inst <- withr::with_dir (path, get_ctags ("inst", has_tabs))
 
     gtags <- NULL
-    gtags_okay <- FALSE
+    gtags_okay <- TRUE
 
     if (!is.null (tags_src) | !is.null (tags_inst)) {
 
