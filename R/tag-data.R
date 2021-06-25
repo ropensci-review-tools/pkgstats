@@ -149,6 +149,9 @@ get_ctags <- function (d = "R", has_tabs) {
                                                  col_types = ctypes)
                       )
 
+    # rm svg files
+    tag_exts <- tools::file_ext (tags$file)
+    tags <- tags [which (!tools::file_ext (tags$file) == "svg"), ]
 
     tags$start <- as.integer (gsub ("^line\\:", "", tags$start))
     tags$end <- as.integer (gsub ("^end\\:", "", tags$end))
