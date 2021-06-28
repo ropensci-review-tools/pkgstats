@@ -21,6 +21,10 @@
 pkgstats_from_archive <- function (path, archive = TRUE, prev_results = NULL,
                                    results_file = NULL) {
 
+    requireNamespace ("parallelly")
+    requireNamespace ("future")
+    requireNamespace ("future.apply")
+
     if (!grepl ("tarball", path)) {
         if (!dir.exists (file.path (path, "tarballs")))
             stop ("path must contain a 'tarballs' directory")
@@ -56,11 +60,11 @@ pkgstats_from_archive <- function (path, archive = TRUE, prev_results = NULL,
 
     if (length (flist) > 0) {
 
-        ncl <- parallel::detectCores () / 2
-        clusters <- parallel::makeCluster (ncl)
-        doParallel::registerDoParallel (clusters)
+        ac <- parallelly::availableCores ()
+        ac <- floor (ac / 2)
+        future::plan (future::multisession (workers = ac))
 
-        res <- pbapply::pblapply (flist, function (i) {
+        res <- future.apply::future_lapply (flist, function (i) {
                                       s <- tryCatch (pkgstats (i),
                                                      error = function (e) NULL)
                                       res <- NULL
@@ -70,9 +74,7 @@ pkgstats_from_archive <- function (path, archive = TRUE, prev_results = NULL,
                                                                NULL)
                                       return (res)
                              },
-                             cl = clusters)
-
-        parallel::stopCluster (clusters)
+                             future.seed = 1)
 
         res <- do.call (rbind, res)
     }

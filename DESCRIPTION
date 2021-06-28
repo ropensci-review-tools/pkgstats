@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.0.0.241
+Version: 0.0.0.242
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
@@ -14,15 +14,15 @@ BugReports: https://github.com/ropensci-review-tools/pkgstats/issues
 Imports:
     brio,
     checkmate,
-    doParallel,
     dplyr,
     igraph,
-    parallel,
-    pbapply,
     readr,
     withr
 Suggests: 
+    future,
+    future.apply,
     knitr,
+    parallelly,
     rmarkdown,
     testthat (>= 3.0.0),
     visNetwork
