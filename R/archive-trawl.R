@@ -85,6 +85,8 @@ pkgstats_from_archive <- function (path, archive = TRUE, prev_results = NULL,
 
     if (!is.null (res) & !is.null (results_file)) {
 
+        results_file <- normalizePath (results_file)
+
         results_path <- gsub (basename (results_file), "",
                               results_file)
         if (!dir.exists (results_path))
