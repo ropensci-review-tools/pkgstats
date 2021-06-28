@@ -60,9 +60,8 @@ pkgstats_from_archive <- function (path, archive = TRUE, prev_results = NULL,
 
     if (length (flist) > 0) {
 
-        ac <- parallelly::availableCores ()
-        ac <- floor (ac / 2)
-        future::plan (future::multisession (workers = ac))
+        future::plan (future::multisession (workers =
+                                    parallelly::availableCores () / 2))
 
         res <- future.apply::future_lapply (flist, function (i) {
                                       s <- tryCatch (pkgstats (i),
@@ -75,6 +74,8 @@ pkgstats_from_archive <- function (path, archive = TRUE, prev_results = NULL,
                                       return (res)
                              },
                              future.seed = 1)
+
+        future::plan (sequential) # close multisession workers
 
         res <- do.call (rbind, res)
     }
