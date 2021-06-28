@@ -75,7 +75,7 @@ pkgstats_from_archive <- function (path, archive = TRUE, prev_results = NULL,
                              },
                              future.seed = 1)
 
-        future::plan (sequential) # close multisession workers
+        future::plan (future::sequential) # close multisession workers
 
         res <- do.call (rbind, res)
     }
