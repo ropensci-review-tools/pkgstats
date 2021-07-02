@@ -219,7 +219,9 @@ object_summary <- function (x) {
     }
     n_fns_r <- repl0withNA (n_fns_r)
     n_fns_r_exported <- repl0withNA (n_fns_r_exported)
-    n_fns_r_not_exported <- repl0withNA (n_fns_r_not_exported)
+    if (is.na (n_fns_r_exported))
+        n_fns_r_not_exported <- repl0withNA (n_fns_r_not_exported)
+    # otherwise pkgs with all R fns exported should retain 0L here
 
     get_n_fns_per_file <- function (f) {
         index <- which (!is.na (f$file_name))
