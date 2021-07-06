@@ -58,8 +58,8 @@ Alternatively, the package can be installed by running one of the
 following lines:
 
 ``` r
-remotes::install_github ("ropensci-review-tools/pkgtest")
-pak::pkg_install ("ropensci-review-tools/pkgtest")
+remotes::install_github ("ropensci-review-tools/pkgstats")
+pak::pkg_install ("ropensci-review-tools/pkgstats")
 ```
 
 The package can then loaded for use with
