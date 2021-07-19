@@ -152,6 +152,13 @@ get_ctags <- function (d = "R", has_tabs) {
     tags <- tags [which (!tools::file_ext (tags$file) == "svg"), ]
 
     tags$start <- as.integer (gsub ("^line\\:", "", tags$start))
+
+    # end tags may fail, and dump text other than "end:XX", so:
+    index0 <- grep ("^end\\:", tags$end)
+    index1 <- grep ("^[[:alpha:]]", tags$end)
+    index1 <- index1 [which (!index1 %in% index0)]
+    tags$end [index1] <- NA
+
     tags$end <- as.integer (gsub ("^end\\:", "", tags$end))
     tags$file <- gsub (paste0 (path_sub, .Platform$file.sep), "", tags$file)
 
