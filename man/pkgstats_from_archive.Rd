@@ -47,3 +47,8 @@ summary statistics generated from the \link{pkgstats_summary} function.
 \description{
 Trawl a local CRAN archive and extract statistics from all packages
 }
+\note{
+The archive trawl is performed in parallel using a hard-coded
+\code{future(multisession)} strategy from the future package using half of all
+available cores.
+}
