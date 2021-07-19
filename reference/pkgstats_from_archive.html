@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.247</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.248</span>
       </span>
     </div>
 
@@ -173,6 +173,11 @@ file.</p></td>
 
     <p>A <code>data.frame</code> object with one row for each package containing
 summary statistics generated from the <a href='pkgstats_summary.html'>pkgstats_summary</a> function.</p>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>The archive trawl is performed in parallel using a hard-coded
+<code>future(multisession)</code> strategy from the future package using half of all
+available cores.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
