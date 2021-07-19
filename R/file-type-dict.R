@@ -645,6 +645,9 @@ file_exts <- function (exts = NULL) {
     x <- data.frame (x)
     names (x) <- c ("ext", "type", "cmt_open", "cmt_close", "cmt")
 
+    # add '.q' files because BDR uses these (for example, in 'boot'):
+    x <- rbind (x, 'q', 'R', '', '', '^\\s*#')
+
     if (!is.null (exts)) {
 
         x <- x [match (exts, x$ext), ]
