@@ -136,12 +136,9 @@ pkgstats_from_archive <- function (path,
             stop ("Directory [", results_path, "] does not exist")
 
         results_file <- basename (results_file)
-        results_file <- paste0 (tools::file_path_sans_ext (results_file),
-                                ".Rds")
-
+        results_file <- tools::file_path_sans_ext (results_file)
         results_file <- file.path (results_path,
-                                   paste0 (tools::file_path_sans_ext (results_file),
-                                           ".Rds"))
+                                   paste0 (results_file, ".Rds"))
 
         saveRDS (out, results_file)
     }
