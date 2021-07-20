@@ -66,13 +66,16 @@ pkgstats_from_archive <- function (path,
 
     if (!is.null (prev_results)) {
 
+        tars <- vapply (flist, function (i)
+                        utils::tail (strsplit (i, .Platform$file.sep) [[1]], 1),
+                        character (1))
+
         prev_tars <- paste0 (prev_results$package,
                              "_",
                              prev_results$version,
                              ".tar.gz")
-        index <- grepl (paste0 (prev_tars, "$", collapse = "|"), flist)
 
-        flist <- flist [which (!index)]
+        flist <- flist [which (!tars %in% prev_tars)]
     }
 
     if (length (flist) > 0) {
