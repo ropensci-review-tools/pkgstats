@@ -121,6 +121,7 @@ get_ctags <- function (d = "R", has_tabs) {
                    " ",
                    path_dir)
     system (cmd, ignore.stderr = TRUE)
+    Sys.sleep (0.2)
 
     setwd (wd) # called via withr::with_path anyway, so doesn't really matter
 
@@ -226,8 +227,10 @@ make_gtags <- function () {
                          full.names = TRUE,
                          pattern = "GRTAGS$|GPATH$|GTAGS$")
 
-    if (length (flist) == 0)
+    if (length (flist) == 0) {
         system ("gtags")
+        Sys.sleep (0.2)
+    }
 
     return (length (flist) == 0)
 }
@@ -235,6 +238,7 @@ make_gtags <- function () {
 get_gtags <- function () {
 
     x <- system ("global -rx  .", intern = TRUE)
+    Sys.sleep (0.1)
     # global may fail to parse files, as happens for example with "rms" package
     if (length (x) == 0)
         return (NULL)
