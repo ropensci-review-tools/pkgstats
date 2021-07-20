@@ -58,6 +58,7 @@ pkgstats_from_archive <- function (path,
                          recursive = archive,
                          full.names = TRUE,
                          pattern = "\\.tar\\.gz$")
+    flist <- normalizePath (flist)
 
     out <- prev_results
 
