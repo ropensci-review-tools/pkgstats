@@ -253,7 +253,7 @@ get_gtags <- function () {
                     readr::col_character (),
                     readr::col_character ())
     suppressWarnings (
-        gtags <- readr::read_delim (x,
+        gtags <- readr::read_delim (paste0 (x, collapse = "\n"),
                             delim = "\t",
                             col_names = c ("tag", "line", "file", "content"),
                             col_types = ctypes)
