@@ -8,7 +8,8 @@
 #' @param prev_results Result of previous call to this function, if available.
 #' Submitting previous results will ensure that only newer packages not present
 #' in previous result will be analysed, with new results simply appended to
-#' previous results.
+#' previous results. This parameter can also specify a file to be read with
+#' `readRDS()`.
 #' @param results_file Can be used to specify the name or full path of a `.Rds`
 #' file to which results should be saved once they have been generated. The
 #' '.Rds' extension will be automatically appended, and any other extensions
@@ -65,6 +66,17 @@ pkgstats_from_archive <- function (path,
     res <- NULL
 
     if (!is.null (prev_results)) {
+
+        if (is.character (prev_results)) {
+            if (length (prev_results) > 1)
+                stop ("prev_results must be a single-length character")
+            if (!file.exists (prev_results))
+                stop ("file [", prev_results, "] does not exist")
+            prev_results <- tryCatch (readRDS (prev_results),
+                                      error = function (e) e)
+            if (methods::is (prev_results, "error"))
+                stop ("Unable to read prev_results: ", e)
+        }
 
         tars <- vapply (flist, function (i)
                         utils::tail (strsplit (i, .Platform$file.sep) [[1]], 1),
