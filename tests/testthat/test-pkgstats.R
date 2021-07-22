@@ -3,7 +3,7 @@ test_that ("pkgstats", {
     path <- list.files (getwd (),
                         full.names = TRUE,
                         pattern = "demo")
-    expect_silent (s <- pkgstats (path))
+    s <- pkgstats (path) # now produces readr v0.2 output
     expect_type (s, "list")
 
     nms <- c ("loc",
