@@ -253,10 +253,13 @@ get_gtags <- function () {
                     readr::col_double (),
                     readr::col_character (),
                     readr::col_character ())
+    cnames <- c ("tag", "line", "file", "content")
     suppressWarnings (
         gtags <- readr::read_tsv (paste0 (x, collapse = "\n"),
-                            col_names = c ("tag", "line", "file", "content"),
-                            col_types = ctypes)
+                                  col_names = cnames,
+                                  col_types = ctypes,
+                                  col_select = cnames,
+                                  lazy = FALSE)
         )
 
     # rm header files:
