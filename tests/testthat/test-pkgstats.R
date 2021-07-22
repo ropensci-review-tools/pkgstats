@@ -3,7 +3,11 @@ test_that ("pkgstats", {
     path <- list.files (getwd (),
                         full.names = TRUE,
                         pattern = "demo")
-    s <- pkgstats (path) # now produces readr v0.2 output
+    # message is now produced once per session by readr, but can only be
+    # suppressed by Suggesting yet another package, `tidyselect`.
+    #expect_message (
+        s <- pkgstats (path)
+    #    )
     expect_type (s, "list")
 
     nms <- c ("loc",

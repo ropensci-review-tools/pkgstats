@@ -144,6 +144,7 @@ get_ctags <- function (d = "R", has_tabs) {
                                                col_names = cnames,
                                                col_types = ctypes,
                                                col_select = cnames,
+                                               progress = FALSE,
                                                lazy = FALSE)
                       )
 
@@ -259,6 +260,7 @@ get_gtags <- function () {
                                   col_names = cnames,
                                   col_types = ctypes,
                                   col_select = cnames,
+                                  progress = FALSE,
                                   lazy = FALSE)
         )
 
