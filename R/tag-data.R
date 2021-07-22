@@ -143,7 +143,9 @@ get_ctags <- function (d = "R", has_tabs) {
                       tags <- readr::read_delim (f,
                                                  delim = "\t",
                                                  col_names = cnames,
-                                                 col_types = ctypes)
+                                                 col_types = ctypes,
+                                                 col_select = cnames,
+                                                 lazy = FALSE)
                       )
 
     if (nrow (tags) == 0)
