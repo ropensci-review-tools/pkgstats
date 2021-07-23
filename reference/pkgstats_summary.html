@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.262</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.265</span>
       </span>
     </div>
 
@@ -117,7 +117,7 @@
     <p>Condense the output of <code>pkgstats</code> to summary statistics only</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pkgstats_summary</span><span class='op'>(</span><span class='va'>s</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>pkgstats_summary</span><span class='op'>(</span>s <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -125,7 +125,8 @@
     <tr>
       <th>s</th>
       <td><p>Output of <a href='pkgstats.html'>pkgstats</a>, containing full statistical data on one
-package.</p></td>
+package. Default of <code>NULL</code> returns a single row with <code>NA</code> values (used in
+<a href='pkgstats_from_archive.html'>pkgstats_from_archive</a>).</p></td>
     </tr>
     </table>
 
