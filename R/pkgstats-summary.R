@@ -8,6 +8,9 @@
 #' @export
 pkgstats_summary <- function (s = NULL) {
 
+    if (is.null (s))
+        return (null_stats ())
+
     out <- data.frame (package = s$desc$package,
                        version = s$desc$version,
                        date = s$desc$date,
