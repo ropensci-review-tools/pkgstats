@@ -4,11 +4,12 @@
 \alias{pkgstats_summary}
 \title{Condense the output of \code{pkgstats} to summary statistics only}
 \usage{
-pkgstats_summary(s)
+pkgstats_summary(s = NULL)
 }
 \arguments{
 \item{s}{Output of \link{pkgstats}, containing full statistical data on one
-package.}
+package. Default of \code{NULL} returns a single row with \code{NA} values (used in
+\link{pkgstats_from_archive}).}
 }
 \value{
 Summarised version of \code{s}, as a single row of a standardised

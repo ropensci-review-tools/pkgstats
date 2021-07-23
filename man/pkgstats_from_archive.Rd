@@ -23,7 +23,8 @@ directory (that is, current packages only).}
 \item{prev_results}{Result of previous call to this function, if available.
 Submitting previous results will ensure that only newer packages not present
 in previous result will be analysed, with new results simply appended to
-previous results.}
+previous results. This parameter can also specify a file to be read with
+\code{readRDS()}.}
 
 \item{results_file}{Can be used to specify the name or full path of a \code{.Rds}
 file to which results should be saved once they have been generated. The

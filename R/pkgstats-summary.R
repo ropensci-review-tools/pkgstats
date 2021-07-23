@@ -1,11 +1,12 @@
 #' Condense the output of `pkgstats` to summary statistics only
 #'
 #' @param s Output of \link{pkgstats}, containing full statistical data on one
-#' package.
+#' package. Default of `NULL` returns a single row with `NA` values (used in
+#' \link{pkgstats_from_archive}).
 #' @return Summarised version of `s`, as a single row of a standardised
 #' `data.frame` object
 #' @export
-pkgstats_summary <- function (s) {
+pkgstats_summary <- function (s = NULL) {
 
     out <- data.frame (package = s$desc$package,
                        version = s$desc$version,
@@ -26,6 +27,62 @@ pkgstats_summary <- function (s) {
     out <- cbind (out, object_summary (s$objects))
 
     out <- cbind (out, network_summary (s$network))
+
+    return (out)
+}
+
+null_stats <- function () {
+
+    out <- data.frame (package = NA_character_,
+                       version = NA_character_,
+                       date = NA_character_,
+                       license = NA_character_)
+
+    loc_nms <- c ("files_R", "files_src", "files_inst", "files_vignettes",
+                  "files_tests", "loc_R", "loc_src", "loc_inst",
+                  "loc_vignettes", "loc_tests", "blank_lines_R",
+                  "blank_lines_src", "blank_lines_inst",
+                  "blank_lines_vignettes", "blank_lines_tests",
+                  "comment_lines_R", "comment_lines_src", "comment_lines_inst",
+                  "comment_lines_vignettes", "comment_lines_tests", "rel_space",
+                  "rel_space_R", "rel_space_src", "rel_space_inst",
+                  "rel_space_vignettes", "rel_space_tests", "indentation",
+                  "nexpr")
+    out [loc_nms] <- NA_integer_
+
+    out$num_vignettes <- NA_integer_
+    out$num_demos <- NA_integer_
+    out$num_data_files <- NA_integer_
+    out$data_size_total <- NA_integer_
+    out$data_size_median <- NA_integer_
+    out$translations <- NA_character_
+
+    desc_nms <- c ("urls", "bugs", "desc_n_aut", "desc_n_ctb", "desc_n_fnd",
+                   "desc_n_rev", "desc_n_ths", "desc_n_trl", "depends",
+                   "imports", "suggests", "linking_to")
+    out [desc_nms] <- NA_character_
+    out [grep ("^desc\\_", desc_nms, value = TRUE)] <- NA_integer_
+
+    obj_nms <- c ("n_fns_r", "n_fns_r_exported", "n_fns_r_not_exported",
+                  "n_fns_src", "n_fns_per_file_r", "n_fns_per_file_src",
+                  "npars_exported_mn", "npars_exported_md", "loc_per_fn_r_mn",
+                  "loc_per_fn_r_md", "loc_per_fn_r_exp_mn",
+                  "loc_per_fn_r_exp_md", "loc_per_fn_r_not_exp_mn",
+                  "loc_per_fn_r_not_exp_md", "loc_per_fn_src_mn",
+                  "loc_per_fn_src_md", "languages", "doclines_per_fn_exp_mn",
+                  "doclines_per_fn_exp_md", "doclines_per_fn_not_exp_mn",
+                  "doclines_per_fn_not_exp_md", "docchars_per_par_exp_mn",
+                  "docchars_per_par_exp_md")
+    out [obj_nms] <- NA_integer_
+
+    net_nms <- c ("n_edges", "n_edges_r", "n_edges_src", "n_clusters",
+                  "centrality_dir_mn", "centrality_dir_md",
+                  "centrality_dir_mn_no0", "centrality_dir_md_no0",
+                  "centrality_undir_mn", "centrality_undir_md",
+                  "centrality_undir_mn_no0", "centrality_undir_md_no0",
+                  "num_terminal_edges_dir", "num_terminal_edges_undir",
+                  "node_degree_mn", "node_degree_md", "node_degree_max")
+    out [net_nms] <- NA_integer_
 
     return (out)
 }
