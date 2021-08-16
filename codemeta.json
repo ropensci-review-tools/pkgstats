@@ -16,7 +16,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.0.5 (2021-03-31)",
+  "runtimePlatform": "R version 4.1.0 (2021-05-18)",
   "author": [
     {
       "@type": "Person",
@@ -201,7 +201,7 @@
       "identifier": "https://sysreqs.r-hub.io/get/cxx11"
     }
   ],
-  "fileSize": "3051.175KB",
+  "fileSize": "1898.876KB",
   "developmentStatus": "https://www.repostatus.org/#concept",
   "readme": "https://github.com/ropensci-review-tools/pkgstats/blob/main/README.md",
   "relatedLink": [
@@ -210,5 +210,5 @@
     "https://ropensci-review-tools.github.io/pkgstats",
     "https://docs.ropensci.org/pkgstats/"
   ],
-  "contIntegration": "https://codecov.io/gh/ropensci-review-tools/pkgstats"
+  "contIntegration": ["https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check", "https://codecov.io/gh/ropensci-review-tools/pkgstats"]
 }
