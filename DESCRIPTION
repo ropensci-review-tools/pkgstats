@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.0.0.266
+Version: 0.0.0.267
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
@@ -16,6 +16,7 @@ Imports:
     checkmate,
     dplyr,
     igraph,
+    methods,
     readr,
     withr
 Suggests: 
