@@ -1,5 +1,3 @@
-# pkgstats
-
 <!-- badges: start -->
 
 [![R build
@@ -8,6 +6,8 @@ status](https://github.com/ropensci-review-tools/pkgstats/workflows/R-CMD-check/
 [![Project Status:
 Concept](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 <!-- badges: end -->
+
+# pkgstats
 
 Extract summary statistics of R package structure and functionality.
 Also includes a function to extract statistics of all R packages from a
@@ -103,9 +103,11 @@ Please ensure you see the following prior to proceeding:
 ctags_test ()
 ```
 
-    ## ctags installation works as expected
+    ## ctags does not function as required; you may need to upgrade? see
+    ## https://github.com/universal-ctags/ctags/blob/master/man/ctags-lang-r.7.rst.in
+    ## for expected output
 
-    ## [1] TRUE
+    ## [1] FALSE
 
 ## Demonstration
 
@@ -126,7 +128,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.542   0.044   0.585
+    ##   0.783   0.043   1.739
 
 ``` r
 names (p)
@@ -143,7 +145,7 @@ p [!names (p) %in% c ("objects", "network")]
 ```
 
     ## $loc
-    ## # A tibble: 5 x 12
+    ## # A tibble: 5 × 12
     ## # Groups:   language, dir [5]
     ##   language   dir     nfiles nlines ncode  ndoc nempty nspaces nchars nexpr ntabs
     ##   <chr>      <chr>    <int>  <int> <int> <int>  <int>   <int>  <int> <dbl> <int>
@@ -393,7 +395,7 @@ head (p$objects)
     ## 5              NA              NA           54
     ## 6              NA              NA           54
 
-There are a total of 196 objects, which the following lines provide some
+There are a total of 218 objects, which the following lines provide some
 insight into.
 
 ``` r
@@ -402,7 +404,7 @@ table (p$objects$language)
 
     ## 
     ##   C C++   R 
-    ##  64   4 128
+    ##  64   4 150
 
 ``` r
 table (p$objects$kind)
@@ -410,17 +412,17 @@ table (p$objects$kind)
 
     ## 
     ##        enum    function functionVar   globalVar        list       macro 
-    ##           1          96          27          30           1           4 
-    ##      member      struct    variable 
-    ##           4           2          31
+    ##           1         102          27          42           4           4 
+    ##      member    nameattr      struct    variable 
+    ##           4           1           2          31
 
 ``` r
 table (p$objects$kind [p$objects$language == "R"])
 ```
 
     ## 
-    ##    function functionVar   globalVar        list 
-    ##          70          27          30           1
+    ##    function functionVar   globalVar        list    nameattr 
+    ##          76          27          42           4           1
 
 ``` r
 table (p$objects$kind [p$objects$language == "C"])
@@ -450,20 +452,20 @@ nodes.
 head (p$network)
 ```
 
-    ##             file line1         from        to language cluster_dir
-    ## 1       R/pipe.R   297   new_lambda   freduce        R           1
-    ## 2    R/getters.R    14    `[[.fseq` functions        R           2
-    ## 3    R/getters.R    23     `[.fseq` functions        R           2
-    ## 4 R/debug_pipe.R    28   debug_fseq functions        R           2
-    ## 5 R/debug_pipe.R    35   debug_fseq functions        R           2
-    ## 6 R/debug_pipe.R    42 undebug_fseq functions        R           2
-    ##   centrality_dir cluster_undir centrality_undir
-    ## 1              1             1               20
-    ## 2              0             2                0
-    ## 3              0             2                0
-    ## 4              0             2                0
-    ## 5              0             2                0
-    ## 6              0             2                0
+    ##             file line1       from        to language cluster_dir centrality_dir
+    ## 1       R/pipe.R   297 new_lambda   freduce        R           1              1
+    ## 2    R/getters.R    14  `[[.fseq` functions        R           2              0
+    ## 3    R/getters.R    23   `[.fseq` functions        R           2              0
+    ## 4  R/functions.R    26 print.fseq functions        R           2              0
+    ## 5 R/debug_pipe.R    28 debug_fseq functions        R           2              0
+    ## 6 R/debug_pipe.R    35 debug_fseq functions        R           2              0
+    ##   cluster_undir centrality_undir
+    ## 1             1               20
+    ## 2             2                0
+    ## 3             2                0
+    ## 4             2                0
+    ## 5             2                0
+    ## 6             2                0
 
 ``` r
 nrow (p$network)
