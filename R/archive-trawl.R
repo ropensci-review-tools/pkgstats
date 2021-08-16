@@ -63,7 +63,7 @@ pkgstats_from_archive <- function (path,
 
     out <- prev_results
 
-    res <- NULL
+    res <- e <- NULL
 
     if (!is.null (prev_results)) {
 
@@ -107,9 +107,9 @@ pkgstats_from_archive <- function (path,
         for (f in flist) {
 
             res <- future.apply::future_lapply (f, function (i) {
-                                    s <- tryCatch (pkgstats (i),
+                                    s <- tryCatch (pkgstats::pkgstats (i),
                                                    error = function (e) NULL)
-                                    res <- tryCatch (pkgstats_summary (s),
+                                    res <- tryCatch (pkgstats::pkgstats_summary (s),
                                                      error = function (e) NULL)
                                     if (is.null (s)) { # pkgstats failed
                                         p <- strsplit (f, .Platform$file.sep) [[1]]
