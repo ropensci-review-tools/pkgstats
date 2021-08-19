@@ -30,16 +30,25 @@ ctags_test <- function () {
     x <- x [-which (grepl ("^\\!", x))]
     writeLines (x, con = f_out)
 
+    ctypes <- list (readr::col_character (),
+                    readr::col_character (),
+                    readr::col_character (),
+                    readr::col_character (),
+                    readr::col_character (),
+                    readr::col_character (),
+                    readr::col_character ())
+    cnames <- c ("tag", "file", "content", "kind", "start", "language", "end")
+
     suppressWarnings (
-                      tags <- readr::read_delim (f_out,
-                                                 delim = "\t",
-                                                 col_names = FALSE,
-                                                 col_types = readr::cols ())
+                      tags <- readr::read_tsv (f_out,
+                                               col_names = cnames,
+                                               col_types = ctypes,
+                                               col_select = cnames,
+                                               progress = FALSE,
+                                               lazy = FALSE)
                       )
-    names (tags) <- c ("tag", "file", "content", "kind")
 
     expected_kinds <- c ("globalVar",
-                         "vector",
                          "list",
                          "dataframe",
                          "nameattr",
