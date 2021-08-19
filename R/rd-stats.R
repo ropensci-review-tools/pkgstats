@@ -32,20 +32,23 @@ rd_stats <- function (path) {
 
     # excluce imported fns:
     nmspc <- file.path (path, "NAMESPACE")
-    checkmate::assert_file (nmspc)
-    nmspc <- brio::read_lines (nmspc)
+    # some packages have no NAMESPACE files (like adehabitat 1.2-1)
+    if (file.exists (nmspc)) {
 
-    imports <- grep ("^importFrom", nmspc, value = TRUE)
-    imports <- unlist (lapply (strsplit (imports, ","),
-                               function (i)
-                                   gsub ("\\)$", "", i [2])))
-    imports <- gsub ("\\\"", "", imports)
+        nmspc <- brio::read_lines (nmspc)
 
-    if (any (imports %in% names (n))) {
-        index <- which (!names (n) %in% imports)
-        n <- n [index]
-        nchars_mn <- nchars_mn [index]
-        nchars_md <- nchars_md [index]
+        imports <- grep ("^importFrom", nmspc, value = TRUE)
+        imports <- unlist (lapply (strsplit (imports, ","),
+                                   function (i)
+                                       gsub ("\\)$", "", i [2])))
+        imports <- gsub ("\\\"", "", imports)
+
+        if (any (imports %in% names (n))) {
+            index <- which (!names (n) %in% imports)
+            n <- n [index]
+            nchars_mn <- nchars_mn [index]
+            nchars_md <- nchars_md [index]
+        }
     }
 
     doclines <- vapply (names (n), function (i)
