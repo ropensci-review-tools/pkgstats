@@ -109,16 +109,16 @@ pkgstats_from_archive <- function (path,
             res <- future.apply::future_lapply (f, function (i) {
                             s <- tryCatch (pkgstats::pkgstats (i),
                                            error = function (e) NULL)
-                            res <- tryCatch (pkgstats::pkgstats_summary (s),
+                            summ <- tryCatch (pkgstats::pkgstats_summary (s),
                                              error = function (e) NULL)
-                            if (is.null (s)) { # pkgstats failed
+                            if (is.null (summ)) { # pkgstats failed
                                 p <- strsplit (i, .Platform$file.sep) [[1]]
                                 p <- strsplit (utils::tail (p, 1), "\\_") [[1]]
-                                res ["package"] <- p [1]
-                                res ["version"] <-
+                                summ ["package"] <- p [1]
+                                summ ["version"] <-
                                     gsub ("\\.tar\\.gz$", "", p [2])
                             }
-                            return (res)
+                            return (summ)
                      },
                      future.seed = 1)
 
