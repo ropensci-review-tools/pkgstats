@@ -141,5 +141,8 @@ add_src_to_fn_data <- function (fns, src) {
             src [n] <- NA_integer_
     }
 
-    return (rbind (fns, src))
+    out <- rbind (fns, src)
+    rownames (out) <- NULL
+
+    return (out)
 }
