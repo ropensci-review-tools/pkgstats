@@ -99,7 +99,13 @@ all_functions <- function (path) {
                     has_dots = as.logical (npars [2, ]))
     }
 
-    do.call (rbind, lapply (r_files, eval1))
+    ret <- do.call (rbind, lapply (r_files, eval1))
+    # append "R" directory to file names:
+    ret$file_name <- paste0 ("R",
+                             .Platform$file.sep,
+                             ret$file_name)
+
+    return (ret)
 }
 
 #' param src value of tags$stats from tags_data()
