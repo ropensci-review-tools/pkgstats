@@ -331,6 +331,10 @@ fn_var_call_graph_r <- function (fns, fn_vars, path) {
 
         f_full <- normalizePath (file.path (path, f))
 
+        p <- control_parse (file = f_full)
+        if (methods::is (p, "simpleError"))
+            next
+
         pd <- utils::getParseData (control_parse (file = f_full))
 
         fn_calls <- pd [pd$text %in% fns$tag &

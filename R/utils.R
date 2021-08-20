@@ -33,7 +33,9 @@ control_parse <- function (file) {
     out <- tryCatch (parse (text = x, keep.source = TRUE, encoding = "UTF-8"),
                      error = function (e) e)
 
-    while (methods::is (out, "simpleError")) {
+    count <- 0
+    while (methods::is (out, "simpleError") &
+           count < floor (length (x) / 10)) {
 
         g <- gregexpr ("\'.*\'", out$message)
         ptn <- gsub ("\'", "", regmatches (out$message, g) [[1]])
@@ -51,6 +53,8 @@ control_parse <- function (file) {
 
         out <- tryCatch (parse (text = x, keep.source = TRUE, encoding = "UTF-8"),
                          error = function (e) e)
+
+        count <- count + 1L
     }
 
     return (out)
