@@ -139,6 +139,13 @@ get_ctags <- function (d = "R", has_tabs) {
                     readr::col_character ())
     cnames <- c ("tag", "file", "content", "kind", "start", "language", "end")
 
+    n_flds <- median (readr::count_fields (f,
+                                           tokenizer = readr::tokenizer_tsv (),
+                                           n_max = 100L))
+    if (n_flds != length (cnames))
+        return (NULL)
+
+
     suppressWarnings (
                       tags <- readr::read_tsv (f,
                                                col_names = cnames,
