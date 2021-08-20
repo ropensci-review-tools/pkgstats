@@ -112,7 +112,7 @@ pkgstats_from_archive <- function (path,
                                     res <- tryCatch (pkgstats::pkgstats_summary (s),
                                                      error = function (e) NULL)
                                     if (is.null (s)) { # pkgstats failed
-                                        p <- strsplit (f, .Platform$file.sep) [[1]]
+                                        p <- strsplit (i, .Platform$file.sep) [[1]]
                                         p <- strsplit (utils::tail (p, 1), "\\_") [[1]]
                                         res ["package"] <- p [1]
                                         res ["version"] <- gsub ("\\.tar\\.gz$", "", p [2])
