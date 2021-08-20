@@ -69,9 +69,8 @@ all_functions <- function (path) {
 
     eval1 <- function (f) {
 
-        p <- tryCatch (parse (file = f),
-                       error = function (err) "error")
-        if ("error" %in% p)
+        p <- control_parse (file = f)
+        if (methods::is (p, "simpleError"))
             return (NULL)
 
         # All functions are parsed to length 3, while things like `"_PACKAGE"`
