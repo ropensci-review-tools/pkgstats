@@ -128,6 +128,10 @@ get_ctags <- function (d = "R", has_tabs) {
     # remove header lines:
     x <- brio::read_lines (f)
     x <- x [-which (grepl ("^\\!", x))]
+
+    if (length (x) == 0L)
+        return (NULL) # no ctags
+
     writeLines (x, con = f)
 
     ctypes <- list (readr::col_character (),
