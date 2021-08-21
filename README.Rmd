@@ -109,7 +109,7 @@ includes a function to ensure your local installations of `universal-ctags` and
 `global` work correctly. Please ensure you see the following prior to
 proceeding:
 
-```{r ctags-check}
+```{r ctags-check, eval = TRUE}
 ctags_test ()
 ```
 

@@ -103,11 +103,9 @@ Please ensure you see the following prior to proceeding:
 ctags_test ()
 ```
 
-    ## ctags does not function as required; you may need to upgrade? see
-    ## https://github.com/universal-ctags/ctags/blob/master/man/ctags-lang-r.7.rst.in
-    ## for expected output
+    ## ctags installation works as expected
 
-    ## [1] FALSE
+    ## [1] TRUE
 
 ## Demonstration
 
@@ -128,7 +126,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.783   0.043   1.739
+    ##   0.837   0.074   1.804
 
 ``` r
 names (p)
@@ -380,13 +378,13 @@ Object tables look like this:
 head (p$objects)
 ```
 
-    ##   file_name     fn_name     kind language loc npars has_dots exported
-    ## 1 aliases.R     extract function        R   1    NA       NA     TRUE
-    ## 2 aliases.R    extract2 function        R   1    NA       NA     TRUE
-    ## 3 aliases.R  use_series function        R   1    NA       NA     TRUE
-    ## 4 aliases.R         add function        R   1    NA       NA     TRUE
-    ## 5 aliases.R    subtract function        R   1    NA       NA     TRUE
-    ## 6 aliases.R multiply_by function        R   1    NA       NA     TRUE
+    ##     file_name     fn_name     kind language loc npars has_dots exported
+    ## 1 R/aliases.R     extract function        R   1    NA       NA     TRUE
+    ## 2 R/aliases.R    extract2 function        R   1    NA       NA     TRUE
+    ## 3 R/aliases.R  use_series function        R   1    NA       NA     TRUE
+    ## 4 R/aliases.R         add function        R   1    NA       NA     TRUE
+    ## 5 R/aliases.R    subtract function        R   1    NA       NA     TRUE
+    ## 6 R/aliases.R multiply_by function        R   1    NA       NA     TRUE
     ##   param_nchars_md param_nchars_mn num_doclines
     ## 1              NA              NA           54
     ## 2              NA              NA           54
@@ -395,7 +393,7 @@ head (p$objects)
     ## 5              NA              NA           54
     ## 6              NA              NA           54
 
-There are a total of 218 objects, which the following lines provide some
+There are a total of 195 objects, which the following lines provide some
 insight into.
 
 ``` r
@@ -404,7 +402,7 @@ table (p$objects$language)
 
     ## 
     ##   C C++   R 
-    ##  64   4 150
+    ##  64   4 127
 
 ``` r
 table (p$objects$kind)
@@ -412,17 +410,17 @@ table (p$objects$kind)
 
     ## 
     ##        enum    function functionVar   globalVar        list       macro 
-    ##           1         102          27          42           4           4 
-    ##      member    nameattr      struct    variable 
-    ##           4           1           2          31
+    ##           1          95          27          30           1           4 
+    ##      member      struct    variable 
+    ##           4           2          31
 
 ``` r
 table (p$objects$kind [p$objects$language == "R"])
 ```
 
     ## 
-    ##    function functionVar   globalVar        list    nameattr 
-    ##          76          27          42           4           1
+    ##    function functionVar   globalVar        list 
+    ##          69          27          30           1
 
 ``` r
 table (p$objects$kind [p$objects$language == "C"])
