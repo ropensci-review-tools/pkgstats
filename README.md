@@ -112,7 +112,7 @@ ctags_test ()
 The following code demonstrates the output of the main function,
 `pkgstats`, applied to the relatively simple [`magrittr`
 package](https://github.com/tidyverse/magrittr). The `system.time` call
-also shows that these statistics are extracted very quickly.
+also shows that these statistics are extracted quite quickly.
 
 ``` r
 tarball <- "magrittr_2.0.1.tar.gz"
@@ -126,7 +126,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.837   0.074   1.804
+    ##   0.859   0.065   1.816
 
 ``` r
 names (p)
@@ -222,9 +222,8 @@ sum (p$loc$nspaces [index]) / sum (p$loc$nchars [index])
 
 Finally, the `ntabs` statistic can be used to identify whether code uses
 tab characters as indentation, otherwise the `indentation` statistics
-indicate median numbers of white spaces by which code is indented.
-
-The `objects` and `network` items returned by the [`pkgstats()`
+indicate median numbers of white spaces by which code is indented. The
+`objects` and `network` items returned by the [`pkgstats()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats.html)
 are described further below.
 
@@ -318,8 +317,8 @@ length (strsplit (s$suggests, ", ") [[1]])
 **Statistics on individual objects (including functions)**
 
 These statistics all refer to “functions”, but actually represent more
-general “objects,” such as global variables or class definitions, as
-detailed below.
+general “objects,” such as global variables or class definitions
+(generally from languages other than R), as detailed below.
 
 -   Numbers of functions in R (`n_fns_r`)
 -   Numbers of exported and non-exported R functions
@@ -393,8 +392,8 @@ head (p$objects)
     ## 5              NA              NA           54
     ## 6              NA              NA           54
 
-There are a total of 195 objects, which the following lines provide some
-insight into.
+The `magrittr` package has a total of 195 objects, which the following
+lines provide some insight into.
 
 ``` r
 table (p$objects$language)
@@ -440,11 +439,11 @@ table (p$objects$kind [p$objects$language == "C++"])
 
 ### Network
 
-The `network` item details all relationships between objects, where
+The `network` item details all relationships between objects, which
 generally reflects one object calling or otherwise depending on another
-object. Each row thus represents the edge of a network, with each entry
-in the `from` and `to` columns representing the network vertices or
-nodes.
+object. Each row thus represents one edge of a “function call” network,
+with each entry in the `from` and `to` columns representing the network
+vertices or nodes.
 
 ``` r
 head (p$network)
@@ -476,8 +475,8 @@ each edge, measured as betweenness centrality assuming edges to be both
 directed (`centrality_dir`) and undirected (`centrality_undir`). More
 central edges reflect connections between objects that are more central
 to package functionality, and vice versa. The distinct components of the
-network are also represented by discrete cluster numbers, object both
-for directed and undirected versions of the network. Each distinct
+network are also represented by discrete cluster numbers, calculated
+both for directed and undirected versions of the network. Each distinct
 cluster number represents a distinct group of objects, internally
 related to other members of the same cluster, yet independent of all
 objects with different cluster numbers.
@@ -485,4 +484,4 @@ objects with different cluster numbers.
 The network can be viewed as an interactive
 [`vis.js`](https://visjs.org/) network through passing the result of
 `pkgstats` – here, `p` – to the [`plot_network()`
-function](https://docs.ropensci.org/pkgstats/reference/plot_network.html)
+function](https://docs.ropensci.org/pkgstats/reference/plot_network.html).
