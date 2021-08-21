@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.284</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.285</span>
       </span>
     </div>
 
@@ -124,7 +124,7 @@
 <div id="demonstration" class="section level2">
 <h2 class="hasAnchor">
 <a href="#demonstration" class="anchor"></a>Demonstration</h2>
-<p>The following code demonstrates the output of the main function, <code>pkgstats</code>, applied to the relatively simple <a href="https://github.com/tidyverse/magrittr"><code>magrittr</code> package</a>. The <code>system.time</code> call also shows that these statistics are extracted very quickly.</p>
+<p>The following code demonstrates the output of the main function, <code>pkgstats</code>, applied to the relatively simple <a href="https://github.com/tidyverse/magrittr"><code>magrittr</code> package</a>. The <code>system.time</code> call also shows that these statistics are extracted quite quickly.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tarball</span> <span class="op">&lt;-</span> <span class="st">"magrittr_2.0.1.tar.gz"</span>
 <span class="va">u</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span> <span class="op">(</span><span class="st">"https://cran.r-project.org/src/contrib/"</span>,
@@ -135,7 +135,7 @@
     <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pkgstats.html">pkgstats</a></span> <span class="op">(</span><span class="va">f</span><span class="op">)</span>
     <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">##    user  system elapsed </span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="co">##   0.837   0.074   1.804</span></span></code></pre></div>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co">##   0.859   0.065   1.816</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span> <span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">## [1] "loc"          "vignettes"    "data_stats"   "desc"         "translations"</span></span>
@@ -209,8 +209,7 @@
 <code class="sourceCode R"><span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">loc</span><span class="op">$</span><span class="va">dir</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span> <span class="op">(</span><span class="st">"R"</span>, <span class="st">"src"</span><span class="op">)</span><span class="op">)</span> <span class="co"># consider source code only</span>
 <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">loc</span><span class="op">$</span><span class="va">nspaces</span> <span class="op">[</span><span class="va">index</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">loc</span><span class="op">$</span><span class="va">nchars</span> <span class="op">[</span><span class="va">index</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb17"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co">## [1] 0.148465</span></span></code></pre></div>
-<p>Finally, the <code>ntabs</code> statistic can be used to identify whether code uses tab characters as indentation, otherwise the <code>indentation</code> statistics indicate median numbers of white spaces by which code is indented.</p>
-<p>The <code>objects</code> and <code>network</code> items returned by the <a href="https://docs.ropensci.org/pkgstats/reference/pkgstats.html"><code>pkgstats()</code> function</a> are described further below.</p>
+<p>Finally, the <code>ntabs</code> statistic can be used to identify whether code uses tab characters as indentation, otherwise the <code>indentation</code> statistics indicate median numbers of white spaces by which code is indented. The <code>objects</code> and <code>network</code> items returned by the <a href="https://docs.ropensci.org/pkgstats/reference/pkgstats.html"><code>pkgstats()</code> function</a> are described further below.</p>
 <div id="the-pkgstats_summary-function" class="section level3">
 <h3 class="hasAnchor">
 <a href="#the-pkgstats_summary-function" class="anchor"></a>The <code>pkgstats_summary()</code> function</h3>
@@ -257,7 +256,7 @@
 <li>The median number of nested expression per line of code, counting only those lines which have any expressions (<code>nexpr</code>).</li>
 </ul>
 <p><strong>Statistics on individual objects (including functions)</strong></p>
-<p>These statistics all refer to “functions”, but actually represent more general “objects,” such as global variables or class definitions, as detailed below.</p>
+<p>These statistics all refer to “functions”, but actually represent more general “objects,” such as global variables or class definitions (generally from languages other than R), as detailed below.</p>
 <ul>
 <li>Numbers of functions in R (<code>n_fns_r</code>)</li>
 <li>Numbers of exported and non-exported R functions (<code>n_fns_r_exported</code>, <code>n_fns_r_not_exported</code>)</li>
@@ -299,7 +298,7 @@
 <span id="cb22-12"><a href="#cb22-12"></a><span class="co">## 4              NA              NA           54</span></span>
 <span id="cb22-13"><a href="#cb22-13"></a><span class="co">## 5              NA              NA           54</span></span>
 <span id="cb22-14"><a href="#cb22-14"></a><span class="co">## 6              NA              NA           54</span></span></code></pre></div>
-<p>There are a total of 195 objects, which the following lines provide some insight into.</p>
+<p>The <code>magrittr</code> package has a total of 195 objects, which the following lines provide some insight into.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">objects</span><span class="op">$</span><span class="va">language</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb24"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co">## </span></span>
@@ -331,7 +330,7 @@
 <div id="network" class="section level3">
 <h3 class="hasAnchor">
 <a href="#network" class="anchor"></a>Network</h3>
-<p>The <code>network</code> item details all relationships between objects, where generally reflects one object calling or otherwise depending on another object. Each row thus represents the edge of a network, with each entry in the <code>from</code> and <code>to</code> columns representing the network vertices or nodes.</p>
+<p>The <code>network</code> item details all relationships between objects, which generally reflects one object calling or otherwise depending on another object. Each row thus represents one edge of a “function call” network, with each entry in the <code>from</code> and <code>to</code> columns representing the network vertices or nodes.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">network</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb34"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="co">##             file line1       from        to language cluster_dir centrality_dir</span></span>
@@ -351,8 +350,8 @@
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">network</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb36"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co">## [1] 45</span></span></code></pre></div>
-<p>The network table includes additional statistics on the centrality of each edge, measured as betweenness centrality assuming edges to be both directed (<code>centrality_dir</code>) and undirected (<code>centrality_undir</code>). More central edges reflect connections between objects that are more central to package functionality, and vice versa. The distinct components of the network are also represented by discrete cluster numbers, object both for directed and undirected versions of the network. Each distinct cluster number represents a distinct group of objects, internally related to other members of the same cluster, yet independent of all objects with different cluster numbers.</p>
-<p>The network can be viewed as an interactive <a href="https://visjs.org/"><code>vis.js</code></a> network through passing the result of <code>pkgstats</code> – here, <code>p</code> – to the <a href="https://docs.ropensci.org/pkgstats/reference/plot_network.html"><code>plot_network()</code> function</a></p>
+<p>The network table includes additional statistics on the centrality of each edge, measured as betweenness centrality assuming edges to be both directed (<code>centrality_dir</code>) and undirected (<code>centrality_undir</code>). More central edges reflect connections between objects that are more central to package functionality, and vice versa. The distinct components of the network are also represented by discrete cluster numbers, calculated both for directed and undirected versions of the network. Each distinct cluster number represents a distinct group of objects, internally related to other members of the same cluster, yet independent of all objects with different cluster numbers.</p>
+<p>The network can be viewed as an interactive <a href="https://visjs.org/"><code>vis.js</code></a> network through passing the result of <code>pkgstats</code> – here, <code>p</code> – to the <a href="https://docs.ropensci.org/pkgstats/reference/plot_network.html"><code>plot_network()</code> function</a>.</p>
 </div>
 </div>
 </div>
