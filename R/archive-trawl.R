@@ -37,6 +37,8 @@ pkgstats_from_archive <- function (path,
                                    chunk_size = 1000L,
                                    results_path = tempdir ()) {
 
+    requireNamespace ("hms")
+
     if (!grepl ("tarball", path)) {
         if (!dir.exists (file.path (path, "tarballs")))
             stop ("path must contain a 'tarballs' directory")
@@ -85,24 +87,28 @@ pkgstats_from_archive <- function (path,
         flist <- flist [which (!tars %in% prev_tars)]
     }
 
-    if (length (flist) > 0) {
+    nfiles <- length (flist)
 
-        n <- ceiling (length (flist) / chunk_size)
-        n <- factor (rep (seq (n), each = chunk_size)) [seq (length (flist))]
+    if (nfiles > 0) {
+
+        n <- ceiling (nfiles / chunk_size)
+        n <- factor (rep (seq (n), each = chunk_size)) [seq (nfiles)]
         flist <- split (flist, f = n)
 
         results_path <- normalizePath (results_path)
         results_files <- NULL
 
         index <- 1 # name of temporary files
+        pt0 <- proc.time ()
 
         # NOTE future.apply does not work at all here, so revert to parallel
         # library instead
-        no_cores <- ceiling (parallel::detectCores () / 2)
+        #no_cores <- ceiling (parallel::detectCores () / 2)
 
         for (f in flist) {
 
-            res <- parallel::mclapply (f, function (i) {
+            #res <- parallel::mclapply (f, function (i) {
+            res <- pbapply::pblapply (f, function (i) {
 
                             s <- tryCatch (pkgstats::pkgstats (i),
                                            error = function (e) NULL)
@@ -116,13 +122,25 @@ pkgstats_from_archive <- function (path,
                                     gsub ("\\.tar\\.gz$", "", p [2])
                             }
                             return (summ)
-                     },
-                     mc.cores = no_cores)
+                     })
 
             fname <- file.path (results_path,
                                 paste0 ("pkgstats-results-", index, ".Rds"))
             saveRDS (do.call (rbind, res), fname)
             results_files <- c (results_files, fname)
+
+            
+            prog <- index * chunk_size / nfiles
+            prog_fmt <- format (100 * prog, digits = 2)
+            pt1 <- as.integer ((proc.time () - pc0) [3])
+            t_per_file <- pt1 / (index * chunk_size)
+            t_total <- t_per_file * nfiles
+            t_rem <- hms::hms (t_total - pt1)
+
+            message ("[", index * chunk_size, " / ", nfiles,
+                     "]  = ", prog_fmt, "%; (elapsed, remaining) = (",
+                     pt1, ", ", t_rem, ")")
+
             index <- index + 1
         }
 
