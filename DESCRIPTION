@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.0.0.285
+Version: 0.0.0.286
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
@@ -20,10 +20,7 @@ Imports:
     readr,
     withr
 Suggests: 
-    future,
-    future.apply,
     knitr,
-    parallelly,
     rmarkdown,
     testthat (>= 3.0.0),
     visNetwork
