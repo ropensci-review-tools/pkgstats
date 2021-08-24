@@ -99,12 +99,11 @@ pkgstats_from_archive <- function (path,
         # NOTE future.apply does not work at all here, so revert to parallel
         # library instead
         no_cores <- ceiling (parallel::detectCores () / 2)
-        cl <- parallel::makeCluster (no_cores)
-        #parallel::clusterExport (cl, c ("flist"), envir = environment ())
 
         for (f in flist) {
 
-            res <- parallel::parLapply (cl, f, function (i) {
+            res <- parallel::mclapply (f, function (i) {
+
                             s <- tryCatch (pkgstats::pkgstats (i),
                                            error = function (e) NULL)
                             summ <- tryCatch (pkgstats::pkgstats_summary (s),
@@ -117,7 +116,8 @@ pkgstats_from_archive <- function (path,
                                     gsub ("\\.tar\\.gz$", "", p [2])
                             }
                             return (summ)
-                     })
+                     },
+                     mc.cores = no_cores)
 
             fname <- file.path (results_path,
                                 paste0 ("pkgstats-results-", index, ".Rds"))
@@ -125,8 +125,6 @@ pkgstats_from_archive <- function (path,
             results_files <- c (results_files, fname)
             index <- index + 1
         }
-
-        parallel::stopCluster (cl)
 
         res <- do.call (rbind, lapply (results_files, readRDS))
     }
