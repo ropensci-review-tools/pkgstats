@@ -132,7 +132,7 @@ pkgstats_from_archive <- function (path,
             
             prog <- index * chunk_size / nfiles
             prog_fmt <- format (100 * prog, digits = 2)
-            pt1 <- as.integer ((proc.time () - pc0) [3])
+            pt1 <- as.integer ((proc.time () - pt0) [3])
             t_per_file <- pt1 / (index * chunk_size)
             t_total <- t_per_file * nfiles
             t_rem <- hms::hms (t_total - pt1)
