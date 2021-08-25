@@ -89,7 +89,8 @@ get_one_params <- function (man_file) {
     index2 <- grep ("\\\\%", x)
     index <- index1 [which (!index1 %in% index2)]
     x [index] <- gsub ("%.*$", "", x [index])
-    f <- tempfile (fileext = ".Rd")
+    ptn <- paste0 ("Rdtemp-", Sys.getpid (), "-")
+    f <- tempfile (pattern = ptn, fileext = ".Rd")
     writeLines (x, f)
     rd <- tools::parse_Rd (f)
     chk <- file.remove (f) # nolint

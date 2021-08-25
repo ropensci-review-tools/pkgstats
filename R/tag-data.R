@@ -113,7 +113,8 @@ get_ctags <- function (d = "R", has_tabs) {
         fields <- "eFKlnN"
     }
 
-    f <- tempfile (fileext = ".txt")
+    ptn <- paste0 ("ctags-", Sys.getpid (), "-")
+    f <- tempfile (pattern = ptn, fileext = ".txt")
     cmd <- paste0 ("ctags -R --fields=",
                    fields,
                    " -f ",
