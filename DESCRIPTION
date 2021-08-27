@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.0.0.296
+Version: 0.0.0.297
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
