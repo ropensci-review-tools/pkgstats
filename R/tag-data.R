@@ -227,7 +227,7 @@ rm_tabs <- function (d, nspaces = 2) {
         }
     }
 
-    return (tmpd)
+    return (normalizePath (tmpd))
 }
 
 #' Set up gtags files if not already used
