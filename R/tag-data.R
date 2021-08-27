@@ -90,7 +90,7 @@ get_ctags <- function (d = "R", has_tabs) {
     wd <- path_sub <- getwd ()
     if (has_tabs) {
         path_sub <- path_dir <- rm_tabs (path_dir)
-        path_dir <- file.path (path_dir, d)
+        path_dir <- normalizePath (file.path (path_dir, d))
         wd <- setwd (path_dir)
     }
 
