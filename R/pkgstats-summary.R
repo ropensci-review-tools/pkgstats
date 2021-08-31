@@ -264,13 +264,15 @@ desc_summary <- function (x) {
 #' @noRd
 object_summary <- function (x) {
 
-    fns <- x [x$kind == "function", ]
+    fns <- x [x$kind == "function" &
+              !grepl ("anonFunc", x$fn_name), ]
     fns$num_doclines [is.na (fns$num_doclines)] <- 0L
     fns_r <- fns [fns$language == "R", ]
     fns_not_r <- fns [fns$language != "R", ]
 
     n_fns_r <- length (which (!is.na (fns_r$fn_name)))
-    n_fns_r_exported <- length (which (!is.na (fns_r$exported)))
+    n_fns_r_exported <- length (which (!is.na (fns_r$exported) &
+                                       fns_r$exported))
     n_fns_r_not_exported <- n_fns_r - n_fns_r_exported
     repl0withNA <- function (x) { # nolint
         if (x == 0L)
