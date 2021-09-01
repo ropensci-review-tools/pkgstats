@@ -10,28 +10,17 @@ check_path <- function (path) {
                       "Did you first 'extract_tarball()'?"))
 }
 
-#' Decompose a file path into a character vector of named directories and final
-#' file name
+#' Decompose file paths into character vectors of named directories and final
+#' file names
 #'
-#' @param f A file path with system-dependent file separators
-#' @return Equivalent character vector from which path can be reconstructed with
-#' \link{file.path}
-#'
-#' @note Can not vectorize this because resultant character vectors can not be
-#' assumed to have same length.
+#' @param f One of more file paths with system-dependent file separators
+#' @return List of equivalent character vectors from which paths can be
+#' reconstructed with \link{file.path}
 #' @noRd
 decompose_path <- function (f) {
 
-    res <- basename (f)
-    f <- dirname (f)
-
-    while (nchar (f) > 1L) {
-
-        res <- c (res, basename (f))
-        f <- dirname (f)
-    }
-
-    return (rev (res))
+    # https://github.com/r-lib/fs/blob/4cc4b56c26b9d7f177a676fbb331133bb2584b86/R/path.R
+    strsplit (f, "^(?=/)(?!//)|(?<!^)(?<!^/)/", perl = TRUE)
 }
 
 #' Error-controlled version of parse
