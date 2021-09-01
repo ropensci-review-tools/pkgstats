@@ -16,13 +16,13 @@ Imports:
     checkmate,
     dplyr,
     igraph,
+    memoise,
     methods,
     readr,
     withr
 Suggests: 
     hms,
     knitr,
-    memoise,
     pbapply,
     rmarkdown,
     testthat (>= 3.0.0),
