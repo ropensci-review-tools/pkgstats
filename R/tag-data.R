@@ -177,17 +177,11 @@ get_ctags <- function (d = "R", has_tabs) {
 
     tags$end <- as.integer (gsub ("^end\\:", "", tags$end))
 
-    tags$file <- normalizePath (tags$file)
-    tags$file <- gsub (path_sub, "", tags$file, fixed = TRUE)
-    # They still have a leading file.sep on most systems:
-    # Note that these separators are inserted by ctags, and tested on only one
-    # windows system which inserted the "winshash". May need to do a smarter
-    # grep in case ctags uses the alternative "/"?
-    # https://github.com/ropensci-review-tools/pkgcheck/issues/25
-    ptn <- ifelse (.Platform$OS.type == "windows",
-                   "^\\\\", # because normalizePath uses winslash, not file.sep
-                   paste0 ("^", .Platform$file.sep))
-    tags$file <- gsub (ptn, "", tags$file)
+    files <- decompose_path (tags$file)
+    len_path_sub <- length (decompose_path (path_sub) [[1]])
+    tags$file <- vapply (files, function (i)
+                     do.call (file.path, as.list (i [-seq (len_path_sub)])),
+                     character (1))
 
     attr (tags, "has_tabs") <- has_tabs
 
