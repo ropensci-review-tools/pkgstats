@@ -10,6 +10,30 @@ check_path <- function (path) {
                       "Did you first 'extract_tarball()'?"))
 }
 
+#' Decompose a file path into a character vector of named directories and final
+#' file name
+#'
+#' @param f A file path with system-dependent file separators
+#' @return Equivalent character vector from which path can be reconstructed with
+#' \link{file.path}
+#'
+#' @note Can not vectorize this because resultant character vectors can not be
+#' assumed to have same length.
+#' @noRd
+decompose_path <- function (f) {
+
+    res <- basename (f)
+    f <- dirname (f)
+
+    while (nchar (f) > 1L) {
+
+        res <- c (res, basename (f))
+        f <- dirname (f)
+    }
+
+    return (rev (res))
+}
+
 #' Error-controlled version of parse
 #'
 #' `parse` can fail even with enforced encoding because of multi-byte
