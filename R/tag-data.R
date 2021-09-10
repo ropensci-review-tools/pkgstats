@@ -164,6 +164,9 @@ get_ctags <- function (d = "R", has_tabs) {
     if (nrow (tags) == 0)
         return (NULL)
 
+    chk <- tryCatch (file.remove (f),
+                     error = function (e) NULL)
+
     # rm svg files
     tags <- tags [which (!tools::file_ext (tags$file) == "svg"), ]
 
