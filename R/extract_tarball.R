@@ -56,7 +56,7 @@ rename_files_in_r <- function (path) {
     fr <- normalizePath (list.files (file.path (path, "R"),
                                      full.names = TRUE))
 
-    index <- grep ("(\\.s$|\\.q$)", fr, ignore.case = TRUE)
+    index <- grep ("\\.(s|S|q)$", fr, ignore.case = TRUE)
 
     chk <- TRUE
 

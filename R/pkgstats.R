@@ -66,7 +66,7 @@ all_functions <- function (path) {
 
     r_files <- normalizePath (list.files (file.path (path, "R"),
                                           full.names = TRUE,
-                                          pattern = "\\.r$|\\.R$|\\.q$|\\.s$|\\.S$"))
+                                          pattern = "\\.(r|R|q|s|S)$"))
 
     eval1 <- function (f) {
 
