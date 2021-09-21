@@ -70,7 +70,8 @@ get_translations <- function (path) {
                     list.files (po_dir, pattern = "\\.po$"))
         # pkgs may generate translations without having any, and then will only
         # have '.pot' files with no usable translation fields.
-        ll <- ifelse (length (ll) == 0, NA_character_, ll)
+        if (length (ll) == 0L)
+            ll <- NA_character_
     }
 
     return (unique (ll))
