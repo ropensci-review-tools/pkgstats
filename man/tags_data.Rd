@@ -4,7 +4,7 @@
 \alias{tags_data}
 \title{use ctags and gtags to parse call data}
 \usage{
-tags_data(path, has_tabs = NULL)
+tags_data(path, has_tabs = NULL, pkg_name)
 }
 \arguments{
 \item{path}{Path to local repository}
@@ -13,6 +13,9 @@ tags_data(path, has_tabs = NULL)
 any tab characters. This can be determined from \link{loc_stats}, which has a
 \code{tabs} column. If not given, that value will be extracted from internally
 calling that function.}
+
+\item{pkg_name}{Only used for external_call_network, to label
+package-internal calls.}
 }
 \description{
 use ctags and gtags to parse call data

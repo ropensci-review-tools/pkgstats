@@ -43,7 +43,7 @@ pkgstats <- function (path = ".") {
     fns$param_nchars_mn [index] <- s3$param_nchars_mn [index2]
     fns$param_nchars_md [index] <- s3$param_nchars_md [index2]
 
-    tags <- tags_data (path, has_tabs)
+    tags <- tags_data (path, has_tabs, s2$package)
 
     translations <- get_translations (path)
 

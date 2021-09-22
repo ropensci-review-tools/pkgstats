@@ -6,8 +6,10 @@
 #' any tab characters. This can be determined from \link{loc_stats}, which has a
 #' `tabs` column. If not given, that value will be extracted from internally
 #' calling that function.
+#' @param pkg_name Only used for external_call_network, to label
+#' package-internal calls.
 #' @export
-tags_data <- function (path, has_tabs = NULL) {
+tags_data <- function (path, has_tabs = NULL, pkg_name) {
 
     if (is.null (has_tabs))
         has_tabs <- any (loc_stats (path)$ntabs > 0L)
@@ -17,6 +19,9 @@ tags_data <- function (path, has_tabs = NULL) {
     kind <- start <- NULL # no visible binding messages
 
     tags_r <- withr::with_dir (path, get_ctags ("R", has_tabs))
+
+    external_calls <- external_call_network (tags_r, path, pkg_name)
+
     tags_src <- withr::with_dir (path, get_ctags ("src", has_tabs))
     tags_inst <- withr::with_dir (path, get_ctags ("inst", has_tabs))
 
@@ -70,7 +75,8 @@ tags_data <- function (path, has_tabs = NULL) {
     }
 
     return (list (network = network,
-                  stats = src_stats (rbind (tags_r, tags_src, tags_inst))))
+                  stats = src_stats (rbind (tags_r, tags_src, tags_inst)),
+                  external_calls = external_calls))
 }
 
 #' Get tags for one directory within a package
