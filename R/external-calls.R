@@ -20,6 +20,10 @@ external_call_network <- function (tags_r, path, pkg_name) {
                          data.frame (tags_line = rep (i, length (calls [[i]])),
                                      call = calls [[i]]))
     calls <- do.call (rbind, calls)
+
+    if (length (calls) == 0L)
+        return (NULL)
+
     calls$call <- gsub ("(\\s*\\(|\\s*)$", "", calls$call)
 
     calls$tag <- tags_r$tag [calls$tags_line]
