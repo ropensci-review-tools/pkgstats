@@ -31,6 +31,8 @@ pkgstats_summary <- function (s = NULL) {
 
     out <- cbind (out, network_summary (s$network))
 
+    out <- cbind (out, external_call_summary (s$external_calls))
+
     return (out)
 }
 
@@ -437,4 +439,17 @@ network_summary <- function (x) {
                 node_degree_md = node_degree_md,
                 node_degree_max = node_degree_max
                 )
+}
+
+#' @param x the 'external_calls' components of 'pkgstats' output
+#' @noRd
+external_call_summary <- function (x) {
+
+    tab <- table (x$package)
+
+    tab <- paste0 (names (tab), ":", as.integer (tab))
+
+    tab <- data.frame (external_calls = paste0 (tab, collapse = ","))
+
+    return (tab)
 }
