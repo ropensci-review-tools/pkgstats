@@ -84,11 +84,11 @@ add_base_recommended_pkgs <- function (calls) {
 
                              rpath <- file.path (ll [1], i)
                              if (!dir.exists (rpath))
-                                 next
+                                 return (NULL)
 
                              f <- file.path (rpath, "NAMESPACE")
                              if (!file.exists (f))
-                                 next
+                                 return (NULL)
 
                              n <- brio::read_lines (f)
                              fns <- parse (text = n)
