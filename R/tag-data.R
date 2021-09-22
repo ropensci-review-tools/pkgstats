@@ -115,13 +115,11 @@ get_ctags <- function (d = "R", has_tabs) {
 
     ptn <- paste0 ("ctags-", Sys.getpid (), "-")
     f <- tempfile (pattern = ptn, fileext = ".txt")
-    cmd <- paste0 ("ctags -R --fields=",
-                   fields,
-                   " -f ",
-                   f,
-                   " ",
-                   path_dir)
-    system (cmd, ignore.stderr = TRUE)
+    args <- c ("-R",
+               paste0 ("--fields=",fields),
+               paste0 ("-f ", f),
+               path_dir)
+    sys::exec_wait ("ctags", args)
     Sys.sleep (0.2)
 
     setwd (wd) # called via withr::with_path anyway, so doesn't really matter
@@ -251,7 +249,7 @@ make_gtags <- function () {
                          pattern = "GRTAGS$|GPATH$|GTAGS$")
 
     if (length (flist) == 0) {
-        system ("gtags")
+        sys::exec_wait ("gtags")
         Sys.sleep (0.2)
     }
 
@@ -260,8 +258,12 @@ make_gtags <- function () {
 
 get_gtags <- function () {
 
-    x <- system ("global -rx  .", intern = TRUE)
+    f <- tempfile (pattern = "global_")
+    sys::exec_wait ("global", args = c ("-rx", "."), std_out = f)
     Sys.sleep (0.1)
+
+    x <- brio::read_lines (f)
+
     # global may fail to parse files, as happens for example with "rms" package
     if (length (x) == 0)
         return (NULL)

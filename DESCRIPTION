@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.0.0.313
+Version: 0.0.0.314
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
@@ -20,6 +20,7 @@ Imports:
     memoise,
     methods,
     readr,
+    sys,
     withr
 Suggests: 
     hms,
