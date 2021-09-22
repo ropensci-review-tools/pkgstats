@@ -51,14 +51,17 @@ pkgstats <- function (path = ".") {
     if (tarball)
         chk <- unlink (path, recursive = TRUE)
 
-    list (loc = s1,
+    list (
+          loc = s1,
           vignettes = c (vignettes = num_vignettes,
                          demos = num_demos),
           data_stats = data_stats,
           desc = s2,
           translations = translations,
           objects = add_src_to_fn_data (fns, tags$stats),
-          network = tags$network)
+          network = tags$network,
+          external_calls = tags$external_calls
+          )
 }
 
 #' Get all exported and internal functions
