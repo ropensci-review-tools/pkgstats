@@ -50,7 +50,6 @@ external_call_network <- function (tags_r, path, pkg_name) {
 
     calls <- calls [which (!is.na (calls$package)), ]
 
-    calls$from <- tags_r$tag [calls$tags_line]
     calls$file <- tags_r$file [calls$tags_line]
 
     return (calls)
