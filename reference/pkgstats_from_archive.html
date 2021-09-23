@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.011</span>
       </span>
     </div>
 
@@ -123,6 +123,7 @@
   prev_results <span class='op'>=</span> <span class='cn'>NULL</span>,
   results_file <span class='op'>=</span> <span class='cn'>NULL</span>,
   chunk_size <span class='op'>=</span> <span class='fl'>1000L</span>,
+  save_full <span class='op'>=</span> <span class='cn'>FALSE</span>,
   results_path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
@@ -162,6 +163,11 @@ combined to generate a single <code>prev_results</code> file, to enable jobs to 
 stopped and re-started without having to recalculate all results. These files
 will be named <code>pkgstats-results-N.Rds</code>, where "N" incrementally numbers each
 file.</p></td>
+    </tr>
+    <tr>
+      <th>save_full</th>
+      <td><p>If <code>TRUE</code>, full <a href='pkgstats.html'>pkgstats</a> results are saved for each
+package to files in <code>results_path</code>.</p></td>
     </tr>
     <tr>
       <th>results_path</th>
