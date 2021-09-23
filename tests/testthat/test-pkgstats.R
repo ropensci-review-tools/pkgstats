@@ -1,8 +1,9 @@
+
+source ("../demo-pkg-script.R")
+
 test_that ("pkgstats", {
 
-    path <- list.files (getwd (),
-                        full.names = TRUE,
-                        pattern = "demo")
+    path <- make_demo_package ()
     # message is now produced once per session by readr, but can only be
     # suppressed by Suggesting yet another package, `tidyselect`.
     #expect_message (
@@ -24,8 +25,8 @@ test_that ("pkgstats", {
     # The following 2 tests fail on GitHub windows machines for some reason?
     is_windows <- Sys.info()[["sysname"]] == "Windows"
     if (!is_windows) {
-        expect_equal (nrow (s$loc), 3L)
-        expect_true (all (c ("R", "src", "tests") %in% s$loc$dir))
+        expect_equal (nrow (s$loc), 1L)
+        expect_true ("R" %in% s$loc$dir)
     }
 
     expect_type (s$vignettes, "integer")
@@ -41,7 +42,7 @@ test_that ("pkgstats", {
     expect_type (s$translations, "character")
 
     expect_s3_class (s$objects, "data.frame")
-    expect_true (nrow (s$objects) > 5L)
+    expect_true (nrow (s$objects) >= 4L)
     nms <- c ("file_name",
               "fn_name",
               "kind",
@@ -56,7 +57,7 @@ test_that ("pkgstats", {
     expect_true (all (nms %in% names (s$objects)))
 
     expect_s3_class (s$network, "data.frame")
-    expect_true (nrow (s$network) == 1L)
+    expect_true (nrow (s$network) == 0L)
     expect_true (nrow (s$network) < nrow (s$objects))
     nms <- c ("file",
               "line1",
@@ -67,5 +68,9 @@ test_that ("pkgstats", {
               "cluster_undir",
               "centrality_dir",
               "centrality_undir")
-    expect_true (all (nms %in% names (s$network)))
+    #expect_true (all (nms %in% names (s$network)))
+
+    expect_s3_class (s$external_calls, "data.frame")
+    expect_equal (nrow (s$external_calls), 2L)
+    expect_true ("stats" %in% s$external_calls$package)
 })
