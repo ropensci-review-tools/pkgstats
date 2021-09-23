@@ -133,9 +133,12 @@ add_other_pkgs_to_calls <- function (calls, path) {
                                        fn = fns)    })
     imports <- do.call (rbind, imports)
 
-    na_calls <- which (is.na (calls$package))
-    calls$package [na_calls] <- imports$pkg [match (calls$call [na_calls],
-                                                    imports$fn [na_calls])]
+    if (!is.null (imports)) {
+
+        na_calls <- which (is.na (calls$package))
+        calls$package [na_calls] <- imports$pkg [match (calls$call [na_calls],
+                                                        imports$fn [na_calls])]
+    }
 
     return (calls)
 }
