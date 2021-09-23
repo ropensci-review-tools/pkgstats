@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.019</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.020</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
     <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pkgstats.html">pkgstats</a></span> <span class="op">(</span><span class="va">f</span><span class="op">)</span>
     <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">##    user  system elapsed </span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="co">##   0.919   0.179   1.989</span></span></code></pre></div>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co">##   0.877   0.173   1.942</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span> <span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">## [1] "loc"            "vignettes"      "data_stats"     "desc"          </span></span>
@@ -281,18 +281,19 @@
 <p>The final column in the result of <a href="https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html">the <code>pkgstats_summary()</code> function</a> summarises the <code>external_calls</code> object detailing all calls make to external packages (including to base and recommended packages). This summary is represented as a single character string:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">s</span><span class="op">$</span><span class="va">external_calls</span></code></pre></div>
-<div class="sourceCode" id="cb22"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co">## [1] "base:20,magrittr:1"</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co">## [1] "base:20:9,magrittr:1:1"</span></span></code></pre></div>
 <p>This is structured to allow numbers of calls to all packages to be readily extracted with code like the following:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">calls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span> <span class="op">(</span><span class="va">rbind</span>,
                   <span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span> <span class="op">(</span><span class="va">s</span><span class="op">$</span><span class="va">external_call</span>, <span class="st">","</span><span class="op">)</span> <span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">":"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">calls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span> <span class="op">(</span>package <span class="op">=</span> <span class="va">calls</span> <span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>,
-                     n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span> <span class="op">(</span><span class="va">calls</span> <span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
+                     n_total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span> <span class="op">(</span><span class="va">calls</span> <span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span>,
+                     n_unique <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span> <span class="op">(</span><span class="va">calls</span> <span class="op">[</span>, <span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span> <span class="op">(</span><span class="va">calls</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb24"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co">##    package  n</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a><span class="co">## 1     base 20</span></span>
-<span id="cb24-3"><a href="#cb24-3"></a><span class="co">## 2 magrittr  1</span></span></code></pre></div>
-<p>While this result is relatively uninformative for the <code>magrittr</code> package, which imports no other packages and relies only on base R functions, these results will generally provide detailed information on numbers of calls made.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co">##    package n_total n_unique</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="co">## 1     base      20        9</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a><span class="co">## 2 magrittr       1        1</span></span></code></pre></div>
+<p>The two numeric columns respectively show the total number of calls made to each package, and the total number of unique functions used within those packages. While this result is relatively uninformative for the <code>magrittr</code> package, which imports no other packages and relies only on base R functions, these results will generally provide detailed information on numbers of calls made and functions used.</p>
 <p>The following sub-sections provide further detail on the <code>objects</code>, <code>network</code>, and <code>external_call</code> items, which could be used to extract additional statistics beyond those described here.</p>
 </div>
 <div id="objects" class="section level3">
@@ -350,20 +351,20 @@
 <p>The <code>network</code> item details all relationships between objects, which generally reflects one object calling or otherwise depending on another object. Each row thus represents one edge of a “function call” network, with each entry in the <code>from</code> and <code>to</code> columns representing the network vertices or nodes.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">network</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb38"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co">##             file line1         from        to language cluster_dir</span></span>
-<span id="cb38-2"><a href="#cb38-2"></a><span class="co">## 1       R/pipe.R   297   new_lambda   freduce        R           1</span></span>
-<span id="cb38-3"><a href="#cb38-3"></a><span class="co">## 2    R/getters.R    14    `[[.fseq` functions        R           2</span></span>
-<span id="cb38-4"><a href="#cb38-4"></a><span class="co">## 3    R/getters.R    23     `[.fseq` functions        R           2</span></span>
-<span id="cb38-5"><a href="#cb38-5"></a><span class="co">## 4 R/debug_pipe.R    28   debug_fseq functions        R           2</span></span>
-<span id="cb38-6"><a href="#cb38-6"></a><span class="co">## 5 R/debug_pipe.R    35   debug_fseq functions        R           2</span></span>
-<span id="cb38-7"><a href="#cb38-7"></a><span class="co">## 6 R/debug_pipe.R    42 undebug_fseq functions        R           2</span></span>
-<span id="cb38-8"><a href="#cb38-8"></a><span class="co">##   centrality_dir cluster_undir centrality_undir</span></span>
-<span id="cb38-9"><a href="#cb38-9"></a><span class="co">## 1              1             1               20</span></span>
-<span id="cb38-10"><a href="#cb38-10"></a><span class="co">## 2              0             2                0</span></span>
-<span id="cb38-11"><a href="#cb38-11"></a><span class="co">## 3              0             2                0</span></span>
-<span id="cb38-12"><a href="#cb38-12"></a><span class="co">## 4              0             2                0</span></span>
-<span id="cb38-13"><a href="#cb38-13"></a><span class="co">## 5              0             2                0</span></span>
-<span id="cb38-14"><a href="#cb38-14"></a><span class="co">## 6              0             2                0</span></span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co">##             file line1       from        to language cluster_dir centrality_dir</span></span>
+<span id="cb38-2"><a href="#cb38-2"></a><span class="co">## 1       R/pipe.R   297 new_lambda   freduce        R           1              1</span></span>
+<span id="cb38-3"><a href="#cb38-3"></a><span class="co">## 2    R/getters.R    14  `[[.fseq` functions        R           2              0</span></span>
+<span id="cb38-4"><a href="#cb38-4"></a><span class="co">## 3    R/getters.R    23   `[.fseq` functions        R           2              0</span></span>
+<span id="cb38-5"><a href="#cb38-5"></a><span class="co">## 4  R/functions.R    26 print.fseq functions        R           2              0</span></span>
+<span id="cb38-6"><a href="#cb38-6"></a><span class="co">## 5 R/debug_pipe.R    28 debug_fseq functions        R           2              0</span></span>
+<span id="cb38-7"><a href="#cb38-7"></a><span class="co">## 6 R/debug_pipe.R    35 debug_fseq functions        R           2              0</span></span>
+<span id="cb38-8"><a href="#cb38-8"></a><span class="co">##   cluster_undir centrality_undir</span></span>
+<span id="cb38-9"><a href="#cb38-9"></a><span class="co">## 1             1               20</span></span>
+<span id="cb38-10"><a href="#cb38-10"></a><span class="co">## 2             2                0</span></span>
+<span id="cb38-11"><a href="#cb38-11"></a><span class="co">## 3             2                0</span></span>
+<span id="cb38-12"><a href="#cb38-12"></a><span class="co">## 4             2                0</span></span>
+<span id="cb38-13"><a href="#cb38-13"></a><span class="co">## 5             2                0</span></span>
+<span id="cb38-14"><a href="#cb38-14"></a><span class="co">## 6             2                0</span></span></code></pre></div>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">network</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb40"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="co">## [1] 45</span></span></code></pre></div>
@@ -378,10 +379,10 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">external_calls</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb42"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a><span class="co">##   tags_line         call                  tag        kind start end  package</span></span>
 <span id="cb42-2"><a href="#cb42-2"></a><span class="co">## 1         7       lapply     `_function_list` functionVar   294 294     base</span></span>
-<span id="cb42-3"><a href="#cb42-3"></a><span class="co">## 2        11      freduce anonFunc280eb4170100    function   297 297 magrittr</span></span>
-<span id="cb42-4"><a href="#cb42-4"></a><span class="co">## 3        12    invisible anonFunc9663819d0100    function    35  35     base</span></span>
-<span id="cb42-5"><a href="#cb42-5"></a><span class="co">## 4        12       lapply anonFunc9663819d0100    function    35  35     base</span></span>
-<span id="cb42-6"><a href="#cb42-6"></a><span class="co">## 5        12        debug anonFunc9663819d0100    function    35  35     base</span></span>
+<span id="cb42-3"><a href="#cb42-3"></a><span class="co">## 2        11      freduce anonFunc71fa9f300100    function   297 297 magrittr</span></span>
+<span id="cb42-4"><a href="#cb42-4"></a><span class="co">## 3        13    invisible anonFunc9ec39b760100    function    35  35     base</span></span>
+<span id="cb42-5"><a href="#cb42-5"></a><span class="co">## 4        13       lapply anonFunc9ec39b760100    function    35  35     base</span></span>
+<span id="cb42-6"><a href="#cb42-6"></a><span class="co">## 5        13        debug anonFunc9ec39b760100    function    35  35     base</span></span>
 <span id="cb42-7"><a href="#cb42-7"></a><span class="co">## 7        19 parent.frame                  env functionVar   134 134     base</span></span>
 <span id="cb42-8"><a href="#cb42-8"></a><span class="co">##             file</span></span>
 <span id="cb42-9"><a href="#cb42-9"></a><span class="co">## 1       R/pipe.R</span></span>
