@@ -347,14 +347,17 @@ extracted with code like the following:
 calls <- do.call (rbind,
                   strsplit (strsplit (s$external_call, ",") [[1]], ":"))
 calls <- data.frame (package = calls [, 1],
-                     n = as.integer (calls [, 2]))
+                     n_total = as.integer (calls [, 2]),
+                     n_unique = as.integer (calls [, 3]))
 print (calls)
 ```
 
-While this result is relatively uninformative for the  `magrittr` package,
-which imports no other packages and relies only on base R functions, these
-results will generally provide detailed information on numbers of calls made.
-
+The two numeric columns respectively show the total number of calls made to
+each package, and the total number of unique functions used within those
+packages. While this result is relatively uninformative for the  `magrittr`
+package, which imports no other packages and relies only on base R functions,
+these results will generally provide detailed information on numbers of calls
+made and functions used.
 
 The following sub-sections provide further detail on the `objects`, `network`,
 and `external_call` items, which could be used to extract additional statistics

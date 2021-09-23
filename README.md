@@ -133,7 +133,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.919   0.179   1.989
+    ##   0.877   0.173   1.942
 
 ``` r
 names (p)
@@ -382,7 +382,7 @@ summary is represented as a single character string:
 s$external_calls
 ```
 
-    ## [1] "base:20,magrittr:1"
+    ## [1] "base:20:9,magrittr:1:1"
 
 This is structured to allow numbers of calls to all packages to be
 readily extracted with code like the following:
@@ -391,18 +391,21 @@ readily extracted with code like the following:
 calls <- do.call (rbind,
                   strsplit (strsplit (s$external_call, ",") [[1]], ":"))
 calls <- data.frame (package = calls [, 1],
-                     n = as.integer (calls [, 2]))
+                     n_total = as.integer (calls [, 2]),
+                     n_unique = as.integer (calls [, 3]))
 print (calls)
 ```
 
-    ##    package  n
-    ## 1     base 20
-    ## 2 magrittr  1
+    ##    package n_total n_unique
+    ## 1     base      20        9
+    ## 2 magrittr       1        1
 
-While this result is relatively uninformative for the `magrittr`
-package, which imports no other packages and relies only on base R
-functions, these results will generally provide detailed information on
-numbers of calls made.
+The two numeric columns respectively show the total number of calls made
+to each package, and the total number of unique functions used within
+those packages. While this result is relatively uninformative for the
+`magrittr` package, which imports no other packages and relies only on
+base R functions, these results will generally provide detailed
+information on numbers of calls made and functions used.
 
 The following sub-sections provide further detail on the `objects`,
 `network`, and `external_call` items, which could be used to extract
@@ -492,20 +495,20 @@ vertices or nodes.
 head (p$network)
 ```
 
-    ##             file line1         from        to language cluster_dir
-    ## 1       R/pipe.R   297   new_lambda   freduce        R           1
-    ## 2    R/getters.R    14    `[[.fseq` functions        R           2
-    ## 3    R/getters.R    23     `[.fseq` functions        R           2
-    ## 4 R/debug_pipe.R    28   debug_fseq functions        R           2
-    ## 5 R/debug_pipe.R    35   debug_fseq functions        R           2
-    ## 6 R/debug_pipe.R    42 undebug_fseq functions        R           2
-    ##   centrality_dir cluster_undir centrality_undir
-    ## 1              1             1               20
-    ## 2              0             2                0
-    ## 3              0             2                0
-    ## 4              0             2                0
-    ## 5              0             2                0
-    ## 6              0             2                0
+    ##             file line1       from        to language cluster_dir centrality_dir
+    ## 1       R/pipe.R   297 new_lambda   freduce        R           1              1
+    ## 2    R/getters.R    14  `[[.fseq` functions        R           2              0
+    ## 3    R/getters.R    23   `[.fseq` functions        R           2              0
+    ## 4  R/functions.R    26 print.fseq functions        R           2              0
+    ## 5 R/debug_pipe.R    28 debug_fseq functions        R           2              0
+    ## 6 R/debug_pipe.R    35 debug_fseq functions        R           2              0
+    ##   cluster_undir centrality_undir
+    ## 1             1               20
+    ## 2             2                0
+    ## 3             2                0
+    ## 4             2                0
+    ## 5             2                0
+    ## 6             2                0
 
 ``` r
 nrow (p$network)
@@ -540,10 +543,10 @@ head (p$external_calls)
 
     ##   tags_line         call                  tag        kind start end  package
     ## 1         7       lapply     `_function_list` functionVar   294 294     base
-    ## 2        11      freduce anonFunc280eb4170100    function   297 297 magrittr
-    ## 3        12    invisible anonFunc9663819d0100    function    35  35     base
-    ## 4        12       lapply anonFunc9663819d0100    function    35  35     base
-    ## 5        12        debug anonFunc9663819d0100    function    35  35     base
+    ## 2        11      freduce anonFunc71fa9f300100    function   297 297 magrittr
+    ## 3        13    invisible anonFunc9ec39b760100    function    35  35     base
+    ## 4        13       lapply anonFunc9ec39b760100    function    35  35     base
+    ## 5        13        debug anonFunc9ec39b760100    function    35  35     base
     ## 7        19 parent.frame                  env functionVar   134 134     base
     ##             file
     ## 1       R/pipe.R
