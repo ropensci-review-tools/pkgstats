@@ -19,10 +19,10 @@ feasibility.
 
 Statistics are derived from these primary sources:
 
-1.  Numbers of lines of code, documentation, and white space in each
-    directory and language
-2.  Summaries of package `DESCRIPTION` file and a couple of other
-    statistics
+1.  Numbers of lines of code, documentation, and white space (both
+    between and within lines) in each directory and language
+2.  Summaries of package `DESCRIPTION` file and related package
+    meta-statistics
 3.  Summaries of all objects created via package code across multiple
     languages and all directories containing source code (`./R`,
     `./src`, and `./inst/include`).
@@ -31,10 +31,17 @@ Statistics are derived from these primary sources:
     obtained from [`gtags`](https://www.gnu.org/software/global/). This
     network roughly connects every object making a call (as `from`) with
     every object being called (`to`).
+5.  An additional function call network connecting calls within R
+    functions to all functions from other R packages.
 
-A demonstration of typical output is shown below, along with a detailed
-list of statistics aggregated by the internal [`pkgstats_summary()`
-function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html).
+The [primary function,
+`pkgstats()`](https://docs.ropensci.org/pkgstats/reference/pkgstats.html),
+returns a list of these various components, including full `data.frame`
+objects for the final three components described above. The statistical
+properties of this list can be aggregated by the [`pkgstats_summary()`
+function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html),
+which returns a `data.frame` with a single row of summary statistics.
+See below for further details.
 
 ## Installation
 
@@ -126,20 +133,20 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.859   0.065   1.816
+    ##   0.919   0.179   1.989
 
 ``` r
 names (p)
 ```
 
-    ## [1] "loc"          "vignettes"    "data_stats"   "desc"         "translations"
-    ## [6] "objects"      "network"
+    ## [1] "loc"            "vignettes"      "data_stats"     "desc"          
+    ## [5] "translations"   "objects"        "network"        "external_calls"
 
 The result is a list of various data extracted from the code. All except
 for `objects` and `network` represent summary data:
 
 ``` r
-p [!names (p) %in% c ("objects", "network")]
+p [!names (p) %in% c ("objects", "network", "external_calls")]
 ```
 
     ## $loc
@@ -179,19 +186,20 @@ The first item, `loc`, contains the following Lines-Of-Code and related
 statistics, separated into distinct combinations of computer language
 and directory:
 
-1.  `nfiles` = Numbers of files in each directory and language
-2.  `nlines` = Total numbers of lines in all files
-3.  `nlines` = Total numbers of lines of code
-4.  `ndoc` = Total numbers of documentation or comment lines
-5.  `nempty` = Total numbers of empty of blank lines
+1.  `nfiles` = Numbers of files in each directory and language.
+2.  `nlines` = Total numbers of lines in all files.
+3.  `nlines` = Total numbers of lines of code.
+4.  `ndoc` = Total numbers of documentation or comment lines.
+5.  `nempty` = Total numbers of empty of blank lines.
 6.  `nspaces` = Total numbers of white spaces in all code lines,
-    excluding leading indentation spaces
+    excluding leading indentation spaces.
 7.  `nchars` = Total numbers of non-white-space characters in all code
-    lines
+    lines.
 8.  `nexpr` = Median numbers of nested expressions in all lines which
-    have any expressions (see below)
-9.  `ntabs` = Number of lines of code with initial tab indentation
-10. `indentation` = Number of spaces by which code is indented
+    have any expressions (see below).
+9.  `ntabs` = Number of lines of code with initial tab indentation.
+10. `indentation` = Number of spaces by which code is indented (with
+    `-1` denoting tab-indentation).
 
 Numbers of nested expressions are counted as numbers of brackets of any
 type nested on a single line. The following line has one nested bracket:
@@ -223,7 +231,8 @@ sum (p$loc$nspaces [index]) / sum (p$loc$nchars [index])
 Finally, the `ntabs` statistic can be used to identify whether code uses
 tab characters as indentation, otherwise the `indentation` statistics
 indicate median numbers of white spaces by which code is indented. The
-`objects` and `network` items returned by the [`pkgstats()`
+`objects`, `network`, and `external_calls` items returned by the
+[`pkgstats()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats.html)
 are described further below.
 
@@ -239,15 +248,15 @@ s <- pkgstats_summary (p)
 
 This function reduces the result of the [`pkgstats()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
-to a single line with 90 entries, represented as a `data.frame` with one
+to a single line with 91 entries, represented as a `data.frame` with one
 row and that number of columns. This format is intended to enable
 summary statistics from multiple packages to be aggregated by simply
-binding rows together. While 90 statistics might seem like overkill, the
+binding rows together. While 91 statistics might seem like overkill, the
 [`pkgstats_summary()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
 aims to return as many usable raw statistics as possible in order to
 flexibly allow higher-level statistics to be derived through combination
-and aggregation. These 90 statistics can be roughly grouped into the
+and aggregation. These 91 statistics can be roughly grouped into the
 following categories (not shown in the order in which they actually
 appear), with variable names in parentheses after each description.
 
@@ -361,9 +370,43 @@ summary statistics including:
 -   Summary statistics on node degree (`node_degree_mn`,
     `node_degree_md`, `node_degree_max`)
 
-The following sub-sections provide further detail on the `objects` an
-`network` items, which could be used to extract additional statistics
-beyond those described here.
+**External Call Statistics**
+
+The final column in the result of [the `pkgstats_summary()`
+function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
+summarises the `external_calls` object detailing all calls make to
+external packages (including to base and recommended packages). This
+summary is represented as a single character string:
+
+``` r
+s$external_calls
+```
+
+    ## [1] "base:20,magrittr:1"
+
+This is structured to allow numbers of calls to all packages to be
+readily extracted with code like the following:
+
+``` r
+calls <- do.call (rbind,
+                  strsplit (strsplit (s$external_call, ",") [[1]], ":"))
+calls <- data.frame (package = calls [, 1],
+                     n = as.integer (calls [, 2]))
+print (calls)
+```
+
+    ##    package  n
+    ## 1     base 20
+    ## 2 magrittr  1
+
+While this result is relatively uninformative for the `magrittr`
+package, which imports no other packages and relies only on base R
+functions, these results will generally provide detailed information on
+numbers of calls made.
+
+The following sub-sections provide further detail on the `objects`,
+`network`, and `external_call` items, which could be used to extract
+additional statistics beyond those described here.
 
 ### Objects
 
@@ -449,20 +492,20 @@ vertices or nodes.
 head (p$network)
 ```
 
-    ##             file line1       from        to language cluster_dir centrality_dir
-    ## 1       R/pipe.R   297 new_lambda   freduce        R           1              1
-    ## 2    R/getters.R    14  `[[.fseq` functions        R           2              0
-    ## 3    R/getters.R    23   `[.fseq` functions        R           2              0
-    ## 4  R/functions.R    26 print.fseq functions        R           2              0
-    ## 5 R/debug_pipe.R    28 debug_fseq functions        R           2              0
-    ## 6 R/debug_pipe.R    35 debug_fseq functions        R           2              0
-    ##   cluster_undir centrality_undir
-    ## 1             1               20
-    ## 2             2                0
-    ## 3             2                0
-    ## 4             2                0
-    ## 5             2                0
-    ## 6             2                0
+    ##             file line1         from        to language cluster_dir
+    ## 1       R/pipe.R   297   new_lambda   freduce        R           1
+    ## 2    R/getters.R    14    `[[.fseq` functions        R           2
+    ## 3    R/getters.R    23     `[.fseq` functions        R           2
+    ## 4 R/debug_pipe.R    28   debug_fseq functions        R           2
+    ## 5 R/debug_pipe.R    35   debug_fseq functions        R           2
+    ## 6 R/debug_pipe.R    42 undebug_fseq functions        R           2
+    ##   centrality_dir cluster_undir centrality_undir
+    ## 1              1             1               20
+    ## 2              0             2                0
+    ## 3              0             2                0
+    ## 4              0             2                0
+    ## 5              0             2                0
+    ## 6              0             2                0
 
 ``` r
 nrow (p$network)
@@ -485,6 +528,30 @@ The network can be viewed as an interactive
 [`vis.js`](https://visjs.org/) network through passing the result of
 `pkgstats` – here, `p` – to the [`plot_network()`
 function](https://docs.ropensci.org/pkgstats/reference/plot_network.html).
+
+### External Calls
+
+The `external_calls` item is structured similar to the `network` object,
+but identifies all calls to functions from external packages, like this:
+
+``` r
+head (p$external_calls)
+```
+
+    ##   tags_line         call                  tag        kind start end  package
+    ## 1         7       lapply     `_function_list` functionVar   294 294     base
+    ## 2        11      freduce anonFunc280eb4170100    function   297 297 magrittr
+    ## 3        12    invisible anonFunc9663819d0100    function    35  35     base
+    ## 4        12       lapply anonFunc9663819d0100    function    35  35     base
+    ## 5        12        debug anonFunc9663819d0100    function    35  35     base
+    ## 7        19 parent.frame                  env functionVar   134 134     base
+    ##             file
+    ## 1       R/pipe.R
+    ## 2       R/pipe.R
+    ## 3 R/debug_pipe.R
+    ## 4 R/debug_pipe.R
+    ## 5 R/debug_pipe.R
+    ## 7       R/pipe.R
 
 # Code of Conduct
 

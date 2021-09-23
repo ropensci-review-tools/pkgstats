@@ -25,8 +25,9 @@ insightful statistics while ensuring computational feasibility.
 
 Statistics are derived from these primary sources:
 
-1. Numbers of lines of code, documentation, and white space in each directory and language
-2. Summaries of package `DESCRIPTION` file and a couple of other statistics
+1. Numbers of lines of code, documentation, and white space (both between and
+   within lines) in each directory and language
+2. Summaries of package `DESCRIPTION` file and related package meta-statistics
 3. Summaries of all objects created via package code across multiple languages
    and all directories containing source code (`./R`, `./src`, and
    `./inst/include`).
@@ -35,10 +36,17 @@ Statistics are derived from these primary sources:
    [`gtags`](https://www.gnu.org/software/global/). This network roughly
    connects every object making a call (as `from`) with every object being
    called (`to`).
+5. An additional function call network connecting calls within R functions to
+   all functions from other R packages.
 
-A demonstration of typical output is shown below, along with a detailed list of
-statistics aggregated by the internal [`pkgstats_summary()`
-function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html).
+The [primary function,
+`pkgstats()`](https://docs.ropensci.org/pkgstats/reference/pkgstats.html),
+returns a list of these various components, including full `data.frame` objects
+for the final three components described above. The statistical properties of
+this list can be aggregated by the [`pkgstats_summary()`
+function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html),
+which returns a `data.frame` with a single row of summary statistics. See below
+for further details.
 
 
 ## Installation
@@ -137,25 +145,26 @@ The result is a list of various data extracted from the code. All except for
 `objects` and `network` represent summary data:
 
 ```{r}
-p [!names (p) %in% c ("objects", "network")]
+p [!names (p) %in% c ("objects", "network", "external_calls")]
 ```
 
 The first item, `loc`, contains the following Lines-Of-Code and related
 statistics, separated into distinct combinations of computer language and
 directory:
 
-1. `nfiles` = Numbers of files in each directory and language
-2. `nlines` = Total numbers of lines in all files
-2. `nlines` = Total numbers of lines of code
-3. `ndoc` = Total numbers of documentation or comment lines
-4. `nempty` = Total numbers of empty of blank lines
+1. `nfiles` = Numbers of files in each directory and language.
+2. `nlines` = Total numbers of lines in all files.
+2. `nlines` = Total numbers of lines of code.
+3. `ndoc` = Total numbers of documentation or comment lines.
+4. `nempty` = Total numbers of empty of blank lines.
 5. `nspaces` = Total numbers of white spaces in all code lines, excluding
-   leading indentation spaces
-6. `nchars` = Total numbers of non-white-space characters in all code lines
+   leading indentation spaces.
+6. `nchars` = Total numbers of non-white-space characters in all code lines.
 7. `nexpr` = Median numbers of nested expressions in all lines which have any
-   expressions (see below)
-8. `ntabs` = Number of lines of code with initial tab indentation
-8. `indentation` = Number of spaces by which code is indented
+   expressions (see below).
+8. `ntabs` = Number of lines of code with initial tab indentation.
+8. `indentation` = Number of spaces by which code is indented (with `-1`
+   denoting tab-indentation).
 
 Numbers of nested expressions are counted as numbers of brackets of any type
 nested on a single line. The following line has one nested bracket:
@@ -183,8 +192,8 @@ sum (p$loc$nspaces [index]) / sum (p$loc$nchars [index])
 
 Finally, the `ntabs` statistic can be used to identify whether code uses tab
 characters as indentation, otherwise the `indentation` statistics indicate
-median numbers of white spaces by which code is indented. The `objects` and
-`network` items returned by the [`pkgstats()`
+median numbers of white spaces by which code is indented. The `objects`,
+`network`, and `external_calls` items returned by the [`pkgstats()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats.html) are
 described further below.
 
@@ -318,9 +327,38 @@ statistics including:
 - Summary statistics on node degree (`node_degree_mn`, `node_degree_md`,
   `node_degree_max`)
 
-The following sub-sections provide further detail on the `objects` an `network`
-items, which could be used to extract additional statistics beyond those
-described here.
+
+**External Call Statistics**
+
+The final column in the result of [the `pkgstats_summary()`
+function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
+summarises the `external_calls` object detailing all calls make to external
+packages (including to base and recommended packages). This summary is
+represented as a single character string:
+
+```{r summary-external-calls}
+s$external_calls
+```
+
+This is structured to allow numbers of calls to all packages to be readily
+extracted with code like the following:
+
+```{r summary-exteranl-calls-transform}
+calls <- do.call (rbind,
+                  strsplit (strsplit (s$external_call, ",") [[1]], ":"))
+calls <- data.frame (package = calls [, 1],
+                     n = as.integer (calls [, 2]))
+print (calls)
+```
+
+While this result is relatively uninformative for the  `magrittr` package,
+which imports no other packages and relies only on base R functions, these
+results will generally provide detailed information on numbers of calls made.
+
+
+The following sub-sections provide further detail on the `objects`, `network`,
+and `external_call` items, which could be used to extract additional statistics
+beyond those described here.
 
 
 ### Objects
@@ -372,6 +410,17 @@ The network can be viewed as an interactive [`vis.js`](https://visjs.org/)
 network through passing the result of `pkgstats` -- here, `p` -- to the
 [`plot_network()`
 function](https://docs.ropensci.org/pkgstats/reference/plot_network.html).
+
+### External Calls
+
+The `external_calls` item is structured similar to the `network` object, but
+identifies all calls to functions from external packages, like this:
+
+```{r ext-call-head}
+head (p$external_calls)
+```
+
+
 
 # Code of Conduct
 
