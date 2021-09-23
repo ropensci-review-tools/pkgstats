@@ -16,7 +16,8 @@ test_that ("pkgstats", {
               "desc",
               "translations",
               "objects",
-              "network")
+              "network",
+              "external_calls")
     expect_true (all (nms %in% names (s)))
 
     expect_s3_class (s$loc, "tbl_df")
