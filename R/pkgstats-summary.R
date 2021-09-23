@@ -445,11 +445,19 @@ network_summary <- function (x) {
 #' @noRd
 external_call_summary <- function (x) {
 
-    tab <- table (x$package)
+    # summarise total number of calls to each package, plus number of distinct
+    # functions from each:
+    n <- dplyr::group_by (x, package, call) |>
+         dplyr::tally () |>
+         dplyr::summarise (ntot = sum (n),
+                           nunique = length (n))
 
-    tab <- paste0 (names (tab), ":", as.integer (tab))
+    res <- apply (n, 1, function (i)
+                  paste0 (i, collapse = ":"))
+    # tibbles put white space in there:
+    res <- gsub ("\\s*", "", res)
 
-    tab <- data.frame (external_calls = paste0 (tab, collapse = ","))
+    res <- data.frame (external_calls = paste0 (res, collapse = ","))
 
-    return (tab)
+    return (res)
 }
