@@ -445,6 +445,9 @@ network_summary <- function (x) {
 #' @noRd
 external_call_summary <- function (x) {
 
+    if (is.null (x))
+        return (NA_character_)
+
     # summarise total number of calls to each package, plus number of distinct
     # functions from each:
     n <- dplyr::group_by (x, package, call) |>
