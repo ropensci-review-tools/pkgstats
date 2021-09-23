@@ -1,0 +1,27 @@
+
+Construct the demo package in the tests/testthat directory, adding an extra
+function call so that external calls register something
+
+```{r}
+library (srr)
+path <- srr_stats_pkg_skeleton ()
+
+f <- file.path (path, "R", "test.R")
+
+x <- brio::read_lines (f)
+x <- x [seq (grep ("function\\(\\)", x))]
+x <- gsub ("function\\(\\)", "function(a, b)", x)
+x <- c (x,
+        "    y <- runif (a, 0, b)",
+        "    return (y)",
+        "}")
+brio::write_lines (x, f)
+```
+
+Then make tarball:
+
+```{r}
+f <- pkgbuild::build (path)
+p <- utils::tail (strsplit (f, .Platform$file.sep) [[1]], 1L)
+file.copy (f, file.path (here::here (), "tests", "testthat", p))
+```

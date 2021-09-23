@@ -11,6 +11,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^ideas$
+data-raw/
 ^\.github$
 ^\.pre-commit-config\.yaml$
 ^codemeta\.json$
