@@ -25,8 +25,8 @@ test_that ("pkgstats", {
     # The following 2 tests fail on GitHub windows machines for some reason?
     is_windows <- Sys.info()[["sysname"]] == "Windows"
     if (!is_windows) {
-        expect_equal (nrow (s$loc), 1L)
-        expect_true ("R" %in% s$loc$dir)
+        expect_equal (nrow (s$loc), 2L)
+        expect_true (all (c ("R", "src") %in% s$loc$dir))
     }
 
     expect_type (s$vignettes, "integer")
@@ -57,7 +57,7 @@ test_that ("pkgstats", {
     expect_true (all (nms %in% names (s$objects)))
 
     expect_s3_class (s$network, "data.frame")
-    expect_true (nrow (s$network) == 0L)
+    expect_true (nrow (s$network) > 0L)
     expect_true (nrow (s$network) < nrow (s$objects))
     nms <- c ("file",
               "line1",
@@ -68,9 +68,12 @@ test_that ("pkgstats", {
               "cluster_undir",
               "centrality_dir",
               "centrality_undir")
-    #expect_true (all (nms %in% names (s$network)))
+    expect_true (all (nms %in% names (s$network)))
+    expect_true (all (c ("R", "C++") %in% s$network$language))
 
-    expect_s3_class (s$external_calls, "data.frame")
-    expect_equal (nrow (s$external_calls), 3L)
-    expect_true ("stats" %in% s$external_calls$package)
+    ext <- s$external_calls
+    expect_s3_class (ext, "data.frame")
+    expect_true (nrow (ext) > 2L)
+    expect_true ("stats" %in% ext$package)
+    expect_length (unique (ext$package), 2L)
 })

@@ -25,4 +25,5 @@ test_that ("pkgstats-summary", {
                        n_total = as.integer (ext [, 2]),
                        n_unique = as.integer (ext [, 3]))
     expect_true (all (ext$n_total >= ext$n_unique))
+    expect_true (mean (ext$n_total) > mean (ext$n_unique))
 })

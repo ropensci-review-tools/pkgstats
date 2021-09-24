@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.0.1.022
+Version: 0.0.1.023
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
@@ -27,6 +27,7 @@ Suggests:
     knitr,
     pbapply,
     pkgbuild,
+    Rcpp,
     rmarkdown,
     roxygen2,
     testthat (>= 3.0.0),
