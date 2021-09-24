@@ -123,7 +123,7 @@ pkgstats_from_archive <- function (path,
                         summ <- tryCatch (pkgstats::pkgstats_summary (s),
                                          error = function (e) NULL)
                         if (is.null (summ)) { # pkgstats failed
-                            summ <- m_blank_summary ()
+                            summ <- pkgstats_summary () # null summary
                             p <- strsplit (i, .Platform$file.sep) [[1]]
                             p <- strsplit (utils::tail (p, 1), "\\_") [[1]]
                             summ ["package"] <- p [1]
@@ -182,30 +182,3 @@ pkgstats_from_archive <- function (path,
 
     invisible (out)
 }
-
-blank_summary <- function () {
-
-    tarball <- "magrittr_2.0.1.tar.gz"
-    u <- paste0 ("https://cran.r-project.org/src/contrib/",
-                 tarball)
-    f <- file.path (tempdir (), tarball)
-    utils::download.file (u, f)
-    p <- pkgstats (f)
-    s <- pkgstats_summary (p)
-
-    nms <- names (s)
-    n <- length (nms)
-    classes <- vapply (nms, function (i) class (s [[i]]),
-                       character (1))
-    classes <- paste0 ("as.", classes)
-    names (classes) <- nms
-
-    out <- data.frame (matrix (rep (NA, n), nrow = 1, ncol = n))
-    names (out) <- nms
-    for (i in nms)
-        out [[i]] <- do.call (classes [[i]], list (out [[i]]))
-
-    return (out)
-}
-
-m_blank_summary <- memoise::memoise (function () blank_summary ())
