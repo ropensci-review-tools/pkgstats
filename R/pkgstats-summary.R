@@ -89,6 +89,8 @@ null_stats <- function () {
                   "node_degree_mn", "node_degree_md", "node_degree_max")
     out [net_nms] <- NA_integer_
 
+    out$external_calls <- NA_character_
+
     return (out)
 }
 
