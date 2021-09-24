@@ -8,25 +8,11 @@
 #' @noRd
 external_call_network <- function (tags_r, path, pkg_name) {
 
-    # rm left objects and assignments:
-    content <- gsub ("^.*(=|<\\-)", "", tags_r$content)
-    content <- gsub ("function\\s*", "", content)
-
-    # Extract function calls as alpha+.|_|: up to (\\s|\\():
-    g <- gregexpr ("[[:alpha:]]([[:alpha:]]+|\\.|\\_|\\:+)*(\\s|\\()", content)
-    calls <- regmatches (content, g)
-    calls <- lapply (seq_along (calls), function (i)
-                     if (length (calls [[i]]) > 0L)
-                         data.frame (tags_line = rep (i, length (calls [[i]])),
-                                     call = calls [[i]]))
-    calls <- do.call (rbind, calls)
+    calls <- extract_call_content (tags_r)
 
     if (length (calls) == 0L)
         return (NULL)
 
-    calls$call <- gsub ("(\\s*\\(|\\s*)$", "", calls$call)
-
-    calls$tag <- tags_r$tag [calls$tags_line]
     calls$kind <- tags_r$kind [calls$tags_line]
     calls$start <- tags_r$start [calls$tags_line]
     calls$end <- tags_r$end [calls$tags_line]
@@ -51,6 +37,129 @@ external_call_network <- function (tags_r, path, pkg_name) {
     calls <- calls [which (!is.na (calls$package)), ]
 
     calls$file <- tags_r$file [calls$tags_line]
+
+    rownames (calls) <- NULL
+
+    return (calls)
+}
+
+extract_call_content <- function (tags_r) {
+
+    content <- gsub ("\\\"$", "", tags_r$content)
+    # Remove everything within quotes - this presumes only single quotations in
+    # each line, which is almost always the case.
+    content <- gsub ("\\\".*\\\"", "", content)
+    # Remove everything within bracets of function definitions
+    index <- which (tags_r$kind == "function")
+
+    bracket_content <- regmatches (content [index],
+                                   gregexpr("(?<=\\().*?(?=\\))",
+                                            content [index], perl=T))
+    bracket_content <- vapply (bracket_content, function (i)
+                               ifelse (length (i) == 0L,
+                                       "",
+                                       i [1]),
+                               character (1))
+
+    has_content <- which (nchar (bracket_content) > 0L)
+    bracket_content <- bracket_content [has_content]
+    index <- index [has_content]
+
+    content [index] <- vapply (seq_along (index), function (i)
+                               content [index [i]] <-
+                                   gsub (bracket_content [i], "",
+                                         content [index [i]],
+                                         fixed = TRUE),
+                               character (1))
+
+    # Then convert all symbols which are not allowed in function names to spaces:
+    syms <- c ("\\(", "\\)",
+               "\\[", "\\]",
+               "\\{", "\\}",
+               "<\\-", "\\=",
+               "\\+", "\\/", "\\*", "\\-",
+               "\\|", "&", "&&",
+               "\\^", "<", ">",
+               ",", ";", "\\~")
+    content <- gsub (paste0 (syms, collapse = "|"), " ", content)
+
+    # Then remove ...
+    # isolated "$" symbols:
+    content <- gsub ("^\\$|\\$$|\\s\\$\\s", "", content)
+    content <- gsub ("\\b[0-9]", "", content)
+    # anything after comments
+    content <- gsub ("\\#.*$", "", content)
+
+    # Then split all around space to obtain call references
+    calls <- strsplit (content, "\\s+")
+    calls <- lapply (seq_along (calls), function (i)
+                     if (length (calls [[i]]) > 0L)
+                         cbind (rep (i, length (calls [[i]])),
+                                calls [[i]]))
+    calls <- do.call (rbind, calls)
+    calls <- calls [which (!calls [, 2] == ""), ]
+
+    if (length (calls) == 0L)
+        return (NULL)
+
+    calls <- data.frame (tags_line = as.integer (calls [, 1]),
+                         call = calls [, 2])
+
+    rm_these <- c ("TRUE", "FALSE", "NULL",
+                   "NA", "...", "\\", "Inf", ":", ".",
+                   "function")
+    calls <- calls [which (!calls$call %in% rm_these), ]
+    calls <- calls [which (!grepl ("\\$$|^\"|^\'", calls$call)), ]
+    calls$call <- gsub ("^\\!", "", calls$call)
+    calls$tag <- tags_r$tag [calls$tags_line]
+    calls$file <- tags_r$file [calls$tags_line]
+
+
+    # rm global variables
+    globals <- unique (tags_r$tag [which (tags_r$kind == "globalVar")])
+    calls <- calls [which (!calls$call %in% globals), ]
+
+    # Finally remove any functionVars (internal variables). This requires
+    # matching them to the calling environment, so only those which exist in
+    # each environment (function) are removed.
+    fn_vars <- tags_r [which (tags_r$kind == "functionVar"), ]
+    # Then make lists of fn_vars for each function
+    fns <- tags_r [which (tags_r$kind == "function"), ]
+    fns <- fns [which (!grepl ("^anonFunc", fns$tag)), ]
+
+    fn_lines <- apply (fns [, c ("tag", "file", "start", "end")], 1,
+                       function (i) cbind (i [1], i [2], seq (i [3], i [4])))
+
+    if (is.list (fn_lines)) {
+
+        fn_lines <- do.call (rbind, fn_lines)
+    
+    } else if (ncol (fn_lines) == 1L) {
+
+        fn_lines <- matrix (fn_lines, ncol = 3)
+    }
+
+    fn_lines <- data.frame (fn_name = fn_lines [, 1],
+                            file = fn_lines [, 2],
+                            lines = as.integer (fn_lines [, 3]))
+
+    for (f in unique (fn_lines$fn_name)) {
+
+        these_lines <- fn_lines$lines [fn_lines$fn_name == f]
+        this_file <- fn_lines$file [these_lines [1]]
+        these_vars <- fn_vars$tag [fn_vars$file == this_file &
+                                   fn_vars$start %in% these_lines]
+
+        index <- which (calls$tags_line %in% these_lines &
+                        calls$file == this_file)
+        calls$call [index] [calls$call [index] %in% these_vars] <- NA_character_
+    }
+
+    calls <- calls [which (!is.na (calls$call)), ]
+
+    calls$call <- gsub ("(\\s*\\(|\\s*)$", "", calls$call)
+
+    rownames (calls) <- NULL
 
     return (calls)
 }
