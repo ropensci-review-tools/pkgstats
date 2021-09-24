@@ -27,3 +27,15 @@ test_that ("pkgstats-summary", {
     expect_true (all (ext$n_total >= ext$n_unique))
     expect_true (mean (ext$n_total) > mean (ext$n_unique))
 })
+
+test_that ("pkgstats-null-summary", {
+
+    path <- make_demo_package ()
+    p <- pkgstats (path)
+    s1 <- pkgstats_summary (p)
+
+    s0 <- pkgstats_summary (NULL)
+    expect_equal (ncol (s0), ncol (s1))
+
+    expect_identical (names (s0), names (s1))
+})
