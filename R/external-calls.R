@@ -54,7 +54,8 @@ extract_call_content <- function (tags_r) {
 
     bracket_content <- regmatches (content [index],
                                    gregexpr("(?<=\\().*?(?=\\))",
-                                            content [index], perl=T))
+                                            content [index],
+                                            perl = T))
     bracket_content <- vapply (bracket_content, function (i)
                                ifelse (length (i) == 0L,
                                        "",
@@ -72,7 +73,8 @@ extract_call_content <- function (tags_r) {
                                          fixed = TRUE),
                                character (1))
 
-    # Then convert all symbols which are not allowed in function names to spaces:
+    # Then convert all symbols which are not allowed in function names to
+    # spaces:
     syms <- c ("\\(", "\\)",
                "\\[", "\\]",
                "\\{", "\\}",
@@ -133,7 +135,7 @@ extract_call_content <- function (tags_r) {
     if (is.list (fn_lines)) {
 
         fn_lines <- do.call (rbind, fn_lines)
-    
+
     } else if (ncol (fn_lines) == 1L) {
 
         fn_lines <- matrix (fn_lines, ncol = 3)
