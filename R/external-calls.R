@@ -213,10 +213,12 @@ add_base_recommended_pkgs <- function (calls) {
 
     pkg_calls <- do.call (rbind, pkg_calls)
 
-    na_calls <- which (is.na (calls$package))
-    calls$package [na_calls] <- pkg_calls$pkg [match (calls$call [na_calls],
-                                                   pkg_calls$fn [na_calls])]
+    if (length (pkg_calls) > 0L) {
 
+        na_calls <- which (is.na (calls$package))
+        index <- match (calls$call [na_calls], pkg_calls$fn [na_calls])
+        calls$package [na_calls] <- pkg_calls$pkg [index]
+    }
 
     return (calls)
 }
