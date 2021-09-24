@@ -185,6 +185,8 @@ add_base_recommended_pkgs <- function (calls) {
     rcmds <- c ("KernSmooth", "MASS", "Matrix", "boot", "class", "cluster",
                 "codetools", "foreign", "lattice", "mgcv", "nlme", "nnet",
                 "rpart", "spatial", "survival")
+    ip <- data.frame (installed.packages ())
+    rcmds <- rcmds [which (rcmds %in% ip$Package)]
 
     ll <- .libPaths ()
 
