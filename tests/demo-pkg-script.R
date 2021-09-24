@@ -4,8 +4,11 @@
 make_pkg_path <- function (base_dir = tempdir (), pkg_name = "demo") {
 
     d <- file.path (base_dir, pkg_name)
-    if (!file.exists (d))
-        dir.create (d, recursive = TRUE)
+
+    if (file.exists (d))
+        chk <- unlink (d, recursive = TRUE)
+
+    chk <- dir.create (d, recursive = TRUE)
 
     return (d)
 }
@@ -110,7 +113,6 @@ write_namespace <- function (d, pkg_name) {
 make_demo_package <- function () {
 
     pkg_name <- paste0 (sample (c (letters, LETTERS), 8), collapse = "")
-    #path <- make_pkg_path (tempdir (), pkg_name)
     path <- make_pkg_path ()
 
     write_desc (path, pkg_name)
