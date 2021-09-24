@@ -71,6 +71,6 @@ test_that ("pkgstats", {
     #expect_true (all (nms %in% names (s$network)))
 
     expect_s3_class (s$external_calls, "data.frame")
-    expect_equal (nrow (s$external_calls), 2L)
+    expect_equal (nrow (s$external_calls), 3L)
     expect_true ("stats" %in% s$external_calls$package)
 })
