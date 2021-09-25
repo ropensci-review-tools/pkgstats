@@ -133,7 +133,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.877   0.173   1.942
+    ##   1.528   0.397   3.618
 
 ``` r
 names (p)
@@ -382,7 +382,7 @@ summary is represented as a single character string:
 s$external_calls
 ```
 
-    ## [1] "base:20:9,magrittr:1:1"
+    ## [1] "base:22:12,magrittr:16:11"
 
 This is structured to allow numbers of calls to all packages to be
 readily extracted with code like the following:
@@ -397,8 +397,8 @@ print (calls)
 ```
 
     ##    package n_total n_unique
-    ## 1     base      20        9
-    ## 2 magrittr       1        1
+    ## 1     base      22       12
+    ## 2 magrittr      16       11
 
 The two numeric columns respectively show the total number of calls made
 to each package, and the total number of unique functions used within
@@ -495,20 +495,20 @@ vertices or nodes.
 head (p$network)
 ```
 
-    ##             file line1       from        to language cluster_dir centrality_dir
-    ## 1       R/pipe.R   297 new_lambda   freduce        R           1              1
-    ## 2    R/getters.R    14  `[[.fseq` functions        R           2              0
-    ## 3    R/getters.R    23   `[.fseq` functions        R           2              0
-    ## 4  R/functions.R    26 print.fseq functions        R           2              0
-    ## 5 R/debug_pipe.R    28 debug_fseq functions        R           2              0
-    ## 6 R/debug_pipe.R    35 debug_fseq functions        R           2              0
-    ##   cluster_undir centrality_undir
-    ## 1             1               20
-    ## 2             2                0
-    ## 3             2                0
-    ## 4             2                0
-    ## 5             2                0
-    ## 6             2                0
+    ##             file line1         from        to language cluster_dir
+    ## 1       R/pipe.R   297   new_lambda   freduce        R           1
+    ## 2    R/getters.R    14    `[[.fseq` functions        R           2
+    ## 3    R/getters.R    23     `[.fseq` functions        R           2
+    ## 4 R/debug_pipe.R    28   debug_fseq functions        R           2
+    ## 5 R/debug_pipe.R    35   debug_fseq functions        R           2
+    ## 6 R/debug_pipe.R    42 undebug_fseq functions        R           2
+    ##   centrality_dir cluster_undir centrality_undir
+    ## 1              1             1               20
+    ## 2              0             2                0
+    ## 3              0             2                0
+    ## 4              0             2                0
+    ## 5              0             2                0
+    ## 6              0             2                0
 
 ``` r
 nrow (p$network)
@@ -541,20 +541,20 @@ but identifies all calls to functions from external packages, like this:
 head (p$external_calls)
 ```
 
-    ##   tags_line         call                  tag        kind start end  package
-    ## 1         7       lapply     `_function_list` functionVar   294 294     base
-    ## 2        11      freduce anonFunc71fa9f300100    function   297 297 magrittr
-    ## 3        13    invisible anonFunc9ec39b760100    function    35  35     base
-    ## 4        13       lapply anonFunc9ec39b760100    function    35  35     base
-    ## 5        13        debug anonFunc9ec39b760100    function    35  35     base
-    ## 7        19 parent.frame                  env functionVar   134 134     base
-    ##             file
-    ## 1       R/pipe.R
-    ## 2       R/pipe.R
-    ## 3 R/debug_pipe.R
-    ## 4 R/debug_pipe.R
-    ## 5 R/debug_pipe.R
-    ## 7       R/pipe.R
+    ##   tags_line       call                  tag           file        kind start
+    ## 1         1    .onLoad              .onLoad   R/magrittr.R    function    45
+    ## 2         7     lapply     `_function_list`       R/pipe.R functionVar   294
+    ## 3         7 as_pipe_fn     `_function_list`       R/pipe.R functionVar   294
+    ## 4        11  invisible anonFunc562f5eb90100 R/debug_pipe.R    function    35
+    ## 5        11      debug anonFunc562f5eb90100 R/debug_pipe.R    function    35
+    ## 6        11  functions anonFunc562f5eb90100 R/debug_pipe.R    function    35
+    ##   end  package
+    ## 1  47 magrittr
+    ## 2 294     base
+    ## 3 294 magrittr
+    ## 4  35     base
+    ## 5  35     base
+    ## 6  35 magrittr
 
 # Code of Conduct
 
