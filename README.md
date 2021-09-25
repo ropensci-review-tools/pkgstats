@@ -133,7 +133,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   1.528   0.397   3.618
+    ##   1.072   0.150   2.116
 
 ``` r
 names (p)
@@ -495,20 +495,20 @@ vertices or nodes.
 head (p$network)
 ```
 
-    ##             file line1         from        to language cluster_dir
-    ## 1       R/pipe.R   297   new_lambda   freduce        R           1
-    ## 2    R/getters.R    14    `[[.fseq` functions        R           2
-    ## 3    R/getters.R    23     `[.fseq` functions        R           2
-    ## 4 R/debug_pipe.R    28   debug_fseq functions        R           2
-    ## 5 R/debug_pipe.R    35   debug_fseq functions        R           2
-    ## 6 R/debug_pipe.R    42 undebug_fseq functions        R           2
-    ##   centrality_dir cluster_undir centrality_undir
-    ## 1              1             1               20
-    ## 2              0             2                0
-    ## 3              0             2                0
-    ## 4              0             2                0
-    ## 5              0             2                0
-    ## 6              0             2                0
+    ##             file line1       from        to language cluster_dir centrality_dir
+    ## 1       R/pipe.R   297 new_lambda   freduce        R           1              1
+    ## 2    R/getters.R    14  `[[.fseq` functions        R           2              0
+    ## 3    R/getters.R    23   `[.fseq` functions        R           2              0
+    ## 4  R/functions.R    26 print.fseq functions        R           2              0
+    ## 5 R/debug_pipe.R    28 debug_fseq functions        R           2              0
+    ## 6 R/debug_pipe.R    35 debug_fseq functions        R           2              0
+    ##   cluster_undir centrality_undir
+    ## 1             1               20
+    ## 2             2                0
+    ## 3             2                0
+    ## 4             2                0
+    ## 5             2                0
+    ## 6             2                0
 
 ``` r
 nrow (p$network)
@@ -545,16 +545,38 @@ head (p$external_calls)
     ## 1         1    .onLoad              .onLoad   R/magrittr.R    function    45
     ## 2         7     lapply     `_function_list`       R/pipe.R functionVar   294
     ## 3         7 as_pipe_fn     `_function_list`       R/pipe.R functionVar   294
-    ## 4        11  invisible anonFunc562f5eb90100 R/debug_pipe.R    function    35
-    ## 5        11      debug anonFunc562f5eb90100 R/debug_pipe.R    function    35
-    ## 6        11  functions anonFunc562f5eb90100 R/debug_pipe.R    function    35
+    ## 4        11        cat anonFunc7dd67bdd0100  R/functions.R    function    30
+    ## 5        12  invisible anonFunc8210ccd80100 R/debug_pipe.R    function    35
+    ## 6        12      debug anonFunc8210ccd80100 R/debug_pipe.R    function    35
     ##   end  package
     ## 1  47 magrittr
     ## 2 294     base
     ## 3 294 magrittr
-    ## 4  35     base
+    ## 4  30     base
     ## 5  35     base
-    ## 6  35 magrittr
+    ## 6  35     base
+
+The summary object returned from
+[`pkgstats_summary()`](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
+includes a summary of numbers of external calls to each package. These
+data are presented as a single character string which can be easily
+converted to the corresponding numeric values using code like the
+following:
+
+``` r
+x <- strsplit (s$external_calls, ",") [[1]]
+x <- do.call (rbind, strsplit (x, ":"))
+x <- data.frame (pkg = x [, 1],
+                 n_total = as.integer (x [, 2]),
+                 n_unique = as.integer (x [, 3]))
+x$n_total_rel <- round (x$n_total / sum (x$n_total), 3)
+x$n_unique_rel <- round (x$n_unique / sum (x$n_unique), 3)
+print (x)
+```
+
+    ##        pkg n_total n_unique n_total_rel n_unique_rel
+    ## 1     base      22       12       0.579        0.522
+    ## 2 magrittr      16       11       0.421        0.478
 
 # Code of Conduct
 
