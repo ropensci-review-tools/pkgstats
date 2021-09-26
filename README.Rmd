@@ -417,17 +417,23 @@ function](https://docs.ropensci.org/pkgstats/reference/plot_network.html).
 ### External Calls
 
 The `external_calls` item is structured similar to the `network` object, but
-identifies all calls to functions from external packages, like this:
+identifies all calls to functions from external packages. However, unlike the
+`netowrk` and `object` data, which provide information on objects and
+relationships in all computer languages used within a package, the
+`external_calls` object maps calls within R code only, in order to provide
+insight into the use within a package of of functions from other packages,
+including R's base and recommended packages. The object looks like this:
 
 ```{r ext-call-head}
 head (p$external_calls)
 ```
 
-The summary object returned from
-[`pkgstats_summary()`](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
-includes a summary of numbers of external calls to each package. These data are
-presented as a single character string which can be easily converted to the
-corresponding numeric values using code like the following:
+These data are converted to a summary form by the [`pkgstats_summary()`
+function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html),
+which tabulates numbers of external calls and unique functions from each
+package. These data are presented as a single character string which can be
+easily converted to the corresponding numeric values using code like the
+following:
 
 ```{r ext-call-summary}
 x <- strsplit (s$external_calls, ",") [[1]]

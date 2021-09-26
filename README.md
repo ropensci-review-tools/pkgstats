@@ -133,7 +133,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   1.072   0.150   2.116
+    ##   1.005   0.114   2.013
 
 ``` r
 names (p)
@@ -535,7 +535,13 @@ function](https://docs.ropensci.org/pkgstats/reference/plot_network.html).
 ### External Calls
 
 The `external_calls` item is structured similar to the `network` object,
-but identifies all calls to functions from external packages, like this:
+but identifies all calls to functions from external packages. However,
+unlike the `netowrk` and `object` data, which provide information on
+objects and relationships in all computer languages used within a
+package, the `external_calls` object maps calls within R code only, in
+order to provide insight into the use within a package of of functions
+from other packages, including R’s base and recommended packages. The
+object looks like this:
 
 ``` r
 head (p$external_calls)
@@ -545,9 +551,9 @@ head (p$external_calls)
     ## 1         1    .onLoad              .onLoad   R/magrittr.R    function    45
     ## 2         7     lapply     `_function_list`       R/pipe.R functionVar   294
     ## 3         7 as_pipe_fn     `_function_list`       R/pipe.R functionVar   294
-    ## 4        11        cat anonFunc7dd67bdd0100  R/functions.R    function    30
-    ## 5        12  invisible anonFunc8210ccd80100 R/debug_pipe.R    function    35
-    ## 6        12      debug anonFunc8210ccd80100 R/debug_pipe.R    function    35
+    ## 4        11        cat anonFunc9f8d19f70100  R/functions.R    function    30
+    ## 5        12  invisible anonFuncda9b2e320100 R/debug_pipe.R    function    35
+    ## 6        12      debug anonFuncda9b2e320100 R/debug_pipe.R    function    35
     ##   end  package
     ## 1  47 magrittr
     ## 2 294     base
@@ -556,12 +562,12 @@ head (p$external_calls)
     ## 5  35     base
     ## 6  35     base
 
-The summary object returned from
-[`pkgstats_summary()`](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
-includes a summary of numbers of external calls to each package. These
-data are presented as a single character string which can be easily
-converted to the corresponding numeric values using code like the
-following:
+These data are converted to a summary form by the [`pkgstats_summary()`
+function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html),
+which tabulates numbers of external calls and unique functions from each
+package. These data are presented as a single character string which can
+be easily converted to the corresponding numeric values using code like
+the following:
 
 ``` r
 x <- strsplit (s$external_calls, ",") [[1]]
