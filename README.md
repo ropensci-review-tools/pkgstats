@@ -133,7 +133,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   1.005   0.114   2.013
+    ##   0.976   0.195   2.062
 
 ``` r
 names (p)
@@ -551,15 +551,15 @@ head (p$external_calls)
     ## 1         1    .onLoad              .onLoad   R/magrittr.R    function    45
     ## 2         7     lapply     `_function_list`       R/pipe.R functionVar   294
     ## 3         7 as_pipe_fn     `_function_list`       R/pipe.R functionVar   294
-    ## 4        11        cat anonFunc9f8d19f70100  R/functions.R    function    30
-    ## 5        12  invisible anonFuncda9b2e320100 R/debug_pipe.R    function    35
-    ## 6        12      debug anonFuncda9b2e320100 R/debug_pipe.R    function    35
+    ## 4        11        cat anonFunc57d476a50100  R/functions.R    function    30
+    ## 5        12    freduce anonFunc84fb0cda0100       R/pipe.R    function   297
+    ## 6        13  invisible anonFunc9bce20a00100 R/debug_pipe.R    function    35
     ##   end  package
     ## 1  47 magrittr
     ## 2 294     base
     ## 3 294 magrittr
     ## 4  30     base
-    ## 5  35     base
+    ## 5 297 magrittr
     ## 6  35     base
 
 These data are converted to a summary form by the [`pkgstats_summary()`
@@ -583,6 +583,9 @@ print (x)
     ##        pkg n_total n_unique n_total_rel n_unique_rel
     ## 1     base      22       12       0.579        0.522
     ## 2 magrittr      16       11       0.421        0.478
+
+Those data reveal, for example, that the `magrittr` package makes 22
+individual calls to 12 unique functions from the “base” package.
 
 # Code of Conduct
 

@@ -446,6 +446,10 @@ x$n_unique_rel <- round (x$n_unique / sum (x$n_unique), 3)
 print (x)
 ```
 
+Those data reveal, for example, that the `magrittr` package makes 
+`r x$n_total [x$pkg == "base"]` individual calls to
+`r x$n_unique [x$pkg == "base"]` unique functions from the "base" package.
+
 
 
 # Code of Conduct
