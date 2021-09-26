@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
     <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pkgstats.html">pkgstats</a></span> <span class="op">(</span><span class="va">f</span><span class="op">)</span>
     <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">##    user  system elapsed </span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="co">##   1.072   0.150   2.116</span></span></code></pre></div>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co">##   1.005   0.114   2.013</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span> <span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">## [1] "loc"            "vignettes"      "data_stats"     "desc"          </span></span>
@@ -374,16 +374,16 @@
 <div id="external-calls" class="section level3">
 <h3 class="hasAnchor">
 <a href="#external-calls" class="anchor"></a>External Calls</h3>
-<p>The <code>external_calls</code> item is structured similar to the <code>network</code> object, but identifies all calls to functions from external packages, like this:</p>
+<p>The <code>external_calls</code> item is structured similar to the <code>network</code> object, but identifies all calls to functions from external packages. However, unlike the <code>netowrk</code> and <code>object</code> data, which provide information on objects and relationships in all computer languages used within a package, the <code>external_calls</code> object maps calls within R code only, in order to provide insight into the use within a package of of functions from other packages, including R’s base and recommended packages. The object looks like this:</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span> <span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">external_calls</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb42"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a><span class="co">##   tags_line       call                  tag           file        kind start</span></span>
 <span id="cb42-2"><a href="#cb42-2"></a><span class="co">## 1         1    .onLoad              .onLoad   R/magrittr.R    function    45</span></span>
 <span id="cb42-3"><a href="#cb42-3"></a><span class="co">## 2         7     lapply     `_function_list`       R/pipe.R functionVar   294</span></span>
 <span id="cb42-4"><a href="#cb42-4"></a><span class="co">## 3         7 as_pipe_fn     `_function_list`       R/pipe.R functionVar   294</span></span>
-<span id="cb42-5"><a href="#cb42-5"></a><span class="co">## 4        11        cat anonFunc7dd67bdd0100  R/functions.R    function    30</span></span>
-<span id="cb42-6"><a href="#cb42-6"></a><span class="co">## 5        12  invisible anonFunc8210ccd80100 R/debug_pipe.R    function    35</span></span>
-<span id="cb42-7"><a href="#cb42-7"></a><span class="co">## 6        12      debug anonFunc8210ccd80100 R/debug_pipe.R    function    35</span></span>
+<span id="cb42-5"><a href="#cb42-5"></a><span class="co">## 4        11        cat anonFunc9f8d19f70100  R/functions.R    function    30</span></span>
+<span id="cb42-6"><a href="#cb42-6"></a><span class="co">## 5        12  invisible anonFuncda9b2e320100 R/debug_pipe.R    function    35</span></span>
+<span id="cb42-7"><a href="#cb42-7"></a><span class="co">## 6        12      debug anonFuncda9b2e320100 R/debug_pipe.R    function    35</span></span>
 <span id="cb42-8"><a href="#cb42-8"></a><span class="co">##   end  package</span></span>
 <span id="cb42-9"><a href="#cb42-9"></a><span class="co">## 1  47 magrittr</span></span>
 <span id="cb42-10"><a href="#cb42-10"></a><span class="co">## 2 294     base</span></span>
@@ -391,7 +391,7 @@
 <span id="cb42-12"><a href="#cb42-12"></a><span class="co">## 4  30     base</span></span>
 <span id="cb42-13"><a href="#cb42-13"></a><span class="co">## 5  35     base</span></span>
 <span id="cb42-14"><a href="#cb42-14"></a><span class="co">## 6  35     base</span></span></code></pre></div>
-<p>The summary object returned from <a href="https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html"><code>pkgstats_summary()</code></a> includes a summary of numbers of external calls to each package. These data are presented as a single character string which can be easily converted to the corresponding numeric values using code like the following:</p>
+<p>These data are converted to a summary form by the <a href="https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html"><code>pkgstats_summary()</code> function</a>, which tabulates numbers of external calls and unique functions from each package. These data are presented as a single character string which can be easily converted to the corresponding numeric values using code like the following:</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span> <span class="op">(</span><span class="va">s</span><span class="op">$</span><span class="va">external_calls</span>, <span class="st">","</span><span class="op">)</span> <span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span> <span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span> <span class="op">(</span><span class="va">x</span>, <span class="st">":"</span><span class="op">)</span><span class="op">)</span>
