@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2.001</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
     <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pkgstats.html">pkgstats</a></span> <span class="op">(</span><span class="va">f</span><span class="op">)</span>
     <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">##    user  system elapsed </span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="co">##   1.005   0.114   2.013</span></span></code></pre></div>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co">##   0.976   0.195   2.062</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span> <span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">## [1] "loc"            "vignettes"      "data_stats"     "desc"          </span></span>
@@ -381,15 +381,15 @@
 <span id="cb42-2"><a href="#cb42-2"></a><span class="co">## 1         1    .onLoad              .onLoad   R/magrittr.R    function    45</span></span>
 <span id="cb42-3"><a href="#cb42-3"></a><span class="co">## 2         7     lapply     `_function_list`       R/pipe.R functionVar   294</span></span>
 <span id="cb42-4"><a href="#cb42-4"></a><span class="co">## 3         7 as_pipe_fn     `_function_list`       R/pipe.R functionVar   294</span></span>
-<span id="cb42-5"><a href="#cb42-5"></a><span class="co">## 4        11        cat anonFunc9f8d19f70100  R/functions.R    function    30</span></span>
-<span id="cb42-6"><a href="#cb42-6"></a><span class="co">## 5        12  invisible anonFuncda9b2e320100 R/debug_pipe.R    function    35</span></span>
-<span id="cb42-7"><a href="#cb42-7"></a><span class="co">## 6        12      debug anonFuncda9b2e320100 R/debug_pipe.R    function    35</span></span>
+<span id="cb42-5"><a href="#cb42-5"></a><span class="co">## 4        11        cat anonFunc57d476a50100  R/functions.R    function    30</span></span>
+<span id="cb42-6"><a href="#cb42-6"></a><span class="co">## 5        12    freduce anonFunc84fb0cda0100       R/pipe.R    function   297</span></span>
+<span id="cb42-7"><a href="#cb42-7"></a><span class="co">## 6        13  invisible anonFunc9bce20a00100 R/debug_pipe.R    function    35</span></span>
 <span id="cb42-8"><a href="#cb42-8"></a><span class="co">##   end  package</span></span>
 <span id="cb42-9"><a href="#cb42-9"></a><span class="co">## 1  47 magrittr</span></span>
 <span id="cb42-10"><a href="#cb42-10"></a><span class="co">## 2 294     base</span></span>
 <span id="cb42-11"><a href="#cb42-11"></a><span class="co">## 3 294 magrittr</span></span>
 <span id="cb42-12"><a href="#cb42-12"></a><span class="co">## 4  30     base</span></span>
-<span id="cb42-13"><a href="#cb42-13"></a><span class="co">## 5  35     base</span></span>
+<span id="cb42-13"><a href="#cb42-13"></a><span class="co">## 5 297 magrittr</span></span>
 <span id="cb42-14"><a href="#cb42-14"></a><span class="co">## 6  35     base</span></span></code></pre></div>
 <p>These data are converted to a summary form by the <a href="https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html"><code>pkgstats_summary()</code> function</a>, which tabulates numbers of external calls and unique functions from each package. These data are presented as a single character string which can be easily converted to the corresponding numeric values using code like the following:</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
@@ -404,6 +404,7 @@
 <div class="sourceCode" id="cb44"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="co">##        pkg n_total n_unique n_total_rel n_unique_rel</span></span>
 <span id="cb44-2"><a href="#cb44-2"></a><span class="co">## 1     base      22       12       0.579        0.522</span></span>
 <span id="cb44-3"><a href="#cb44-3"></a><span class="co">## 2 magrittr      16       11       0.421        0.478</span></span></code></pre></div>
+<p>Those data reveal, for example, that the <code>magrittr</code> package makes 22 individual calls to 12 unique functions from the “base” package.</p>
 </div>
 </div>
 </div>
