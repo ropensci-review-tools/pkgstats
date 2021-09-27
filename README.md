@@ -587,7 +587,7 @@ print (x)
 Those data reveal, for example, that the `magrittr` package makes 22
 individual calls to 12 unique functions from the “base” package.
 
-# Code of Conduct
+## Code of Conduct
 
 Please note that this package is released with a [Contributor Code of
 Conduct](https://ropensci.org/code-of-conduct/). By contributing to this
