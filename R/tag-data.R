@@ -56,8 +56,9 @@ tags_data <- function (path, has_tabs = NULL, pkg_name) {
             chk <- rm_gtags_files (path)
     }
 
-    fns_r <- tags_r [tags_r$kind == "function", ]
-    fn_vars_r <- tags_r [tags_r$kind == "functionVar", ]
+    fns_r <- tags_r [which (tags_r$kind == "function" & !is.na (tags_r$tag)), ]
+    fn_vars_r <- tags_r [which (tags_r$kind == "functionVar" &
+                                !is.na (tags_r$tag)), ]
 
     call_graph_r <- fn_var_call_graph_r (fns_r,
                                          fn_vars_r,
@@ -122,7 +123,7 @@ get_ctags <- function (d = "R", has_tabs) {
     ptn <- paste0 ("ctags-", Sys.getpid (), "-")
     f <- tempfile (pattern = ptn, fileext = ".txt")
     args <- c ("-R",
-               paste0 ("--fields=",fields),
+               paste0 ("--fields=", fields),
                paste0 ("-f ", f),
                path_dir)
     sys::exec_wait ("ctags", args)
