@@ -126,7 +126,7 @@ get_ctags <- function (d = "R", has_tabs) {
                paste0 ("--fields=", fields),
                paste0 ("-f ", f),
                path_dir)
-    sys::exec_wait ("ctags", args)
+    sys::exec_wait ("ctags", args, std_out = FALSE, std_err = FALSE)
     Sys.sleep (0.2)
 
     setwd (wd) # called via withr::with_path anyway, so doesn't really matter
