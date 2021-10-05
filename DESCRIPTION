@@ -1,11 +1,8 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.0.2.003
+Version: 0.0.2.004
 Authors@R: 
-    person(given = "Mark",
-           family = "Padgham",
-           role = c("aut", "cre"),
-           email = "mark.padgham@email.com",
+    person("Mark", "Padgham", , "mark.padgham@email.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-2172-5265"))
 Description: Metrics of R packages.
 License: GPL-3

@@ -31,7 +31,8 @@ pkgstats_summary <- function (s = NULL) {
 
     out <- cbind (out, network_summary (s$network))
 
-    out <- cbind (out, external_call_summary (s$external_calls))
+    out <- cbind (out,
+                  external_calls = external_call_summary (s$external_calls))
 
     return (out)
 }
