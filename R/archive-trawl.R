@@ -101,6 +101,9 @@ pkgstats_from_archive <- function (path,
         n <- factor (rep (seq (n), each = chunk_size)) [seq (nfiles)]
         flist <- split (flist, f = n)
 
+        message ("Starting trawl of ", nfiles,
+                 " files in ", length (flist), " chunks")
+
         results_path <- normalizePath (results_path)
         results_files <- NULL
 
