@@ -454,10 +454,10 @@ external_call_summary <- function (x) {
     # summarise total number of calls to each package, plus number of distinct
     # functions from each:
     package <- NULL # suppress no visible binding note
-    n <- dplyr::group_by (x, package, call) |>
-         dplyr::tally () |>
-         dplyr::summarise (ntot = sum (n),
-                           nunique = length (n))
+    n <- dplyr::group_by (x, package, call)
+    n <- dplyr::tally (n)
+    n <- dplyr::summarise (n, ntot = sum (n),
+                              nunique = length (n))
 
     res <- apply (n, 1, function (i)
                   paste0 (i, collapse = ":"))
