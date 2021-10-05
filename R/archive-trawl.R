@@ -145,7 +145,9 @@ pkgstats_from_archive <- function (path,
             t_total <- t_per_file * nfiles
             t_rem <- hms::hms (t_total - pt1)
 
-            message ("[", index * chunk_size, " / ", nfiles,
+            ndone <- min (c (nfiles, index * chunk_size))
+
+            message ("[", ndone, " / ", nfiles,
                      "]  = ", prog_fmt, "%; (elapsed, remaining) = (",
                      pt1, ", ", t_rem, ")")
 
