@@ -121,6 +121,26 @@ proceeding:
 ctags_test ()
 ```
 
+Note that GNU `global` can be linked at installation to the Universal Ctags
+plug-in parser to expand the [default 5 languages to
+30](https://www.gnu.org/software/global/). This makes no difference to
+`pkgstats` results, as `gtags` output is only used to trace function call
+networks, which is only possible for compiled languages able to dynamically
+share pointers to the same objects. This is possible with the default parser
+regardless. The wealth of extra information obtained from linking `global` to
+the Universal Ctags parser is ultimately discarded anyway, yet parsing may take
+considerably longer. If this is the case, "default" behaviour may be recovered
+by first running the following command:
+
+```{r unsetenv, eval = FALSE}
+Sys.unsetenv (c ("GTAGSCONF", "GTAGSLABEL"))
+```
+
+See [information on how to install the
+plugin](https://cvs.savannah.gnu.org/viewvc/global/global/plugin-factory/PLUGIN_HOWTO.pygments?revision=1.6&view=markup)
+for more details.
+
+
 
 ## Demonstration
 

@@ -114,6 +114,26 @@ ctags_test ()
 
     ## [1] TRUE
 
+Note that GNU `global` can be linked at installation to the Universal
+Ctags plug-in parser to expand the [default 5 languages to
+30](https://www.gnu.org/software/global/). This makes no difference to
+`pkgstats` results, as `gtags` output is only used to trace function
+call networks, which is only possible for compiled languages able to
+dynamically share pointers to the same objects. This is possible with
+the default parser regardless. The wealth of extra information obtained
+from linking `global` to the Universal Ctags parser is ultimately
+discarded anyway, yet parsing may take considerably longer. If this is
+the case, “default” behaviour may be recovered by first running the
+following command:
+
+``` r
+Sys.unsetenv (c ("GTAGSCONF", "GTAGSLABEL"))
+```
+
+See [information on how to install the
+plugin](https://cvs.savannah.gnu.org/viewvc/global/global/plugin-factory/PLUGIN_HOWTO.pygments?revision=1.6&view=markup)
+for more details.
+
 ## Demonstration
 
 The following code demonstrates the output of the main function,
@@ -133,7 +153,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.976   0.195   2.062
+    ##   1.083   0.180   2.156
 
 ``` r
 names (p)
@@ -150,15 +170,13 @@ p [!names (p) %in% c ("objects", "network", "external_calls")]
 ```
 
     ## $loc
-    ## # A tibble: 5 × 12
-    ## # Groups:   language, dir [5]
-    ##   language   dir     nfiles nlines ncode  ndoc nempty nspaces nchars nexpr ntabs
-    ##   <chr>      <chr>    <int>  <int> <int> <int>  <int>   <int>  <int> <dbl> <int>
-    ## 1 C          src          2    590   447    22    121    1136  10826     1     0
-    ## 2 C/C++ Hea… src          1     51    38     1     12      72    761     1     0
-    ## 3 R          R            7    699   163   484     52    2835  15645     1     1
-    ## 4 R          tests       10    374   259    13    102     867   8527     2     4
-    ## 5 Rmd        vignet…      2    754   469    80    205    3793  19927     1     0
+    ## # A tibble: 3 × 12
+    ## # Groups:   language, dir [3]
+    ##   language dir   nfiles nlines ncode  ndoc nempty nspaces nchars nexpr ntabs
+    ##   <chr>    <chr>  <int>  <int> <int> <int>  <int>   <int>  <int> <dbl> <int>
+    ## 1 C        src        2    590   447    22    121    1136  10826     1     0
+    ## 2 R        R          7    699   163   484     52    2835  15645     1     1
+    ## 3 R        tests     10    374   259    13    102     867   8527     2     4
     ## # … with 1 more variable: indentation <int>
     ## 
     ## $vignettes
@@ -226,7 +244,7 @@ index <- which (p$loc$dir %in% c ("R", "src")) # consider source code only
 sum (p$loc$nspaces [index]) / sum (p$loc$nchars [index])
 ```
 
-    ## [1] 0.148465
+    ## [1] 0.1500132
 
 Finally, the `ntabs` statistic can be used to identify whether code uses
 tab characters as indentation, otherwise the `indentation` statistics
@@ -438,7 +456,7 @@ head (p$objects)
     ## 5              NA              NA           54
     ## 6              NA              NA           54
 
-The `magrittr` package has a total of 195 objects, which the following
+The `magrittr` package has a total of 191 objects, which the following
 lines provide some insight into.
 
 ``` r
@@ -446,8 +464,8 @@ table (p$objects$language)
 ```
 
     ## 
-    ##   C C++   R 
-    ##  64   4 127
+    ##   C   R 
+    ##  64 127
 
 ``` r
 table (p$objects$kind)
@@ -455,7 +473,7 @@ table (p$objects$kind)
 
     ## 
     ##        enum    function functionVar   globalVar        list       macro 
-    ##           1          95          27          30           1           4 
+    ##           1          92          27          30           1           3 
     ##      member      struct    variable 
     ##           4           2          31
 
@@ -479,9 +497,7 @@ table (p$objects$kind [p$objects$language == "C"])
 table (p$objects$kind [p$objects$language == "C++"])
 ```
 
-    ## 
-    ## function    macro 
-    ##        3        1
+    ## < table of extent 0 >
 
 ### Network
 
@@ -503,7 +519,7 @@ head (p$network)
     ## 5 R/debug_pipe.R    28 debug_fseq functions        R           2              0
     ## 6 R/debug_pipe.R    35 debug_fseq functions        R           2              0
     ##   cluster_undir centrality_undir
-    ## 1             1               20
+    ## 1             1               17
     ## 2             2                0
     ## 3             2                0
     ## 4             2                0
@@ -514,7 +530,7 @@ head (p$network)
 nrow (p$network)
 ```
 
-    ## [1] 45
+    ## [1] 39
 
 The network table includes additional statistics on the centrality of
 each edge, measured as betweenness centrality assuming edges to be both
@@ -551,9 +567,9 @@ head (p$external_calls)
     ## 1         1    .onLoad              .onLoad   R/magrittr.R    function    45
     ## 2         7     lapply     `_function_list`       R/pipe.R functionVar   294
     ## 3         7 as_pipe_fn     `_function_list`       R/pipe.R functionVar   294
-    ## 4        11        cat anonFunc57d476a50100  R/functions.R    function    30
-    ## 5        12    freduce anonFunc84fb0cda0100       R/pipe.R    function   297
-    ## 6        13  invisible anonFunc9bce20a00100 R/debug_pipe.R    function    35
+    ## 4        11        cat anonFunc23dd4d9d0100  R/functions.R    function    30
+    ## 5        12    freduce anonFunc88eba8d20100       R/pipe.R    function   297
+    ## 6        13  invisible anonFunce8f1d6980100 R/debug_pipe.R    function    35
     ##   end  package
     ## 1  47 magrittr
     ## 2 294     base
