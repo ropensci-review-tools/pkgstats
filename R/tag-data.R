@@ -172,8 +172,7 @@ get_ctags <- function (d = "R", has_tabs) {
     chk <- tryCatch (file.remove (f),
                      error = function (e) NULL)
 
-    # rm svg files
-    tags <- tags [which (!tools::file_ext (tags$file) == "svg"), ]
+    tags <- tags [which (!grepl (excluded_file_ptn (), tags$file)), ]
 
     tags$start <- as.integer (gsub ("^line\\:", "", tags$start))
 
@@ -294,8 +293,7 @@ get_gtags <- function () {
                                   lazy = FALSE)
         )
 
-    # rm header files:
-    gtags <- gtags [which (!grepl ("\\.h$", gtags$file)), ]
+    gtags <- gtags [which (!grepl (excluded_file_ptn (), gtags$file)), ]
 
     return (gtags)
 }
