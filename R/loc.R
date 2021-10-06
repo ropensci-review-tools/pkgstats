@@ -78,7 +78,7 @@ loc_stats <- function (path) {
     flist <- list.files (paths,
                          recursive = TRUE,
                          full.names = TRUE)
-    flist <- remove_excluded_files (flist) # rm .min.js
+    flist <- flist [which (!grepl (excluded_file_ptn (), flist))]
 
     ftypes <- get_file_types (flist)
 

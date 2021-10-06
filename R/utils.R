@@ -73,18 +73,15 @@ control_parse <- function (file) {
     return (out)
 }
 
-#' Function to remove select kinds of files from analyses
+#' Regex to remove select kinds of files from analyses
 #'
-#' Currently only used to remove '.min.js' files, under the assumption that
-#' these almost always reflect bundled code from external sources. Their
-#' inclusion also tends to skew metrics, particularly those related to spacing.
-#'
-#' @param flist Result of a `list.files` command
-#' @return Potentially shortened version with some files excluded
+#' These file types are excluded from `loc_stats`, as well as from both `ctags`
+#' and `gtags` analyses.
+#' @return regex pattern
 #' @noRd
-remove_excluded_files <- function (flist) {
+excluded_file_ptn <- function () {
 
-    exclude_ptn <- "\\.min\\.js$"
-    
-    return (flist [which (!grepl (exclude_ptn, flist))])
+    exts <- c ("h", "rda", "rds", "Rd", "md", "Rmd", "win", "min.js",
+               "png", "svg", "jpg", "gif")
+    paste0 ("(", paste0 ("\\.", exts, collapse = "|"), ")$")
 }
