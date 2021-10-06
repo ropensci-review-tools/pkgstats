@@ -72,3 +72,19 @@ control_parse <- function (file) {
 
     return (out)
 }
+
+#' Function to remove select kinds of files from analyses
+#'
+#' Currently only used to remove '.min.js' files, under the assumption that
+#' these almost always reflect bundled code from external sources. Their
+#' inclusion also tends to skew metrics, particularly those related to spacing.
+#'
+#' @param flist Result of a `list.files` command
+#' @return Potentially shortened version with some files excluded
+#' @noRd
+remove_excluded_files <- function (flist) {
+
+    exclude_ptn <- "\\.min\\.js$"
+    
+    return (flist [which (!grepl (exclude_ptn, flist))])
+}
