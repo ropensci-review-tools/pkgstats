@@ -1,6 +1,7 @@
 # Mostly only lightly adapted from
 # https://github.com/stan-dev/cmdstanr/blob/master/R/install.R
 
+# nocov start
 clone_ctags <- function (destdir = NULL) {
 
     if (!has_git ()) {
@@ -96,3 +97,4 @@ ctags_install <- function (bin_dir = NULL, sudo = TRUE) {
         system ("hash -d ctags")
     }
 }
+# nocov end

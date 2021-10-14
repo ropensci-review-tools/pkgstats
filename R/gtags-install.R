@@ -1,4 +1,5 @@
 
+# nocov start
 has_gtags <- function () {
 
     gtags_path <- dirname (Sys.which ("gtags"))
@@ -27,3 +28,4 @@ gtags_install <- function () {
     sys::exec_wait ("sudo", args = c (arg, "global"),
                     std_out = f)
 }
+# nocov end
