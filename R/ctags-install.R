@@ -80,8 +80,11 @@ ctags_install <- function (bin_dir = NULL, sudo = TRUE) {
     if (!.Platform$OS.type == "unix")
         return (NULL)
 
-    if (ctags_test ()) # already installed and okay
+    if (tryCatch (ctags_test (),
+                  error = function (e) FALSE)) {
+        # already installed and okay
         return (NULL)
+    }
 
     ctags_dir <- clone_ctags (destdir = tempdir ())
     ctags_make (ctags_dir, bin_dir)
