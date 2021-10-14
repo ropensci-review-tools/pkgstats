@@ -86,3 +86,34 @@ ctags_test <- function () {
 
     return (ret)
 }
+
+has_ctags <- function () {
+
+    ctags_path <- dirname (Sys.which ("ctags"))
+    nzchar (ctags_path)
+}
+
+#' ctags has to be "Universal" and not "Exuberant" (both currently v5.9)
+#' @noRd
+which_ctags <- function () {
+
+    which_ctags <- capture.output (
+        sys::exec_wait ("ctags", args = "--version", std_out = TRUE)
+        )
+    regmatches (which_ctags [1], regexpr ("\\w+", which_ctags [1]))
+}
+
+#' universal is required, so this should be TRUE
+#' @noRd
+ctags_is_universal <- function () {
+
+    which_ctags () == "Universal"
+}
+
+#' exuberant is the standard apt install, and insufficient here, so this should
+#' be FALSE.
+#' @noRd
+ctags_is_exuberant <- function () {
+
+    which_ctags () == "Exuberant"
+}
