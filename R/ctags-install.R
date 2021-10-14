@@ -88,4 +88,8 @@ ctags_install <- function (bin_dir = NULL, sudo = TRUE) {
 
     if (!has_gtags ())
         gtags_install ()
+
+    if (!sudo) {
+        system ("hash -d ctags")
+    }
 }
