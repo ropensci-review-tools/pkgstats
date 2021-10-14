@@ -6,6 +6,11 @@
 #' @export
 ctags_test <- function () {
 
+    if (!has_ctags ())
+        stop ("No ctags installation found.", call. = FALSE)
+    if (!has_gtags ())
+        stop ("No GNU global installation found.", call. = FALSE)
+
     f_in <- tempfile (fileext = ".R")
 
     x <- c ("G <- 1",                           # globalVar
