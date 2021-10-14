@@ -83,28 +83,14 @@ This package requires the system libraries
 automatically installed along with the package on both Windows and MacOS
 systems. Most Linux distributions do not include a sufficiently
 up-to-date version of [`ctags-universal`](https://ctags.io), and so it
-must be compiled from source with the following lines:
+must be compiled from source. This can be done by running a single
+function, `ctags_install()`, which will install both
+[`ctags-universal`](https://ctags.io) and [GNU
+`global`](https://www.gnu.org/software/global/).
 
-``` bash
-git clone https://github.com/universal-ctags/ctags.git
-cd ctags
-./autogen.sh
-./configure --prefix=/usr
-make
-sudo make install
-```
-
-If `sudo` is unavailable, it may be necessary to use a different
-`prefix` argument on `configure`, such as `--prefix=/<user>/bin`, in
-which case it may also be necessary to run `hash -d ctags` after
-installation to ensure that the configure path is found.
-
-[GNU `global`](https://www.gnu.org/software/global/) can generally be
-installed from most Linux package managers, for example through
-`apt-get install global` for Ubuntu, or `pacman -S global` for
-Archlinux. This `pkgstats` package includes a function to ensure your
-local installations of `universal-ctags` and `global` work correctly.
-Please ensure you see the following prior to proceeding:
+The `pkgstats` package includes a function to ensure your local
+installations of `universal-ctags` and `global` work correctly. Please
+ensure you see the following prior to proceeding:
 
 ``` r
 ctags_test ()
@@ -153,7 +139,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   1.083   0.180   2.156
+    ##   0.922   0.141   1.961
 
 ``` r
 names (p)
@@ -567,15 +553,15 @@ head (p$external_calls)
     ## 1         1    .onLoad              .onLoad   R/magrittr.R    function    45
     ## 2         7     lapply     `_function_list`       R/pipe.R functionVar   294
     ## 3         7 as_pipe_fn     `_function_list`       R/pipe.R functionVar   294
-    ## 4        11        cat anonFunc23dd4d9d0100  R/functions.R    function    30
-    ## 5        12    freduce anonFunc88eba8d20100       R/pipe.R    function   297
-    ## 6        13  invisible anonFunce8f1d6980100 R/debug_pipe.R    function    35
+    ## 4        11        cat anonFunc6fbaaec50100  R/functions.R    function    30
+    ## 5        12  invisible anonFuncb07b5cc00100 R/debug_pipe.R    function    35
+    ## 6        12      debug anonFuncb07b5cc00100 R/debug_pipe.R    function    35
     ##   end  package
     ## 1  47 magrittr
     ## 2 294     base
     ## 3 294 magrittr
     ## 4  30     base
-    ## 5 297 magrittr
+    ## 5  35     base
     ## 6  35     base
 
 These data are converted to a summary form by the [`pkgstats_summary()`

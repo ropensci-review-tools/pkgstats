@@ -14,6 +14,13 @@ output:
 [![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 <!-- badges: end -->
 
+```{r, include = FALSE, echo = FALSE}
+if (identical(Sys.getenv("IN_PKGDOWN"), "true")) {
+    pkgstats::ctags_install ()
+}
+```
+
+
 # pkgstats
 
 Extract summary statistics of R package structure and functionality. Also
@@ -79,11 +86,8 @@ pak::pkg_install ("ropensci-review-tools/pkgstats")
 
 The package can then loaded for use with
 
-```{r library, eval = FALSE}
+```{r library, eval = TRUE}
 library (pkgstats)
-```
-```{r load_all, echo = FALSE, message = FALSE}
-devtools::load_all (export_all = FALSE)
 ```
 
 ### Installation on Linux systems
@@ -94,28 +98,13 @@ This package requires the system libraries
 automatically installed along with the package on both Windows and MacOS
 systems. Most Linux distributions do not include a sufficiently up-to-date
 version of [`ctags-universal`](https://ctags.io), and so it must be compiled
-from source with the following lines:
+from source. This can be done by running a single function, `ctags_install()`,
+which will install both [`ctags-universal`](https://ctags.io) and [GNU
+`global`](https://www.gnu.org/software/global/).
 
-```{bash, eval = FALSE}
-git clone https://github.com/universal-ctags/ctags.git
-cd ctags
-./autogen.sh
-./configure --prefix=/usr
-make
-sudo make install
-```
-
-If `sudo` is unavailable, it may be necessary to use a different `prefix`
-argument on `configure`, such as `--prefix=/<user>/bin`, in which case it may
-also be necessary to run `hash -d ctags` after installation to ensure that the
-configure path is found.
-
-[GNU `global`](https://www.gnu.org/software/global/) can generally be installed
-from most Linux package managers, for example through `apt-get install global`
-for Ubuntu, or `pacman -S global` for Archlinux. This `pkgstats` package
-includes a function to ensure your local installations of `universal-ctags` and
-`global` work correctly. Please ensure you see the following prior to
-proceeding:
+The `pkgstats` package includes a function to ensure your local installations
+of `universal-ctags` and `global` work correctly. Please ensure you see the
+following prior to proceeding:
 
 ```{r ctags-check, eval = TRUE}
 ctags_test ()
@@ -139,7 +128,6 @@ Sys.unsetenv (c ("GTAGSCONF", "GTAGSLABEL"))
 See [information on how to install the
 plugin](https://cvs.savannah.gnu.org/viewvc/global/global/plugin-factory/PLUGIN_HOWTO.pygments?revision=1.6&view=markup)
 for more details.
-
 
 
 ## Demonstration
