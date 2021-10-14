@@ -88,7 +88,7 @@ ctags_install <- function (bin_dir = NULL, sudo = TRUE) {
     }
 
     ctags_dir <- clone_ctags (destdir = tempdir ())
-    ctags_make (ctags_dir, bin_dir)
+    ctags_make (ctags_dir, bin_dir, sudo)
 
     if (!has_gtags ())
         gtags_install ()
