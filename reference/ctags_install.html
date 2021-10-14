@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract tarball of a package into temp directory and return path to extracted
-package — extract_tarball • pkgstats</title>
+<title>Install 'ctags' from a clone of the 'git' repository — ctags_install • pkgstats</title>
 
 
 <!-- jquery -->
@@ -40,10 +39,9 @@ package — extract_tarball • pkgstats</title>
 
 
 
-<meta property="og:title" content="Extract tarball of a package into temp directory and return path to extracted
-package — extract_tarball" />
-<meta property="og:description" content="Extract tarball of a package into temp directory and return path to extracted
-package" />
+<meta property="og:title" content="Install 'ctags' from a clone of the 'git' repository — ctags_install" />
+<meta property="og:description" content="'ctags' is installed with this package on both Windows and macOS systems;
+this is an additional function to install from source on Unix systems." />
 
 
 
@@ -111,42 +109,35 @@ package" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract tarball of a package into temp directory and return path to extracted
-package</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ropensci-review-tools/pkgstats/blob/master/R/extract_tarball.R'><code>R/extract_tarball.R</code></a></small>
-    <div class="hidden name"><code>extract_tarball.Rd</code></div>
+    <h1>Install 'ctags' from a clone of the 'git' repository</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ropensci-review-tools/pkgstats/blob/master/R/ctags-install.R'><code>R/ctags-install.R</code></a></small>
+    <div class="hidden name"><code>ctags_install.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extract tarball of a package into temp directory and return path to extracted
-package</p>
+    <p>'ctags' is installed with this package on both Windows and macOS systems;
+this is an additional function to install from source on Unix systems.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_tarball</span><span class='op'>(</span><span class='va'>tarball</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>ctags_install</span><span class='op'>(</span>bin_dir <span class='op'>=</span> <span class='cn'>NULL</span>, sudo <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>tarball</th>
-      <td><p>Full path to local tarball of an R package</p></td>
+      <th>bin_dir</th>
+      <td><p>Prefix to pass to the <code>autoconf</code> configure command
+defining location to install the binary, with default of <code>/usr/local</code>.</p></td>
+    </tr>
+    <tr>
+      <th>sudo</th>
+      <td><p>Set to <code>FALSE</code> if <code>sudo</code> is not available, in which case a
+value for <code>bin_dir</code> will also have to be explicitly specified, and be a
+location where a binary is able to be installed without <code>sudo</code> privileges.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Path to extracted version of package</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>tarball</span> <span class='op'>&lt;-</span> <span class='st'>"magrittr_2.0.1.tar.gz"</span>
-<span class='va'>u</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span> <span class='op'>(</span><span class='st'>"https://cran.r-project.org/src/contrib/"</span>,
-             <span class='va'>tarball</span><span class='op'>)</span>
-<span class='va'>f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span> <span class='op'>(</span><span class='op'>)</span>, <span class='va'>tarball</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span> <span class='op'>(</span><span class='va'>u</span>, <span class='va'>f</span><span class='op'>)</span>
-<span class='va'>path</span> <span class='op'>&lt;-</span> <span class='fu'>extract_tarball</span> <span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
