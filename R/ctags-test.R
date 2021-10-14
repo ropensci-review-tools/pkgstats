@@ -102,9 +102,9 @@ has_ctags <- function () {
 #' @noRd
 which_ctags <- function () {
 
-    which_ctags <- capture.output (
-        sys::exec_wait ("ctags", args = "--version", std_out = TRUE)
-        )
+    f <- tempfile (pattern = "ctags-out-", fileext = ".txt")
+    sys::exec_wait ("ctags", args = "--version", std_out = f)
+    which_ctags <- brio::read_lines (f)
     regmatches (which_ctags [1], regexpr ("\\w+", which_ctags [1]))
 }
 
