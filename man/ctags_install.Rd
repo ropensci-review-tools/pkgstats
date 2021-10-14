@@ -4,14 +4,17 @@
 \alias{ctags_install}
 \title{Install 'ctags' from a clone of the 'git' repository}
 \usage{
-ctags_install(bin_dir = NULL)
+ctags_install(bin_dir = NULL, sudo = TRUE)
 }
 \arguments{
 \item{bin_dir}{Prefix to pass to the \code{autoconf} configure command
 defining location to install the binary, with default of \verb{/usr/local}.}
+
+\item{sudo}{Set to \code{FALSE} if \code{sudo} is not available, in which case a
+value for \code{bin_dir} will also have to be explicitly specified, and be a
+location where a binary is able to be installed without \code{sudo} privileges.}
 }
 \description{
-'ctags' is installed with this package on both Windows and macOS systems; this
-is an additional function to install from source on Unix systems. The
-installation requires 'sudo' privileges, and will fail otherwise.
+'ctags' is installed with this package on both Windows and macOS systems;
+this is an additional function to install from source on Unix systems.
 }

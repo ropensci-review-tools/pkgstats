@@ -32,13 +32,15 @@ has_git <- function () {
 
 #' Make install ctags from extracted .tar.gz in 'ctags_dir', returned from
 #' `download_ctags()`.
-#' @note Requires 'sudo' and will fail if not
+#' @inheritParams ctags_install
 #' @param ctags_dir Directory of 'ctags' repository cloned with
 #' \link{clone_ctags}.
-#' @param bin_dir Prefix to pass to the `autoconf` configure command
-#' defining location to install the binary, with default of `/usr/local`.
 #' @noRd
-ctags_make <- function (ctags_dir, bin_dir = NULL) {
+ctags_make <- function (ctags_dir, bin_dir = NULL, sudo = TRUE) {
+
+    if (!sudo & is.null (bin_dir)) {
+        stop ("A value for 'bin_dir' must be specified when 'sudo = FALSE'")
+    }
 
     f <- tempfile (pattern = "ctags-make-", fileext = ".txt")
 
@@ -53,20 +55,27 @@ ctags_make <- function (ctags_dir, bin_dir = NULL) {
         sys::exec_wait ("./autogen.sh", std_out = f)
         sys::exec_wait ("./configure", args = confargs, std_out = f)
         sys::exec_wait ("make", std_out = f)
-        sys::exec_wait ("sudo", args = c ("make", "install"), std_out = f)
-        })
+        if (sudo) {
+            sys::exec_wait ("sudo", args = c ("make", "install"), std_out = f)
+        } else {
+            sys::exec_wait ("make", args = "install", std_out = f)
+        }
+    })
 }
 
 #' Install 'ctags' from a clone of the 'git' repository
 #'
-#' 'ctags' is installed with this package on both Windows and macOS systems; this
-#' is an additional function to install from source on Unix systems. The
-#' installation requires 'sudo' privileges, and will fail otherwise.
+#' 'ctags' is installed with this package on both Windows and macOS systems;
+#' this is an additional function to install from source on Unix systems.
 #'
 #' @param bin_dir Prefix to pass to the `autoconf` configure command
 #' defining location to install the binary, with default of `/usr/local`.
+#' @param sudo Set to `FALSE` if `sudo` is not available, in which case a
+#' value for `bin_dir` will also have to be explicitly specified, and be a
+#' location where a binary is able to be installed without `sudo` privileges.
+#'
 #' @export
-ctags_install <- function (bin_dir = NULL) {
+ctags_install <- function (bin_dir = NULL, sudo = TRUE) {
 
     if (!.Platform$OS.type == "unix")
         return (NULL)
