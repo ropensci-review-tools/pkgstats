@@ -117,9 +117,3 @@ ctags_is_exuberant <- function () {
 
     which_ctags () == "Exuberant"
 }
-
-has_gtags <- function () {
-
-    gtags_path <- dirname (Sys.which ("gtags"))
-    nzchar (gtags_path)
-}
