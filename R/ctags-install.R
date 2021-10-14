@@ -30,7 +30,7 @@ download_ctags <- function (destfile = NULL) {
     if (is.null (destfile)) {
         stop ("destfile must be specified", call. = FALSE)
     }
-    destfile <- normalizePath (destfile)
+    destfile <- normalizePath (destfile, mustWork = FALSE)
     if (!dir.exists (dirname (destfile))) {
         stop ("Directory [", dirname (destfile),
               "] does not exist", call. = FALSE)
@@ -79,4 +79,22 @@ download_with_retries <- function(download_url,
     } else {
         FALSE
     }
+}
+
+#' Make install ctags from extracted .tar.gz in 'ctags_dir', returned from
+#' `download_ctags()`.
+#' @note Requires 'sudo' and will fail if not
+#' @noRd
+ctags_make <- function (ctags_dir) {
+
+    f <- tempfile (pattern = "ctags-make-", fileext = ".txt")
+
+    withr::with_dir (ctags_dir, {
+        sys::exec_wait ("./autogen.sh", std_out = f)
+        sys::exec_wait ("./configure", args = c ("prefix=/usr"),
+                        std_out = f)
+        sys::exec_wait ("make", std_out = f)
+        sys::exec_wait ("sudo", args = c ("make", "install"),
+                        std_out = f)
+        })
 }
