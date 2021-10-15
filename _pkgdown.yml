@@ -1,0 +1,18 @@
+url: https://docs.ropensci.org/pkgstats
+
+reference:
+- title: Main functions
+  contents:
+  - has_concept("stats")
+- title: Code Tagging Functions
+  contents:
+  - has_concept("tags")
+- title: Archive Trawl Functions
+  contents:
+  - has_concept("archive")
+- title: Additional functions
+  contents:
+  - has_concept("misc")
+- title: Visualisation
+  contents:
+  - has_concept("output")
