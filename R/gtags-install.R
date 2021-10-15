@@ -12,12 +12,12 @@ has_gtags <- function () {
 gtags_install <- function (sudo = TRUE) {
 
     if (has_gtags ()) {
-          return (NULL)
-      }
+        return (NULL)
+    }
 
     if (!.Platform$OS.type == "unix") {
-          return (NULL)
-      }
+        return (NULL)
+    }
 
     f <- tempfile (pattern = "gtags-install-", fileext = ".txt")
 
@@ -34,6 +34,6 @@ gtags_install <- function (sudo = TRUE) {
         arg <- arg [-1]
     }
 
-    sys::exec_wait (cmd, args = c (arg, "global"), std = f)
+    sys::exec_wait (cmd, args = c (arg, "global"), std_out = f)
 }
 # nocov end
