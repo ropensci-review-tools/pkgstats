@@ -14,14 +14,16 @@ clone_ctags <- function (destdir = NULL) {
     destdir <- normalizePath (destdir, mustWork = FALSE)
     if (!dir.exists (destdir)) {
         stop ("Directory [", destdir,
-              "] does not exist", call. = FALSE)
+            "] does not exist",
+            call. = FALSE
+        )
     }
 
     u <- "https://github.com/universal-ctags/ctags.git"
 
     withr::with_dir (destdir, {
         sys::exec_wait ("git", args = c ("clone", u))
-              })
+    })
 
     return (file.path (destdir, "ctags"))
 }
@@ -47,8 +49,9 @@ ctags_make <- function (ctags_dir, bin_dir = NULL, sudo = TRUE) {
 
     confargs <- NULL
     if (!is.null (bin_dir)) {
-        if (!dir.exists (bin_dir))
-            stop ("bin_dir [", bin_dir, "] does not exist.", call. = FALSE)
+        if (!dir.exists (bin_dir)) {
+              stop ("bin_dir [", bin_dir, "] does not exist.", call. = FALSE)
+          }
         confargs <- paste0 ("--prefix=", bin_dir)
     }
 
@@ -83,11 +86,13 @@ ctags_make <- function (ctags_dir, bin_dir = NULL, sudo = TRUE) {
 #' @export
 ctags_install <- function (bin_dir = NULL, sudo = TRUE) {
 
-    if (!.Platform$OS.type == "unix")
-        return (NULL)
+    if (!.Platform$OS.type == "unix") {
+          return (NULL)
+      }
 
     if (tryCatch (ctags_test (),
-                  error = function (e) FALSE)) {
+        error = function (e) FALSE
+    )) {
         # already installed and okay
         return (NULL)
     }
@@ -95,8 +100,9 @@ ctags_install <- function (bin_dir = NULL, sudo = TRUE) {
     ctags_dir <- clone_ctags (destdir = tempdir ())
     ctags_make (ctags_dir, bin_dir, sudo)
 
-    if (!has_gtags ())
-        gtags_install (sudo = sudo)
+    if (!has_gtags ()) {
+          gtags_install (sudo = sudo)
+      }
 
     if (!sudo) {
         system ("hash -d ctags")
