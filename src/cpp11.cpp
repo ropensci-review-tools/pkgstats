@@ -3,6 +3,7 @@
 
 
 #include "cpp11/declarations.hpp"
+#include <R_ext/Visibility.h>
 
 // loc.cpp
 writable::integers cpp_loc(const strings flist, const strings cmt_open, const strings cmt_close, const strings cmt);
@@ -13,16 +14,13 @@ extern "C" SEXP _pkgstats_cpp_loc(SEXP flist, SEXP cmt_open, SEXP cmt_close, SEX
 }
 
 extern "C" {
-/* .Call calls */
-extern SEXP _pkgstats_cpp_loc(SEXP, SEXP, SEXP, SEXP);
-
 static const R_CallMethodDef CallEntries[] = {
     {"_pkgstats_cpp_loc", (DL_FUNC) &_pkgstats_cpp_loc, 4},
     {NULL, NULL, 0}
 };
 }
 
-extern "C" void R_init_pkgstats(DllInfo* dll){
+extern "C" attribute_visible void R_init_pkgstats(DllInfo* dll){
   R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
   R_useDynamicSymbols(dll, FALSE);
   R_forceSymbols(dll, TRUE);
