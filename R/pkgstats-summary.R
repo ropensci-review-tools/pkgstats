@@ -9,13 +9,16 @@
 #' @export
 pkgstats_summary <- function (s = NULL) {
 
-    if (is.null (s))
-        return (null_stats ())
+    if (is.null (s)) {
+          return (null_stats ())
+      }
 
-    out <- data.frame (package = s$desc$package,
-                       version = s$desc$version,
-                       date = s$desc$date,
-                       license = s$desc$license)
+    out <- data.frame (
+        package = s$desc$package,
+        version = s$desc$version,
+        date = s$desc$date,
+        license = s$desc$license
+    )
 
     out <- cbind (out, loc_summary (s$loc))
 
@@ -33,28 +36,33 @@ pkgstats_summary <- function (s = NULL) {
     out <- cbind (out, network_summary (s$network))
 
     out <- cbind (out,
-                  external_calls = external_call_summary (s$external_calls))
+        external_calls = external_call_summary (s$external_calls)
+    )
 
     return (out)
 }
 
 null_stats <- function () {
 
-    out <- data.frame (package = NA_character_,
-                       version = NA_character_,
-                       date = NA_character_,
-                       license = NA_character_)
+    out <- data.frame (
+        package = NA_character_,
+        version = NA_character_,
+        date = NA_character_,
+        license = NA_character_
+    )
 
-    loc_nms <- c ("files_R", "files_src", "files_inst", "files_vignettes",
-                  "files_tests", "loc_R", "loc_src", "loc_inst",
-                  "loc_vignettes", "loc_tests", "blank_lines_R",
-                  "blank_lines_src", "blank_lines_inst",
-                  "blank_lines_vignettes", "blank_lines_tests",
-                  "comment_lines_R", "comment_lines_src", "comment_lines_inst",
-                  "comment_lines_vignettes", "comment_lines_tests", "rel_space",
-                  "rel_space_R", "rel_space_src", "rel_space_inst",
-                  "rel_space_vignettes", "rel_space_tests", "indentation",
-                  "nexpr")
+    loc_nms <- c (
+        "files_R", "files_src", "files_inst", "files_vignettes",
+        "files_tests", "loc_R", "loc_src", "loc_inst",
+        "loc_vignettes", "loc_tests", "blank_lines_R",
+        "blank_lines_src", "blank_lines_inst",
+        "blank_lines_vignettes", "blank_lines_tests",
+        "comment_lines_R", "comment_lines_src", "comment_lines_inst",
+        "comment_lines_vignettes", "comment_lines_tests", "rel_space",
+        "rel_space_R", "rel_space_src", "rel_space_inst",
+        "rel_space_vignettes", "rel_space_tests", "indentation",
+        "nexpr"
+    )
     out [loc_nms] <- NA_integer_
 
     out$num_vignettes <- NA_integer_
@@ -64,31 +72,37 @@ null_stats <- function () {
     out$data_size_median <- NA_integer_
     out$translations <- NA_character_
 
-    desc_nms <- c ("urls", "bugs", "desc_n_aut", "desc_n_ctb", "desc_n_fnd",
-                   "desc_n_rev", "desc_n_ths", "desc_n_trl", "depends",
-                   "imports", "suggests", "linking_to")
+    desc_nms <- c (
+        "urls", "bugs", "desc_n_aut", "desc_n_ctb", "desc_n_fnd",
+        "desc_n_rev", "desc_n_ths", "desc_n_trl", "depends",
+        "imports", "suggests", "linking_to"
+    )
     out [desc_nms] <- NA_character_
     out [grep ("^desc\\_", desc_nms, value = TRUE)] <- NA_integer_
 
-    obj_nms <- c ("n_fns_r", "n_fns_r_exported", "n_fns_r_not_exported",
-                  "n_fns_src", "n_fns_per_file_r", "n_fns_per_file_src",
-                  "npars_exported_mn", "npars_exported_md", "loc_per_fn_r_mn",
-                  "loc_per_fn_r_md", "loc_per_fn_r_exp_mn",
-                  "loc_per_fn_r_exp_md", "loc_per_fn_r_not_exp_mn",
-                  "loc_per_fn_r_not_exp_md", "loc_per_fn_src_mn",
-                  "loc_per_fn_src_md", "languages", "doclines_per_fn_exp_mn",
-                  "doclines_per_fn_exp_md", "doclines_per_fn_not_exp_mn",
-                  "doclines_per_fn_not_exp_md", "docchars_per_par_exp_mn",
-                  "docchars_per_par_exp_md")
+    obj_nms <- c (
+        "n_fns_r", "n_fns_r_exported", "n_fns_r_not_exported",
+        "n_fns_src", "n_fns_per_file_r", "n_fns_per_file_src",
+        "npars_exported_mn", "npars_exported_md", "loc_per_fn_r_mn",
+        "loc_per_fn_r_md", "loc_per_fn_r_exp_mn",
+        "loc_per_fn_r_exp_md", "loc_per_fn_r_not_exp_mn",
+        "loc_per_fn_r_not_exp_md", "loc_per_fn_src_mn",
+        "loc_per_fn_src_md", "languages", "doclines_per_fn_exp_mn",
+        "doclines_per_fn_exp_md", "doclines_per_fn_not_exp_mn",
+        "doclines_per_fn_not_exp_md", "docchars_per_par_exp_mn",
+        "docchars_per_par_exp_md"
+    )
     out [obj_nms] <- NA_integer_
 
-    net_nms <- c ("n_edges", "n_edges_r", "n_edges_src", "n_clusters",
-                  "centrality_dir_mn", "centrality_dir_md",
-                  "centrality_dir_mn_no0", "centrality_dir_md_no0",
-                  "centrality_undir_mn", "centrality_undir_md",
-                  "centrality_undir_mn_no0", "centrality_undir_md_no0",
-                  "num_terminal_edges_dir", "num_terminal_edges_undir",
-                  "node_degree_mn", "node_degree_md", "node_degree_max")
+    net_nms <- c (
+        "n_edges", "n_edges_r", "n_edges_src", "n_clusters",
+        "centrality_dir_mn", "centrality_dir_md",
+        "centrality_dir_mn_no0", "centrality_dir_md_no0",
+        "centrality_undir_mn", "centrality_undir_md",
+        "centrality_undir_mn_no0", "centrality_undir_md_no0",
+        "num_terminal_edges_dir", "num_terminal_edges_undir",
+        "node_degree_mn", "node_degree_md", "node_degree_max"
+    )
     out [net_nms] <- NA_integer_
 
     out$external_calls <- NA_character_
@@ -102,19 +116,21 @@ loc_summary <- function (x) {
 
     # suprress no visible binding notes:
     language <- nfiles <- nlines <- ncode <-
-        ndoc <- nempty <- nspaces <- nchars <-  NULL
+        ndoc <- nempty <- nspaces <- nchars <- NULL
 
     indentation <- loc_indentation (x)
 
     xg <- dplyr::group_by (x, dir)
-    x <- dplyr::summarise (xg,
-                           nfiles = sum (nfiles),
-                           ncode = sum (ncode),
-                           ndoc = sum (ndoc),
-                           nempty = sum (nempty),
-                           nspaces = sum (nspaces),
-                           nchars = sum (nchars),
-                           nexpr = stats::median (nexpr))
+    x <- dplyr::summarise (
+        xg,
+        nfiles = sum (nfiles),
+        ncode = sum (ncode),
+        ndoc = sum (ndoc),
+        nempty = sum (nempty),
+        nspaces = sum (nspaces),
+        nchars = sum (nchars),
+        nexpr = stats::median (nexpr)
+    )
     # nexpr is not truly accurate, but acceptable here
 
     blank <- x [1, ]
@@ -145,7 +161,7 @@ loc_summary <- function (x) {
         x <- add_if_missing (x, "tests")
     }
 
-    files_R <- files_src <- files_inst <-    # nolint
+    files_R <- files_src <- files_inst <- # nolint
         files_vignettes <- files_tests <- 0L
     rel_space_R <- rel_space_src <- rel_space_inst <- # nolint
         rel_space_vignettes <- rel_space_tests <- NA
@@ -169,52 +185,57 @@ loc_summary <- function (x) {
 
     }
 
-    if (files_R == 0)
-        loc_R <- blank_lines_R <- comment_lines_R <- NA_integer_ # nolint
-    if (files_src == 0)
+    if (files_R == 0) {
+        loc_R <- blank_lines_R <- comment_lines_R <- NA_integer_
+    } # nolint
+    if (files_src == 0) {
         loc_src <- blank_lines_src <- comment_lines_src <- NA_integer_
-    if (files_inst == 0)
+    }
+    if (files_inst == 0) {
         loc_inst <- blank_lines_inst <- comment_lines_inst <- NA_integer_
-    if (files_vignettes == 0)
+    }
+    if (files_vignettes == 0) {
         loc_vignettes <-
             blank_lines_vignettes <-
             comment_lines_vignettes <- NA_integer_
-    if (files_tests == 0)
+    }
+    if (files_tests == 0) {
         loc_tests <- blank_lines_tests <- comment_lines_tests <- NA_integer_
+    }
 
     nexpr <- x$nexpr [which (x$dir %in% c ("inst", "R", "src") & x$nexpr > 0)]
     nexpr <- stats::median (nexpr)
 
     data.frame (
-                files_R = files_R,
-                files_src = files_src,
-                files_inst = files_inst,
-                files_vignettes = files_vignettes,
-                files_tests = files_tests,
-                loc_R = loc_R,
-                loc_src = loc_src,
-                loc_inst = loc_inst,
-                loc_vignettes = loc_vignettes,
-                loc_tests = loc_tests,
-                blank_lines_R = blank_lines_R,
-                blank_lines_src = blank_lines_src,
-                blank_lines_inst = blank_lines_inst,
-                blank_lines_vignettes = blank_lines_vignettes,
-                blank_lines_tests = blank_lines_tests,
-                comment_lines_R = comment_lines_R,
-                comment_lines_src = comment_lines_src,
-                comment_lines_inst = comment_lines_inst,
-                comment_lines_vignettes = comment_lines_vignettes,
-                comment_lines_tests = comment_lines_tests,
-                rel_space = sum (x$nspaces) / sum (x$nchars),
-                rel_space_R = rel_space_R,
-                rel_space_src = rel_space_src,
-                rel_space_inst = rel_space_inst,
-                rel_space_vignettes = rel_space_vignettes,
-                rel_space_tests = rel_space_tests,
-                indentation = indentation,
-                nexpr = nexpr
-                )
+        files_R = files_R,
+        files_src = files_src,
+        files_inst = files_inst,
+        files_vignettes = files_vignettes,
+        files_tests = files_tests,
+        loc_R = loc_R,
+        loc_src = loc_src,
+        loc_inst = loc_inst,
+        loc_vignettes = loc_vignettes,
+        loc_tests = loc_tests,
+        blank_lines_R = blank_lines_R,
+        blank_lines_src = blank_lines_src,
+        blank_lines_inst = blank_lines_inst,
+        blank_lines_vignettes = blank_lines_vignettes,
+        blank_lines_tests = blank_lines_tests,
+        comment_lines_R = comment_lines_R,
+        comment_lines_src = comment_lines_src,
+        comment_lines_inst = comment_lines_inst,
+        comment_lines_vignettes = comment_lines_vignettes,
+        comment_lines_tests = comment_lines_tests,
+        rel_space = sum (x$nspaces) / sum (x$nchars),
+        rel_space_R = rel_space_R,
+        rel_space_src = rel_space_src,
+        rel_space_inst = rel_space_inst,
+        rel_space_vignettes = rel_space_vignettes,
+        rel_space_tests = rel_space_tests,
+        indentation = indentation,
+        nexpr = nexpr
+    )
 }
 
 #' Median indentation from `loc` object
@@ -234,12 +255,14 @@ loc_summary <- function (x) {
 loc_indentation <- function (x, tab_threshold = 0.1) {
 
     index <- which (x$ncode > 0)
-    if (length (index) == 0) # data-only pkgs with no code
-        return (NA_integer_)
+    if (length (index) == 0) { # data-only pkgs with no code
+          return (NA_integer_)
+      }
 
     tabs_per_line <- mean (x$ntabs [index] / x$ncode [index], na.rm = TRUE)
-    if (tabs_per_line > tab_threshold)
-        return (-1L)
+    if (tabs_per_line > tab_threshold) {
+          return (-1L)
+      }
 
     indents <- rep (x$indentation, times = x$nfiles)
     return (stats::median (indents))
@@ -250,20 +273,19 @@ loc_indentation <- function (x, tab_threshold = 0.1) {
 desc_summary <- function (x) {
 
     data.frame (
-                urls = x$urls,
-                bugs = x$bugs,
-
-                desc_n_aut = x$aut,
-                desc_n_ctb = x$ctb,
-                desc_n_fnd = x$fnd,
-                desc_n_rev = x$rev,
-                desc_n_ths = x$ths,
-                desc_n_trl = x$trl,
-
-                depends = x$depends,
-                imports = x$imports,
-                suggests = x$suggests,
-                linking_to = x$linking_to)
+        urls = x$urls,
+        bugs = x$bugs,
+        desc_n_aut = x$aut,
+        desc_n_ctb = x$ctb,
+        desc_n_fnd = x$fnd,
+        desc_n_rev = x$rev,
+        desc_n_ths = x$ths,
+        desc_n_trl = x$trl,
+        depends = x$depends,
+        imports = x$imports,
+        suggests = x$suggests,
+        linking_to = x$linking_to
+    )
 }
 
 #' @param x the 'objects' components of 'pkgstats' output
@@ -271,24 +293,26 @@ desc_summary <- function (x) {
 object_summary <- function (x) {
 
     fns <- x [x$kind == "function" &
-              !grepl ("anonFunc", x$fn_name), ]
+        !grepl ("anonFunc", x$fn_name), ]
     fns$num_doclines [is.na (fns$num_doclines)] <- 0L
     fns_r <- fns [fns$language == "R", ]
     fns_not_r <- fns [fns$language != "R", ]
 
     n_fns_r <- length (which (!is.na (fns_r$fn_name)))
     n_fns_r_exported <- length (which (!is.na (fns_r$exported) &
-                                       fns_r$exported))
+        fns_r$exported))
     n_fns_r_not_exported <- n_fns_r - n_fns_r_exported
     repl0withNA <- function (x) { # nolint
-        if (x == 0L)
-            x <- NA_integer_
+        if (x == 0L) {
+              x <- NA_integer_
+          }
         return (x)
     }
     n_fns_r <- repl0withNA (n_fns_r)
     n_fns_r_exported <- repl0withNA (n_fns_r_exported)
-    if (is.na (n_fns_r_exported))
-        n_fns_r_not_exported <- repl0withNA (n_fns_r_not_exported)
+    if (is.na (n_fns_r_exported)) {
+          n_fns_r_not_exported <- repl0withNA (n_fns_r_not_exported)
+      }
     # otherwise pkgs with all R fns exported should retain 0L here
 
     get_n_fns_per_file <- function (f) {
@@ -311,14 +335,18 @@ object_summary <- function (x) {
     loc_per_fn_r_exp_md <- stats::median (fns_r$loc [index_exp], na.rm = TRUE)
     loc_per_fn_r_not_exp_mn <- mean (fns_r$loc [index_not_exp], na.rm = TRUE)
     loc_per_fn_r_not_exp_md <- stats::median (fns_r$loc [index_not_exp],
-                                              na.rm = TRUE)
+        na.rm = TRUE
+    )
 
     doclines_per_fn_exp_mn <- mean (fns_r$num_doclines [index_exp],
-                                    na.rm = TRUE)
+        na.rm = TRUE
+    )
     doclines_per_fn_exp_md <- stats::median (fns_r$num_doclines [index_exp],
-                                             na.rm = TRUE)
+        na.rm = TRUE
+    )
     doclines_per_fn_not_exp_mn <- mean (fns_r$num_doclines [index_not_exp],
-                                        na.rm = TRUE)
+        na.rm = TRUE
+    )
     doclines_per_fn_not_exp_md <-
         stats::median (fns_r$num_doclines [index_not_exp], na.rm = TRUE)
 
@@ -338,29 +366,31 @@ object_summary <- function (x) {
     loc_per_fn_src_md <- stats::median (fns_not_r$loc, na.rm = TRUE)
     languages <- paste0 (unique (fns_not_r$language), collapse = ", ")
 
-    data.frame (n_fns_r = n_fns_r,
-                n_fns_r_exported = n_fns_r_exported,
-                n_fns_r_not_exported = n_fns_r_not_exported,
-                n_fns_src = n_fns_src,
-                n_fns_per_file_r = n_fns_per_file_r,
-                n_fns_per_file_src = n_fns_per_file_src,
-                npars_exported_mn = npars_exported_mn,
-                npars_exported_md = npars_exported_md,
-                loc_per_fn_r_mn = loc_per_fn_r_mn,
-                loc_per_fn_r_md = loc_per_fn_r_md,
-                loc_per_fn_r_exp_mn = loc_per_fn_r_exp_mn,
-                loc_per_fn_r_exp_md = loc_per_fn_r_exp_md,
-                loc_per_fn_r_not_exp_mn = loc_per_fn_r_not_exp_mn,
-                loc_per_fn_r_not_exp_md = loc_per_fn_r_not_exp_md,
-                loc_per_fn_src_mn = loc_per_fn_src_mn,
-                loc_per_fn_src_md = loc_per_fn_src_md,
-                languages = languages,
-                doclines_per_fn_exp_mn = doclines_per_fn_exp_mn,
-                doclines_per_fn_exp_md = doclines_per_fn_exp_md,
-                doclines_per_fn_not_exp_mn = doclines_per_fn_not_exp_mn,
-                doclines_per_fn_not_exp_md = doclines_per_fn_not_exp_md,
-                docchars_per_par_exp_mn = docchars_per_par_exp_mn,
-                docchars_per_par_exp_md = docchars_per_par_exp_md)
+    data.frame (
+        n_fns_r = n_fns_r,
+        n_fns_r_exported = n_fns_r_exported,
+        n_fns_r_not_exported = n_fns_r_not_exported,
+        n_fns_src = n_fns_src,
+        n_fns_per_file_r = n_fns_per_file_r,
+        n_fns_per_file_src = n_fns_per_file_src,
+        npars_exported_mn = npars_exported_mn,
+        npars_exported_md = npars_exported_md,
+        loc_per_fn_r_mn = loc_per_fn_r_mn,
+        loc_per_fn_r_md = loc_per_fn_r_md,
+        loc_per_fn_r_exp_mn = loc_per_fn_r_exp_mn,
+        loc_per_fn_r_exp_md = loc_per_fn_r_exp_md,
+        loc_per_fn_r_not_exp_mn = loc_per_fn_r_not_exp_mn,
+        loc_per_fn_r_not_exp_md = loc_per_fn_r_not_exp_md,
+        loc_per_fn_src_mn = loc_per_fn_src_mn,
+        loc_per_fn_src_md = loc_per_fn_src_md,
+        languages = languages,
+        doclines_per_fn_exp_mn = doclines_per_fn_exp_mn,
+        doclines_per_fn_exp_md = doclines_per_fn_exp_md,
+        doclines_per_fn_not_exp_mn = doclines_per_fn_not_exp_mn,
+        doclines_per_fn_not_exp_md = doclines_per_fn_not_exp_md,
+        docchars_per_par_exp_mn = docchars_per_par_exp_mn,
+        docchars_per_par_exp_md = docchars_per_par_exp_md
+    )
 
 }
 
@@ -371,10 +401,12 @@ network_summary <- function (x) {
     n_clusters <- length (unique (x$cluster_dir))
     n_edges <- ifelse (is.null (x), 0L, nrow (x))
 
-    dirs <- vapply (x$file, function (i)
-                    strsplit (i, .Platform$file.sep) [[1]] [1],
-                    character (1),
-                    USE.NAMES = FALSE)
+    dirs <- vapply (x$file, function (i) {
+          strsplit (i, .Platform$file.sep) [[1]] [1]
+      },
+    character (1),
+    USE.NAMES = FALSE
+    )
     n_edges_r <- length (which (dirs == "R"))
     n_edges_src <- length (which (dirs != "R"))
 
@@ -393,11 +425,13 @@ network_summary <- function (x) {
 
         centrality_dir_mn <- mean (x$centrality_dir, na.rm = TRUE)
         centrality_dir_mn_no0 <- mean (x$centrality_dir [x$centrality_dir > 0],
-                                       na.rm = TRUE)
+            na.rm = TRUE
+        )
         centrality_dir_md <- stats::median (x$centrality_dir, na.rm = TRUE)
         centrality_dir_md_no0 <-
             stats::median (x$centrality_dir [x$centrality_dir > 0],
-                           na.rm = TRUE)
+                na.rm = TRUE
+            )
 
         cu <- x$centrality_undir [x$centrality_undir > 0]
         centrality_undir_mn <- mean (x$centrality_undir, na.rm = TRUE)
@@ -425,43 +459,47 @@ network_summary <- function (x) {
     }
 
     data.frame (
-                n_edges = n_edges,
-                n_edges_r = n_edges_r,
-                n_edges_src = n_edges_src,
-                n_clusters = n_clusters,
-                centrality_dir_mn = centrality_dir_mn,
-                centrality_dir_md = centrality_dir_md,
-                centrality_dir_mn_no0 = centrality_dir_mn_no0,
-                centrality_dir_md_no0 = centrality_dir_md_no0,
-                centrality_undir_mn = centrality_undir_mn,
-                centrality_undir_md = centrality_undir_md,
-                centrality_undir_mn_no0 = centrality_undir_mn_no0,
-                centrality_undir_md_no0 = centrality_undir_md_no0,
-                num_terminal_edges_dir = num_terminal_edges_dir,
-                num_terminal_edges_undir = num_terminal_edges_undir,
-                node_degree_mn = node_degree_mn,
-                node_degree_md = node_degree_md,
-                node_degree_max = node_degree_max
-                )
+        n_edges = n_edges,
+        n_edges_r = n_edges_r,
+        n_edges_src = n_edges_src,
+        n_clusters = n_clusters,
+        centrality_dir_mn = centrality_dir_mn,
+        centrality_dir_md = centrality_dir_md,
+        centrality_dir_mn_no0 = centrality_dir_mn_no0,
+        centrality_dir_md_no0 = centrality_dir_md_no0,
+        centrality_undir_mn = centrality_undir_mn,
+        centrality_undir_md = centrality_undir_md,
+        centrality_undir_mn_no0 = centrality_undir_mn_no0,
+        centrality_undir_md_no0 = centrality_undir_md_no0,
+        num_terminal_edges_dir = num_terminal_edges_dir,
+        num_terminal_edges_undir = num_terminal_edges_undir,
+        node_degree_mn = node_degree_mn,
+        node_degree_md = node_degree_md,
+        node_degree_max = node_degree_max
+    )
 }
 
 #' @param x the 'external_calls' components of 'pkgstats' output
 #' @noRd
 external_call_summary <- function (x) {
 
-    if (is.null (x))
-        return (NA_character_)
+    if (is.null (x)) {
+          return (NA_character_)
+      }
 
     # summarise total number of calls to each package, plus number of distinct
     # functions from each:
     package <- NULL # suppress no visible binding note
     n <- dplyr::group_by (x, package, call)
     n <- dplyr::tally (n)
-    n <- dplyr::summarise (n, ntot = sum (n),
-                              nunique = length (n))
+    n <- dplyr::summarise (n,
+        ntot = sum (n),
+        nunique = length (n)
+    )
 
-    res <- apply (n, 1, function (i)
-                  paste0 (i, collapse = ":"))
+    res <- apply (n, 1, function (i) {
+          paste0 (i, collapse = ":")
+      })
     # tibbles put white space in there:
     res <- gsub ("\\s*", "", res)
 
