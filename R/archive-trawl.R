@@ -58,41 +58,15 @@ pkgstats_from_archive <- function (path,
     if (!dir.exists (path))
         stop ("[", path, "] directory does not exist")
 
+    res <- e <- NULL
+    out <- prev_results
+
     flist <- list.files (path,
                          recursive = archive,
                          full.names = TRUE,
                          pattern = "\\.tar\\.gz$")
     flist <- normalizePath (flist)
-
-    out <- prev_results
-
-    res <- e <- NULL
-
-    if (!is.null (prev_results)) {
-
-        if (is.character (prev_results)) {
-            if (length (prev_results) > 1)
-                stop ("prev_results must be a single-length character")
-            if (!file.exists (prev_results))
-                stop ("file [", prev_results, "] does not exist")
-            prev_results <- tryCatch (readRDS (prev_results),
-                                      error = function (e) e)
-            if (methods::is (prev_results, "error"))
-                stop ("Unable to read prev_results: ", e)
-        }
-
-        tars <- vapply (flist, function (i)
-                        utils::tail (strsplit (i, .Platform$file.sep) [[1]], 1),
-                        character (1))
-
-        prev_tars <- paste0 (prev_results$package,
-                             "_",
-                             prev_results$version,
-                             ".tar.gz")
-
-        flist <- flist [which (!tars %in% prev_tars)]
-    }
-
+    flist <- rm_prev_files (flist, prev_results)
     nfiles <- length (flist)
 
     if (nfiles > 0) {
@@ -186,4 +160,40 @@ pkgstats_from_archive <- function (path,
     }
 
     invisible (out)
+}
+
+#' Remove files for which results have already been generated
+#' @param flist Full paths to all tarball files to be analysed
+#' @param prev_results `data.frame` of previous results
+#' @return Modified version of `flist`, after removing any entires present in
+#' `prev_results`.
+#' @noRd
+rm_prev_files <- function (flist, prev_results) {
+
+    if (!is.null (prev_results)) {
+
+        if (is.character (prev_results)) {
+            if (length (prev_results) > 1)
+                stop ("prev_results must be a single-length character")
+            if (!file.exists (prev_results))
+                stop ("file [", prev_results, "] does not exist")
+            prev_results <- tryCatch (readRDS (prev_results),
+                                      error = function (e) e)
+            if (methods::is (prev_results, "error"))
+                stop ("Unable to read prev_results: ", e)
+        }
+
+        tars <- vapply (flist, function (i)
+                        utils::tail (strsplit (i, .Platform$file.sep) [[1]], 1),
+                        character (1))
+
+        prev_tars <- paste0 (prev_results$package,
+                             "_",
+                             prev_results$version,
+                             ".tar.gz")
+
+        flist <- flist [which (!tars %in% prev_tars)]
+    }
+
+    return (flist)
 }
