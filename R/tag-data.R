@@ -12,10 +12,11 @@
 #' @export
 tags_data <- function (path, has_tabs = NULL, pkg_name) {
 
-    if (is.null (has_tabs))
-        has_tabs <- any (loc_stats (path)$ntabs > 0L)
-    else if (!is.logical (has_tabs) | length (has_tabs) > 1L)
-        stop ("has_tabs must either be NULL or a single logical value")
+    if (is.null (has_tabs)) {
+          has_tabs <- any (loc_stats (path)$ntabs > 0L)
+      } else if (!is.logical (has_tabs) | length (has_tabs) > 1L) {
+          stop ("has_tabs must either be NULL or a single logical value")
+      }
 
     kind <- start <- NULL # no visible binding messages
 
@@ -38,32 +39,38 @@ tags_data <- function (path, has_tabs = NULL, pkg_name) {
 
         ctags <- dplyr::arrange (rbind (tags_src, tags_inst), file, start)
         ctags <- dplyr::filter (ctags, kind %in%
-                                c ("class", "function", "struct"))
+            c ("class", "function", "struct"))
 
         if (!is.null (gtags)) {
 
             gtags$from <- NA_character_
-            for (f in unique (ctags$file))
-                gtags <- gtags_from_one_file (ctags, gtags, f)
+            for (f in unique (ctags$file)) {
+                  gtags <- gtags_from_one_file (ctags, gtags, f)
+              }
             gtags <- gtags [which (gtags$tag %in% ctags$tag), ]
 
             langs <- ctags [, c ("tag", "language")]
             langs <- langs [which (!duplicated (langs)), ]
-            gtags$language <- gsub ("^language\\:", "",
-                                langs$language [match (gtags$tag, langs$tag)])
+            gtags$language <- gsub (
+                "^language\\:", "",
+                langs$language [match (gtags$tag, langs$tag)]
+            )
         }
 
-        if (no_gtags)
-            chk <- rm_gtags_files (path)
+        if (no_gtags) {
+              chk <- rm_gtags_files (path)
+          }
     }
 
     fns_r <- tags_r [which (tags_r$kind == "function" & !is.na (tags_r$tag)), ]
     fn_vars_r <- tags_r [which (tags_r$kind == "functionVar" &
-                                !is.na (tags_r$tag)), ]
+        !is.na (tags_r$tag)), ]
 
-    call_graph_r <- fn_var_call_graph_r (fns_r,
-                                         fn_vars_r,
-                                         path)
+    call_graph_r <- fn_var_call_graph_r (
+        fns_r,
+        fn_vars_r,
+        path
+    )
     call_graph_src <- fn_var_call_graph_src (gtags)
 
     network <- rbind (call_graph_r, call_graph_src)
@@ -76,9 +83,11 @@ tags_data <- function (path, has_tabs = NULL, pkg_name) {
         network$line2 <- NULL
     }
 
-    return (list (network = network,
-                  stats = src_stats (rbind (tags_r, tags_src, tags_inst)),
-                  external_calls = external_calls))
+    return (list (
+        network = network,
+        stats = src_stats (rbind (tags_r, tags_src, tags_inst)),
+        external_calls = external_calls
+    ))
 }
 
 #' Get tags for one directory within a package
@@ -86,8 +95,9 @@ tags_data <- function (path, has_tabs = NULL, pkg_name) {
 #' @noRd
 get_ctags <- function (d = "R", has_tabs) {
 
-    if (!dir.exists (file.path (getwd (), d)))
+    if (!dir.exists (file.path (getwd (), d))) {
         return (NULL)
+    }
 
     path_dir <- file.path (getwd (), d)
 
@@ -123,10 +133,12 @@ get_ctags <- function (d = "R", has_tabs) {
 
     ptn <- paste0 ("ctags-", Sys.getpid (), "-")
     f <- tempfile (pattern = ptn, fileext = ".txt")
-    args <- c ("-R",
-               paste0 ("--fields=", fields),
-               paste0 ("-f ", f),
-               path_dir)
+    args <- c (
+        "-R",
+        paste0 ("--fields=", fields),
+        paste0 ("-f ", f),
+        path_dir
+    )
     sys::exec_wait ("ctags", args, std_out = FALSE, std_err = FALSE)
     Sys.sleep (0.2)
 
@@ -136,42 +148,51 @@ get_ctags <- function (d = "R", has_tabs) {
     x <- brio::read_lines (f)
     x <- x [-which (grepl ("^\\!", x))]
 
-    if (length (x) == 0L)
-        return (NULL) # no ctags
+    if (length (x) == 0L) {
+        return (NULL)
+    } # no ctags
 
     writeLines (x, con = f)
 
-    ctypes <- list (readr::col_character (),
-                    readr::col_character (),
-                    readr::col_character (),
-                    readr::col_character (),
-                    readr::col_character (),
-                    readr::col_character (),
-                    readr::col_character ())
+    ctypes <- list (
+        readr::col_character (),
+        readr::col_character (),
+        readr::col_character (),
+        readr::col_character (),
+        readr::col_character (),
+        readr::col_character (),
+        readr::col_character ()
+    )
     cnames <- c ("tag", "file", "content", "kind", "start", "language", "end")
 
     n_flds <- readr::count_fields (f,
-                                   tokenizer = readr::tokenizer_tsv (),
-                                   n_max = 100L)
+        tokenizer = readr::tokenizer_tsv (),
+        n_max = 100L
+    )
     n_flds <- stats::median (n_flds)
-    if (n_flds != length (cnames))
+    if (n_flds != length (cnames)) {
         return (NULL)
+    }
 
 
     suppressWarnings (
-                      tags <- readr::read_tsv (f,
-                                               col_names = cnames,
-                                               col_types = ctypes,
-                                               col_select = cnames,
-                                               progress = FALSE,
-                                               lazy = FALSE)
-                      )
+        tags <- readr::read_tsv (
+            f,
+            col_names = cnames,
+            col_types = ctypes,
+            col_select = cnames,
+            progress = FALSE,
+            lazy = FALSE
+        )
+    )
 
-    if (nrow (tags) == 0)
+    if (nrow (tags) == 0) {
         return (NULL)
+    }
 
     chk <- tryCatch (file.remove (f),
-                     error = function (e) NULL)
+        error = function (e) NULL
+    )
 
     tags <- tags [which (!grepl (excluded_file_ptn (), tags$file)), ]
 
@@ -187,9 +208,12 @@ get_ctags <- function (d = "R", has_tabs) {
 
     files <- decompose_path (tags$file)
     len_path_sub <- length (decompose_path (path_sub) [[1]])
-    tags$file <- vapply (files, function (i)
-                     do.call (file.path, as.list (i [-seq (len_path_sub)])),
-                     character (1))
+    tags$file <- vapply (
+        files, function (i) {
+            do.call (file.path, as.list (i [-seq (len_path_sub)]))
+        },
+        character (1)
+    )
 
     attr (tags, "has_tabs") <- has_tabs
 
@@ -210,18 +234,22 @@ get_ctags <- function (d = "R", has_tabs) {
 rm_tabs <- function (d, nspaces = 2) {
 
     tmpd <- paste0 (sample (c (letters, LETTERS), size = 8, replace = TRUE),
-                    collapse = "")
+        collapse = ""
+    )
     tmpd <- file.path (tempdir (), tmpd)
     dir.create (tmpd, recursive = TRUE)
     chk <- file.copy (d, tmpd, recursive = TRUE) # copies 'd' as sub-dir of tmpd
-    if (any (!chk))
+    if (any (!chk)) {
         stop ("Unable to copy files from [", d, "] to tempdir()")
+    }
 
     sp <- paste0 (rep (" ", nspaces), collapse = "")
 
-    files <- normalizePath (list.files (tmpd,
-                                        full.names = TRUE,
-                                        recursive = TRUE))
+    files <- normalizePath (list.files (
+        tmpd,
+        full.names = TRUE,
+        recursive = TRUE
+    ))
 
     exts <- file_exts ()
     exts$ext <- gsub ("+", "\\+", exts$ext, fixed = TRUE)
@@ -251,9 +279,10 @@ make_gtags <- function () {
 
     path <- normalizePath (".")
     flist <- list.files (path,
-                         recursive = TRUE,
-                         full.names = TRUE,
-                         pattern = "GRTAGS$|GPATH$|GTAGS$")
+        recursive = TRUE,
+        full.names = TRUE,
+        pattern = "GRTAGS$|GPATH$|GTAGS$"
+    )
 
     if (length (flist) == 0) {
         sys::exec_wait ("gtags")
@@ -272,27 +301,33 @@ get_gtags <- function () {
     x <- brio::read_lines (f)
 
     # global may fail to parse files, as happens for example with "rms" package
-    if (length (x) == 0)
+    if (length (x) == 0) {
         return (NULL)
+    }
 
     # these are fixed width, but only have 4 cols, so can just replace the first
     # 3 lots of space with single tab characters.
-    for (i in 1:3)
+    for (i in 1:3) {
         x <- sub (" +", "\t", x)
+    }
 
-    ctypes <- list (readr::col_character (),
-                    readr::col_double (),
-                    readr::col_character (),
-                    readr::col_character ())
+    ctypes <- list (
+        readr::col_character (),
+        readr::col_double (),
+        readr::col_character (),
+        readr::col_character ()
+    )
     cnames <- c ("tag", "line", "file", "content")
     suppressWarnings (
-        gtags <- readr::read_tsv (paste0 (x, collapse = "\n"),
-                                  col_names = cnames,
-                                  col_types = ctypes,
-                                  col_select = cnames,
-                                  progress = FALSE,
-                                  lazy = FALSE)
+        gtags <- readr::read_tsv (
+            paste0 (x, collapse = "\n"),
+            col_names = cnames,
+            col_types = ctypes,
+            col_select = cnames,
+            progress = FALSE,
+            lazy = FALSE
         )
+    )
 
     gtags <- gtags [which (!grepl (excluded_file_ptn (), gtags$file)), ]
 
@@ -311,14 +346,19 @@ gtags_from_one_file <- function (ctags, gtags, f) {
     ctags_f <- ctags_f [which (!duplicated (ctags_f$tag)), ]
     # end lines are not always given, as in Fortran code for which ctags works
     # but gtags does not
-    if (any (is.na (ctags_f$end)))
-        return (gtags)
+    if (any (is.na (ctags_f$end))) {
+          return (gtags)
+      }
 
     line_nums <- lapply (seq (nrow (ctags_f)), function (i) {
-                             data.frame (n = i,
-                                         l = seq (ctags_f$start [i],
-                                                  ctags_f$end [i]))
-                        })
+        data.frame (
+            n = i,
+            l = seq (
+                ctags_f$start [i],
+                ctags_f$end [i]
+            )
+        )
+    })
     line_nums <- do.call (rbind, line_nums)
 
     index <- which (gtags$file == f)
@@ -330,17 +370,20 @@ gtags_from_one_file <- function (ctags, gtags, f) {
 
 rm_gtags_files <- function (path) {
 
-    flist <- list.files (path,
-                         recursive = TRUE,
-                         full.names = TRUE,
-                         pattern = "GRTAGS$|GPATH$|GTAGS$")
+    flist <- list.files (
+        path,
+        recursive = TRUE,
+        full.names = TRUE,
+        pattern = "GRTAGS$|GPATH$|GTAGS$"
+    )
 
     ret <- NULL
 
     if (length (flist) > 0) {
 
         ret <- tryCatch (file.remove (flist),
-                         error = function (e) e)
+            error = function (e) e
+        )
     }
 
     return (ret)
@@ -354,33 +397,39 @@ fn_var_call_graph_r <- function (fns, fn_vars, path) {
 
         fns_f <- fns [fns$file == f, ]
         fns_f <- fns_f [order (fns_f$start), c ("tag", "start", "end")]
-        fns_index <- lapply (seq (nrow (fns_f)), function (i)
-                             cbind (i, seq (fns_f$start [i], fns_f$end [i])))
+        fns_index <- lapply (seq (nrow (fns_f)), function (i) {
+              cbind (i, seq (fns_f$start [i], fns_f$end [i]))
+          })
         fns_index <- do.call (rbind, fns_index)
 
         f_full <- normalizePath (file.path (path, f))
 
         p <- control_parse (file = f_full)
-        if (methods::is (p, "simpleError"))
-            next
+        if (methods::is (p, "simpleError")) {
+              next
+          }
 
         pd <- utils::getParseData (control_parse (file = f_full))
 
         fn_calls <- pd [pd$text %in% fns$tag &
-                        pd$token == "SYMBOL_FUNCTION_CALL", ]
+            pd$token == "SYMBOL_FUNCTION_CALL", ]
         index <- match (fn_calls$line1, fns_index [, 2])
         fn_calls$fns_index <- fns_index [index, 1]
         fn_calls$name <- fns_f$tag [fn_calls$fns_index]
 
         if (nrow (fn_calls) > 0) {
 
-            res <- rbind (res,
-                          data.frame (file = f,
-                                      line1 = fn_calls$line1,
-                                      line2 = fn_calls$line2,
-                                      from = fn_calls$name,
-                                      to = fn_calls$text,
-                                      language = "R"))
+            res <- rbind (
+                res,
+                data.frame (
+                    file = f,
+                    line1 = fn_calls$line1,
+                    line2 = fn_calls$line2,
+                    from = fn_calls$name,
+                    to = fn_calls$text,
+                    language = "R"
+                )
+            )
         }
     }
 
@@ -389,25 +438,29 @@ fn_var_call_graph_r <- function (fns, fn_vars, path) {
 
 fn_var_call_graph_src <- function (gtags) {
 
-    data.frame (file = gtags$file,
-                line1 = gtags$line,
-                line2 = gtags$line,
-                from = gtags$from,
-                to = gtags$tag,
-                language = gtags$language)
+    data.frame (
+        file = gtags$file,
+        line1 = gtags$line,
+        line2 = gtags$line,
+        from = gtags$from,
+        to = gtags$tag,
+        language = gtags$language
+    )
 }
 
 add_igraph_stats <- function (g, directed = TRUE) {
 
     g_igr <- igraph::graph_from_data_frame (g [, c ("from", "to")],
-                                            directed = directed)
+        directed = directed
+    )
 
     cl <- igraph::clusters (g_igr)
     index <- match (g$from, names (cl$membership))
-    if (directed)
-        nms <- c ("cluster_dir", "centrality_dir")
-    else
-        nms <- c ("cluster_undir", "centrality_undir")
+    if (directed) {
+          nms <- c ("cluster_dir", "centrality_dir")
+      } else {
+          nms <- c ("cluster_undir", "centrality_undir")
+      }
     g [nms [1]] <- cl$membership [index]
     btw <- igraph::betweenness (g_igr)
     g [nms [2]] <- btw [match (g$from, names (btw))]
@@ -420,23 +473,27 @@ add_igraph_stats <- function (g, directed = TRUE) {
 #' @noRd
 src_stats <- function (tags) {
 
-    res <- data.frame (file_name = NA_character_,
-                       fn_name = NA_character_,
-                       kind = NA_character_,
-                       language = NA_character_,
-                       loc = 0L,
-                       npars = NA_integer_,
-                       has_dots = NA)
+    res <- data.frame (
+        file_name = NA_character_,
+        fn_name = NA_character_,
+        kind = NA_character_,
+        language = NA_character_,
+        loc = 0L,
+        npars = NA_integer_,
+        has_dots = NA
+    )
 
     if (!is.null (tags)) {
 
-        res <- data.frame (file_name = tags$file,
-                           fn_name = tags$tag,
-                           kind = tags$kind,
-                           language = gsub ("^language:", "", tags$language),
-                           loc = tags$end - tags$start + 1,
-                           npars = NA_integer_,
-                           has_dots = NA)
+        res <- data.frame (
+            file_name = tags$file,
+            fn_name = tags$tag,
+            kind = tags$kind,
+            language = gsub ("^language:", "", tags$language),
+            loc = tags$end - tags$start + 1,
+            npars = NA_integer_,
+            has_dots = NA
+        )
         res <- res [which (!is.na (res$loc)), ]
     }
 
