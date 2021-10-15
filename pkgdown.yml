@@ -2,5 +2,8 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles: {}
-last_built: 2021-10-15T09:49Z
+last_built: 2021-10-15T10:00Z
+urls:
+  reference: https://docs.ropensci.org/pkgstats/reference
+  article: https://docs.ropensci.org/pkgstats/articles
 
