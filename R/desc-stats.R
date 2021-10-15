@@ -27,16 +27,20 @@ desc_stats <- function (path) {
     d <- data.frame (read.dcf (desc))
     license <- d$License
     urls <- NA_character_
-    if ("URL" %in% names (d))
-        urls <- d$URL
+    if ("URL" %in% names (d)) {
+          urls <- d$URL
+      }
 
     if ("Authors.R" %in% names (d)) {
         authors <- eval (parse (text = d$Authors.R))
         # remove everything before and after square brackets
         authors <- gsub ("^.*\\[|\\].*$", "", authors)
-        n_aut <- vapply (aut_types (), function (i)
-                         length (grep (i, authors)),
-                         integer (1))
+        n_aut <- vapply (
+            aut_types (), function (i) {
+                  length (grep (i, authors))
+              },
+            integer (1)
+        )
     } else {
         # There is no reliable way to establish numbers of authors for packages
         # which only have an "Author" field, because these are not intended to
@@ -62,24 +66,28 @@ desc_stats <- function (path) {
     lnk <- extract_deps (d, "LinkingTo")
 
     bugs <- ifelse ("BugReports" %in% names (d),
-                    d$BugReports,
-                    NA_character_)
+        d$BugReports,
+        NA_character_
+    )
 
     desc_date <- ifelse ("Date.Publication" %in% names (d),
-                         gsub ("\\sUTC$", "", d$Date.Publication),
-                         paste0 (file.info (desc)$mtime))
+        gsub ("\\sUTC$", "", d$Date.Publication),
+        paste0 (file.info (desc)$mtime)
+    )
 
-    data.frame (package = d$Package,
-                version = d$Version,
-                date = desc_date,
-                license = license,
-                urls = urls,
-                bugs = bugs,
-                n_aut,
-                depends = dep,
-                imports = imp,
-                suggests = sug,
-                linking_to = lnk)
+    data.frame (
+        package = d$Package,
+        version = d$Version,
+        date = desc_date,
+        license = license,
+        urls = urls,
+        bugs = bugs,
+        n_aut,
+        depends = dep,
+        imports = imp,
+        suggests = sug,
+        linking_to = lnk
+    )
 }
 
 extract_deps <- function (d, type = "Depends") {
@@ -93,10 +101,12 @@ extract_deps <- function (d, type = "Depends") {
         res <- ifelse (length (res) == 0, NA_character_, res)
     }
 
-    res <- vapply (res, function (i)
-                       strsplit (i, "\\(") [[1]] [1],
-                       character (1),
-                       USE.NAMES = FALSE)
+    res <- vapply (res, function (i) {
+          strsplit (i, "\\(") [[1]] [1]
+      },
+    character (1),
+    USE.NAMES = FALSE
+    )
 
     res <- gsub ("^\\s+|\\s+$", "", res)
 
