@@ -5,9 +5,12 @@ get_Rd_metadata <- utils::getFromNamespace (".Rd_get_metadata", "tools") # nolin
 #' @noRd
 check_path <- function (path) {
 
-    if (!file.exists (path))
-        stop (paste0 ("path [", path, "] does not exist. ",
-                      "Did you first 'extract_tarball()'?"))
+    if (!file.exists (path)) {
+          stop (paste0 (
+              "path [", path, "] does not exist. ",
+              "Did you first 'extract_tarball()'?"
+          ))
+      }
 }
 
 #' Decompose file paths into character vectors of named directories and final
@@ -37,18 +40,20 @@ control_parse <- function (file) {
 
     # use "latin1" encoding to force re-coding of any non-latin characters:
     x <- readr::read_lines (file,
-                            locale = readr::locale (encoding = "latin1"),
-                            progress = FALSE)
+        locale = readr::locale (encoding = "latin1"),
+        progress = FALSE
+    )
 
     # note: keep.source must be TRUE as it is, for example, switched off in
     # `rmarkdown` environments, which means no parse data are returned by
     # getParseData.
     out <- tryCatch (parse (text = x, keep.source = TRUE, encoding = "UTF-8"),
-                     error = function (e) e)
+        error = function (e) e
+    )
 
     count <- 0
     while (methods::is (out, "simpleError") &
-           count < floor (length (x) / 10)) {
+        count < floor (length (x) / 10)) {
 
         g <- gregexpr ("\'.*\'", out$message)
         ptn <- gsub ("\'", "", regmatches (out$message, g) [[1]])
@@ -59,13 +64,15 @@ control_parse <- function (file) {
         # Then find line to implement substitution:
         g <- gregexpr ("\\\"", out$message) [[1]]
         expr <- gsub ("\"", "", substring (out$message, min (g), max (g)))
-        if (grepl ("\\\\", expr))
-            expr <- gsub ("\\", "\\\\", expr, fixed = TRUE)
+        if (grepl ("\\\\", expr)) {
+              expr <- gsub ("\\", "\\\\", expr, fixed = TRUE)
+          }
         index <- which (grepl (ptn, x) & grepl (expr, x))
         x [index] <- gsub (ptn, "", x [index])
 
         out <- tryCatch (parse (text = x, keep.source = TRUE, encoding = "UTF-8"),
-                         error = function (e) e)
+            error = function (e) e
+        )
 
         count <- count + 1L
     }
@@ -81,18 +88,21 @@ control_parse <- function (file) {
 #' @noRd
 excluded_file_ptn <- function () {
 
-    exts <- c ("h", "rda", "rds", "Rd", "md", "Rmd", "win", "min.js",
-               "png", "svg", "jpg", "gif")
+    exts <- c (
+        "h", "rda", "rds", "Rd", "md", "Rmd", "win", "min.js",
+        "png", "svg", "jpg", "gif"
+    )
     paste0 ("(", paste0 ("\\.", exts, collapse = "|"), ")$")
 }
 
 which_unix <- function () {
 
-    if (!.Platform[["OS.type"]] == "unix")
-        return (NULL)
+    if (!.Platform [["OS.type"]] == "unix") {
+          return (NULL)
+      }
 
     x <- capture.output (
         sys::exec_wait ("lsb_release", args = "-a", std_out = TRUE)
-        )
+    )
     strsplit (grep ("^Distributor ID", x, value = TRUE), "\\t") [[1]] [2]
 }
