@@ -64,7 +64,7 @@ ctags_make <- function (ctags_dir, bin_dir = NULL, sudo = TRUE) {
         sys::exec_wait ("./autogen.sh", std_out = f)
         sys::exec_wait ("./configure", args = confargs, std_out = f)
         sys::exec_wait ("make", std_out = f)
-        sys::exec_wait (cmd, args arg, std_out = f)
+        sys::exec_wait (cmd, args = arg, std_out = f)
     })
 }
 
