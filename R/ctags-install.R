@@ -87,8 +87,8 @@ ctags_make <- function (ctags_dir, bin_dir = NULL, sudo = TRUE) {
 ctags_install <- function (bin_dir = NULL, sudo = TRUE) {
 
     if (!.Platform$OS.type == "unix") {
-          return (NULL)
-      }
+        return (NULL)
+    }
 
     if (tryCatch (ctags_test (),
         error = function (e) FALSE
@@ -101,11 +101,12 @@ ctags_install <- function (bin_dir = NULL, sudo = TRUE) {
     ctags_make (ctags_dir, bin_dir, sudo)
 
     if (!has_gtags ()) {
-          gtags_install (sudo = sudo)
-      }
+        gtags_install (sudo = sudo)
+    }
 
     if (!sudo) {
-        system ("hash -d ctags")
+        # system ("hash -d ctags")
+        system ("hash ctags")
     }
 }
 # nocov end
