@@ -21,3 +21,11 @@ Internal calculation of Lines-of-Code Statistics
 \note{
 NA values are returned for directories which do not exist.
 }
+\seealso{
+Other stats: 
+\code{\link{desc_stats}()},
+\code{\link{pkgstats_summary}()},
+\code{\link{pkgstats}()},
+\code{\link{rd_stats}()}
+}
+\concept{stats}

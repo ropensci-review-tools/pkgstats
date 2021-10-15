@@ -8,10 +8,10 @@ package}
 extract_tarball(tarball)
 }
 \arguments{
-\item{tarball}{Full path to local tarball of an R package}
+\item{tarball}{Full path to local tarball of an R package.}
 }
 \value{
-Path to extracted version of package
+Path to extracted version of package (in \code{tempdir()}).
 }
 \description{
 Extract tarball of a package into temp directory and return path to extracted
@@ -27,3 +27,4 @@ download.file (u, f)
 path <- extract_tarball (f)
 }
 }
+\concept{misc}

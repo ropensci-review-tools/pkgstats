@@ -12,3 +12,11 @@ rd_stats(path)
 \description{
 Stats from '.Rd' files
 }
+\seealso{
+Other stats: 
+\code{\link{desc_stats}()},
+\code{\link{loc_stats}()},
+\code{\link{pkgstats_summary}()},
+\code{\link{pkgstats}()}
+}
+\concept{stats}

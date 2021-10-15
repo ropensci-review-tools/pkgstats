@@ -66,6 +66,7 @@ get_file_types <- function (flist) {
 #' characters, and indentation used in files in that directory.
 #'
 #' @note NA values are returned for directories which do not exist.
+#' @family stats
 #' @export
 loc_stats <- function (path) {
 

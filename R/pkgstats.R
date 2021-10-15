@@ -3,6 +3,7 @@
 #' @param path Either a path to a local source repository, or a local '.tar.gz'
 #' file containing code for an R package.
 #' @return List of statistics
+#' @family stats
 #' @export
 #' @examples
 #' \dontrun{

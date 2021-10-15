@@ -5,6 +5,7 @@
 #' \link{pkgstats_from_archive}).
 #' @return Summarised version of `s`, as a single row of a standardised
 #' `data.frame` object
+#' @family stats
 #' @export
 pkgstats_summary <- function (s = NULL) {
 

@@ -8,6 +8,7 @@
 #' @param vis_save Name of local file in which to save `html` file of network
 #' visualisation (will override `plot` to `FALSE`).
 #' @return (Invisibly) A \pkg{visNetwork} representation of the package network.
+#' @family output
 #' @export
 plot_network <- function (s, plot = TRUE, vis_save = NULL) {
 

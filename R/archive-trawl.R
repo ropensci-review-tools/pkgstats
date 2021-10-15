@@ -32,6 +32,7 @@
 #' @return A `data.frame` object with one row for each package containing
 #' summary statistics generated from the \link{pkgstats_summary} function.
 #'
+#' @family archive
 #' @export
 pkgstats_from_archive <- function (path,
                                    archive = TRUE,

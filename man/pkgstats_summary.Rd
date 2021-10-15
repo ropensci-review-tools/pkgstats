@@ -18,3 +18,11 @@ Summarised version of \code{s}, as a single row of a standardised
 \description{
 Condense the output of \code{pkgstats} to summary statistics only
 }
+\seealso{
+Other stats: 
+\code{\link{desc_stats}()},
+\code{\link{loc_stats}()},
+\code{\link{pkgstats}()},
+\code{\link{rd_stats}()}
+}
+\concept{stats}

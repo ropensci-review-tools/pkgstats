@@ -1,8 +1,9 @@
 #' Extract tarball of a package into temp directory and return path to extracted
 #' package
 #'
-#' @param tarball Full path to local tarball of an R package
-#' @return Path to extracted version of package
+#' @param tarball Full path to local tarball of an R package.
+#' @return Path to extracted version of package (in `tempdir()`).
+#' @family misc
 #' @export
 #' @examples
 #' \dontrun{

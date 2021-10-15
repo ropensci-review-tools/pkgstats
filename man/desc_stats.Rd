@@ -12,3 +12,11 @@ desc_stats(path)
 \description{
 Statistics from DESCRIPTION files
 }
+\seealso{
+Other stats: 
+\code{\link{loc_stats}()},
+\code{\link{pkgstats_summary}()},
+\code{\link{pkgstats}()},
+\code{\link{rd_stats}()}
+}
+\concept{stats}

@@ -8,6 +8,7 @@
 #' calling that function.
 #' @param pkg_name Only used for external_call_network, to label
 #' package-internal calls.
+#' @family tags
 #' @export
 tags_data <- function (path, has_tabs = NULL, pkg_name) {
 

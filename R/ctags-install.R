@@ -79,6 +79,7 @@ ctags_make <- function (ctags_dir, bin_dir = NULL, sudo = TRUE) {
 #' value for `bin_dir` will also have to be explicitly specified, and be a
 #' location where a binary is able to be installed without `sudo` privileges.
 #'
+#' @family tags
 #' @export
 ctags_install <- function (bin_dir = NULL, sudo = TRUE) {
 

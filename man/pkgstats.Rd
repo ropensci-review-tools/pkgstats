@@ -26,3 +26,11 @@ download.file (u, f)
 pkgstats (f)
 }
 }
+\seealso{
+Other stats: 
+\code{\link{desc_stats}()},
+\code{\link{loc_stats}()},
+\code{\link{pkgstats_summary}()},
+\code{\link{rd_stats}()}
+}
+\concept{stats}

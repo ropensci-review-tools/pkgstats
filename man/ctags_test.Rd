@@ -11,3 +11,9 @@ This uses the example from
 \url{https://github.com/universal-ctags/ctags/blob/master/man/ctags-lang-r.7.rst.in}
 and also checks the GNU global installation.
 }
+\seealso{
+Other tags: 
+\code{\link{ctags_install}()},
+\code{\link{tags_data}()}
+}
+\concept{tags}

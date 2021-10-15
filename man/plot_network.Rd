@@ -23,3 +23,4 @@ visualisation (will override \code{plot} to \code{FALSE}).}
 Plot interactive \pkg{visNetwork} visualisation of object-relationship
 network of package.
 }
+\concept{output}

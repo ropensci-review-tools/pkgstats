@@ -20,3 +20,9 @@ package-internal calls.}
 \description{
 use ctags and gtags to parse call data
 }
+\seealso{
+Other tags: 
+\code{\link{ctags_install}()},
+\code{\link{ctags_test}()}
+}
+\concept{tags}
