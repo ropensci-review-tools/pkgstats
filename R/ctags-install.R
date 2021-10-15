@@ -52,15 +52,19 @@ ctags_make <- function (ctags_dir, bin_dir = NULL, sudo = TRUE) {
         confargs <- paste0 ("--prefix=", bin_dir)
     }
 
+    if (sudo) {
+        cmd <- "sudo"
+        arg <- c ("make", "install")
+    } else {
+        cmd <- "make"
+        arg <- "install"
+    }
+
     withr::with_dir (ctags_dir, {
         sys::exec_wait ("./autogen.sh", std_out = f)
         sys::exec_wait ("./configure", args = confargs, std_out = f)
         sys::exec_wait ("make", std_out = f)
-        if (sudo) {
-            sys::exec_wait ("sudo", args = c ("make", "install"), std_out = f)
-        } else {
-            sys::exec_wait ("make", args = "install", std_out = f)
-        }
+        sys::exec_wait (cmd, args arg, std_out = f)
     })
 }
 
