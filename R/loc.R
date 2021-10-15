@@ -33,9 +33,12 @@ average_leading_white <- function (x) {
 #' @noRd
 get_file_types <- function (flist) {
 
-    exts <- vapply (flist, function (i)
-                    utils::tail (strsplit (i, "\\.") [[1]], 1),
-                    character (1))
+    exts <- vapply (
+        flist, function (i) {
+              utils::tail (strsplit (i, "\\.") [[1]], 1)
+          },
+        character (1)
+    )
     ftypes <- file_exts (exts)
 
     # any non-parseable files (like .o, .so) then have NA extensions:
@@ -77,39 +80,46 @@ loc_stats <- function (path) {
     paths [3] <- file.path (paths [3], "include")
 
     flist <- list.files (paths,
-                         recursive = TRUE,
-                         full.names = TRUE)
+        recursive = TRUE,
+        full.names = TRUE
+    )
     flist <- flist [which (!grepl (excluded_file_ptn (), flist))]
 
     ftypes <- get_file_types (flist)
 
     fdirs <- gsub (paste0 (path, .Platform$file.sep), "", ftypes$file)
-    fdirs <- vapply (strsplit (fdirs, .Platform$file.sep), function (i)
-                     i [1],
-                     character (1),
-                     USE.NAMES = FALSE)
+    fdirs <- vapply (strsplit (fdirs, .Platform$file.sep), function (i) {
+        i [1]
+    },
+    character (1),
+    USE.NAMES = FALSE
+    )
 
-    s <- cpp_loc (ftypes$file,
-                  ftypes$cmt_open,
-                  ftypes$cmt_close,
-                  ftypes$cmt)
+    s <- cpp_loc (
+        ftypes$file,
+        ftypes$cmt_open,
+        ftypes$cmt_close,
+        ftypes$cmt
+    )
 
     nstats <- 8L # number of stats for each file, taken from src/loc.cpp
 
-    index <- seq_along (s) [- (seq (nstats * nrow (ftypes)))]
+    index <- seq_along (s) [-(seq (nstats * nrow (ftypes)))]
     leading_white <- s [index [-1]] # rm 1st value
     indentation <- average_leading_white (leading_white)
 
     index <- seq (nstats * nrow (ftypes))
     s <- data.frame (t (matrix (s [index], nrow = nstats)))
-    names (s) <- c ("nlines",
-                    "ncode",
-                    "ndoc",
-                    "nempty",
-                    "nspaces",
-                    "nchars",
-                    "nbrackets",
-                    "ntabs")
+    names (s) <- c (
+        "nlines",
+        "ncode",
+        "ndoc",
+        "nempty",
+        "nspaces",
+        "nchars",
+        "nbrackets",
+        "ntabs"
+    )
 
     s$nbrackets [s$nbrackets < 1] <- NA_integer_
     s$language <- s$dir <- ""
@@ -120,21 +130,23 @@ loc_stats <- function (path) {
 
     # suprress no visible binding notes:
     language <- nfiles <- nlines <- ncode <- ndoc <-
-        nempty <- nspaces <- nchars <-  nbrackets <- ntabs <- NULL
+        nempty <- nspaces <- nchars <- nbrackets <- ntabs <- NULL
 
     # No magrittr here, plus note final renaming of nbrackets to nexpr
     xg <- dplyr::group_by (s, language, dir)
-    s <- dplyr::summarise (xg,
-                           nfiles = length (which (nlines > 0)),
-                           nlines = sum (nlines),
-                           ncode = sum (ncode),
-                           ndoc = sum (ndoc),
-                           nempty = sum (nempty),
-                           nspaces = sum (nspaces),
-                           nchars = sum (nchars),
-                           nexpr = stats::median (nbrackets, na.rm = TRUE),
-                           ntabs = sum (ntabs),
-                           .groups = "keep")
+    s <- dplyr::summarise (
+        xg,
+        nfiles = length (which (nlines > 0)),
+        nlines = sum (nlines),
+        ncode = sum (ncode),
+        ndoc = sum (ndoc),
+        nempty = sum (nempty),
+        nspaces = sum (nspaces),
+        nchars = sum (nchars),
+        nexpr = stats::median (nbrackets, na.rm = TRUE),
+        ntabs = sum (ntabs),
+        .groups = "keep"
+    )
     s$indentation <- indentation
 
     return (s)
