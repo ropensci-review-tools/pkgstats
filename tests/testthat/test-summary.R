@@ -9,7 +9,7 @@ test_that ("pkgstats-summary", {
 
     expect_silent (
         s <- pkgstats_summary (p)
-        )
+    )
 
     expect_s3_class (s, "data.frame")
     expect_equal (nrow (s), 1L)
@@ -21,9 +21,11 @@ test_that ("pkgstats-summary", {
     expect_equal (ncol (ext), 3L)
     expect_equal (nrow (ext), 2L) # 2 packages
 
-    ext <- data.frame (pkg = ext [, 1],
-                       n_total = as.integer (ext [, 2]),
-                       n_unique = as.integer (ext [, 3]))
+    ext <- data.frame (
+        pkg = ext [, 1],
+        n_total = as.integer (ext [, 2]),
+        n_unique = as.integer (ext [, 3])
+    )
     expect_true (all (ext$n_total >= ext$n_unique))
     expect_true (mean (ext$n_total) > mean (ext$n_unique))
 })

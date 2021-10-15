@@ -9,8 +9,10 @@ test_that ("archive trawl", {
     pkg_name <- path [length (path)]
     path <- do.call (file.path, as.list (path [-length (path)]))
 
-    expect_error (pkgstats_from_archive (path),
-                  "path must contain a 'tarballs' directory")
+    expect_error (
+        pkgstats_from_archive (path),
+        "path must contain a 'tarballs' directory"
+    )
 
     path <- file.path (path, "tarballs")
     dir.create (path, recursive = TRUE)

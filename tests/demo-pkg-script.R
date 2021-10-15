@@ -5,8 +5,9 @@ make_pkg_path <- function (base_dir = tempdir (), pkg_name = "demo") {
 
     d <- file.path (base_dir, pkg_name)
 
-    if (file.exists (d))
-        chk <- unlink (d, recursive = TRUE)
+    if (file.exists (d)) {
+          chk <- unlink (d, recursive = TRUE)
+      }
 
     chk <- dir.create (d, recursive = TRUE)
 
@@ -15,98 +16,112 @@ make_pkg_path <- function (base_dir = tempdir (), pkg_name = "demo") {
 
 write_desc <- function (d, pkg_name) {
 
-    desc <- c (paste0 ("Package: ", pkg_name),
-               "Title: What the Package Does (One Line, Title Case)",
-               "Version: 0.0.0.9000",
-               "Authors@R: ",
-               "  person(given = \"First\",",
-               "         family = \"Last\",",
-               "         role = c(\"aut\", \"cre\"),",
-               "         email = \"first.last@example.com\")",
-               "Description: What the package does (one paragraph).",
-               "Imports:",
-               "    Rcpp",
-               "LinkingTo:",
-               "    Rcpp",
-               "NeedsCompliation: yes",
-               "License: GPL-3",
-               "Encoding: UTF-8")
+    desc <- c (
+        paste0 ("Package: ", pkg_name),
+        "Title: What the Package Does (One Line, Title Case)",
+        "Version: 0.0.0.9000",
+        "Authors@R: ",
+        "  person(given = \"First\",",
+        "         family = \"Last\",",
+        "         role = c(\"aut\", \"cre\"),",
+        "         email = \"first.last@example.com\")",
+        "Description: What the package does (one paragraph).",
+        "Imports:",
+        "    Rcpp",
+        "LinkingTo:",
+        "    Rcpp",
+        "NeedsCompliation: yes",
+        "License: GPL-3",
+        "Encoding: UTF-8"
+    )
 
     writeLines (desc, con = file.path (d, "DESCRIPTION"))
 }
 
 write_r_fn <- function (d, pkg_name) {
 
-    rfile <- c ("#' test_fn",
-                "#'",
-                "#' A test funtion",
-                "#'",
-                "#' @param a A number",
-                "#' @param b A number",
-                "#' @export",
-                "test_fn <- function(a, b) {",
-                "    if (!is.numeric (a)) stop ('nope')",
-                "    if (length (a) > 1) a <- a [1]",
-                "    if (!is.numeric (b)) stop ('nope')",
-                "    if (length (b) > 1) b <- b [1]",
-                "    y <- runif (a, 0, b)",
-                "    return (y)",
-                "}",
-                "",
-                "#' Another fn",
-                "#'",
-                "#' @param x A number",
-                "#' @export",
-                "test_fn2 <- function (x) {",
-                "    x <- sqrt (abs (x))",
-                "    y <- test_fn (5, 2)",
-                "    z <- test ()",
-                "    return (x * y + z)",
-                "}")
+    rfile <- c (
+        "#' test_fn",
+        "#'",
+        "#' A test funtion",
+        "#'",
+        "#' @param a A number",
+        "#' @param b A number",
+        "#' @export",
+        "test_fn <- function(a, b) {",
+        "    if (!is.numeric (a)) stop ('nope')",
+        "    if (length (a) > 1) a <- a [1]",
+        "    if (!is.numeric (b)) stop ('nope')",
+        "    if (length (b) > 1) b <- b [1]",
+        "    y <- runif (a, 0, b)",
+        "    return (y)",
+        "}",
+        "",
+        "#' Another fn",
+        "#'",
+        "#' @param x A number",
+        "#' @export",
+        "test_fn2 <- function (x) {",
+        "    x <- sqrt (abs (x))",
+        "    y <- test_fn (5, 2)",
+        "    z <- test ()",
+        "    return (x * y + z)",
+        "}"
+    )
     dr <- file.path (d, "R")
-    if (!file.exists (dr))
-        dir.create (dr)
+    if (!file.exists (dr)) {
+          dir.create (dr)
+      }
     writeLines (rfile, con = file.path (dr, "test.R"))
 
-    rfile <- c (paste0 ("#' @name ", pkg_name),
-                paste0 ("#' @title ", pkg_name),
-                "#' @keywords internal",
-                "\"_PACKAGE\"",
-                "",
-                paste0 ("# The following block is used by ",
-                        "usethis to automatically manage"),
-                "# roxygen namespace tags. Modify with care!",
-                "## usethis namespace: start",
-                paste0 ("#' @useDynLib ", pkg_name, ", .registration=TRUE"),
-                "## usethis namespace: end",
-                "NULL")
+    rfile <- c (
+        paste0 ("#' @name ", pkg_name),
+        paste0 ("#' @title ", pkg_name),
+        "#' @keywords internal",
+        "\"_PACKAGE\"",
+        "",
+        paste0 (
+            "# The following block is used by ",
+            "usethis to automatically manage"
+        ),
+        "# roxygen namespace tags. Modify with care!",
+        "## usethis namespace: start",
+        paste0 ("#' @useDynLib ", pkg_name, ", .registration=TRUE"),
+        "## usethis namespace: end",
+        "NULL"
+    )
     writeLines (rfile, con = file.path (dr, paste0 (pkg_name, "-package.R")))
 }
 
 write_src_fn <- function (d) {
 
-    sfile <- c ("#include <Rcpp.h>",
-                "",
-                "//' src_fn",
-                "//'",
-                "//' @noRd",
-                "// [[Rcpp::export]]",
-                "int test () {",
-                "    return 4L; }")
+    sfile <- c (
+        "#include <Rcpp.h>",
+        "",
+        "//' src_fn",
+        "//'",
+        "//' @noRd",
+        "// [[Rcpp::export]]",
+        "int test () {",
+        "    return 4L; }"
+    )
 
     ds <- file.path (d, "src")
-    if (!file.exists (ds))
-        dir.create (ds)
+    if (!file.exists (ds)) {
+          dir.create (ds)
+      }
 
     writeLines (sfile, con = file.path (ds, "cpptest.cpp"))
 }
 
 write_namespace <- function (d, pkg_name) {
 
-    nfile <- c ("# Generated by roxygen2: do not edit by hand",
-                "",
-                paste0 ("useDynLib(", pkg_name, ", .registration=TRUE)"),
-                "importFrom(Rcpp, evalCpp)")
+    nfile <- c (
+        "# Generated by roxygen2: do not edit by hand",
+        "",
+        paste0 ("useDynLib(", pkg_name, ", .registration=TRUE)"),
+        "importFrom(Rcpp, evalCpp)"
+    )
     writeLines (nfile, con = file.path (d, "NAMESPACE"))
 }
 

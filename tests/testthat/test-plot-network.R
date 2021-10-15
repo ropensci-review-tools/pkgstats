@@ -7,8 +7,8 @@ test_that ("plot-network", {
     s <- pkgstats (path)
 
     # This produces a message in non-interactive mode:
-    #expect_silent (
-        net <- plot_network (s, plot = FALSE)
+    # expect_silent (
+    net <- plot_network (s, plot = FALSE)
     #    )
 
     expect_s3_class (net, "visNetwork")
