@@ -6,14 +6,16 @@ get_num_vignettes <- function (path) {
     if ("build" %in% list.files (path)) {
 
         flist <- list.files (file.path (path, "build"),
-                             full.names = TRUE)
+            full.names = TRUE
+        )
         vfile <- grep ("vignette", flist, value = TRUE)
         if (length (vfile) > 0) {
             nv <- nrow (readRDS (vfile [1]))
         }
     } else if ("vignettes" %in% list.files (path)) {
         nv <- length (list.files (file.path (path, "vignettes"),
-                                  pattern = "\\.R"))
+            pattern = "\\.R"
+        ))
     }
 
     return (nv)
@@ -39,13 +41,16 @@ get_data_stats <- function (path) {
     if ("data" %in% list.files (path)) {
 
         flist <- list.files (file.path (path, "data"),
-                             full.names = TRUE,
-                             pattern = "\\.rd",
-                             ignore.case = TRUE)
-        sizes <- vapply (flist, function (i)
-                         file.info (i)$size,
-                         numeric (1),
-                         USE.NAMES = FALSE)
+            full.names = TRUE,
+            pattern = "\\.rd",
+            ignore.case = TRUE
+        )
+        sizes <- vapply (flist, function (i) {
+              file.info (i)$size
+          },
+        numeric (1),
+        USE.NAMES = FALSE
+        )
 
         nd [1] <- length (flist)
         nd [2] <- as.integer (sum (sizes))
@@ -66,12 +71,15 @@ get_translations <- function (path) {
 
     if (file.exists (po_dir)) {
 
-        ll <- gsub ("^R-|\\.po$", "",
-                    list.files (po_dir, pattern = "\\.po$"))
+        ll <- gsub (
+            "^R-|\\.po$", "",
+            list.files (po_dir, pattern = "\\.po$")
+        )
         # pkgs may generate translations without having any, and then will only
         # have '.pot' files with no usable translation fields.
-        if (length (ll) == 0L)
-            ll <- NA_character_
+        if (length (ll) == 0L) {
+              ll <- NA_character_
+          }
     }
 
     return (unique (ll))
