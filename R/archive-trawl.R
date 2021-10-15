@@ -47,25 +47,30 @@ pkgstats_from_archive <- function (path,
     requireNamespace ("memoise")
 
     if (!grepl ("tarball", path)) {
-        if (!dir.exists (file.path (path, "tarballs")))
+        if (!dir.exists (file.path (path, "tarballs"))) {
             stop ("path must contain a 'tarballs' directory")
+        }
         path <- file.path (path, "tarballs")
     }
 
     path_last <- utils::tail (decompose_path (path) [[1]], 1L)
-    if (path_last != "tarballs")
+    if (path_last != "tarballs") {
         stop ("path must be a directory named 'tarballs'")
+    }
 
-    if (!dir.exists (path))
+    if (!dir.exists (path)) {
         stop ("[", path, "] directory does not exist")
+    }
 
     res <- e <- NULL
     out <- prev_results
 
-    flist <- list.files (path,
-                         recursive = archive,
-                         full.names = TRUE,
-                         pattern = "\\.tar\\.gz$")
+    flist <- list.files (
+        path,
+        recursive = archive,
+        full.names = TRUE,
+        pattern = "\\.tar\\.gz$"
+    )
     flist <- normalizePath (flist)
     flist <- rm_prev_files (flist, prev_results)
     nfiles <- length (flist)
@@ -76,8 +81,10 @@ pkgstats_from_archive <- function (path,
         n <- factor (rep (seq (n), each = chunk_size)) [seq (nfiles)]
         flist <- split (flist, f = n)
 
-        message ("Starting trawl of ", nfiles,
-                 " files in ", length (flist), " chunks")
+        message (
+            "Starting trawl of ", nfiles,
+            " files in ", length (flist), " chunks"
+        )
 
         results_path <- normalizePath (results_path)
         results_files <- NULL
@@ -89,30 +96,34 @@ pkgstats_from_archive <- function (path,
 
             res <- pbapply::pblapply (f, function (i) {
 
-                        s <- tryCatch (pkgstats::pkgstats (i),
-                                       error = function (e) NULL)
+                s <- tryCatch (pkgstats::pkgstats (i),
+                    error = function (e) NULL
+                )
 
-                        if (save_full) {
-                            pkg <- utils::tail (decompose_path (i) [[1]], 1L)
-                            pkg <- gsub ("\\.tar\\.gz$", "", pkg)
-                            saveRDS (s, file.path (results_path, pkg))
-                        }
+                if (save_full) {
+                    pkg <- utils::tail (decompose_path (i) [[1]], 1L)
+                    pkg <- gsub ("\\.tar\\.gz$", "", pkg)
+                    saveRDS (s, file.path (results_path, pkg))
+                }
 
-                        summ <- tryCatch (pkgstats::pkgstats_summary (s),
-                                         error = function (e) NULL)
-                        if (is.null (summ)) { # pkgstats failed
-                            summ <- pkgstats_summary () # null summary
-                            p <- strsplit (i, .Platform$file.sep) [[1]]
-                            p <- strsplit (utils::tail (p, 1), "\\_") [[1]]
-                            summ ["package"] <- p [1]
-                            summ ["version"] <-
-                                gsub ("\\.tar\\.gz$", "", p [2])
-                        }
-                        return (summ)
-                 })
+                summ <- tryCatch (pkgstats::pkgstats_summary (s),
+                    error = function (e) NULL
+                )
+                if (is.null (summ)) { # pkgstats failed
+                    summ <- pkgstats_summary () # null summary
+                    p <- strsplit (i, .Platform$file.sep) [[1]]
+                    p <- strsplit (utils::tail (p, 1), "\\_") [[1]]
+                    summ ["package"] <- p [1]
+                    summ ["version"] <-
+                        gsub ("\\.tar\\.gz$", "", p [2])
+                }
+                return (summ)
+            })
 
-            fname <- file.path (results_path,
-                                paste0 ("pkgstats-results-", index, ".Rds"))
+            fname <- file.path (
+                results_path,
+                paste0 ("pkgstats-results-", index, ".Rds")
+            )
             saveRDS (do.call (rbind, res), fname)
             results_files <- c (results_files, fname)
 
@@ -125,9 +136,11 @@ pkgstats_from_archive <- function (path,
 
             ndone <- min (c (nfiles, index * chunk_size))
 
-            message ("[", ndone, " / ", nfiles,
-                     "]  = ", prog_fmt, "%; (elapsed, remaining) = (",
-                     pt1, ", ", t_rem, ")")
+            message (
+                "[", ndone, " / ", nfiles,
+                "]  = ", prog_fmt, "%; (elapsed, remaining) = (",
+                pt1, ", ", t_rem, ")"
+            )
 
             index <- index + 1
         }
@@ -142,20 +155,26 @@ pkgstats_from_archive <- function (path,
 
     if (!is.null (res) & !is.null (results_file)) {
 
-        if (!grepl (.Platform$file.sep, results_file))
+        if (!grepl (.Platform$file.sep, results_file)) {
             results_file <- file.path (".", results_file)
+        }
         results_file <- normalizePath (results_file, mustWork = FALSE)
 
-        results_path <- gsub (basename (results_file), "",
-                              results_file)
+        results_path <- gsub (
+            basename (results_file), "",
+            results_file
+        )
         results_path <- normalizePath (results_path)
-        if (!dir.exists (results_path))
+        if (!dir.exists (results_path)) {
             stop ("Directory [", results_path, "] does not exist")
+        }
 
         results_file <- basename (results_file)
         results_file <- tools::file_path_sans_ext (results_file)
-        results_file <- file.path (results_path,
-                                   paste0 (results_file, ".Rds"))
+        results_file <- file.path (
+            results_path,
+            paste0 (results_file, ".Rds")
+        )
 
         saveRDS (out, results_file)
     }
@@ -174,24 +193,33 @@ rm_prev_files <- function (flist, prev_results) {
     if (!is.null (prev_results)) {
 
         if (is.character (prev_results)) {
-            if (length (prev_results) > 1)
-                stop ("prev_results must be a single-length character")
-            if (!file.exists (prev_results))
-                stop ("file [", prev_results, "] does not exist")
+            if (length (prev_results) > 1) {
+                  stop ("prev_results must be a single-length character")
+              }
+            if (!file.exists (prev_results)) {
+                  stop ("file [", prev_results, "] does not exist")
+              }
             prev_results <- tryCatch (readRDS (prev_results),
-                                      error = function (e) e)
-            if (methods::is (prev_results, "error"))
-                stop ("Unable to read prev_results: ", e)
+                error = function (e) e
+            )
+            if (methods::is (prev_results, "error")) {
+                  stop ("Unable to read prev_results: ", e)
+              }
         }
 
-        tars <- vapply (flist, function (i)
-                        utils::tail (strsplit (i, .Platform$file.sep) [[1]], 1),
-                        character (1))
+        tars <- vapply (
+            flist, function (i) {
+                  utils::tail (strsplit (i, .Platform$file.sep) [[1]], 1)
+              },
+            character (1)
+        )
 
-        prev_tars <- paste0 (prev_results$package,
-                             "_",
-                             prev_results$version,
-                             ".tar.gz")
+        prev_tars <- paste0 (
+            prev_results$package,
+            "_",
+            prev_results$version,
+            ".tar.gz"
+        )
 
         flist <- flist [which (!tars %in% prev_tars)]
     }
