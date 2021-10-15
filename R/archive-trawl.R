@@ -51,7 +51,7 @@ pkgstats_from_archive <- function (path,
         path <- file.path (path, "tarballs")
     }
 
-    path_last <- utils::tail (strsplit (path, .Platform$file.sep) [[1]], 1)
+    path_last <- utils::tail (decompose_path (path) [[1]], 1L)
     if (path_last != "tarballs")
         stop ("path must be a directory named 'tarballs'")
 
