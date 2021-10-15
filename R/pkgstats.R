@@ -8,8 +8,10 @@
 #' @examples
 #' \dontrun{
 #' tarball <- "magrittr_2.0.1.tar.gz"
-#' u <- paste0 ("https://cran.r-project.org/src/contrib/",
-#'              tarball)
+#' u <- paste0 (
+#'     "https://cran.r-project.org/src/contrib/",
+#'     tarball
+#' )
 #' f <- file.path (tempdir (), tarball)
 #' download.file (u, f)
 #' pkgstats (f)
@@ -49,66 +51,85 @@ pkgstats <- function (path = ".") {
 
     translations <- get_translations (path)
 
-    if (tarball)
-        chk <- unlink (path, recursive = TRUE)
+    if (tarball) {
+          chk <- unlink (path, recursive = TRUE)
+      }
 
     list (
-          loc = s1,
-          vignettes = c (vignettes = num_vignettes,
-                         demos = num_demos),
-          data_stats = data_stats,
-          desc = s2,
-          translations = translations,
-          objects = add_src_to_fn_data (fns, tags$stats),
-          network = tags$network,
-          external_calls = tags$external_calls
-          )
+        loc = s1,
+        vignettes = c (
+            vignettes = num_vignettes,
+            demos = num_demos
+        ),
+        data_stats = data_stats,
+        desc = s2,
+        translations = translations,
+        objects = add_src_to_fn_data (fns, tags$stats),
+        network = tags$network,
+        external_calls = tags$external_calls
+    )
 }
 
 #' Get all exported and internal functions
 #' @noRd
 all_functions <- function (path) {
 
-    r_files <- normalizePath (list.files (file.path (path, "R"),
-                                          full.names = TRUE,
-                                          pattern = "\\.(r|R|q|s|S)$"))
+    r_files <- normalizePath (list.files (
+        file.path (path, "R"),
+        full.names = TRUE,
+        pattern = "\\.(r|R|q|s|S)$"
+    ))
 
     eval1 <- function (f) {
 
         p <- control_parse (file = f)
-        if (methods::is (p, "simpleError"))
+        if (methods::is (p, "simpleError")) {
             return (NULL)
+        }
 
         # All functions are parsed to length 3, while things like `"_PACKAGE"`
         # statements are parsed, but have parse lengths < 3.
         p <- p [which (vapply (p, length, integer (1)) > 2L)]
 
-        loc <- vapply (p, function (i)
-                       length (deparse (i)),
-                       integer (1))
-        nms <- vapply (p, function (i)
-                       paste0 (as.list (i) [[2]], collapse = ""),
-                       character (1))
-        npars <- vapply (p, function (i) {
-                             call_i <- as.list (i) [[3]]
-                             if (length (call_i) < 2) # not a fn
-                                 return (rep (NA_integer_, 2))
-                             c2 <- call_i [[2]]
-                             c (length (c2), "..." %in% names (c2)) },
-                             integer (2))
+        loc <- vapply (
+            p, function (i) {
+                length (deparse (i))
+            },
+            integer (1)
+        )
+        nms <- vapply (
+            p, function (i) {
+                paste0 (as.list (i) [[2]], collapse = "")
+            },
+            character (1)
+        )
+        npars <- vapply (
+            p, function (i) {
+                call_i <- as.list (i) [[3]]
+                if (length (call_i) < 2) { # not a fn
+                    return (rep (NA_integer_, 2))
+                }
+                c2 <- call_i [[2]]
+                c (length (c2), "..." %in% names (c2)) },
+            integer (2)
+        )
 
-        data.frame (file_name = rep (basename (f), length (p)),
-                    fn_name = nms,
-                    loc = loc,
-                    npars = npars [1, ],
-                    has_dots = as.logical (npars [2, ]))
+        data.frame (
+            file_name = rep (basename (f), length (p)),
+            fn_name = nms,
+            loc = loc,
+            npars = npars [1, ],
+            has_dots = as.logical (npars [2, ])
+        )
     }
 
     ret <- do.call (rbind, lapply (r_files, eval1))
     # append "R" directory to file names:
-    ret$file_name <- paste0 ("R",
-                             .Platform$file.sep,
-                             ret$file_name)
+    ret$file_name <- paste0 (
+        "R",
+        .Platform$file.sep,
+        ret$file_name
+    )
 
     return (ret)
 }
@@ -121,23 +142,26 @@ add_src_to_fn_data <- function (fns, src) {
 
     if (length (n) == 0) { # data-only packages
 
-        fns <- data.frame (file_name = NA_character_,
-                           fn_name = NA_character_,
-                           kind = NA_character_,
-                           language = NA_character_,
-                           loc = 0L,
-                           npars = NA_integer_,
-                           has_dots = FALSE,
-                           exported = FALSE,
-                           param_nchars_md = NA_integer_,
-                           param_nchars_mn = NA_integer_,
-                           num_doclines = NA_integer_)
+        fns <- data.frame (
+            file_name = NA_character_,
+            fn_name = NA_character_,
+            kind = NA_character_,
+            language = NA_character_,
+            loc = 0L,
+            npars = NA_integer_,
+            has_dots = FALSE,
+            exported = FALSE,
+            param_nchars_md = NA_integer_,
+            param_nchars_mn = NA_integer_,
+            num_doclines = NA_integer_
+        )
     } else {
 
         fns <- data.frame (fns [, seq (n)], # file_name, fn_name
-                           kind = "function",
-                           language = "R",
-                           fns [, seq (ncol (fns)) [-seq (n)]])
+            kind = "function",
+            language = "R",
+            fns [, seq (ncol (fns)) [-seq (n)]]
+        )
     }
 
     if (all (is.na (src$file_name))) {
@@ -148,8 +172,9 @@ add_src_to_fn_data <- function (fns, src) {
 
         src$exported <- FALSE
         nms <- names (fns) [which (!names (fns) %in% names (src))]
-        for (n in nms)
-            src [n] <- NA_integer_
+        for (n in nms) {
+              src [n] <- NA_integer_
+          }
     }
 
     out <- rbind (fns, src)
