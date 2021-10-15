@@ -91,7 +91,7 @@ ctags_install <- function (bin_dir = NULL, sudo = TRUE) {
     ctags_make (ctags_dir, bin_dir, sudo)
 
     if (!has_gtags ())
-        gtags_install ()
+        gtags_install (sudo = sudo)
 
     if (!sudo) {
         system ("hash -d ctags")
