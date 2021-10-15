@@ -8,38 +8,50 @@
 #' @examples
 #' \dontrun{
 #' tarball <- "magrittr_2.0.1.tar.gz"
-#' u <- paste0 ("https://cran.r-project.org/src/contrib/",
-#'              tarball)
+#' u <- paste0 (
+#'     "https://cran.r-project.org/src/contrib/",
+#'     tarball
+#' )
 #' f <- file.path (tempdir (), tarball)
 #' download.file (u, f)
 #' path <- extract_tarball (f)
 #' }
 extract_tarball <- function (tarball) {
 
-    if (!file.exists (tarball))
-        stop ("file [", tarball, "] does not exist")
+    if (!file.exists (tarball)) {
+          stop ("file [", tarball, "] does not exist")
+      }
     if (!checkmate::testCharacter (tarball,
-                                   len = 1,
-                                   pattern = "\\.tar\\.gz$"))
-        stop (paste0 ("tarball must be a single character ",
-                      "specifying path to .tar.gz file"))
+        len = 1,
+        pattern = "\\.tar\\.gz$"
+    )) {
+          stop (paste0 (
+              "tarball must be a single character ",
+              "specifying path to .tar.gz file"
+          ))
+      }
 
     flist <- utils::untar (tarball,
-                           exdir = tempdir (),
-                           list = TRUE, tar = "internal")
-    if (utils::untar (tarball, exdir = tempdir (), tar = "internal") != 0)
-        stop ("Unable to extract tarball to 'tempdir'")
+        exdir = tempdir (),
+        list = TRUE, tar = "internal"
+    )
+    if (utils::untar (tarball, exdir = tempdir (), tar = "internal") != 0) {
+          stop ("Unable to extract tarball to 'tempdir'")
+      }
 
-    fdir <- vapply (flist, function (i)
-                    strsplit (i, .Platform$file.sep) [[1]] [1],
-                    character (1),
-                    USE.NAMES = FALSE)
+    fdir <- vapply (flist, function (i) {
+          strsplit (i, .Platform$file.sep) [[1]] [1]
+      },
+    character (1),
+    USE.NAMES = FALSE
+    )
     fdir <- names (table (fdir)) [1]
     path <- normalizePath (file.path (tempdir (), fdir))
 
     chk <- rename_files_in_r (path)
-    if (!chk)
-        warning ("Files in .R directory unable to be re-named")
+    if (!chk) {
+          warning ("Files in .R directory unable to be re-named")
+      }
 
     return (path)
 }
@@ -55,7 +67,8 @@ extract_tarball <- function (tarball) {
 rename_files_in_r <- function (path) {
 
     fr <- normalizePath (list.files (file.path (path, "R"),
-                                     full.names = TRUE))
+        full.names = TRUE
+    ))
 
     index <- grep ("\\.(s|S|q)$", fr, ignore.case = TRUE)
 
@@ -65,8 +78,10 @@ rename_files_in_r <- function (path) {
 
         for (f in fr [index]) {
 
-            chk <- c (chk,
-                      file.rename (f, gsub ("\\.[a-zA-Z]$", ".R", f)))
+            chk <- c (
+                chk,
+                file.rename (f, gsub ("\\.[a-zA-Z]$", ".R", f))
+            )
         }
     }
 
