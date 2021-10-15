@@ -11,11 +11,13 @@ has_gtags <- function () {
 #' @noRd
 gtags_install <- function (sudo = TRUE) {
 
-    if (has_gtags ())
-        return (NULL)
+    if (has_gtags ()) {
+          return (NULL)
+      }
 
-    if (!.Platform$OS.type == "unix")
-        return (NULL)
+    if (!.Platform$OS.type == "unix") {
+          return (NULL)
+      }
 
     f <- tempfile (pattern = "gtags-install-", fileext = ".txt")
 
