@@ -8,28 +8,35 @@ rd_stats <- function (path) {
     check_path (path)
 
     rd_files <- list.files (file.path (path, "man"),
-                            pattern = "\\.Rd$",
-                            full.names = TRUE)
+        pattern = "\\.Rd$",
+        full.names = TRUE
+    )
 
     suppressWarnings (
         params <- lapply (rd_files, get_one_params)
-        )
+    )
     params <- do.call (rbind, params)
     params_sp <- NULL
-    if (!is.null (params))
-        params_sp <- split (params, f = factor (params$alias))
+    if (!is.null (params)) {
+          params_sp <- split (params, f = factor (params$alias))
+      }
 
-    n <- vapply (params_sp, function (i) {
-                ret <- 0L
-                if (nrow (i) > 1 | i$parameter [1] != "(none)")
-                    ret <- nrow (i)
-                return (ret)    },
-                integer (1))
+    n <- vapply (
+        params_sp, function (i) {
+            ret <- 0L
+            if (nrow (i) > 1 | i$parameter [1] != "(none)") {
+                  ret <- nrow (i)
+              }
+            return (ret)    },
+        integer (1)
+    )
 
-    nchars_mn <- vapply (params_sp, function (i)
-                         mean (i$nchar), numeric (1))
-    nchars_md <- vapply (params_sp, function (i)
-                         stats::median (i$nchar), numeric (1))
+    nchars_mn <- vapply (params_sp, function (i) {
+          mean (i$nchar)
+      }, numeric (1))
+    nchars_md <- vapply (params_sp, function (i) {
+          stats::median (i$nchar)
+      }, numeric (1))
 
     # excluce imported fns:
     nmspc <- file.path (path, "NAMESPACE")
@@ -39,9 +46,12 @@ rd_stats <- function (path) {
         nmspc <- brio::read_lines (nmspc)
 
         imports <- grep ("^importFrom", nmspc, value = TRUE)
-        imports <- unlist (lapply (strsplit (imports, ","),
-                                   function (i)
-                                       gsub ("\\)$", "", i [2])))
+        imports <- unlist (lapply (
+            strsplit (imports, ","),
+            function (i) {
+                  gsub ("\\)$", "", i [2])
+              }
+        ))
         imports <- gsub ("\\\"", "", imports)
 
         if (any (imports %in% names (n))) {
@@ -52,16 +62,21 @@ rd_stats <- function (path) {
         }
     }
 
-    doclines <- vapply (names (n), function (i)
-                        params$doclines [params$alias == i] [1],
-                        integer (1))
+    doclines <- vapply (
+        names (n), function (i) {
+              params$doclines [params$alias == i] [1]
+          },
+        integer (1)
+    )
 
-    ret <- data.frame (fn_name = names (n),
-                       num_params = unname (n),
-                       num_doclines = doclines,
-                       param_nchars_mn = nchars_mn,
-                       param_nchars_md = nchars_md,
-                       row.names = NULL)
+    ret <- data.frame (
+        fn_name = names (n),
+        num_params = unname (n),
+        num_doclines = doclines,
+        param_nchars_mn = nchars_mn,
+        param_nchars_md = nchars_md,
+        row.names = NULL
+    )
 
     return (ret)
 }
@@ -82,7 +97,7 @@ get_one_params <- function (man_file) {
 
     res <- NULL
 
-    #rd <- tools::parse_Rd (man_file)
+    # rd <- tools::parse_Rd (man_file)
     # Rd comments (per sec 2.1 of Extensions manual) can muck up parsing, so
     # must be removed
     x <- brio::read_lines (man_file)
@@ -99,61 +114,73 @@ get_one_params <- function (man_file) {
     out <- utils::capture.output (tools::Rd2txt (rd))
     doclines <- length (out [out != ""])
 
-    if (!rd_is_fn (rd))
-        return (res)
+    if (!rd_is_fn (rd)) {
+          return (res)
+      }
 
-    aliases <- unique (c (get_Rd_metadata (rd, "name"),
-                          get_Rd_metadata (rd, "alias")))
+    aliases <- unique (c (
+        get_Rd_metadata (rd, "name"),
+        get_Rd_metadata (rd, "alias")
+    ))
 
     params <- get_Rd_metadata (rd, "arguments")
     if (length (params) == 0) {
 
-        res <- data.frame (parameter = "(none)",
-                           nchar = NA_integer_,
-                           alias = aliases,
-                           doclines = doclines)
+        res <- data.frame (
+            parameter = "(none)",
+            nchar = NA_integer_,
+            alias = aliases,
+            doclines = doclines
+        )
     } else {
         params <- strsplit (params, "\\n") [[1]]
         # rm lines with initial Rd comments, but params may still fail to parse
         # when comments occur later in lines.
         params <- params [which (nchar (params) > 0 &
-                                 !grepl ("^\\s?%", params))]
+            !grepl ("^\\s?%", params))]
         params <- paste0 (params, collapse = "\n")
 
         params <- tryCatch (as.list (parse (text = params)),
-                            error = function (e) NULL)
+            error = function (e) NULL
+        )
         nms <- lapply (params, function (i) {
-                           i <- as.list (i)
-                           nm <- NA_character_
-                           desc <- NA_integer_
-                           if (length (i) >= 3) {
-                               nm <- unlist (eval (i [[2]]))
-                               desc <- unlist (eval (i [[3]]))
-                               if (is.null (nm))
-                                   nm <- "(NULL)"
-                           }
-                           list (par_name = nm,
-                                 nchars = sum (nchar (desc)))
-                              })
+            i <- as.list (i)
+            nm <- NA_character_
+            desc <- NA_integer_
+            if (length (i) >= 3) {
+                nm <- unlist (eval (i [[2]]))
+                desc <- unlist (eval (i [[3]]))
+                if (is.null (nm)) {
+                      nm <- "(NULL)"
+                  }
+            }
+            list (
+                par_name = nm,
+                nchars = sum (nchar (desc))
+            )
+        })
 
         par_name <- vapply (nms, function (i) i$par_name, character (1))
         nchars <- vapply (nms, function (i) i$nchars, integer (1))
 
-        res <- data.frame (parameter = par_name,
-                           nchar = nchars)
+        res <- data.frame (
+            parameter = par_name,
+            nchar = nchars
+        )
 
         if (nrow (res) > 0) {
 
             res <- lapply (aliases, function (i) {
-                               res$alias <- i
-                               return (res)  })
+                res$alias <- i
+                return (res)  })
             res <- do.call (rbind, res)
             res$doclines <- doclines
         }
     }
 
-    if (!"doclines" %in% names (res))
-        res$doclines <- integer (0)
+    if (!"doclines" %in% names (res)) {
+          res$doclines <- integer (0)
+      }
 
     return (res)
 }
