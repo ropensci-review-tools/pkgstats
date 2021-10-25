@@ -59,11 +59,15 @@ plot_network <- function (s, plot = TRUE, vis_save = NULL) {
         from <- language <- centrality <- NULL # suppress no visible binding msg
         edges <- dplyr::count (edges, from, to, language, centrality)
         edges <- edges [which (!is.na (edges$from)), ]
-        nodes <- unique (c (edges$from, edges$to))
+
+        # nodes <- unique (c (edges$from, edges$to))
+        obj <- s$objects [which (s$objects$kind == "function"), ]
+        obj <- obj [which (!duplicated (obj$fn_name)), ]
         nodes <- data.frame (
-            id = nodes,
-            label = nodes,
-            name = nodes
+            id = obj$fn_name,
+            label = obj$fn_name,
+            name = obj$fn_name,
+            language = obj$language
         )
 
         # match languages on to nodes:
@@ -78,7 +82,8 @@ plot_network <- function (s, plot = TRUE, vis_save = NULL) {
             )
         )
         langs <- langs [which (!duplicated (langs)), ]
-        nodes$group <- langs$lang [match (nodes$id, langs$n)]
+        # nodes$group <- langs$lang [match (nodes$id, langs$n)]
+        nodes$group <- nodes$language
 
         to <- NULL # no visible binding
         n <- dplyr::count (edges, to)
@@ -99,17 +104,17 @@ plot_network <- function (s, plot = TRUE, vis_save = NULL) {
 
         if (!is.null (vis_save)) {
             if (!is.character (vis_save)) {
-                  stop ("vis_save must be a character specifying a file name")
-              }
+                stop ("vis_save must be a character specifying a file name")
+            }
             if (length (vis_save) > 1) {
-                  stop ("vis_save must be a single character")
-              }
+                stop ("vis_save must be a single character")
+            }
             if (!dir.exists (dirname (vis_save))) {
-                  stop (
-                      "directory [", dirname (vis_save),
-                      "] does not exist"
-                  )
-              }
+                stop (
+                    "directory [", dirname (vis_save),
+                    "] does not exist"
+                )
+            }
 
             vis_save <- paste0 (
                 tools::file_path_sans_ext (vis_save),
@@ -121,8 +126,8 @@ plot_network <- function (s, plot = TRUE, vis_save = NULL) {
                 collapse = .Platform$file.sep
             )
             if (!file.exists (path)) {
-                  dir.create (path, recursive = TRUE)
-              }
+                dir.create (path, recursive = TRUE)
+            }
             visNetwork::visSave (vn, vis_save, selfcontained = TRUE)
 
         } else {
