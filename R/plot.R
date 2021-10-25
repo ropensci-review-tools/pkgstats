@@ -60,7 +60,6 @@ plot_network <- function (s, plot = TRUE, vis_save = NULL) {
         edges <- dplyr::count (edges, from, to, language, centrality)
         edges <- edges [which (!is.na (edges$from)), ]
 
-        # nodes <- unique (c (edges$from, edges$to))
         obj <- s$objects [which (s$objects$kind == "function"), ]
         obj <- obj [which (!duplicated (obj$fn_name)), ]
         nodes <- data.frame (
@@ -69,20 +68,6 @@ plot_network <- function (s, plot = TRUE, vis_save = NULL) {
             name = obj$fn_name,
             language = obj$language
         )
-
-        # match languages on to nodes:
-        langs <- rbind (
-            data.frame (
-                n = edges$from,
-                lang = edges$language
-            ),
-            data.frame (
-                n = edges$to,
-                lang = edges$language
-            )
-        )
-        langs <- langs [which (!duplicated (langs)), ]
-        # nodes$group <- langs$lang [match (nodes$id, langs$n)]
         nodes$group <- nodes$language
 
         to <- NULL # no visible binding
