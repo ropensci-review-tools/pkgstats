@@ -108,7 +108,7 @@ get_ctags <- function (d = "R", has_tabs) {
     wd <- path_sub <- getwd ()
     if (has_tabs) {
         path_sub <- path_dir <- rm_tabs (path_dir)
-        path_dir <- normalizePath (file.path (path_dir, d))
+        path_dir <- fs::tidy_path (normalizePath (file.path (path_dir, d)))
         wd <- setwd (path_dir)
     }
 
@@ -206,7 +206,7 @@ get_ctags <- function (d = "R", has_tabs) {
 
     tags$end <- as.integer (gsub ("^end\\:", "", tags$end))
 
-    files <- decompose_path (tags$file)
+    files <- fs::path_split (tags$file)
     len_path_sub <- length (decompose_path (path_sub) [[1]])
     tags$file <- vapply (
         files, function (i) {
@@ -277,7 +277,7 @@ rm_tabs <- function (d, nspaces = 2) {
 #' @noRd
 make_gtags <- function () {
 
-    path <- normalizePath (".")
+    path <- fs::path_tidy (normalizePath ("."))
     flist <- list.files (path,
         recursive = TRUE,
         full.names = TRUE,
@@ -402,7 +402,7 @@ fn_var_call_graph_r <- function (fns, fn_vars, path) {
           })
         fns_index <- do.call (rbind, fns_index)
 
-        f_full <- normalizePath (file.path (path, f))
+        f_full <- fs::path_tidy (normalizePath (file.path (path, f)))
 
         p <- control_parse (file = f_full)
         if (methods::is (p, "simpleError")) {
