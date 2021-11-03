@@ -207,7 +207,7 @@ get_ctags <- function (d = "R", has_tabs) {
     tags$end <- as.integer (gsub ("^end\\:", "", tags$end))
 
     files <- fs::path_split (tags$file)
-    len_path_sub <- length (decompose_path (path_sub) [[1]])
+    len_path_sub <- length (fs::path_split (path_sub) [[1]])
     tags$file <- vapply (
         files, function (i) {
             do.call (file.path, as.list (i [-seq (len_path_sub)]))
