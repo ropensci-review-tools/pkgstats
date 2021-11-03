@@ -13,10 +13,10 @@
 tags_data <- function (path, has_tabs = NULL, pkg_name) {
 
     if (is.null (has_tabs)) {
-          has_tabs <- any (loc_stats (path)$ntabs > 0L)
-      } else if (!is.logical (has_tabs) | length (has_tabs) > 1L) {
-          stop ("has_tabs must either be NULL or a single logical value")
-      }
+        has_tabs <- any (loc_stats (path)$ntabs > 0L)
+    } else if (!is.logical (has_tabs) | length (has_tabs) > 1L) {
+        stop ("has_tabs must either be NULL or a single logical value")
+    }
 
     kind <- start <- NULL # no visible binding messages
 
@@ -45,8 +45,8 @@ tags_data <- function (path, has_tabs = NULL, pkg_name) {
 
             gtags$from <- NA_character_
             for (f in unique (ctags$file)) {
-                  gtags <- gtags_from_one_file (ctags, gtags, f)
-              }
+                gtags <- gtags_from_one_file (ctags, gtags, f)
+            }
             gtags <- gtags [which (gtags$tag %in% ctags$tag), ]
 
             langs <- ctags [, c ("tag", "language")]
@@ -58,8 +58,8 @@ tags_data <- function (path, has_tabs = NULL, pkg_name) {
         }
 
         if (no_gtags) {
-              chk <- rm_gtags_files (path)
-          }
+            chk <- rm_gtags_files (path)
+        }
     }
 
     fns_r <- tags_r [which (tags_r$kind == "function" & !is.na (tags_r$tag)), ]
@@ -347,8 +347,8 @@ gtags_from_one_file <- function (ctags, gtags, f) {
     # end lines are not always given, as in Fortran code for which ctags works
     # but gtags does not
     if (any (is.na (ctags_f$end))) {
-          return (gtags)
-      }
+        return (gtags)
+    }
 
     line_nums <- lapply (seq (nrow (ctags_f)), function (i) {
         data.frame (
@@ -398,16 +398,16 @@ fn_var_call_graph_r <- function (fns, fn_vars, path) {
         fns_f <- fns [fns$file == f, ]
         fns_f <- fns_f [order (fns_f$start), c ("tag", "start", "end")]
         fns_index <- lapply (seq (nrow (fns_f)), function (i) {
-              cbind (i, seq (fns_f$start [i], fns_f$end [i]))
-          })
+            cbind (i, seq (fns_f$start [i], fns_f$end [i]))
+        })
         fns_index <- do.call (rbind, fns_index)
 
         f_full <- fs::path_tidy (normalizePath (file.path (path, f)))
 
         p <- control_parse (file = f_full)
         if (methods::is (p, "simpleError")) {
-              next
-          }
+            next
+        }
 
         pd <- utils::getParseData (control_parse (file = f_full))
 
@@ -457,10 +457,10 @@ add_igraph_stats <- function (g, directed = TRUE) {
     cl <- igraph::clusters (g_igr)
     index <- match (g$from, names (cl$membership))
     if (directed) {
-          nms <- c ("cluster_dir", "centrality_dir")
-      } else {
-          nms <- c ("cluster_undir", "centrality_undir")
-      }
+        nms <- c ("cluster_dir", "centrality_dir")
+    } else {
+        nms <- c ("cluster_undir", "centrality_undir")
+    }
     g [nms [1]] <- cl$membership [index]
     btw <- igraph::betweenness (g_igr)
     g [nms [2]] <- btw [match (g$from, names (btw))]
