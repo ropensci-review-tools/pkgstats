@@ -48,8 +48,8 @@ get_data_stats <- function (path) {
             ignore.case = TRUE
         )
         sizes <- vapply (flist, function (i) {
-              file.info (i)$size
-          },
+            file.info (i)$size
+        },
         numeric (1),
         USE.NAMES = FALSE
         )
@@ -80,8 +80,8 @@ get_translations <- function (path) {
         # pkgs may generate translations without having any, and then will only
         # have '.pot' files with no usable translation fields.
         if (length (ll) == 0L) {
-              ll <- NA_character_
-          }
+            ll <- NA_character_
+        }
     }
 
     return (unique (ll))
