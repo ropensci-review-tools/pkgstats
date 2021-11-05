@@ -13,8 +13,10 @@ get_num_vignettes <- function (path) {
             nv <- nrow (readRDS (vfile [1]))
         }
     } else if ("vignettes" %in% list.files (path)) {
-        nv <- length (list.files (file.path (path, "vignettes"),
-            pattern = "\\.R"
+        nv <- length (list.files (
+            file.path (path, "vignettes"),
+            pattern = "\\.[rR]md$",
+            recursive = TRUE
         ))
     }
 
