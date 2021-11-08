@@ -18,6 +18,13 @@ get_num_vignettes <- function (path) {
             pattern = "\\.[rR]md$",
             recursive = TRUE
         ))
+        if (nv == 0L) {
+            nv <- length (list.files (
+                file.path (path, "vignettes"),
+                pattern = "\\.[rR]$",
+                recursive = TRUE
+            ))
+        }
     }
 
     return (nv)
