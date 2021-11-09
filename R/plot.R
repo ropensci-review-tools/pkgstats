@@ -83,7 +83,12 @@ plot_network <- function (s, plot = TRUE, vis_save = NULL) {
 
         edges$width <- edges$centrality * 10 / max (edges$centrality)
 
-        vn <- visNetwork::visNetwork (nodes, edges, main = pkg_title)
+        txt <- paste0 ("Edge thickness scaled to network centrality<br>",
+                       "Node sizes scaled to numbers of times each fn is called")
+        vn <- visNetwork::visNetwork (nodes,
+                                      edges,
+                                      main = pkg_title,
+                                      submain = list (text = txt))
         arrows <- list (to = list (enabled = TRUE, scaleFactor = 0.2))
         vn <- visNetwork::visEdges (vn, arrows = arrows)
     }
