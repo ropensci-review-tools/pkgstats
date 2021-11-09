@@ -18,6 +18,27 @@ Summarised version of \code{s}, as a single row of a standardised
 \description{
 Condense the output of \code{pkgstats} to summary statistics only
 }
+\note{
+Variable names in the summary object use the following abbreviations:
+\itemize{
+\item "loc" = Lines-of-Code
+\item "fn" = Function
+\item "n_fns" = Number of functions
+\item "npars" = Number of parameters
+\item "doclines" = Number of documentation lines
+\item "nedges" = Number of edges in function call network, as a count of
+\emph{unique} edges, which may be less than the size of the \code{network}
+object returned by \link{pkgstats}, because that may include multiple calls
+between identical function pairs.
+\item "n_clusters" = Number of connected clusters within the function call
+network.
+\item "centrality" used as a prefix for several statistics, along with
+"dir" or "undir" for centrality calculated on networks respectively
+constructed with directed or undirected edges; "mn" or "md" for respective
+measures of mean or median centrality, and "no0" for measures excluding
+edges with zero centrality.
+}
+}
 \seealso{
 Other stats: 
 \code{\link{desc_stats}()},
