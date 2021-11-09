@@ -11,7 +11,25 @@ pkgstats(path = ".")
 file containing code for an R package.}
 }
 \value{
-List of statistics
+List of statistics and data on function call networks (or object
+relationships in other languages). Includes the following components:
+\enumerate{
+\item{loc: }{Summary of Lines-of-Code in all package directories}
+\item{vignettes: }{Numbers of vignettes and "demo" files}
+\item{data_stats: }{Statistics of numbers and sizes of package data files}
+\item{desc: }{Summary of contents of 'DESCRIPTION' file}
+\item{translations: }{List of translations into other (human) languages
+(where provides)}
+\item{objects: }{A \code{data.frame} of all functions in R, and all other
+objects (functions, classes, structures, global variables, and more) in all
+other languages}
+\item{network: }{A \code{data.frame} of object references within and between all
+languages; in R these are function calls, but may be more abstract in other
+languages.}
+\item{external_calls: }{A \code{data.frame} of all calls make to all functions
+from all other R packages, including base and recommended as well as
+contributed packages.}
+}
 }
 \description{
 Collates statistics from one local tarball
