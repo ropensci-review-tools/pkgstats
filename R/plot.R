@@ -8,6 +8,11 @@
 #' @param vis_save Name of local file in which to save `html` file of network
 #' visualisation (will override `plot` to `FALSE`).
 #' @return (Invisibly) A \pkg{visNetwork} representation of the package network.
+#'
+#' @note Edge thicknesses are scaled to centrality within the package function
+#' call network. Node sizes are scaled to numbers of times each function is
+#' called from all other functions within a package.
+#'
 #' @family output
 #' @export
 plot_network <- function (s, plot = TRUE, vis_save = NULL) {

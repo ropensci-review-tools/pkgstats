@@ -23,4 +23,9 @@ visualisation (will override \code{plot} to \code{FALSE}).}
 Plot interactive \pkg{visNetwork} visualisation of object-relationship
 network of package.
 }
+\note{
+Edge thicknesses are scaled to centrality within the package function
+call network. Node sizes are scaled to numbers of times each function is
+called from all other functions within a package.
+}
 \concept{output}
