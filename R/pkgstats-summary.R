@@ -30,8 +30,8 @@
 pkgstats_summary <- function (s = NULL) {
 
     if (is.null (s)) {
-          return (null_stats ())
-      }
+        return (null_stats ())
+    }
 
     out <- data.frame (
         package = s$desc$package,
@@ -276,13 +276,13 @@ loc_indentation <- function (x, tab_threshold = 0.1) {
 
     index <- which (x$ncode > 0)
     if (length (index) == 0) { # data-only pkgs with no code
-          return (NA_integer_)
-      }
+        return (NA_integer_)
+    }
 
     tabs_per_line <- mean (x$ntabs [index] / x$ncode [index], na.rm = TRUE)
     if (tabs_per_line > tab_threshold) {
-          return (-1L)
-      }
+        return (-1L)
+    }
 
     indents <- rep (x$indentation, times = x$nfiles)
     return (stats::median (indents))
@@ -324,15 +324,15 @@ object_summary <- function (x) {
     n_fns_r_not_exported <- n_fns_r - n_fns_r_exported
     repl0withNA <- function (x) { # nolint
         if (x == 0L) {
-              x <- NA_integer_
-          }
+            x <- NA_integer_
+        }
         return (x)
     }
     n_fns_r <- repl0withNA (n_fns_r)
     n_fns_r_exported <- repl0withNA (n_fns_r_exported)
     if (is.na (n_fns_r_exported)) {
-          n_fns_r_not_exported <- repl0withNA (n_fns_r_not_exported)
-      }
+        n_fns_r_not_exported <- repl0withNA (n_fns_r_not_exported)
+    }
     # otherwise pkgs with all R fns exported should retain 0L here
 
     get_n_fns_per_file <- function (f) {
@@ -422,8 +422,8 @@ network_summary <- function (x) {
     n_edges <- ifelse (is.null (x), 0L, nrow (x))
 
     dirs <- vapply (x$file, function (i) {
-          strsplit (i, .Platform$file.sep) [[1]] [1]
-      },
+        strsplit (i, .Platform$file.sep) [[1]] [1]
+    },
     character (1),
     USE.NAMES = FALSE
     )
@@ -504,8 +504,8 @@ network_summary <- function (x) {
 external_call_summary <- function (x) {
 
     if (is.null (x)) {
-          return (NA_character_)
-      }
+        return (NA_character_)
+    }
 
     # summarise total number of calls to each package, plus number of distinct
     # functions from each:
@@ -518,8 +518,8 @@ external_call_summary <- function (x) {
     )
 
     res <- apply (n, 1, function (i) {
-          paste0 (i, collapse = ":")
-      })
+        paste0 (i, collapse = ":")
+    })
     # tibbles put white space in there:
     res <- gsub ("\\s*", "", res)
 
