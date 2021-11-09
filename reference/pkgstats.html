@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2.077</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2.080</span>
       </span>
     </div>
 
@@ -131,7 +131,25 @@ file containing code for an R package.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>List of statistics</p>
+    <p>List of statistics and data on function call networks (or object
+relationships in other languages). Includes the following components:</p><ol>
+<li><p>loc: Summary of Lines-of-Code in all package directories</p></li>
+<li><p>vignettes: Numbers of vignettes and "demo" files</p></li>
+<li><p>data_stats: Statistics of numbers and sizes of package data files</p></li>
+<li><p>desc: Summary of contents of 'DESCRIPTION' file</p></li>
+<li><p>translations: List of translations into other (human) languages
+(where provides)</p></li>
+<li><p>objects: A <code>data.frame</code> of all functions in R, and all other
+objects (functions, classes, structures, global variables, and more) in all
+other languages</p></li>
+<li><p>network: A <code>data.frame</code> of object references within and between all
+languages; in R these are function calls, but may be more abstract in other
+languages.</p></li>
+<li><p>external_calls: A <code>data.frame</code> of all calls make to all functions
+from all other R packages, including base and recommended as well as
+contributed packages.</p></li>
+</ol>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other stats: 

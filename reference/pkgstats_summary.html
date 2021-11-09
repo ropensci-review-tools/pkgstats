@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pkgstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2.077</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2.080</span>
       </span>
     </div>
 
@@ -134,6 +134,27 @@ package. Default of <code>NULL</code> returns a single row with <code>NA</code> 
 
     <p>Summarised version of <code>s</code>, as a single row of a standardised
 <code>data.frame</code> object</p>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>Variable names in the summary object use the following abbreviations:</p><ul>
+<li><p>"loc" = Lines-of-Code</p></li>
+<li><p>"fn" = Function</p></li>
+<li><p>"n_fns" = Number of functions</p></li>
+<li><p>"npars" = Number of parameters</p></li>
+<li><p>"doclines" = Number of documentation lines</p></li>
+<li><p>"nedges" = Number of edges in function call network, as a count of
+<em>unique</em> edges, which may be less than the size of the <code>network</code>
+object returned by <a href='pkgstats.html'>pkgstats</a>, because that may include multiple calls
+between identical function pairs.</p></li>
+<li><p>"n_clusters" = Number of connected clusters within the function call
+network.</p></li>
+<li><p>"centrality" used as a prefix for several statistics, along with
+"dir" or "undir" for centrality calculated on networks respectively
+constructed with directed or undirected edges; "mn" or "md" for respective
+measures of mean or median centrality, and "no0" for measures excluding
+edges with zero centrality.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other stats: 
