@@ -83,7 +83,10 @@ loc_stats <- function (path) {
         recursive = TRUE,
         full.names = TRUE
     )
+    # .Rmd files generally excluded except in vignettes:
+    rmd_vignettes <- grep ("vignettes.*\\.Rmd$", flist, value = TRUE)
     flist <- flist [which (!grepl (excluded_file_ptn (), flist))]
+    flist <- c (flist, rmd_vignettes)
 
     ftypes <- get_file_types (flist)
 
