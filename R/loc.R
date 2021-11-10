@@ -35,8 +35,8 @@ get_file_types <- function (flist) {
 
     exts <- vapply (
         flist, function (i) {
-              utils::tail (strsplit (i, "\\.") [[1]], 1)
-          },
+            utils::tail (strsplit (i, "\\.") [[1]], 1)
+        },
         character (1)
     )
     ftypes <- file_exts (exts)
