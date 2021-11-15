@@ -5,9 +5,10 @@ test_that ("archive trawl", {
 
     pkg <- make_demo_package ()
 
-    path <- decompose_path (pkg) [[1]] [-1]
+    path <- fs::path_split (fs::path_tidy (pkg)) [[1]]
     pkg_name <- path [length (path)]
-    path <- do.call (file.path, as.list (path [-length (path)]))
+    path <- path [-length (path)]
+    path <- fs::path_join (path)
 
     expect_error (
         pkgstats_from_archive (path),
