@@ -44,7 +44,6 @@ pkgstats_from_archive <- function (path,
 
     requireNamespace ("hms")
     requireNamespace ("pbapply")
-    requireNamespace ("memoise")
 
     if (!grepl ("tarball", path)) {
         if (!dir.exists (file.path (path, "tarballs"))) {
