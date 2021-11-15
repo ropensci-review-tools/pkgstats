@@ -11,6 +11,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^ideas$
+^cran-comments\.md$
 data-raw/
 temp-dict/
 ^\.github$
