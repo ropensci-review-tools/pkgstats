@@ -5,7 +5,9 @@
 #' and also checks the GNU global installation.
 #' @family tags
 #' @examples
+#' \dontrun{
 #' ctags_test ()
+#' }
 #' @export
 ctags_test <- function () {
 

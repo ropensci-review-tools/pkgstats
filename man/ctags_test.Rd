@@ -12,7 +12,9 @@ This uses the example from
 and also checks the GNU global installation.
 }
 \examples{
+\dontrun{
 ctags_test ()
+}
 }
 \seealso{
 Other tags: 
