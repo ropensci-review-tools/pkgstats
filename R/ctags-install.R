@@ -111,6 +111,7 @@ ctags_install <- function (bin_dir = NULL, sudo = TRUE) {
     if (!sudo) {
         # system ("hash -d ctags")
         system ("hash ctags")
+        system ("hash gtags")
     }
 }
 # nocov end
