@@ -12,6 +12,20 @@ desc_stats(path)
 \description{
 Statistics from DESCRIPTION files
 }
+\examples{
+\dontrun{
+tarball <- "magrittr_2.0.1.tar.gz"
+u <- paste0 (
+    "https://cran.r-project.org/src/contrib/",
+    tarball
+)
+f <- file.path (tempdir (), tarball)
+download.file (u, f)
+# have to extract tarball to call function on source code:
+path <- extract_tarball (f)
+desc_stats (path)
+}
+}
 \seealso{
 Other stats: 
 \code{\link{loc_stats}()},
