@@ -101,7 +101,7 @@ which_unix <- function () {
         return (NULL)
     }
 
-    x <- capture.output (
+    x <- utils::capture.output (
         sys::exec_wait ("lsb_release", args = "-a", std_out = TRUE)
     )
     strsplit (grep ("^Distributor ID", x, value = TRUE), "\\t") [[1]] [2]
