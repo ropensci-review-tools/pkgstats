@@ -12,6 +12,7 @@
 ^\.Rproj\.user$
 ^ideas$
 data-raw/
+temp-dict/
 ^\.github$
 ^\.pre-commit-config\.yaml$
 ^codemeta\.json$
