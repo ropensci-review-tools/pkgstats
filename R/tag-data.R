@@ -10,12 +10,19 @@
 #' package-internal calls.
 #' @family tags
 #' @export
-tags_data <- function (path, has_tabs = NULL, pkg_name) {
+tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
 
     if (is.null (has_tabs)) {
         has_tabs <- any (loc_stats (path)$ntabs > 0L)
     } else if (!is.logical (has_tabs) | length (has_tabs) > 1L) {
         stop ("has_tabs must either be NULL or a single logical value")
+    }
+
+    if (is.null (pkg_name)) {
+        desc <- file.path (path, "DESCRIPTION")
+        checkmate::assert_file (desc)
+        d <- data.frame (read.dcf (desc))
+        pkg_name <- d [["Package"]]
     }
 
     kind <- start <- NULL # no visible binding messages
