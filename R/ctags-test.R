@@ -10,11 +10,11 @@
 ctags_test <- function () {
 
     if (!has_ctags ()) {
-          stop ("No ctags installation found.", call. = FALSE)
-      }
+        stop ("No ctags installation found.", call. = FALSE)
+    }
     if (!has_gtags ()) {
-          stop ("No GNU global installation found.", call. = FALSE)
-      }
+        stop ("No GNU global installation found.", call. = FALSE)
+    }
 
     f_in <- tempfile (fileext = ".R")
 
@@ -79,8 +79,8 @@ ctags_test <- function () {
 
     ctags_check <- nrow (tags) == length (expected_kinds)
     if (ctags_check) {
-          ctags_check <- all (tags$kind == expected_kinds)
-      }
+        ctags_check <- all (tags$kind == expected_kinds)
+    }
 
     gtags_test <- withr::with_dir (
         tempdir (),
@@ -91,8 +91,8 @@ ctags_test <- function () {
     )
     gtags_check <- length (gtags_test) == 0L
     if (!gtags_check) {
-          gtags_check <- any (grepl ("error", gtags_check, ignore.case = TRUE))
-      }
+        gtags_check <- any (grepl ("error", gtags_check, ignore.case = TRUE))
+    }
 
     check <- ctags_check & gtags_check
 

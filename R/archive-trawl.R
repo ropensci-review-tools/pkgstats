@@ -194,23 +194,23 @@ rm_prev_files <- function (flist, prev_results) {
 
         if (is.character (prev_results)) {
             if (length (prev_results) > 1) {
-                  stop ("prev_results must be a single-length character")
-              }
+                stop ("prev_results must be a single-length character")
+            }
             if (!file.exists (prev_results)) {
-                  stop ("file [", prev_results, "] does not exist")
-              }
+                stop ("file [", prev_results, "] does not exist")
+            }
             prev_results <- tryCatch (readRDS (prev_results),
                 error = function (e) e
             )
             if (methods::is (prev_results, "error")) {
-                  stop ("Unable to read prev_results: ", e)
-              }
+                stop ("Unable to read prev_results: ", e)
+            }
         }
 
         tars <- vapply (
             flist, function (i) {
-                  utils::tail (strsplit (i, .Platform$file.sep) [[1]], 1)
-              },
+                utils::tail (strsplit (i, .Platform$file.sep) [[1]], 1)
+            },
             character (1)
         )
 

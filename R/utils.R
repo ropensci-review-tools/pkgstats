@@ -6,11 +6,11 @@ get_Rd_metadata <- utils::getFromNamespace (".Rd_get_metadata", "tools") # nolin
 check_path <- function (path) {
 
     if (!file.exists (path)) {
-          stop (paste0 (
-              "path [", path, "] does not exist. ",
-              "Did you first 'extract_tarball()'?"
-          ))
-      }
+        stop (paste0 (
+            "path [", path, "] does not exist. ",
+            "Did you first 'extract_tarball()'?"
+        ))
+    }
 }
 
 #' Decompose file paths into character vectors of named directories and final
@@ -65,8 +65,8 @@ control_parse <- function (file) {
         g <- gregexpr ("\\\"", out$message) [[1]]
         expr <- gsub ("\"", "", substring (out$message, min (g), max (g)))
         if (grepl ("\\\\", expr)) {
-              expr <- gsub ("\\", "\\\\", expr, fixed = TRUE)
-          }
+            expr <- gsub ("\\", "\\\\", expr, fixed = TRUE)
+        }
         index <- which (grepl (ptn, x) & grepl (expr, x))
         x [index] <- gsub (ptn, "", x [index])
 
@@ -98,8 +98,8 @@ excluded_file_ptn <- function () {
 which_unix <- function () {
 
     if (!.Platform [["OS.type"]] == "unix") {
-          return (NULL)
-      }
+        return (NULL)
+    }
 
     x <- capture.output (
         sys::exec_wait ("lsb_release", args = "-a", std_out = TRUE)

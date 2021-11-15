@@ -50,8 +50,8 @@ ctags_make <- function (ctags_dir, bin_dir = NULL, sudo = TRUE) {
     confargs <- NULL
     if (!is.null (bin_dir)) {
         if (!dir.exists (bin_dir)) {
-              stop ("bin_dir [", bin_dir, "] does not exist.", call. = FALSE)
-          }
+            stop ("bin_dir [", bin_dir, "] does not exist.", call. = FALSE)
+        }
         confargs <- paste0 ("--prefix=", bin_dir)
     }
 

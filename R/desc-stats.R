@@ -41,8 +41,8 @@ desc_stats <- function (path) {
     license <- d$License
     urls <- NA_character_
     if ("URL" %in% names (d)) {
-          urls <- d$URL
-      }
+        urls <- d$URL
+    }
 
     if ("Authors.R" %in% names (d)) {
         authors <- eval (parse (text = d$Authors.R))
@@ -50,8 +50,8 @@ desc_stats <- function (path) {
         authors <- gsub ("^.*\\[|\\].*$", "", authors)
         n_aut <- vapply (
             aut_types (), function (i) {
-                  length (grep (i, authors))
-              },
+                length (grep (i, authors))
+            },
             integer (1)
         )
     } else {
@@ -115,8 +115,8 @@ extract_deps <- function (d, type = "Depends") {
     }
 
     res <- vapply (res, function (i) {
-          strsplit (i, "\\(") [[1]] [1]
-      },
+        strsplit (i, "\\(") [[1]] [1]
+    },
     character (1),
     USE.NAMES = FALSE
     )

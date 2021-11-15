@@ -31,25 +31,25 @@ rd_stats <- function (path) {
     params <- do.call (rbind, params)
     params_sp <- NULL
     if (!is.null (params)) {
-          params_sp <- split (params, f = factor (params$alias))
-      }
+        params_sp <- split (params, f = factor (params$alias))
+    }
 
     n <- vapply (
         params_sp, function (i) {
             ret <- 0L
             if (nrow (i) > 1 | i$parameter [1] != "(none)") {
-                  ret <- nrow (i)
-              }
+                ret <- nrow (i)
+            }
             return (ret)    },
         integer (1)
     )
 
     nchars_mn <- vapply (params_sp, function (i) {
-          mean (i$nchar)
-      }, numeric (1))
+        mean (i$nchar)
+    }, numeric (1))
     nchars_md <- vapply (params_sp, function (i) {
-          stats::median (i$nchar)
-      }, numeric (1))
+        stats::median (i$nchar)
+    }, numeric (1))
 
     # excluce imported fns:
     nmspc <- file.path (path, "NAMESPACE")
@@ -62,8 +62,8 @@ rd_stats <- function (path) {
         imports <- unlist (lapply (
             strsplit (imports, ","),
             function (i) {
-                  gsub ("\\)$", "", i [2])
-              }
+                gsub ("\\)$", "", i [2])
+            }
         ))
         imports <- gsub ("\\\"", "", imports)
 
@@ -77,8 +77,8 @@ rd_stats <- function (path) {
 
     doclines <- vapply (
         names (n), function (i) {
-              params$doclines [params$alias == i] [1]
-          },
+            params$doclines [params$alias == i] [1]
+        },
         integer (1)
     )
 
@@ -128,8 +128,8 @@ get_one_params <- function (man_file) {
     doclines <- length (out [out != ""])
 
     if (!rd_is_fn (rd)) {
-          return (res)
-      }
+        return (res)
+    }
 
     aliases <- unique (c (
         get_Rd_metadata (rd, "name"),
@@ -164,8 +164,8 @@ get_one_params <- function (man_file) {
                 nm <- unlist (eval (i [[2]]))
                 desc <- unlist (eval (i [[3]]))
                 if (is.null (nm)) {
-                      nm <- "(NULL)"
-                  }
+                    nm <- "(NULL)"
+                }
             }
             list (
                 par_name = nm,
@@ -192,8 +192,8 @@ get_one_params <- function (man_file) {
     }
 
     if (!"doclines" %in% names (res)) {
-          res$doclines <- integer (0)
-      }
+        res$doclines <- integer (0)
+    }
 
     return (res)
 }

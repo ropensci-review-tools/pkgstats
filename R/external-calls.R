@@ -11,8 +11,8 @@ external_call_network <- function (tags_r, path, pkg_name) {
     calls <- extract_call_content (tags_r)
 
     if (length (calls) == 0L) {
-          return (NULL)
-      }
+        return (NULL)
+    }
 
     calls$kind <- tags_r$kind [calls$tags_line]
     calls$start <- tags_r$start [calls$tags_line]
@@ -28,8 +28,8 @@ external_call_network <- function (tags_r, path, pkg_name) {
     # Calls namespaced with `::`:
     index <- grep ("::", calls$call)
     calls$package [index] <- vapply (calls$call [index], function (i) {
-          strsplit (i, "::") [[1]] [1]
-      },
+        strsplit (i, "::") [[1]] [1]
+    },
     character (1),
     USE.NAMES = FALSE
     )
@@ -64,11 +64,11 @@ extract_call_content <- function (tags_r) {
     )
     bracket_content <- vapply (
         bracket_content, function (i) {
-              ifelse (length (i) == 0L,
-                  "",
-                  i [1]
-              )
-          },
+            ifelse (length (i) == 0L,
+                "",
+                i [1]
+            )
+        },
         character (1)
     )
 
@@ -78,12 +78,12 @@ extract_call_content <- function (tags_r) {
 
     content [index] <- vapply (
         seq_along (index), function (i) {
-              content [index [i]] <-
-                  gsub (bracket_content [i], "",
-                      content [index [i]],
-                      fixed = TRUE
-                  )
-          },
+            content [index [i]] <-
+                gsub (bracket_content [i], "",
+                    content [index [i]],
+                    fixed = TRUE
+                )
+        },
         character (1)
     )
 
@@ -111,19 +111,19 @@ extract_call_content <- function (tags_r) {
     # Then split all around space to obtain call references
     calls <- strsplit (content, "\\s+")
     calls <- lapply (seq_along (calls), function (i) {
-          if (length (calls [[i]]) > 0L) {
-                cbind (
-                    rep (i, length (calls [[i]])),
-                    calls [[i]]
-                )
-            }
-      })
+        if (length (calls [[i]]) > 0L) {
+            cbind (
+                rep (i, length (calls [[i]])),
+                calls [[i]]
+            )
+        }
+    })
     calls <- do.call (rbind, calls)
     calls <- calls [which (!calls [, 2] == ""), ]
 
     if (length (calls) == 0L) {
-          return (NULL)
-      }
+        return (NULL)
+    }
 
     calls <- data.frame (
         tags_line = as.integer (calls [, 1]),
@@ -229,13 +229,13 @@ add_base_recommended_pkgs <- function (calls) {
 
         rpath <- file.path (ll [1], i)
         if (!dir.exists (rpath)) {
-              return (NULL)
-          }
+            return (NULL)
+        }
 
         f <- file.path (rpath, "NAMESPACE")
         if (!file.exists (f)) {
-              return (NULL)
-          }
+            return (NULL)
+        }
 
         n <- brio::read_lines (f)
         fns <- parse (text = n)
@@ -272,8 +272,8 @@ add_other_pkgs_to_calls <- function (calls, path) {
 
     f <- file.path (path, "NAMESPACE")
     if (!file.exists (f)) {
-          return (calls)
-      }
+        return (calls)
+    }
 
     n <- parse (text = brio::read_lines (f))
     imports <- gsub (

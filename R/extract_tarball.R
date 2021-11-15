@@ -19,29 +19,29 @@
 extract_tarball <- function (tarball) {
 
     if (!file.exists (tarball)) {
-          stop ("file [", tarball, "] does not exist")
-      }
+        stop ("file [", tarball, "] does not exist")
+    }
     if (!checkmate::testCharacter (tarball,
         len = 1,
         pattern = "\\.tar\\.gz$"
     )) {
-          stop (paste0 (
-              "tarball must be a single character ",
-              "specifying path to .tar.gz file"
-          ))
-      }
+        stop (paste0 (
+            "tarball must be a single character ",
+            "specifying path to .tar.gz file"
+        ))
+    }
 
     flist <- utils::untar (tarball,
         exdir = tempdir (),
         list = TRUE, tar = "internal"
     )
     if (utils::untar (tarball, exdir = tempdir (), tar = "internal") != 0) {
-          stop ("Unable to extract tarball to 'tempdir'")
-      }
+        stop ("Unable to extract tarball to 'tempdir'")
+    }
 
     fdir <- vapply (flist, function (i) {
-          strsplit (i, .Platform$file.sep) [[1]] [1]
-      },
+        strsplit (i, .Platform$file.sep) [[1]] [1]
+    },
     character (1),
     USE.NAMES = FALSE
     )
@@ -50,8 +50,8 @@ extract_tarball <- function (tarball) {
 
     chk <- rename_files_in_r (path)
     if (!chk) {
-          warning ("Files in .R directory unable to be re-named")
-      }
+        warning ("Files in .R directory unable to be re-named")
+    }
 
     return (path)
 }
