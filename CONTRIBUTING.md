@@ -138,3 +138,44 @@ flow](https://guides.github.com/introduction/flow/) for development.
 5. Commit and push your changes.
 6. Submit a [pull
    request](https://guides.github.com/activities/forking/#making-a-pull-request).
+
+## Code style
+
+The `pkgstats` coding style diverges somewhat from [the commonly used tidyverse
+style guide](https://style.tidyverse.org/syntax.html#spacing), primarily
+through judicious use of
+whitespace, which aims to improve code readability. Code references in
+`pkgstats` are separated by whitespace, just like words of text. Just like it
+is easier to understand "these three words" than "thesethreewords", code is 
+formatted like this:
+
+``` r
+these <- three (words (x))
+```
+
+and not like this:
+
+``` r
+these <- three(words(x))
+```
+
+The position of brackets is then arbitrary, and we could also write
+
+``` r
+these <- three( words (x))
+```
+
+`pkgstats` code opts for the former style, with the natural result that one
+ends up writing
+
+```r
+this <- function ()
+```
+
+with a space between `function` and `()`. You can easily (re-)format your code
+to accord with this style [by installing the `spaceout`
+package](https://github.com/ropensci-review-tools/spaceout) and running:
+
+```r
+styler::style_pkg (style = spaceout::spaceout_style)
+```
