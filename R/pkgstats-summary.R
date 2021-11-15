@@ -26,6 +26,18 @@
 #'   edges with zero centrality.
 #' }
 #' @family stats
+#' @examples
+#' \dontrun{
+#' tarball <- "magrittr_2.0.1.tar.gz"
+#' u <- paste0 (
+#'     "https://cran.r-project.org/src/contrib/",
+#'     tarball
+#' )
+#' f <- file.path (tempdir (), tarball)
+#' download.file (u, f)
+#' p <- pkgstats (f)
+#' s <- pkgstats_summary (p)
+#' }
 #' @export
 pkgstats_summary <- function (s = NULL) {
 

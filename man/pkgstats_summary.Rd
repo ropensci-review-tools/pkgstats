@@ -39,6 +39,19 @@ measures of mean or median centrality, and "no0" for measures excluding
 edges with zero centrality.
 }
 }
+\examples{
+\dontrun{
+tarball <- "magrittr_2.0.1.tar.gz"
+u <- paste0 (
+    "https://cran.r-project.org/src/contrib/",
+    tarball
+)
+f <- file.path (tempdir (), tarball)
+download.file (u, f)
+p <- pkgstats (f)
+s <- pkgstats_summary (p)
+}
+}
 \seealso{
 Other stats: 
 \code{\link{desc_stats}()},
