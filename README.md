@@ -9,11 +9,11 @@ Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repost
 
 # pkgstats
 
-Extract summary statistics of R package structure and functionality.
-Also includes a function to extract statistics of all R packages from a
-local CRAN mirror. Not all statistics of course, but a good go at
-balancing insightful statistics while ensuring computational
-feasibility.
+Extract summary statistics of R package structure and functionality. Not
+all statistics of course, but a good go at balancing insightful
+statistics while ensuring computational feasibility. `pkgstats` is a
+*static* code analysis tool, so is generally very fast (a few seconds at
+most for very large packages).
 
 ## What statistics?
 
@@ -27,8 +27,9 @@ Statistics are derived from these primary sources:
     languages and all directories containing source code (`./R`,
     `./src`, and `./inst/include`).
 4.  A function call network derived from function definitions obtained
-    from [`ctags`](https::ctags.io), and references (“calls”) to those
-    obtained from [`gtags`](https://www.gnu.org/software/global/). This
+    from [the code tagging library, `ctags`](https://ctags.io), and
+    references (“calls”) to those obtained from [another tagging
+    library, `gtags`](https://www.gnu.org/software/global/). This
     network roughly connects every object making a call (as `from`) with
     every object being called (`to`).
 5.  An additional function call network connecting calls within R
@@ -41,11 +42,12 @@ objects for the final three components described above. The statistical
 properties of this list can be aggregated by the [`pkgstats_summary()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html),
 which returns a `data.frame` with a single row of summary statistics.
-See below for further details.
+This function is demonstrated below, including full details of all
+statistics extracted.
 
 ## Installation
 
-The easiest way to install this package is via the [associated
+The easiest way to install this package is [via the associated
 `r-universe`](https://ropensci-review-tools.r-universe.dev/ui#builds).
 As shown there, simply enable the universe with
 
@@ -69,7 +71,7 @@ remotes::install_github ("ropensci-review-tools/pkgstats")
 pak::pkg_install ("ropensci-review-tools/pkgstats")
 ```
 
-The package can then loaded for use with
+The package can then loaded for use with:
 
 ``` r
 library (pkgstats)
@@ -77,8 +79,8 @@ library (pkgstats)
 
 ### Installation on Linux systems
 
-This package requires the system libraries
-[`ctags-universal`](https://ctags.io) and [GNU
+This package requires the [system libraries
+`ctags-universal`](https://ctags.io) and [GNU
 `global`](https://www.gnu.org/software/global/), both of which are
 automatically installed along with the package on both Windows and MacOS
 systems. Most Linux distributions do not include a sufficiently
@@ -125,7 +127,8 @@ for more details.
 The following code demonstrates the output of the main function,
 `pkgstats`, applied to the relatively simple [`magrittr`
 package](https://github.com/tidyverse/magrittr). The `system.time` call
-also shows that these statistics are extracted quite quickly.
+demonstrates that the static code analyses of `pkgstats` are generally
+very fast.
 
 ``` r
 tarball <- "magrittr_2.0.1.tar.gz"
@@ -139,7 +142,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   0.922   0.141   1.961
+    ##   0.785   0.087   1.770
 
 ``` r
 names (p)
@@ -156,13 +159,14 @@ p [!names (p) %in% c ("objects", "network", "external_calls")]
 ```
 
     ## $loc
-    ## # A tibble: 3 × 12
-    ## # Groups:   language, dir [3]
-    ##   language dir   nfiles nlines ncode  ndoc nempty nspaces nchars nexpr ntabs
-    ##   <chr>    <chr>  <int>  <int> <int> <int>  <int>   <int>  <int> <dbl> <int>
-    ## 1 C        src        2    590   447    22    121    1136  10826     1     0
-    ## 2 R        R          7    699   163   484     52    2835  15645     1     1
-    ## 3 R        tests     10    374   259    13    102     867   8527     2     4
+    ## # A tibble: 4 × 12
+    ## # Groups:   language, dir [4]
+    ##   language dir       nfiles nlines ncode  ndoc nempty nspaces nchars nexpr ntabs
+    ##   <chr>    <chr>      <int>  <int> <int> <int>  <int>   <int>  <int> <dbl> <int>
+    ## 1 C        src            2    590   447    22    121    1136  10826     1     0
+    ## 2 R        R              7    699   163   484     52    2835  15645     1     1
+    ## 3 R        tests         10    374   259    13    102     867   8527     2     4
+    ## 4 Rmd      vignettes      2    754   469    80    205    3793  19927     1     0
     ## # … with 1 more variable: indentation <int>
     ## 
     ## $vignettes
@@ -186,9 +190,10 @@ p [!names (p) %in% c ("objects", "network", "external_calls")]
     ## $translations
     ## [1] NA
 
-The first item, `loc`, contains the following Lines-Of-Code and related
-statistics, separated into distinct combinations of computer language
-and directory:
+These results demonstrate that many fields use `NA` to denote values of
+zero. The first item, `loc`, contains the following Lines-Of-Code and
+related statistics, separated into distinct combinations of computer
+language and directory:
 
 1.  `nfiles` = Numbers of files in each directory and language.
 2.  `nlines` = Total numbers of lines in all files.
@@ -205,8 +210,9 @@ and directory:
 10. `indentation` = Number of spaces by which code is indented (with
     `-1` denoting tab-indentation).
 
-Numbers of nested expressions are counted as numbers of brackets of any
-type nested on a single line. The following line has one nested bracket:
+Numbers of nested expressions are counted as numbers of brackets or
+braces of any type nested on a single line. The following line has one
+nested bracket:
 
 ``` r
 x <- myfn ()
@@ -240,7 +246,7 @@ indicate median numbers of white spaces by which code is indented. The
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats.html)
 are described further below.
 
-### The `pkgstats_summary()` function
+### Overview of statistics and the `pkgstats_summary()` function
 
 A summary of the `pkgstats` data can be obtained by submitting the
 object returned from `pkgstats()` to the [`pkgstats_summary()`
@@ -255,14 +261,20 @@ function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
 to a single line with 91 entries, represented as a `data.frame` with one
 row and that number of columns. This format is intended to enable
 summary statistics from multiple packages to be aggregated by simply
-binding rows together. While 91 statistics might seem like overkill, the
+binding rows together. While 91 statistics might seem like a lot, the
 [`pkgstats_summary()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
 aims to return as many usable raw statistics as possible in order to
 flexibly allow higher-level statistics to be derived through combination
 and aggregation. These 91 statistics can be roughly grouped into the
 following categories (not shown in the order in which they actually
-appear), with variable names in parentheses after each description.
+appear), with variable names in parentheses after each description. Some
+statistics are summarised as comma-delimited character strings, such as
+translations into human languages, or other packages listed under
+“depends”, “imports”, or “suggests”. This enables subsequent analyses of
+their contents, for example of actual translated languages, or both
+aggregate numbers and individual details of all package dependencies, as
+demonstrated immediately below.
 
 **Package Summaries**
 
@@ -291,10 +303,17 @@ Numbers of entries in each the of the last two kinds of items can be
 obtained from by a simple `strsplit` call, like this:
 
 ``` r
-length (strsplit (s$suggests, ", ") [[1]])
+deps <- strsplit (s$suggests, ", ") [[1]]
+length (deps)
 ```
 
     ## [1] 5
+
+``` r
+print (deps)
+```
+
+    ## [1] "covr"      "knitr"     "rlang"     "rmarkdown" "testthat"
 
 **Numbers of files and associated data**
 
@@ -380,7 +399,10 @@ The final column in the result of [the `pkgstats_summary()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
 summarises the `external_calls` object detailing all calls make to
 external packages (including to base and recommended packages). This
-summary is represented as a single character string:
+summary is also represented as a single character string. Each package
+lists total numbers of function calls, and total numbers of unique
+function calls. Data for each package are separated by a comma, while
+data within each package are separated by a colon.
 
 ``` r
 s$external_calls
@@ -388,8 +410,8 @@ s$external_calls
 
     ## [1] "base:22:12,magrittr:16:11"
 
-This is structured to allow numbers of calls to all packages to be
-readily extracted with code like the following:
+This structure allows numbers of calls to all packages to be readily
+extracted with code like the following:
 
 ``` r
 calls <- do.call (rbind,
@@ -409,7 +431,8 @@ to each package, and the total number of unique functions used within
 those packages. While this result is relatively uninformative for the
 `magrittr` package, which imports no other packages and relies only on
 base R functions, these results will generally provide detailed
-information on numbers of calls made and functions used.
+information on numbers of calls made to, and functions used from, other
+R packages, including base and recommended packages.
 
 The following sub-sections provide further detail on the `objects`,
 `network`, and `external_call` items, which could be used to extract
@@ -479,12 +502,6 @@ table (p$objects$kind [p$objects$language == "C"])
     ##     enum function    macro   member   struct variable 
     ##        1       23        3        4        2       31
 
-``` r
-table (p$objects$kind [p$objects$language == "C++"])
-```
-
-    ## < table of extent 0 >
-
 ### Network
 
 The `network` item details all relationships between objects, which
@@ -497,20 +514,20 @@ vertices or nodes.
 head (p$network)
 ```
 
-    ##             file line1       from        to language cluster_dir centrality_dir
-    ## 1       R/pipe.R   297 new_lambda   freduce        R           1              1
-    ## 2    R/getters.R    14  `[[.fseq` functions        R           2              0
-    ## 3    R/getters.R    23   `[.fseq` functions        R           2              0
-    ## 4  R/functions.R    26 print.fseq functions        R           2              0
-    ## 5 R/debug_pipe.R    28 debug_fseq functions        R           2              0
-    ## 6 R/debug_pipe.R    35 debug_fseq functions        R           2              0
-    ##   cluster_undir centrality_undir
-    ## 1             1               17
-    ## 2             2                0
-    ## 3             2                0
-    ## 4             2                0
-    ## 5             2                0
-    ## 6             2                0
+    ##             file line1         from        to language cluster_dir
+    ## 1       R/pipe.R   297   new_lambda   freduce        R           1
+    ## 2    R/getters.R    14    `[[.fseq` functions        R           2
+    ## 3    R/getters.R    23     `[.fseq` functions        R           2
+    ## 4 R/debug_pipe.R    28   debug_fseq functions        R           2
+    ## 5 R/debug_pipe.R    35   debug_fseq functions        R           2
+    ## 6 R/debug_pipe.R    42 undebug_fseq functions        R           2
+    ##   centrality_dir cluster_undir centrality_undir
+    ## 1              1             1               17
+    ## 2              0             2                0
+    ## 3              0             2                0
+    ## 4              0             2                0
+    ## 5              0             2                0
+    ## 6              0             2                0
 
 ``` r
 nrow (p$network)
@@ -531,14 +548,15 @@ objects with different cluster numbers.
 
 The network can be viewed as an interactive
 [`vis.js`](https://visjs.org/) network through passing the result of
-`pkgstats` – here, `p` – to the [`plot_network()`
+`pkgstats` – the variable `p` in the code above – to the
+[`plot_network()`
 function](https://docs.ropensci.org/pkgstats/reference/plot_network.html).
 
 ### External Calls
 
 The `external_calls` item is structured similar to the `network` object,
 but identifies all calls to functions from external packages. However,
-unlike the `netowrk` and `object` data, which provide information on
+unlike the `network` and `object` data, which provide information on
 objects and relationships in all computer languages used within a
 package, the `external_calls` object maps calls within R code only, in
 order to provide insight into the use within a package of of functions
@@ -553,16 +571,16 @@ head (p$external_calls)
     ## 1         1    .onLoad              .onLoad   R/magrittr.R    function    45
     ## 2         7     lapply     `_function_list`       R/pipe.R functionVar   294
     ## 3         7 as_pipe_fn     `_function_list`       R/pipe.R functionVar   294
-    ## 4        11        cat anonFunc6fbaaec50100  R/functions.R    function    30
-    ## 5        12  invisible anonFuncb07b5cc00100 R/debug_pipe.R    function    35
-    ## 6        12      debug anonFuncb07b5cc00100 R/debug_pipe.R    function    35
+    ## 4        11  invisible anonFunc738434950100 R/debug_pipe.R    function    35
+    ## 5        11      debug anonFunc738434950100 R/debug_pipe.R    function    35
+    ## 6        11  functions anonFunc738434950100 R/debug_pipe.R    function    35
     ##   end  package
     ## 1  47 magrittr
     ## 2 294     base
     ## 3 294 magrittr
-    ## 4  30     base
+    ## 4  35     base
     ## 5  35     base
-    ## 6  35     base
+    ## 6  35 magrittr
 
 These data are converted to a summary form by the [`pkgstats_summary()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html),
