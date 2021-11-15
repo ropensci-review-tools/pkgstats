@@ -130,6 +130,8 @@ get_ctags <- function (d = "R", has_tabs) {
         path_sub <- path_dir <- rm_tabs (path_dir)
         path_dir <- fs::path_tidy (normalizePath (file.path (path_dir, d)))
         wd <- setwd (path_dir)
+        on.exit (setwd (wd))
+        # called via withr::with_path anyway, so doesn't really matter
     }
 
     # ctags fields defines at
@@ -161,8 +163,6 @@ get_ctags <- function (d = "R", has_tabs) {
     )
     sys::exec_wait ("ctags", args, std_out = FALSE, std_err = FALSE)
     Sys.sleep (0.2)
-
-    setwd (wd) # called via withr::with_path anyway, so doesn't really matter
 
     # remove header lines:
     x <- brio::read_lines (f)
