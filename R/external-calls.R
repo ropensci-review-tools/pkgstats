@@ -59,7 +59,7 @@ extract_call_content <- function (tags_r) {
         content [index],
         gregexpr ("(?<=\\().*?(?=\\))",
             content [index],
-            perl = T
+            perl = TRUE
         )
     )
     bracket_content <- vapply (
