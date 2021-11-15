@@ -4,6 +4,8 @@
 #' \url{https://github.com/universal-ctags/ctags/blob/master/man/ctags-lang-r.7.rst.in}
 #' and also checks the GNU global installation.
 #' @family tags
+#' @examples
+#' ctags_test ()
 #' @export
 ctags_test <- function () {
 
