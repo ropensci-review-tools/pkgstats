@@ -15,7 +15,7 @@ output:
 <!-- badges: end -->
 
 ```{r, include = FALSE, echo = FALSE}
-if (identical(Sys.getenv("IN_PKGDOWN"), "true")) {
+if (identical (Sys.getenv ("IN_PKGDOWN"), "true")) {
     pkgstats::ctags_install ()
 }
 ```
@@ -66,15 +66,16 @@ The easiest way to install this package is [via the associated
 shown there, simply enable the universe with
 
 ```{r options, eval = FALSE}
-options(repos = c(
+options (repos = c (
     ropenscireviewtools = "https://ropensci-review-tools.r-universe.dev",
-    CRAN = "https://cloud.r-project.org"))
+    CRAN = "https://cloud.r-project.org"
+))
 ```
 
 And then install the usual way with,
 
 ```{r install, eval = FALSE}
-install.packages("pkgstats")
+install.packages ("pkgstats")
 ```
 
 Alternatively, the package can be installed by running one of the following
@@ -143,13 +144,15 @@ fast.
 
 ```{r demo}
 tarball <- "magrittr_2.0.1.tar.gz"
-u <- paste0 ("https://cran.r-project.org/src/contrib/",
-             tarball)
+u <- paste0 (
+    "https://cran.r-project.org/src/contrib/",
+    tarball
+)
 f <- file.path (tempdir (), tarball)
 download.file (u, f)
 system.time (
     p <- pkgstats (f)
-    )
+)
 names (p)
 ```
 
@@ -367,11 +370,15 @@ This structure allows numbers of calls to all packages to be readily extracted
 with code like the following:
 
 ```{r summary-exteranl-calls-transform}
-calls <- do.call (rbind,
-                  strsplit (strsplit (s$external_call, ",") [[1]], ":"))
-calls <- data.frame (package = calls [, 1],
-                     n_total = as.integer (calls [, 2]),
-                     n_unique = as.integer (calls [, 3]))
+calls <- do.call (
+    rbind,
+    strsplit (strsplit (s$external_call, ",") [[1]], ":")
+)
+calls <- data.frame (
+    package = calls [, 1],
+    n_total = as.integer (calls [, 2]),
+    n_unique = as.integer (calls [, 3])
+)
 print (calls)
 ```
 
@@ -461,9 +468,11 @@ following:
 ```{r ext-call-summary}
 x <- strsplit (s$external_calls, ",") [[1]]
 x <- do.call (rbind, strsplit (x, ":"))
-x <- data.frame (pkg = x [, 1],
-                 n_total = as.integer (x [, 2]),
-                 n_unique = as.integer (x [, 3]))
+x <- data.frame (
+    pkg = x [, 1],
+    n_total = as.integer (x [, 2]),
+    n_unique = as.integer (x [, 3])
+)
 x$n_total_rel <- round (x$n_total / sum (x$n_total), 3)
 x$n_unique_rel <- round (x$n_unique / sum (x$n_unique), 3)
 print (x)

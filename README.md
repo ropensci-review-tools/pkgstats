@@ -52,15 +52,16 @@ The easiest way to install this package is [via the associated
 As shown there, simply enable the universe with
 
 ``` r
-options(repos = c(
+options (repos = c (
     ropenscireviewtools = "https://ropensci-review-tools.r-universe.dev",
-    CRAN = "https://cloud.r-project.org"))
+    CRAN = "https://cloud.r-project.org"
+))
 ```
 
 And then install the usual way with,
 
 ``` r
-install.packages("pkgstats")
+install.packages ("pkgstats")
 ```
 
 Alternatively, the package can be installed by running one of the
@@ -132,17 +133,19 @@ very fast.
 
 ``` r
 tarball <- "magrittr_2.0.1.tar.gz"
-u <- paste0 ("https://cran.r-project.org/src/contrib/",
-             tarball)
+u <- paste0 (
+    "https://cran.r-project.org/src/contrib/",
+    tarball
+)
 f <- file.path (tempdir (), tarball)
 download.file (u, f)
 system.time (
     p <- pkgstats (f)
-    )
+)
 ```
 
     ##    user  system elapsed 
-    ##   0.785   0.087   1.770
+    ##   0.828   0.082   1.852
 
 ``` r
 names (p)
@@ -414,11 +417,15 @@ This structure allows numbers of calls to all packages to be readily
 extracted with code like the following:
 
 ``` r
-calls <- do.call (rbind,
-                  strsplit (strsplit (s$external_call, ",") [[1]], ":"))
-calls <- data.frame (package = calls [, 1],
-                     n_total = as.integer (calls [, 2]),
-                     n_unique = as.integer (calls [, 3]))
+calls <- do.call (
+    rbind,
+    strsplit (strsplit (s$external_call, ",") [[1]], ":")
+)
+calls <- data.frame (
+    package = calls [, 1],
+    n_total = as.integer (calls [, 2]),
+    n_unique = as.integer (calls [, 3])
+)
 print (calls)
 ```
 
@@ -514,20 +521,20 @@ vertices or nodes.
 head (p$network)
 ```
 
-    ##             file line1         from        to language cluster_dir
-    ## 1       R/pipe.R   297   new_lambda   freduce        R           1
-    ## 2    R/getters.R    14    `[[.fseq` functions        R           2
-    ## 3    R/getters.R    23     `[.fseq` functions        R           2
-    ## 4 R/debug_pipe.R    28   debug_fseq functions        R           2
-    ## 5 R/debug_pipe.R    35   debug_fseq functions        R           2
-    ## 6 R/debug_pipe.R    42 undebug_fseq functions        R           2
-    ##   centrality_dir cluster_undir centrality_undir
-    ## 1              1             1               17
-    ## 2              0             2                0
-    ## 3              0             2                0
-    ## 4              0             2                0
-    ## 5              0             2                0
-    ## 6              0             2                0
+    ##             file line1       from        to language cluster_dir centrality_dir
+    ## 1       R/pipe.R   297 new_lambda   freduce        R           1              1
+    ## 2    R/getters.R    14  `[[.fseq` functions        R           2              0
+    ## 3    R/getters.R    23   `[.fseq` functions        R           2              0
+    ## 4  R/functions.R    26 print.fseq functions        R           2              0
+    ## 5 R/debug_pipe.R    28 debug_fseq functions        R           2              0
+    ## 6 R/debug_pipe.R    35 debug_fseq functions        R           2              0
+    ##   cluster_undir centrality_undir
+    ## 1             1               17
+    ## 2             2                0
+    ## 3             2                0
+    ## 4             2                0
+    ## 5             2                0
+    ## 6             2                0
 
 ``` r
 nrow (p$network)
@@ -571,16 +578,16 @@ head (p$external_calls)
     ## 1         1    .onLoad              .onLoad   R/magrittr.R    function    45
     ## 2         7     lapply     `_function_list`       R/pipe.R functionVar   294
     ## 3         7 as_pipe_fn     `_function_list`       R/pipe.R functionVar   294
-    ## 4        11  invisible anonFunc738434950100 R/debug_pipe.R    function    35
-    ## 5        11      debug anonFunc738434950100 R/debug_pipe.R    function    35
-    ## 6        11  functions anonFunc738434950100 R/debug_pipe.R    function    35
+    ## 4        11    freduce anonFunc22d9ab030100       R/pipe.R    function   297
+    ## 5        12        cat anonFunc3f29566e0100  R/functions.R    function    30
+    ## 6        13  invisible anonFunc6dbef9890100 R/debug_pipe.R    function    35
     ##   end  package
     ## 1  47 magrittr
     ## 2 294     base
     ## 3 294 magrittr
-    ## 4  35     base
-    ## 5  35     base
-    ## 6  35 magrittr
+    ## 4 297 magrittr
+    ## 5  30     base
+    ## 6  35     base
 
 These data are converted to a summary form by the [`pkgstats_summary()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html),
@@ -592,9 +599,11 @@ the following:
 ``` r
 x <- strsplit (s$external_calls, ",") [[1]]
 x <- do.call (rbind, strsplit (x, ":"))
-x <- data.frame (pkg = x [, 1],
-                 n_total = as.integer (x [, 2]),
-                 n_unique = as.integer (x [, 3]))
+x <- data.frame (
+    pkg = x [, 1],
+    n_total = as.integer (x [, 2]),
+    n_unique = as.integer (x [, 3])
+)
 x$n_total_rel <- round (x$n_total / sum (x$n_total), 3)
 x$n_unique_rel <- round (x$n_unique / sum (x$n_unique), 3)
 print (x)
