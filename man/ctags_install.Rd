@@ -18,6 +18,11 @@ location where a binary is able to be installed without \code{sudo} privileges.}
 'ctags' is installed with this package on both Windows and macOS systems;
 this is an additional function to install from source on Unix systems.
 }
+\examples{
+\dontrun{
+ctags_install (bin_dir = "/usr/local") # default
+}
+}
 \seealso{
 Other tags: 
 \code{\link{ctags_test}()},

@@ -83,6 +83,10 @@ ctags_make <- function (ctags_dir, bin_dir = NULL, sudo = TRUE) {
 #' location where a binary is able to be installed without `sudo` privileges.
 #'
 #' @family tags
+#' @examples
+#' \dontrun{
+#' ctags_install (bin_dir = "/usr/local") # default
+#' }
 #' @export
 ctags_install <- function (bin_dir = NULL, sudo = TRUE) {
 
