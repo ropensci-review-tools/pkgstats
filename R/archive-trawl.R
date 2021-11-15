@@ -202,7 +202,7 @@ rm_prev_files <- function (flist, prev_results) {
                 error = function (e) e
             )
             if (methods::is (prev_results, "error")) {
-                stop ("Unable to read prev_results: ", e)
+                stop ("Unable to read prev_results: ", prev_results$message)
             }
         }
 
