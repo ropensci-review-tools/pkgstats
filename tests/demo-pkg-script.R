@@ -6,8 +6,8 @@ make_pkg_path <- function (base_dir = tempdir (), pkg_name = "demo") {
     d <- file.path (base_dir, pkg_name)
 
     if (file.exists (d)) {
-          chk <- unlink (d, recursive = TRUE)
-      }
+        chk <- unlink (d, recursive = TRUE)
+    }
 
     chk <- dir.create (d, recursive = TRUE)
 
@@ -70,8 +70,8 @@ write_r_fn <- function (d, pkg_name) {
     )
     dr <- file.path (d, "R")
     if (!file.exists (dr)) {
-          dir.create (dr)
-      }
+        dir.create (dr)
+    }
     writeLines (rfile, con = file.path (dr, "test.R"))
 
     rfile <- c (
@@ -108,8 +108,8 @@ write_src_fn <- function (d) {
 
     ds <- file.path (d, "src")
     if (!file.exists (ds)) {
-          dir.create (ds)
-      }
+        dir.create (ds)
+    }
 
     writeLines (sfile, con = file.path (ds, "cpptest.cpp"))
 }
