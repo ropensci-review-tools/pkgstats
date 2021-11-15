@@ -28,4 +28,17 @@ Edge thicknesses are scaled to centrality within the package function
 call network. Node sizes are scaled to numbers of times each function is
 called from all other functions within a package.
 }
+\examples{
+\dontrun{
+tarball <- "magrittr_2.0.1.tar.gz"
+u <- paste0 (
+    "https://cran.r-project.org/src/contrib/",
+    tarball
+)
+f <- file.path (tempdir (), tarball)
+download.file (u, f)
+p <- pkgstats (f)
+plot_network (p)
+}
+}
 \concept{output}
