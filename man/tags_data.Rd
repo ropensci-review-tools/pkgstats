@@ -4,7 +4,7 @@
 \alias{tags_data}
 \title{use ctags and gtags to parse call data}
 \usage{
-tags_data(path, has_tabs = NULL, pkg_name)
+tags_data(path, has_tabs = NULL, pkg_name = NULL)
 }
 \arguments{
 \item{path}{Path to local repository}
@@ -19,6 +19,20 @@ package-internal calls.}
 }
 \description{
 use ctags and gtags to parse call data
+}
+\examples{
+\dontrun{
+tarball <- "magrittr_2.0.1.tar.gz"
+u <- paste0 (
+    "https://cran.r-project.org/src/contrib/",
+    tarball
+)
+f <- file.path (tempdir (), tarball)
+download.file (u, f)
+# have to extract tarball to call function on source code:
+path <- extract_tarball (f)
+tags <- tags_data (path)
+}
 }
 \seealso{
 Other tags: 

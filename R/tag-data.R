@@ -9,6 +9,19 @@
 #' @param pkg_name Only used for external_call_network, to label
 #' package-internal calls.
 #' @family tags
+#' @examples
+#' \dontrun{
+#' tarball <- "magrittr_2.0.1.tar.gz"
+#' u <- paste0 (
+#'     "https://cran.r-project.org/src/contrib/",
+#'     tarball
+#' )
+#' f <- file.path (tempdir (), tarball)
+#' download.file (u, f)
+#' # have to extract tarball to call function on source code:
+#' path <- extract_tarball (f)
+#' tags <- tags_data (path)
+#' }
 #' @export
 tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
 
