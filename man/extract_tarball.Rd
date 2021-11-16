@@ -18,15 +18,7 @@ Extract tarball of a package into temp directory and return path to extracted
 package
 }
 \examples{
-\dontrun{
-tarball <- "magrittr_2.0.1.tar.gz"
-u <- paste0 (
-    "https://cran.r-project.org/src/contrib/",
-    tarball
-)
-f <- file.path (tempdir (), tarball)
-download.file (u, f)
+f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 path <- extract_tarball (f)
-}
 }
 \concept{misc}
