@@ -40,17 +40,9 @@ edges with zero centrality.
 }
 }
 \examples{
-\dontrun{
-tarball <- "magrittr_2.0.1.tar.gz"
-u <- paste0 (
-    "https://cran.r-project.org/src/contrib/",
-    tarball
-)
-f <- file.path (tempdir (), tarball)
-download.file (u, f)
+f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 p <- pkgstats (f)
 s <- pkgstats_summary (p)
-}
 }
 \seealso{
 Other stats: 
