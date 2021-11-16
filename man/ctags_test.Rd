@@ -4,7 +4,15 @@
 \alias{ctags_test}
 \title{test a 'ctags' installation}
 \usage{
-ctags_test()
+ctags_test(quiet = TRUE)
+}
+\arguments{
+\item{quiet}{If \code{TRUE}, display on screen whether or not 'ctags' is correctly
+installed.}
+}
+\value{
+'TRUE' or 'FALSE' respectively indicating whether or not 'ctags' is
+correctly installed.
 }
 \description{
 This uses the example from

@@ -3,13 +3,17 @@
 #' This uses the example from
 #' \url{https://github.com/universal-ctags/ctags/blob/master/man/ctags-lang-r.7.rst.in}
 #' and also checks the GNU global installation.
+#' @param quiet If `TRUE`, display on screen whether or not 'ctags' is correctly
+#' installed.
+#' @return 'TRUE' or 'FALSE' respectively indicating whether or not 'ctags' is
+#' correctly installed.
 #' @family tags
 #' @examples
 #' \dontrun{
 #' ctags_test ()
 #' }
 #' @export
-ctags_test <- function () {
+ctags_test <- function (quiet = TRUE) {
 
     if (!has_ctags ()) {
         stop ("No ctags installation found.", call. = FALSE)
@@ -99,14 +103,18 @@ ctags_test <- function () {
     check <- ctags_check & gtags_check
 
     if (!check) {
-        message (
-            "ctags does not function as required; you may need to upgrade? see\n", # nolint
-            "https://github.com/universal-ctags/ctags/blob/master/man/ctags-lang-r.7.rst.in\n", # nolint
-            "for expected output"
-        )
+        if (!quiet) {
+            message (
+                "ctags does not function as required; you may need to upgrade? see\n", # nolint
+                "https://github.com/universal-ctags/ctags/blob/master/man/ctags-lang-r.7.rst.in\n", # nolint
+                "for expected output"
+            )
+        }
         ret <- FALSE
     } else {
-        message ("ctags installation works as expected")
+        if (!quiet) {
+            message ("ctags installation works as expected")
+        }
         ret <- TRUE
     }
 
