@@ -1,5 +1,20 @@
 
+test_all <- (identical (Sys.getenv ("MPADGE_LOCAL"), "true") |
+             identical (Sys.getenv ("GITHUB_WORKFLOW"), "test-coverage"))
+
 source ("../demo-pkg-script.R")
+
+test_that ("pkgstats-null-summary", {
+
+    path <- make_demo_package ()
+    p <- pkgstats (path)
+    s1 <- pkgstats_summary (p)
+
+    s0 <- pkgstats_summary (NULL)
+    expect_equal (ncol (s0), ncol (s1))
+
+    expect_identical (names (s0), names (s1))
+})
 
 test_that ("pkgstats-summary", {
 
@@ -15,6 +30,8 @@ test_that ("pkgstats-summary", {
     expect_equal (nrow (s), 1L)
     expect_equal (ncol (s), 91L)
 
+    skip_if (!test_all)
+
     # external_calls:
     ext <- strsplit (strsplit (s$external_calls, ",") [[1]], ":")
     ext <- do.call (rbind, ext)
@@ -28,16 +45,4 @@ test_that ("pkgstats-summary", {
     )
     expect_true (all (ext$n_total >= ext$n_unique))
     expect_true (mean (ext$n_total) > mean (ext$n_unique))
-})
-
-test_that ("pkgstats-null-summary", {
-
-    path <- make_demo_package ()
-    p <- pkgstats (path)
-    s1 <- pkgstats_summary (p)
-
-    s0 <- pkgstats_summary (NULL)
-    expect_equal (ncol (s0), ncol (s1))
-
-    expect_identical (names (s0), names (s1))
 })

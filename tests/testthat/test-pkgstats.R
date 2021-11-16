@@ -1,4 +1,7 @@
 
+test_all <- (identical (Sys.getenv ("MPADGE_LOCAL"), "true") |
+             identical (Sys.getenv ("GITHUB_WORKFLOW"), "test-coverage"))
+
 source ("../demo-pkg-script.R")
 
 test_that ("pkgstats", {
@@ -44,6 +47,9 @@ test_that ("pkgstats", {
     expect_type (s$translations, "character")
 
     expect_s3_class (s$objects, "data.frame")
+
+    skip_if (!test_all)
+
     expect_true (nrow (s$objects) >= 4L)
     nms <- c (
         "file_name",

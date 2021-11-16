@@ -1,4 +1,9 @@
 
+test_all <- (identical (Sys.getenv ("MPADGE_LOCAL"), "true") |
+             identical (Sys.getenv ("GITHUB_WORKFLOW"), "test-coverage"))
+
+skip_if (!test_all)
+
 source ("../demo-pkg-script.R")
 
 test_that ("plot-network", {
