@@ -137,21 +137,14 @@ for more details.
 ## Demonstration
 
 The following code demonstrates the output of the main function, `pkgstats`,
-applied to the relatively simple [`magrittr`
-package](https://github.com/tidyverse/magrittr). The `system.time` call
-demonstrates that the static code analyses of `pkgstats` are generally very
-fast.
+using an internally bundled `.tar.gz` "tarball" of this package. The
+`system.time` call demonstrates that the static code analyses of `pkgstats` are
+generally very fast.
 
 ```{r demo}
-tarball <- "magrittr_2.0.1.tar.gz"
-u <- paste0 (
-    "https://cran.r-project.org/src/contrib/",
-    tarball
-)
-f <- file.path (tempdir (), tarball)
-download.file (u, f)
+tarball <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 system.time (
-    p <- pkgstats (f)
+    p <- pkgstats (tarball)
 )
 names (p)
 ```
@@ -384,11 +377,9 @@ print (calls)
 
 The two numeric columns respectively show the total number of calls made to
 each package, and the total number of unique functions used within those
-packages. While this result is relatively uninformative for the  `magrittr`
-package, which imports no other packages and relies only on base R functions,
-these results will generally provide detailed information on numbers of calls
-made to, and functions used from, other R packages, including base and
-recommended packages.
+packages. These results provide detailed information on numbers of calls made
+to, and functions used from, other R packages, including base and recommended
+packages.
 
 The following sub-sections provide further detail on the `objects`, `network`,
 and `external_call` items, which could be used to extract additional statistics
@@ -414,7 +405,7 @@ following lines provide some insight into.
 table (p$objects$language)
 table (p$objects$kind)
 table (p$objects$kind [p$objects$language == "R"])
-table (p$objects$kind [p$objects$language == "C"])
+table (p$objects$kind [p$objects$language == "C++"])
 ```
 
 ### Network

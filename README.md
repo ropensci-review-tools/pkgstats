@@ -99,8 +99,6 @@ ensure you see the following prior to proceeding:
 ctags_test ()
 ```
 
-    ## ctags installation works as expected
-
     ## [1] TRUE
 
 Note that GNU `global` can be linked at installation to the Universal
@@ -126,26 +124,19 @@ for more details.
 ## Demonstration
 
 The following code demonstrates the output of the main function,
-`pkgstats`, applied to the relatively simple [`magrittr`
-package](https://github.com/tidyverse/magrittr). The `system.time` call
-demonstrates that the static code analyses of `pkgstats` are generally
-very fast.
+`pkgstats`, using an internally bundled `.tar.gz` “tarball” of this
+package. The `system.time` call demonstrates that the static code
+analyses of `pkgstats` are generally very fast.
 
 ``` r
-tarball <- "magrittr_2.0.1.tar.gz"
-u <- paste0 (
-    "https://cran.r-project.org/src/contrib/",
-    tarball
-)
-f <- file.path (tempdir (), tarball)
-download.file (u, f)
+tarball <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 system.time (
-    p <- pkgstats (f)
+    p <- pkgstats (tarball)
 )
 ```
 
     ##    user  system elapsed 
-    ##   0.828   0.082   1.852
+    ##   1.237   0.170   2.291
 
 ``` r
 names (p)
@@ -162,33 +153,36 @@ p [!names (p) %in% c ("objects", "network", "external_calls")]
 ```
 
     ## $loc
-    ## # A tibble: 4 × 12
-    ## # Groups:   language, dir [4]
-    ##   language dir       nfiles nlines ncode  ndoc nempty nspaces nchars nexpr ntabs
-    ##   <chr>    <chr>      <int>  <int> <int> <int>  <int>   <int>  <int> <dbl> <int>
-    ## 1 C        src            2    590   447    22    121    1136  10826     1     0
-    ## 2 R        R              7    699   163   484     52    2835  15645     1     1
-    ## 3 R        tests         10    374   259    13    102     867   8527     2     4
-    ## 4 Rmd      vignettes      2    754   469    80    205    3793  19927     1     0
+    ## # A tibble: 3 × 12
+    ## # Groups:   language, dir [3]
+    ##   language dir   nfiles nlines ncode  ndoc nempty nspaces nchars nexpr ntabs
+    ##   <chr>    <chr>  <int>  <int> <int> <int>  <int>   <int>  <int> <dbl> <int>
+    ## 1 C++      src        3    365   277    21     67     933   7002     1     0
+    ## 2 R        R         19   3740  2698   535    507   27572  93993     1     0
+    ## 3 R        tests      7    348   266    10     72     770   6161     1     0
     ## # … with 1 more variable: indentation <int>
     ## 
     ## $vignettes
     ## vignettes     demos 
-    ##         2         0 
+    ##         0         0 
     ## 
     ## $data_stats
     ##           n  total_size median_size 
     ##           0           0           0 
     ## 
     ## $desc
-    ##    package version                date            license
-    ## 1 magrittr   2.0.1 2020-11-17 16:20:06 MIT + file LICENSE
-    ##                                                                     urls
-    ## 1 https://magrittr.tidyverse.org,\nhttps://github.com/tidyverse/magrittr
-    ##                                           bugs aut ctb fnd rev ths trl depends
-    ## 1 https://github.com/tidyverse/magrittr/issues   2   0   1   0   0   0      NA
-    ##   imports                                suggests linking_to
-    ## 1      NA covr, knitr, rlang, rmarkdown, testthat         NA
+    ##    package version                date license
+    ## 1 pkgstats     9.9 2021-11-16 17:36:58   GPL-3
+    ##                                                                                      urls
+    ## 1 https://docs.ropensci.org/pkgstats/,\nhttps://github.com/ropensci-review-tools/pkgstats
+    ##                                                       bugs aut ctb fnd rev ths
+    ## 1 https://github.com/ropensci-review-tools/pkgstats/issues   1   0   0   0   0
+    ##   trl depends                                                        imports
+    ## 1   0      NA brio, checkmate, dplyr, fs, igraph, methods, readr, sys, withr
+    ##                                                                         suggests
+    ## 1 hms, knitr, pbapply, pkgbuild, Rcpp, rmarkdown, roxygen2, testthat, visNetwork
+    ##   linking_to
+    ## 1      cpp11
     ## 
     ## $translations
     ## [1] NA
@@ -239,7 +233,7 @@ index <- which (p$loc$dir %in% c ("R", "src")) # consider source code only
 sum (p$loc$nspaces [index]) / sum (p$loc$nchars [index])
 ```
 
-    ## [1] 0.1500132
+    ## [1] 0.2822417
 
 Finally, the `ntabs` statistic can be used to identify whether code uses
 tab characters as indentation, otherwise the `indentation` statistics
@@ -310,13 +304,14 @@ deps <- strsplit (s$suggests, ", ") [[1]]
 length (deps)
 ```
 
-    ## [1] 5
+    ## [1] 9
 
 ``` r
 print (deps)
 ```
 
-    ## [1] "covr"      "knitr"     "rlang"     "rmarkdown" "testthat"
+    ## [1] "hms"        "knitr"      "pbapply"    "pkgbuild"   "Rcpp"      
+    ## [6] "rmarkdown"  "roxygen2"   "testthat"   "visNetwork"
 
 **Numbers of files and associated data**
 
@@ -411,7 +406,7 @@ data within each package are separated by a colon.
 s$external_calls
 ```
 
-    ## [1] "base:22:12,magrittr:16:11"
+    ## [1] "base:452:78,brio:7:1,dplyr:7:4,fs:4:2,graphics:10:2,hms:1:1,igraph:3:3,lattice:8:2,pbapply:1:1,pkgstats:108:63,readr:8:5,stats:16:2,sys:13:1,tools:2:2,utils:10:7,visNetwork:3:2,withr:5:1"
 
 This structure allows numbers of calls to all packages to be readily
 extracted with code like the following:
@@ -429,17 +424,30 @@ calls <- data.frame (
 print (calls)
 ```
 
-    ##    package n_total n_unique
-    ## 1     base      22       12
-    ## 2 magrittr      16       11
+    ##       package n_total n_unique
+    ## 1        base     452       78
+    ## 2        brio       7        1
+    ## 3       dplyr       7        4
+    ## 4          fs       4        2
+    ## 5    graphics      10        2
+    ## 6         hms       1        1
+    ## 7      igraph       3        3
+    ## 8     lattice       8        2
+    ## 9     pbapply       1        1
+    ## 10   pkgstats     108       63
+    ## 11      readr       8        5
+    ## 12      stats      16        2
+    ## 13        sys      13        1
+    ## 14      tools       2        2
+    ## 15      utils      10        7
+    ## 16 visNetwork       3        2
+    ## 17      withr       5        1
 
 The two numeric columns respectively show the total number of calls made
 to each package, and the total number of unique functions used within
-those packages. While this result is relatively uninformative for the
-`magrittr` package, which imports no other packages and relies only on
-base R functions, these results will generally provide detailed
-information on numbers of calls made to, and functions used from, other
-R packages, including base and recommended packages.
+those packages. These results provide detailed information on numbers of
+calls made to, and functions used from, other R packages, including base
+and recommended packages.
 
 The following sub-sections provide further detail on the `objects`,
 `network`, and `external_call` items, which could be used to extract
@@ -457,22 +465,22 @@ Object tables look like this:
 head (p$objects)
 ```
 
-    ##     file_name     fn_name     kind language loc npars has_dots exported
-    ## 1 R/aliases.R     extract function        R   1    NA       NA     TRUE
-    ## 2 R/aliases.R    extract2 function        R   1    NA       NA     TRUE
-    ## 3 R/aliases.R  use_series function        R   1    NA       NA     TRUE
-    ## 4 R/aliases.R         add function        R   1    NA       NA     TRUE
-    ## 5 R/aliases.R    subtract function        R   1    NA       NA     TRUE
-    ## 6 R/aliases.R multiply_by function        R   1    NA       NA     TRUE
-    ##   param_nchars_md param_nchars_mn num_doclines
-    ## 1              NA              NA           54
-    ## 2              NA              NA           54
-    ## 3              NA              NA           54
-    ## 4              NA              NA           54
-    ## 5              NA              NA           54
-    ## 6              NA              NA           54
+    ##           file_name               fn_name     kind language loc npars has_dots
+    ## 1 R/archive-trawl.R pkgstats_from_archive function        R  95     7    FALSE
+    ## 2 R/archive-trawl.R         rm_prev_files function        R  24     2    FALSE
+    ## 3         R/cpp11.R               cpp_loc function        R   3     4    FALSE
+    ## 4 R/ctags-install.R           clone_ctags function        R  17     1    FALSE
+    ## 5 R/ctags-install.R               has_git function        R   3     0    FALSE
+    ## 6 R/ctags-install.R            ctags_make function        R  27     3    FALSE
+    ##   exported param_nchars_md param_nchars_mn num_doclines
+    ## 1     TRUE             163        174.8571           49
+    ## 2    FALSE              NA              NA           NA
+    ## 3    FALSE              NA              NA           NA
+    ## 4    FALSE              NA              NA           NA
+    ## 5    FALSE              NA              NA           NA
+    ## 6    FALSE              NA              NA           NA
 
-The `magrittr` package has a total of 191 objects, which the following
+The `magrittr` package has a total of 870 objects, which the following
 lines provide some insight into.
 
 ``` r
@@ -480,34 +488,36 @@ table (p$objects$language)
 ```
 
     ## 
-    ##   C   R 
-    ##  64 127
+    ## C++   R 
+    ##  13 857
 
 ``` r
 table (p$objects$kind)
 ```
 
     ## 
-    ##        enum    function functionVar   globalVar        list       macro 
-    ##           1          92          27          30           1           3 
-    ##      member      struct    variable 
-    ##           4           2          31
+    ##   dataframe    function functionVar   globalVar        list    nameattr 
+    ##          21         186         418          42           9         167 
+    ##    variable      vector 
+    ##           1          26
 
 ``` r
 table (p$objects$kind [p$objects$language == "R"])
 ```
 
     ## 
-    ##    function functionVar   globalVar        list 
-    ##          69          27          30           1
+    ##   dataframe    function functionVar   globalVar        list    nameattr 
+    ##          21         174         418          42           9         167 
+    ##      vector 
+    ##          26
 
 ``` r
-table (p$objects$kind [p$objects$language == "C"])
+table (p$objects$kind [p$objects$language == "C++"])
 ```
 
     ## 
-    ##     enum function    macro   member   struct variable 
-    ##        1       23        3        4        2       31
+    ## function variable 
+    ##       12        1
 
 ### Network
 
@@ -521,26 +531,26 @@ vertices or nodes.
 head (p$network)
 ```
 
-    ##             file line1       from        to language cluster_dir centrality_dir
-    ## 1       R/pipe.R   297 new_lambda   freduce        R           1              1
-    ## 2    R/getters.R    14  `[[.fseq` functions        R           2              0
-    ## 3    R/getters.R    23   `[.fseq` functions        R           2              0
-    ## 4  R/functions.R    26 print.fseq functions        R           2              0
-    ## 5 R/debug_pipe.R    28 debug_fseq functions        R           2              0
-    ## 6 R/debug_pipe.R    35 debug_fseq functions        R           2              0
-    ##   cluster_undir centrality_undir
-    ## 1             1               17
-    ## 2             2                0
-    ## 3             2                0
-    ## 4             2                0
-    ## 5             2                0
-    ## 6             2                0
+    ##                   file line1                  from                        to
+    ## 1   R/external-calls.R    11 external_call_network      extract_call_content
+    ## 2   R/external-calls.R    26 external_call_network add_base_recommended_pkgs
+    ## 3   R/external-calls.R    38 external_call_network   add_other_pkgs_to_calls
+    ## 4 R/pkgstats-summary.R    45      pkgstats_summary                null_stats
+    ## 5 R/pkgstats-summary.R    55      pkgstats_summary               loc_summary
+    ## 6 R/pkgstats-summary.R    64      pkgstats_summary              desc_summary
+    ##   language cluster_dir centrality_dir cluster_undir centrality_undir
+    ## 1        R           1              9             1              198
+    ## 2        R           1              9             1              198
+    ## 3        R           1              9             1              198
+    ## 4        R           1             10             1              619
+    ## 5        R           1             10             1              619
+    ## 6        R           1             10             1              619
 
 ``` r
 nrow (p$network)
 ```
 
-    ## [1] 39
+    ## [1] 104
 
 The network table includes additional statistics on the centrality of
 each edge, measured as betweenness centrality assuming edges to be both
@@ -574,20 +584,20 @@ object looks like this:
 head (p$external_calls)
 ```
 
-    ##   tags_line       call                  tag           file        kind start
-    ## 1         1    .onLoad              .onLoad   R/magrittr.R    function    45
-    ## 2         7     lapply     `_function_list`       R/pipe.R functionVar   294
-    ## 3         7 as_pipe_fn     `_function_list`       R/pipe.R functionVar   294
-    ## 4        11    freduce anonFunc22d9ab030100       R/pipe.R    function   297
-    ## 5        12        cat anonFunc3f29566e0100  R/functions.R    function    30
-    ## 6        13  invisible anonFunc6dbef9890100 R/debug_pipe.R    function    35
-    ##   end  package
-    ## 1  47 magrittr
-    ## 2 294     base
-    ## 3 294 magrittr
-    ## 4 297 magrittr
-    ## 5  30     base
-    ## 6  35     base
+    ##   tags_line                      call                       tag
+    ## 1         1                 left_join                      name
+    ## 2         1                        by                      name
+    ## 3         1                         c                      name
+    ## 4         2                   .onLoad                   .onLoad
+    ## 5         3 add_base_recommended_pkgs add_base_recommended_pkgs
+    ## 6         4            add_if_missing            add_if_missing
+    ##                   file     kind start end  package
+    ## 1             R/plot.R nameattr    92  92    dplyr
+    ## 2             R/plot.R nameattr    92  92     base
+    ## 3             R/plot.R nameattr    92  92     base
+    ## 4           R/onload.R function     2   6 pkgstats
+    ## 5   R/external-calls.R function   204 265 pkgstats
+    ## 6 R/pkgstats-summary.R function   172 182 pkgstats
 
 These data are converted to a summary form by the [`pkgstats_summary()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html),
@@ -609,12 +619,27 @@ x$n_unique_rel <- round (x$n_unique / sum (x$n_unique), 3)
 print (x)
 ```
 
-    ##        pkg n_total n_unique n_total_rel n_unique_rel
-    ## 1     base      22       12       0.579        0.522
-    ## 2 magrittr      16       11       0.421        0.478
+    ##           pkg n_total n_unique n_total_rel n_unique_rel
+    ## 1        base     452       78       0.687        0.441
+    ## 2        brio       7        1       0.011        0.006
+    ## 3       dplyr       7        4       0.011        0.023
+    ## 4          fs       4        2       0.006        0.011
+    ## 5    graphics      10        2       0.015        0.011
+    ## 6         hms       1        1       0.002        0.006
+    ## 7      igraph       3        3       0.005        0.017
+    ## 8     lattice       8        2       0.012        0.011
+    ## 9     pbapply       1        1       0.002        0.006
+    ## 10   pkgstats     108       63       0.164        0.356
+    ## 11      readr       8        5       0.012        0.028
+    ## 12      stats      16        2       0.024        0.011
+    ## 13        sys      13        1       0.020        0.006
+    ## 14      tools       2        2       0.003        0.011
+    ## 15      utils      10        7       0.015        0.040
+    ## 16 visNetwork       3        2       0.005        0.011
+    ## 17      withr       5        1       0.008        0.006
 
-Those data reveal, for example, that the `magrittr` package makes 22
-individual calls to 12 unique functions from the “base” package.
+Those data reveal, for example, that the `magrittr` package makes 452
+individual calls to 78 unique functions from the “base” package.
 
 ## Code of Conduct
 
