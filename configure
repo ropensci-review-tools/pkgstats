@@ -1,7 +1,39 @@
 #!/bin/sh
 if [ `uname` = "Darwin" ] && [ ! -f "inst/bin/ctags" ]; then
-mkdir -p inst/bin
-curl -OLSs "https://autobrew.github.io/archive/high_sierra/universal-ctags-p5.9.20210530.0.tar.xz"
-tar xf "universal-ctags-p5.9.20210530.0.tar.xz" --strip-components=1 -C inst/bin
-unlink "universal-ctags-p5.9.20210530.0.tar.xz"
+    mkdir -p inst/bin
+    curl -OLSs "https://autobrew.github.io/archive/high_sierra/universal-ctags-p5.9.20210530.0.tar.xz"
+    tar xf "universal-ctags-p5.9.20210530.0.tar.xz" --strip-components=1 -C inst/bin
+    unlink "universal-ctags-p5.9.20210530.0.tar.xz"
+elif [ `uname` = "Linux" ] && command -v ctags &> /dev/null; then
+    PLATFORM=$( lsb_release -a  | grep "Distributor ID" 2>&1 )
+    if command -v git &> /dev/null; then
+        if echo $PLATFORM | grep "Arch"; then
+            pacman -Syu git
+        elif echo $PLATFORM | grep "Ubuntu\|Debian"; then
+            apt-get install -y git
+        elif echo $PLATFORM | grep "Fedora"; then
+            rpm -U git
+        fi
+    fi
+    git clone "https://github.com/universal-ctags/ctags.git"
+    cd ctags/
+    ./autogen.sh
+    ./configure --prefix=$PWD/../inst/
+    make
+    make install
+    cd ..
+    rm -rf ctags/
+    if echo $PLATFORM | grep "Ubuntu"; then
+        apt-get update
+    fi
+
+    if command -v gtags &> /dev/null; then
+        if echo $PLATFORM | grep "Arch"; then
+            pacman -Syu global
+        elif echo $PLATFORM | grep "Ubuntu\|Debian"; then
+            apt-get install -y global
+        elif echo $PLATFORM | grep "Fedora"; then
+            rpm -U global
+        fi
+    fi
 fi
