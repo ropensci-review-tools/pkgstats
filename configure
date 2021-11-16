@@ -4,7 +4,7 @@ if [ `uname` = "Darwin" ] && [ ! -f "inst/bin/ctags" ]; then
     curl -OLSs "https://autobrew.github.io/archive/high_sierra/universal-ctags-p5.9.20210530.0.tar.xz"
     tar xf "universal-ctags-p5.9.20210530.0.tar.xz" --strip-components=1 -C inst/bin
     unlink "universal-ctags-p5.9.20210530.0.tar.xz"
-elif [ `uname` = "Linux" ] && command -v ctags &> /dev/null; then
+elif [ `uname` = "Linux" ] && ! command -v ctags &> /dev/null; then
     PLATFORM=$( lsb_release -a  | grep "Distributor ID" 2>&1 )
     if command -v git &> /dev/null; then
         if echo $PLATFORM | grep "Arch"; then
@@ -27,7 +27,7 @@ elif [ `uname` = "Linux" ] && command -v ctags &> /dev/null; then
         apt-get update
     fi
 
-    if command -v gtags &> /dev/null; then
+    if ! command -v gtags &> /dev/null; then
         if echo $PLATFORM | grep "Arch"; then
             pacman -Syu global
         elif echo $PLATFORM | grep "Ubuntu\|Debian"; then
