@@ -1,25 +1,24 @@
 
-source ("../demo-pkg-script.R")
-
 test_that ("archive trawl", {
 
-    pkg <- make_demo_package ()
+    f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
+    tarball <- utils::tail (fs::path_split (fs::path_tidy (f)) [[1]], 1L)
 
-    path <- fs::path_split (fs::path_tidy (pkg)) [[1]]
-    pkg_name <- path [length (path)]
-    path <- path [-length (path)]
-    path <- fs::path_join (path)
+    dir.create (file.path (tempdir (), "archive"))
+    archive_path <- file.path (tempdir (), "archive")
+    path <- file.path (archive_path, tarball)
+    file.copy (f, path)
 
     expect_error (
         pkgstats_from_archive (path),
         "path must contain a 'tarballs' directory"
     )
 
-    path <- file.path (path, "tarballs")
-    dir.create (path, recursive = TRUE)
-    file.copy (pkg, file.path (path, pkg_name))
+    tarball_path <- file.path (archive_path, "tarballs")
+    dir.create (tarball_path, recursive = TRUE)
+    file.copy (path, file.path (tarball_path, tarball))
 
-    out <- pkgstats_from_archive (path)
+    out <- pkgstats_from_archive (tarball_path)
 
     expect_s3_class (out, "data.frame")
     expect_equal (nrow (out), 1L)
