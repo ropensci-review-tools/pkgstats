@@ -25,6 +25,26 @@
 #' @export
 tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
 
+    chk <- tryCatch (ctags_test (),
+        error = function (e) e
+    )
+    if (methods::is (chk, "simpleError")) {
+        chk <- FALSE
+    }
+    if (!chk) {
+        n <- data.frame (matrix (nrow = 0, ncol = 4))
+        names (n) <- c ("file", "line1", "from", "to")
+        e <- data.frame (matrix (nrow = 0, ncol = 8))
+        names (e) <- c (
+            "tags_line", "call", "tag", "file", "kind",
+            "start", "end", "package"
+        )
+        return (list (
+            network = n,
+            external_calls = e
+        ))
+    }
+
     if (is.null (has_tabs)) {
         has_tabs <- any (loc_stats (path)$ntabs > 0L)
     } else if (!is.logical (has_tabs) | length (has_tabs) > 1L) {
