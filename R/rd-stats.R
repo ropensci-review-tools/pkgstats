@@ -3,18 +3,10 @@
 #' @inheritParams loc_stats
 #' @family stats
 #' @examples
-#' \dontrun{
-#' tarball <- "magrittr_2.0.1.tar.gz"
-#' u <- paste0 (
-#'     "https://cran.r-project.org/src/contrib/",
-#'     tarball
-#' )
-#' f <- file.path (tempdir (), tarball)
-#' download.file (u, f)
+#' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 #' # have to extract tarball to call function on source code:
 #' path <- extract_tarball (f)
 #' rd_stats (path)
-#' }
 #' @export
 rd_stats <- function (path) {
 
