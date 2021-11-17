@@ -34,7 +34,7 @@ test_that ("pkgstats-summary", {
     ext <- strsplit (strsplit (s$external_calls, ",") [[1]], ":")
     ext <- do.call (rbind, ext)
     expect_equal (ncol (ext), 3L)
-    expect_equal (nrow (ext), 17L) # 17 packages
+    expect_true (nrow (ext) > 15L) # 17 packages
 
     ext <- data.frame (
         pkg = ext [, 1],

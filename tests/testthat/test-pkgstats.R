@@ -85,5 +85,5 @@ test_that ("pkgstats", {
     expect_s3_class (ext, "data.frame")
     expect_true (nrow (ext) > 2L)
     expect_true ("stats" %in% ext$package)
-    expect_length (unique (ext$package), 17L)
+    expect_true (length (unique (ext$package)) > 15L)
 })
