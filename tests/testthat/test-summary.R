@@ -2,11 +2,9 @@
 test_all <- (identical (Sys.getenv ("MPADGE_LOCAL"), "true") |
              identical (Sys.getenv ("GITHUB_WORKFLOW"), "test-coverage"))
 
-source ("../demo-pkg-script.R")
-
 test_that ("pkgstats-null-summary", {
 
-    path <- make_demo_package ()
+    path <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
     p <- pkgstats (path)
     s1 <- pkgstats_summary (p)
 
@@ -18,7 +16,7 @@ test_that ("pkgstats-null-summary", {
 
 test_that ("pkgstats-summary", {
 
-    path <- make_demo_package ()
+    path <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 
     p <- pkgstats (path)
 
@@ -36,7 +34,7 @@ test_that ("pkgstats-summary", {
     ext <- strsplit (strsplit (s$external_calls, ",") [[1]], ":")
     ext <- do.call (rbind, ext)
     expect_equal (ncol (ext), 3L)
-    expect_equal (nrow (ext), 2L) # 2 packages
+    expect_equal (nrow (ext), 17L) # 17 packages
 
     ext <- data.frame (
         pkg = ext [, 1],

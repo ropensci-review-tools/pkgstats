@@ -2,11 +2,9 @@
 test_all <- (identical (Sys.getenv ("MPADGE_LOCAL"), "true") |
              identical (Sys.getenv ("GITHUB_WORKFLOW"), "test-coverage"))
 
-source ("../demo-pkg-script.R")
-
 test_that ("pkgstats", {
 
-    path <- make_demo_package ()
+    path <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
     # message is now produced once per session by readr, but can only be
     # suppressed by Suggesting yet another package, `tidyselect`.
     # expect_message (
@@ -28,11 +26,11 @@ test_that ("pkgstats", {
 
     expect_s3_class (s$loc, "tbl_df")
     # The following 2 tests fail on GitHub windows machines for some reason?
-    is_windows <- Sys.info () [["sysname"]] == "Windows"
-    if (!is_windows) {
-        expect_equal (nrow (s$loc), 2L)
+    #is_windows <- Sys.info () [["sysname"]] == "Windows"
+    #if (!is_windows) {
+        expect_equal (nrow (s$loc), 3L)
         expect_true (all (c ("R", "src") %in% s$loc$dir))
-    }
+    #}
 
     expect_type (s$vignettes, "integer")
     expect_named (s$vignettes)
@@ -87,5 +85,5 @@ test_that ("pkgstats", {
     expect_s3_class (ext, "data.frame")
     expect_true (nrow (ext) > 2L)
     expect_true ("stats" %in% ext$package)
-    expect_length (unique (ext$package), 2L)
+    expect_length (unique (ext$package), 17L)
 })
