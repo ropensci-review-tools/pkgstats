@@ -381,6 +381,17 @@ packages. These results provide detailed information on numbers of calls made
 to, and functions used from, other R packages, including base and recommended
 packages.
 
+Finally, the summary statistics conclude with two further statistics of
+`afferent_pkg` and `efferent_pkg`. These are package-internal measures of
+[afferent and efferent
+couplings](https://en.wikipedia.org/wiki/Software_package_metrics) between the
+files of a package. The *afferent* couplings (`ca`) are numbers of *incoming*
+calls to each file of a package from functions defined elsewhere in the
+package, while the *efferent* couplings (`ce`) are numbers of *outgoing* calls
+from each file of a package to functions defined elsewhere in the package.
+These can be used to derive a measure of "internal package instability" as the
+ratio of efferent to total coupling (`ce / (ce + ca)`).
+
 The following sub-sections provide further detail on the `objects`, `network`,
 and `external_call` items, which could be used to extract additional statistics
 beyond those described here.
