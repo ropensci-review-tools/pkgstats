@@ -63,6 +63,12 @@ pkgstats_summary <- function (s = NULL) {
         external_calls = external_call_summary (s$external_calls)
     )
 
+    # suffix `_pkg` because inter-package stats are calculated after initial
+    # collation of all data (issue #32)
+    ae <- afferent_efferent (s)
+    out$afferent_pkg <- ae [["afferent"]]
+    out$efferent_pkg <- ae [["efferent"]]
+
     return (out)
 }
 
@@ -130,6 +136,8 @@ null_stats <- function () {
     out [net_nms] <- NA_integer_
 
     out$external_calls <- NA_character_
+    out$afferent_pkg <- NA_integer_
+    out$efferent_pkg <- NA_integer_
 
     return (out)
 }
@@ -530,4 +538,51 @@ external_call_summary <- function (x) {
     res <- data.frame (external_calls = paste0 (res, collapse = ","))
 
     return (res)
+}
+
+#' Package-internal metrics of afferent and efferent couplings between files of
+#' the package.
+#'
+#' See 'https://en.wikipedia.org/wiki/Software_package_metrics'
+#' Afferent calls are INCOMING, or calls from all other files of a package to a
+#' given package file.
+#' Efferent calls are OUTGOING, or calls from each file of a package to
+#' functions from other files.
+#'
+#' @inheritParams pkgstats_summary
+#' @return Vector of 2 values for afferent & efferent coupling
+#' @noRd
+afferent_efferent <- function (s) {
+
+    pkg <- s$desc$package
+
+    # Data on function definitions and associated files:
+    fns <- s$objects [, c ("file_name", "fn_name", "kind")]
+    fns <- fns [which (fns$kind == "function"), ]
+    fns <- fns [which (!duplicated (fns)), ]
+
+    # All calls to all functions witin package:
+    ex <- s$external_calls
+    ex <- ex [ex$package == pkg, ]
+
+    # afferent (incoming): from other files to each file
+    afferent <- vapply (unique (fns$file), function (i) {
+        fns_i <- fns$fn_name [which (fns$file == i)]
+        fns_j <- which (ex$call %in% fns_i &
+            ex$file != i)
+        length (fns_j)
+    }, integer (1))
+
+    # efferent (outgoing): from each file to other files
+    efferent <- vapply (unique (fns$file), function (i) {
+        fns_i <- fns$fn_name [which (fns$file == i)]
+        fns_j <- which (!ex$tag %in% fns_i &
+            ex$file == i)
+        length (fns_j)
+    }, integer (1))
+
+    c (
+        afferent = sum (afferent),
+        efferent = sum (efferent)
+    )
 }
