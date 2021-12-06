@@ -52,9 +52,10 @@ extract_call_content <- function (tags_r) {
     # Remove everything within quotes - this presumes only single quotations in
     # each line, which is almost always the case.
     content <- gsub ("\\\".*\\\"", "", content)
-    # Remove everything within bracets of function definitions
+    content <- gsub ("\\\'.*\\\'", "", content)
     index <- which (tags_r$kind == "function")
 
+    # Remove everything within bracets of function definitions
     bracket_content <- regmatches (
         content [index],
         gregexpr ("(?<=\\().*?(?=\\))",
@@ -127,20 +128,18 @@ extract_call_content <- function (tags_r) {
 
     calls <- data.frame (
         tags_line = as.integer (calls [, 1]),
-        call = calls [, 2]
+        call = gsub ("^[[:punct:]]+", "", calls [, 2])
     )
 
     rm_these <- c (
-        "TRUE", "FALSE", "NULL",
+        "", "TRUE", "FALSE", "NULL",
         "NA", "...", "\\", "Inf", ":", ".",
         "function"
     )
     calls <- calls [which (!calls$call %in% rm_these), ]
     calls <- calls [which (!grepl ("\\$$|^\"|^\'", calls$call)), ]
-    calls$call <- gsub ("^\\!", "", calls$call)
     calls$tag <- tags_r$tag [calls$tags_line]
     calls$file <- tags_r$file [calls$tags_line]
-
 
     # rm global variables
     globals <- unique (tags_r$tag [which (tags_r$kind == "globalVar")])
