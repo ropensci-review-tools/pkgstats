@@ -26,11 +26,11 @@ test_that ("pkgstats", {
 
     expect_s3_class (s$loc, "tbl_df")
     # The following 2 tests fail on GitHub windows machines for some reason?
-    #is_windows <- Sys.info () [["sysname"]] == "Windows"
-    #if (!is_windows) {
+    is_windows <- Sys.info () [["sysname"]] == "Windows"
+    if (!is_windows) {
         expect_equal (nrow (s$loc), 3L)
         expect_true (all (c ("R", "src") %in% s$loc$dir))
-    #}
+    }
 
     expect_type (s$vignettes, "integer")
     expect_named (s$vignettes)
