@@ -23,18 +23,18 @@ gtags_install <- function (sudo = TRUE) {
 
     unix <- which_unix ()
 
-    arg <- c ("apt-get", "install", "-y")
-    if (unix == "Arch") {
-        arg <- c ("pacman", "-Syu")
-    }
     if (sudo) {
-        cmd <- "sudo"
-    } else {
-        cmd <- arg [1]
-        arg <- arg [-1]
-    }
 
-    sys::exec_wait (cmd, args = c (arg, "global"), std_out = f)
+        cmd <- "sudo"
+        arg <- c ("apt-get", "install", "-y")
+        if (unix == "Arch") {
+            arg <- c ("pacman", "-Syu")
+        }
+
+        sys::exec_wait (cmd, args = c (arg, "global"), std_out = f)
+    } else {
+        gtags_compile ()
+    }
 }
 
 gtags_compile <- function () {
