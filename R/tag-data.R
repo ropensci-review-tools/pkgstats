@@ -363,6 +363,8 @@ get_gtags <- function () {
         )
     )
 
+    rm_file_no_err (f)
+
     gtags <- gtags [which (!grepl (excluded_file_ptn (), gtags$file)), ]
 
     return (gtags)
