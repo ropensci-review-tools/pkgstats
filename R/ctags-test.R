@@ -69,6 +69,8 @@ ctags_test <- function (quiet = TRUE) {
         )
     )
 
+    file.remove (c (f_in, f_out))
+
     expected_kinds <- c (
         "globalVar",
         "list",
