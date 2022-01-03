@@ -89,7 +89,10 @@ pkgstats_from_archive <- function (path,
             " files in ", length (flist), " chunks"
         )
 
-        results_path <- normalizePath (results_path)
+        results_path <- normalizePath (results_path, mustWork = FALSE)
+        if (!dir.exists (results_path)) {
+            dir.create (results_path)
+        }
         results_files <- NULL
 
         index <- 1 # name of temporary files
