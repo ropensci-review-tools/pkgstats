@@ -209,7 +209,6 @@ get_ctags <- function (d = "R", has_tabs) {
         return (NULL)
     }
 
-
     suppressWarnings (
         tags <- readr::read_tsv (
             f,
@@ -225,9 +224,7 @@ get_ctags <- function (d = "R", has_tabs) {
         return (NULL)
     }
 
-    chk <- tryCatch (file.remove (f),
-        error = function (e) NULL
-    )
+    chk <- rm_file_no_err (f)
 
     tags <- tags [which (!grepl (excluded_file_ptn (), tags$file)), ]
 

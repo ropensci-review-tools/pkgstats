@@ -106,3 +106,11 @@ which_unix <- function () {
     )
     strsplit (grep ("^Distributor ID", x, value = TRUE), "\\t") [[1]] [2]
 }
+
+rm_file_no_err <- function (f) {
+
+    tryCatch (
+        file.remove (f),
+        error = function (e) NULL
+    )
+}
