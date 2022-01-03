@@ -44,7 +44,7 @@ gtags_compile <- function () {
     download.file (u, f)
     utils::untar (f, exdir = tempdir ())
 
-    home <- normalizePath ("~/bin")
+    home <- normalizePath ("~")
     conf_args <- c ("--prefix", home, "--disable-gtagscscope")
     withr::with_dir (file.path (tempdir (), "global-6.6.8"), {
         sys::exec_wait ("./configure", args = conf_args)
