@@ -88,8 +88,19 @@ ctags_test <- function (quiet = TRUE) {
         ctags_check <- all (tags$kind == expected_kinds)
     }
 
+    ip <- data.frame (installed.packages ())
+    pkgstats_path <- ip$LibPath [ip$Package == "pkgstats"]
+    td <- file.path (tempdir (), "pkgstats-gtags-test")
+    if (dir.exists (td)) {
+        chk <- unlink (td, recursive = TRUE)
+    }
+    if (file.exists (td)) {
+        chk <- file.remove (td)
+    }
+    dir.create (td)
+    chk <- file.copy (file.path (pkgstats_path, "pkgstats"), td, recursive = TRUE)
     gtags_test <- withr::with_dir (
-        tempdir (),
+        file.path (td, "pkgstats"),
         system2 ("gtags",
             args = list ('--gtagslabel="new ctags"'), # nolint
             stdout = TRUE, stderr = TRUE
@@ -97,7 +108,7 @@ ctags_test <- function (quiet = TRUE) {
     )
     gtags_check <- length (gtags_test) == 0L
     if (!gtags_check) {
-        gtags_check <- any (grepl ("error", gtags_check, ignore.case = TRUE))
+        gtags_check <- any (grepl ("error", gtags_test, ignore.case = TRUE))
     }
 
     check <- ctags_check & gtags_check
