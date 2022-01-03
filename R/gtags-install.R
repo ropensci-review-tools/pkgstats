@@ -36,4 +36,24 @@ gtags_install <- function (sudo = TRUE) {
 
     sys::exec_wait (cmd, args = c (arg, "global"), std_out = f)
 }
-# nocov end
+
+gtags_compile <- function () {
+
+    u <- "https://ftp.gnu.org/pub/gnu/global/global-6.6.8.tar.gz"
+    f <- file.path (tempdir (), utils::tail (strsplit (u, "/"), 1L))
+    download.file (u, f)
+    utils::untar (f, exdir = tempdir ())
+
+    home <- normalizePath ("~/bin")
+    conf_args <- c ("--prefix", home, "--disable-gtagscscope")
+    withr::with_dir (file.path (tempdir (), "global-6.6.8"), {
+        sys::exec_wait ("./configure", args = conf_args)
+        sys::exec_wait ("make")
+        sys::exec_wait ("make", args = "install")
+        sys::exec_wait ("hash", args = c (
+            "-p",
+            file.path (home, "bin", "ctags"),
+            "ctags"
+        ))
+    })
+}
