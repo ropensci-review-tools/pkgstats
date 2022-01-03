@@ -184,6 +184,7 @@ get_ctags <- function (d = "R", has_tabs) {
     x <- x [-which (grepl ("^\\!", x))]
 
     if (length (x) == 0L) {
+        chk <- rm_file_no_err (f)
         return (NULL)
     } # no ctags
 
@@ -206,6 +207,7 @@ get_ctags <- function (d = "R", has_tabs) {
     )
     n_flds <- stats::median (n_flds)
     if (n_flds != length (cnames)) {
+        chk <- rm_file_no_err (f)
         return (NULL)
     }
 
@@ -220,11 +222,11 @@ get_ctags <- function (d = "R", has_tabs) {
         )
     )
 
+    chk <- rm_file_no_err (f)
+
     if (nrow (tags) == 0) {
         return (NULL)
     }
-
-    chk <- rm_file_no_err (f)
 
     tags <- tags [which (!grepl (excluded_file_ptn (), tags$file)), ]
 
