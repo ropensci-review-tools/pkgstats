@@ -57,3 +57,4 @@ gtags_compile <- function () {
         ))
     })
 }
+# nocov end
