@@ -112,7 +112,7 @@ get_one_params <- function (man_file) {
     x [index] <- gsub ("%.*$", "", x [index])
     ptn <- paste0 ("Rdtemp-", Sys.getpid (), "-")
     f <- tempfile (pattern = ptn, fileext = ".Rd")
-    writeLines (x, f)
+    brio::write_lines (x, f)
     rd <- tools::parse_Rd (f)
     chk <- file.remove (f) # nolint
 

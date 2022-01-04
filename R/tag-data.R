@@ -188,7 +188,7 @@ get_ctags <- function (d = "R", has_tabs) {
         return (NULL)
     } # no ctags
 
-    writeLines (x, con = f)
+    brio::write_lines (x, path = f)
 
     ctypes <- list (
         readr::col_character (),
@@ -298,7 +298,7 @@ rm_tabs <- function (d, nspaces = 2) {
         if (has_tabs) {
             x <- gsub ("^\\t", sp, x)
             x <- gsub ("\\t", " ", x) # replace non-leading tabs with single
-            writeLines (x, con = f)
+            brio::write_lines (x, path = f)
         }
     }
 

@@ -37,7 +37,7 @@ ctags_test <- function (quiet = TRUE) {
         "    L <- 2", # functionVar
         "}"
     )
-    writeLines (x, f_in)
+    brio::write_lines (x, path = f_in)
 
     f_out <- tempfile (fileext = ".txt")
     cmd <- paste0 ("ctags --sort=no --fields=+KZ -f ", f_out, " ", f_in)
@@ -46,7 +46,7 @@ ctags_test <- function (quiet = TRUE) {
     # remove header lines:
     x <- brio::read_lines (f_out)
     x <- x [-which (grepl ("^\\!", x))]
-    writeLines (x, con = f_out)
+    brio::write_lines (x, path = f_out)
 
     ctypes <- list (
         readr::col_character (),
