@@ -65,9 +65,7 @@ pkgstats_summary <- function (s = NULL) {
 
     # suffix `_pkg` because inter-package stats are calculated after initial
     # collation of all data (issue #32)
-    ae <- afferent_efferent (s)
-    out$afferent_pkg <- ae [["afferent"]]
-    out$efferent_pkg <- ae [["efferent"]]
+    out$cpl_instability_pkg <- coupling_instability (s)
 
     return (out)
 }
@@ -540,49 +538,27 @@ external_call_summary <- function (x) {
     return (res)
 }
 
-#' Package-internal metrics of afferent and efferent couplings between files of
+#' Package-internal metric of coupling instability between files of
 #' the package.
 #'
 #' See 'https://en.wikipedia.org/wiki/Software_package_metrics'
-#' Afferent calls are INCOMING, or calls from all other files of a package to a
-#' given package file.
-#' Efferent calls are OUTGOING, or calls from each file of a package to
-#' functions from other files.
+#' Instability within a package is measured here as the proportion of all
+#' function calls (or object references) within a package which are made
+#' *between* different files compared with total numbers of calls. Packages with
+#' relatively more calls confined to within single files are thus more stable,
+#' while packages with more calls between different files are less stable.
+#' Because a package is a strictly closed system, total numbers of afferent or
+#' incoming calls must always equal numbers of efferent or outgoing calls.
 #'
 #' @inheritParams pkgstats_summary
-#' @return Vector of 2 values for afferent & efferent coupling
+#' @return Single value for coupling instability
 #' @noRd
-afferent_efferent <- function (s) {
+coupling_instability <- function (s) {
 
-    pkg <- s$desc$package
+    file_to <- s$objects$file_name [match (s$network$to, s$objects$fn_name)]
 
-    # Data on function definitions and associated files:
-    fns <- s$objects [, c ("file_name", "fn_name", "kind")]
-    fns <- fns [which (fns$kind == "function"), ]
-    fns <- fns [which (!duplicated (fns)), ]
+    ntot <- nrow (s$network)
+    nbetween <- length (which (s$network$file != file_to))
 
-    # All calls to all functions witin package:
-    ex <- s$external_calls
-    ex <- ex [ex$package == pkg, ]
-
-    # afferent (incoming): from other files to each file
-    afferent <- vapply (unique (fns$file), function (i) {
-        fns_i <- fns$fn_name [which (fns$file == i)]
-        fns_j <- which (ex$call %in% fns_i &
-            ex$file != i)
-        length (fns_j)
-    }, integer (1))
-
-    # efferent (outgoing): from each file to other files
-    efferent <- vapply (unique (fns$file), function (i) {
-        fns_i <- fns$fn_name [which (fns$file == i)]
-        fns_j <- which (!ex$tag %in% fns_i &
-            ex$file == i)
-        length (fns_j)
-    }, integer (1))
-
-    c (
-        afferent = sum (afferent),
-        efferent = sum (efferent)
-    )
+    return (nbetween / ntot)
 }
