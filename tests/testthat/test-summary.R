@@ -1,6 +1,8 @@
 
-test_all <- (identical (Sys.getenv ("MPADGE_LOCAL"), "true") |
-             identical (Sys.getenv ("GITHUB_WORKFLOW"), "test-coverage"))
+test_all <- (
+    identical (Sys.getenv ("MPADGE_LOCAL"), "true") |
+        identical (Sys.getenv ("GITHUB_WORKFLOW"), "test-coverage")
+)
 
 test_that ("pkgstats-null-summary", {
 
@@ -26,7 +28,7 @@ test_that ("pkgstats-summary", {
 
     expect_s3_class (s, "data.frame")
     expect_equal (nrow (s), 1L)
-    expect_equal (ncol (s), 93L)
+    expect_equal (ncol (s), 92L)
 
     skip_if (!test_all)
 
