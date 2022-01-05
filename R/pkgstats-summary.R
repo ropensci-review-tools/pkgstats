@@ -134,8 +134,7 @@ null_stats <- function () {
     out [net_nms] <- NA_integer_
 
     out$external_calls <- NA_character_
-    out$afferent_pkg <- NA_integer_
-    out$efferent_pkg <- NA_integer_
+    out$cpl_instability_pkg <- NA
 
     return (out)
 }

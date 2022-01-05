@@ -1,16 +1,14 @@
 {
-  "@context": [
-    "https://doi.org/10.5063/schema/codemeta-2.0",
-    "http://schema.org"
-  ],
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "pkgstats",
   "description": "Metrics of R packages.",
   "name": "pkgstats: Metrics of R Packages",
+  "relatedLink": "https://docs.ropensci.org/pkgstats/",
   "codeRepository": "https://github.com/ropensci-review-tools/pkgstats",
   "issueTracker": "https://github.com/ropensci-review-tools/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.3.075",
+  "version": "0.0.3.76",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -26,9 +24,6 @@
       "@id": "https://orcid.org/0000-0003-2172-5265"
     }
   ],
-  "contributor": {},
-  "copyrightHolder": {},
-  "funder": {},
   "maintainer": [
     {
       "@type": "Person",
@@ -149,8 +144,8 @@
       "sameAs": "https://CRAN.R-project.org/package=visNetwork"
     }
   ],
-  "softwareRequirements": [
-    {
+  "softwareRequirements": {
+    "1": {
       "@type": "SoftwareApplication",
       "identifier": "brio",
       "name": "brio",
@@ -162,7 +157,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=brio"
     },
-    {
+    "2": {
       "@type": "SoftwareApplication",
       "identifier": "checkmate",
       "name": "checkmate",
@@ -174,7 +169,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=checkmate"
     },
-    {
+    "3": {
       "@type": "SoftwareApplication",
       "identifier": "dplyr",
       "name": "dplyr",
@@ -186,7 +181,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=dplyr"
     },
-    {
+    "4": {
       "@type": "SoftwareApplication",
       "identifier": "fs",
       "name": "fs",
@@ -198,7 +193,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=fs"
     },
-    {
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "igraph",
       "name": "igraph",
@@ -210,12 +205,12 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=igraph"
     },
-    {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "methods",
       "name": "methods"
     },
-    {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "readr",
       "name": "readr",
@@ -227,7 +222,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=readr"
     },
-    {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "sys",
       "name": "sys",
@@ -239,7 +234,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=sys"
     },
-    {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "withr",
       "name": "withr",
@@ -251,24 +246,9 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=withr"
     },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "https://sysreqs.r-hub.io/get/cxx11"
-    }
-  ],
-  "fileSize": "840.103KB",
-  "developmentStatus": "https://www.repostatus.org/#active",
-  "readme": "https://github.com/ropensci-review-tools/pkgstats/blob/main/README.md",
-  "relatedLink": [
-    "https://mpadge.github.io/pkgstats",
-    "https://ropenscilabs.github.io/pkgstats",
-    "https://ropensci-review-tools.github.io/pkgstats",
-    "https://docs.ropensci.org/pkgstats/"
-  ],
-  "contIntegration": [
-    "https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check",
-    "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"
-  ],
+    "SystemRequirements": "ctags, global, C++11"
+  },
+  "fileSize": "839.642KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
@@ -284,5 +264,8 @@
       "url": "https://github.com/ropensci-review-tools/pkgstats",
       "description": "R package version 0.0.3"
     }
-  ]
+  ],
+  "readme": "https://github.com/ropensci-review-tools/pkgstats/blob/main/README.md",
+  "contIntegration": ["https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check", "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"],
+  "developmentStatus": "https://www.repostatus.org/#active"
 }
