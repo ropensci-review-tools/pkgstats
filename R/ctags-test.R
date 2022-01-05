@@ -94,7 +94,7 @@ ctags_test <- function (quiet = TRUE) {
     if (dir.exists (td)) {
         gtags_check <- TRUE
     } else {
-        ip <- data.frame (installed.packages ())
+        ip <- data.frame (utils::installed.packages ())
         pkgstats_path <- ip$LibPath [ip$Package == "pkgstats"]
         if (dir.exists (td)) {
             chk <- unlink (td, recursive = TRUE)

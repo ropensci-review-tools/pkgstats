@@ -41,7 +41,7 @@ gtags_compile <- function () {
 
     u <- "https://ftp.gnu.org/pub/gnu/global/global-6.6.8.tar.gz"
     f <- file.path (tempdir (), utils::tail (strsplit (u, "/") [[1]], 1L))
-    download.file (u, f)
+    utils::download.file (u, f)
     utils::untar (f, exdir = tempdir ())
 
     home <- normalizePath ("~")
