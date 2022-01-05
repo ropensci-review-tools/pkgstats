@@ -238,7 +238,12 @@ get_ctags <- function (d = "R", has_tabs) {
     index1 <- index1 [which (!index1 %in% index0)]
     tags$end [index1] <- NA
 
-    tags$end <- as.integer (gsub ("^end\\:", "", tags$end))
+    index <- which (!is.na (tags$end))
+    tags$end [index] <- gsub ("^end\\:", "", tags$end [index])
+    tags$end [index] <- gsub ("[^0-9.-]", "", tags$end [index])
+    # as.integer still triggers warnings for NA values, whereas changing
+    # storage.mode does not:
+    storage.mode (tags$end) <- "integer"
 
     files <- fs::path_split (tags$file)
     len_path_sub <- length (fs::path_split (path_sub) [[1]])
