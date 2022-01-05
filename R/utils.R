@@ -126,7 +126,13 @@ get_processes <- function () {
     }
 
     p <- system ("ps aux", intern = TRUE)
-    p <- data.frame (do.call (rbind, strsplit (p, "\\s+")))
+    # It's fixed-width as defined by header:
+    index <- gregexpr ("[^[:space:]]", p [1]) [[1]]
+    index <- index [-(which (diff (index) == 1) + 1)]
+    index <- cbind (index, c (index [-1] - 1, nchar (p [1])))
+
+    p <- apply (index, 1, function (i) substring (p, i [1], i [2]))
+    p <- data.frame (p)
     names (p) <- p [1, ]
     p <- p [-1, ]
 
