@@ -20,6 +20,8 @@
 #' stopped and re-started without having to recalculate all results. These files
 #' will be named `pkgstats-results-N.Rds`, where "N" incrementally numbers each
 #' file.
+#' @param num_cores Number of machine cores to use in parallel, defaulting to
+#' single-core processing.
 #' @param save_full If `TRUE`, full \link{pkgstats} results are saved for each
 #' package to files in `results_path`.
 #' @param save_ex_calls If `TRUE`, the results of the `external_calls` component
@@ -42,12 +44,13 @@ pkgstats_from_archive <- function (path,
                                    prev_results = NULL,
                                    results_file = NULL,
                                    chunk_size = 1000L,
+                                   num_cores = 1L,
                                    save_full = FALSE,
                                    save_ex_calls = FALSE,
                                    results_path = tempdir ()) {
 
     requireNamespace ("hms")
-    requireNamespace ("pbapply")
+    requireNamespace ("parallel")
 
     if (!grepl ("tarball", path)) {
         if (!dir.exists (file.path (path, "tarballs"))) {
@@ -100,7 +103,7 @@ pkgstats_from_archive <- function (path,
 
         for (f in flist) {
 
-            res <- pbapply::pblapply (f, function (i) {
+            res <- parallel::mclapply (f, function (i) {
 
                 s <- tryCatch (pkgstats::pkgstats (i),
                     error = function (e) NULL
@@ -128,7 +131,7 @@ pkgstats_from_archive <- function (path,
                         gsub ("\\.tar\\.gz$", "", p [2])
                 }
                 return (summ)
-            })
+            }, mc.cores = num_cores)
 
             fname <- file.path (
                 results_path,

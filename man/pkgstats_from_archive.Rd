@@ -10,6 +10,7 @@ pkgstats_from_archive(
   prev_results = NULL,
   results_file = NULL,
   chunk_size = 1000L,
+  num_cores = 1L,
   save_full = FALSE,
   save_ex_calls = FALSE,
   results_path = tempdir()
@@ -39,6 +40,9 @@ combined to generate a single \code{prev_results} file, to enable jobs to be
 stopped and re-started without having to recalculate all results. These files
 will be named \code{pkgstats-results-N.Rds}, where "N" incrementally numbers each
 file.}
+
+\item{num_cores}{Number of machine cores to use in parallel, defaulting to
+single-core processing.}
 
 \item{save_full}{If \code{TRUE}, full \link{pkgstats} results are saved for each
 package to files in \code{results_path}.}
