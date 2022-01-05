@@ -114,3 +114,40 @@ rm_file_no_err <- function (f) {
         error = function (e) NULL
     )
 }
+
+sys_is_linux <- function () {
+    tolower (Sys.info () [["sysname"]]) == "linux"
+}
+
+get_processes <- function () {
+
+    if (!sys_is_linux ()) {
+        return ()
+    }
+
+    p <- system ("ps aux", intern = TRUE)
+    p <- data.frame (do.call (rbind, strsplit (p, "\\s+")))
+    names (p) <- p [1, ]
+    p <- p [-1, ]
+
+    return (p)
+}
+
+wait_for_process <- function (what = "ctags") {
+
+    if (!sys_is_linux ()) {
+        Sys.sleep (0.2)
+        return ()
+    }
+
+    p <- get_processes ()
+    count <- 1
+    while (any (grep (what, p$COMMAND))) {
+        Sys.sleep (0.2)
+        p <- get_processes ()
+        count <- count + 1
+        if (count > 10) {
+              break
+          }
+    }
+}

@@ -177,7 +177,7 @@ get_ctags <- function (d = "R", has_tabs) {
         path_dir
     )
     sys::exec_wait ("ctags", args, std_out = FALSE, std_err = FALSE)
-    Sys.sleep (0.2)
+    wait_for_process ("ctags")
 
     # remove header lines:
     x <- brio::read_lines (f)
@@ -325,7 +325,7 @@ make_gtags <- function () {
 
     if (length (flist) == 0) {
         sys::exec_wait ("gtags")
-        Sys.sleep (0.2)
+        wait_for_process ("gtags")
     }
 
     return (length (flist) == 0)
@@ -335,7 +335,7 @@ get_gtags <- function () {
 
     f <- tempfile (pattern = "global_")
     sys::exec_wait ("global", args = c ("-rx", "."), std_out = f)
-    Sys.sleep (0.1)
+    wait_for_process ("global")
 
     x <- brio::read_lines (f)
 
