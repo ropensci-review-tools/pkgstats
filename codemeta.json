@@ -8,7 +8,7 @@
   "codeRepository": "https://github.com/ropensci-review-tools/pkgstats",
   "issueTracker": "https://github.com/ropensci-review-tools/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.3.084",
+  "version": "0.0.3.85",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -241,7 +241,7 @@
     },
     "SystemRequirements": "ctags, global, C++11"
   },
-  "fileSize": "841.221KB",
+  "fileSize": "841.434KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
@@ -259,9 +259,6 @@
     }
   ],
   "readme": "https://github.com/ropensci-review-tools/pkgstats/blob/main/README.md",
-  "contIntegration": [
-    "https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check",
-    "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"
-  ],
+  "contIntegration": ["https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check", "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"],
   "developmentStatus": "https://www.repostatus.org/#active"
 }

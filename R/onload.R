@@ -7,8 +7,12 @@
 
 .onUnload <- function (libname, pkgname) { # nolint
 
-    td <- file.path (tempdir (), "pkgstats-gtags-test")
-    if (dir.exists (td)) {
-        chk <- unlist (td, recursive = TRUE)
+    d <- file.path (tempdir (), "pkgstats-gtags-test")
+    if (dir.exists (d)) {
+        chk <- unlink (d, recursive = TRUE)
+    }
+    d <- file.path (tempdir (), "pkgstats")
+    if (dir.exists (d)) {
+        chk <- unlink (d, recursive = TRUE)
     }
 }

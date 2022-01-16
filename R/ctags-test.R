@@ -104,7 +104,7 @@ ctags_test <- function (quiet = TRUE) {
         }
         dir.create (td)
         chk <- file.copy (pkgstats_path, td, recursive = TRUE)
-        unlink (pkgstats_path, recursive = TRUE)
+        # unlink (pkgstats_path, recursive = TRUE) # done in unload
         gtags_test <- withr::with_envvar (
             c ("GTAGSLABEL" = "new-ctags"),
             withr::with_dir (
