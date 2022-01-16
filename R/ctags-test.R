@@ -104,11 +104,13 @@ ctags_test <- function (quiet = TRUE) {
         }
         dir.create (td)
         chk <- file.copy (file.path (pkgstats_path, "pkgstats"), td, recursive = TRUE)
-        gtags_test <- withr::with_dir (
-            file.path (td, "pkgstats"),
-            system2 ("gtags",
-                args = list ('--gtagslabel="new ctags"'), # nolint
-                stdout = TRUE, stderr = TRUE
+        gtags_test <- withr::with_envvar (
+            c ("GTAGSLABEL" = "new-ctags"),
+            withr::with_dir (
+                file.path (td, "pkgstats"),
+                system2 ("gtags",
+                    stdout = TRUE, stderr = TRUE
+                )
             )
         )
         gtags_check <- length (gtags_test) == 0L
