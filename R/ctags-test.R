@@ -94,8 +94,8 @@ ctags_test <- function (quiet = TRUE) {
     if (dir.exists (td)) {
         gtags_check <- TRUE
     } else {
-        ip <- data.frame (utils::installed.packages ())
-        pkgstats_path <- ip$LibPath [ip$Package == "pkgstats"]
+        f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
+        pkgstats_path <- extract_tarball (f)
         if (dir.exists (td)) {
             chk <- unlink (td, recursive = TRUE)
         }
@@ -103,7 +103,8 @@ ctags_test <- function (quiet = TRUE) {
             chk <- file.remove (td)
         }
         dir.create (td)
-        chk <- file.copy (file.path (pkgstats_path, "pkgstats"), td, recursive = TRUE)
+        chk <- file.copy (pkgstats_path, td, recursive = TRUE)
+        unlink (pkgstats_path, recursive = TRUE)
         gtags_test <- withr::with_envvar (
             c ("GTAGSLABEL" = "new-ctags"),
             withr::with_dir (
@@ -117,6 +118,8 @@ ctags_test <- function (quiet = TRUE) {
         if (!gtags_check) {
             gtags_check <- any (grepl ("error", gtags_test, ignore.case = TRUE))
         }
+
+        unlink (td, recursive = TRUE)
     }
 
     check <- ctags_check & gtags_check
