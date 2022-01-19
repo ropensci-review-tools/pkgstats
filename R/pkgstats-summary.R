@@ -321,6 +321,36 @@ desc_summary <- function (x) {
 #' @noRd
 object_summary <- function (x) {
 
+    if (nrow (x) == 0L) {
+        return (
+            data.frame (
+                n_fns_r = 0L,
+                n_fns_r_exported = 0L,
+                n_fns_r_not_exported = 0L,
+                n_fns_src = 0L,
+                n_fns_per_file_r = 0L,
+                n_fns_per_file_src = 0L,
+                npars_exported_mn = 0L,
+                npars_exported_md = 0L,
+                loc_per_fn_r_mn = 0,
+                loc_per_fn_r_md = 0,
+                loc_per_fn_r_exp_mn = 0,
+                loc_per_fn_r_exp_md = 0,
+                loc_per_fn_r_not_exp_mn = 0,
+                loc_per_fn_r_not_exp_md = 0,
+                loc_per_fn_src_mn = 0,
+                loc_per_fn_src_md = 0,
+                languages = NA_character_,
+                doclines_per_fn_exp_mn = 0,
+                doclines_per_fn_exp_md = 0,
+                doclines_per_fn_not_exp_mn = 0,
+                doclines_per_fn_not_exp_md = 0,
+                docchars_per_par_exp_mn = 0,
+                docchars_per_par_exp_md = 0
+            )
+        )
+    }
+
     fns <- x [x$kind == "function" &
         !grepl ("anonFunc", x$fn_name), ]
     fns$num_doclines [is.na (fns$num_doclines)] <- 0L
