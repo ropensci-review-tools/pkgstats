@@ -49,17 +49,21 @@ pkgstats <- function (path = ".") {
     s3 <- rd_stats (path)
 
     fns <- all_functions (path)
-    fns$exported <- FALSE
-    index <- which (fns$fn_name %in% s3$fn_name)
-    fns$exported [which (fns$fn_name %in% s3$fn_name)] <- TRUE
 
-    # non-dplyr left_join:
-    index2 <- match (fns$fn_name [index], s3$fn_name)
-    fns$num_doclines <- fns$param_nchars_mn <-
-        fns$param_nchars_md <- NA_integer_
-    fns$num_doclines [index] <- s3$num_doclines [index2]
-    fns$param_nchars_mn [index] <- s3$param_nchars_mn [index2]
-    fns$param_nchars_md [index] <- s3$param_nchars_md [index2]
+    if (nrow (fns) > 0L) {
+
+        fns$exported <- FALSE
+        index <- which (fns$fn_name %in% s3$fn_name)
+        fns$exported [which (fns$fn_name %in% s3$fn_name)] <- TRUE
+
+        # non-dplyr left_join:
+        index2 <- match (fns$fn_name [index], s3$fn_name)
+        fns$num_doclines <- fns$param_nchars_mn <-
+            fns$param_nchars_md <- NA_integer_
+        fns$num_doclines [index] <- s3$num_doclines [index2]
+        fns$param_nchars_mn [index] <- s3$param_nchars_mn [index2]
+        fns$param_nchars_md [index] <- s3$param_nchars_md [index2]
+    }
 
     # `s2$package` mucks up local linter
     tags <- tags_data (path, has_tabs, s2 [["package"]])
@@ -139,12 +143,14 @@ all_functions <- function (path) {
     }
 
     ret <- do.call (rbind, lapply (r_files, eval1))
-    # append "R" directory to file names:
-    ret$file_name <- paste0 (
-        "R",
-        .Platform$file.sep,
-        ret$file_name
-    )
+    if (nrow (ret) > 0L) {
+        # append "R" directory to file names:
+        ret$file_name <- paste0 (
+            "R",
+            .Platform$file.sep,
+            ret$file_name
+        )
+    }
 
     return (ret)
 }
@@ -152,6 +158,10 @@ all_functions <- function (path) {
 #' param src value of tags$stats from tags_data()
 #' @noRd
 add_src_to_fn_data <- function (fns, src) {
+
+    if (nrow (fns) == 0L) {
+        return (fns)
+    }
 
     n <- grep ("fn_name", names (fns))
 
