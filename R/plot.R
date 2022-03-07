@@ -52,7 +52,8 @@ plot_network <- function (s, plot = TRUE, vis_save = NULL) {
             label = nodes$fn_name,
             name = nodes$fn_name,
             group = nodes$language,
-            value = 1L
+            value = 1L,
+            stringsAsFactors = FALSE
         )
 
         vn <- visNetwork::visNetwork (nodes, main = pkg_title)
@@ -63,7 +64,8 @@ plot_network <- function (s, plot = TRUE, vis_save = NULL) {
             from = s$network$from,
             to = s$network$to,
             centrality = s$network$centrality_undir,
-            language = s$network$language
+            language = s$network$language,
+            stringsAsFactors = FALSE
         )
         from <- language <- centrality <- NULL # suppress no visible binding msg
         edges <- dplyr::count (edges, from, to, language, centrality)
@@ -75,7 +77,8 @@ plot_network <- function (s, plot = TRUE, vis_save = NULL) {
             id = obj$fn_name,
             label = obj$fn_name,
             name = obj$fn_name,
-            language = obj$language
+            language = obj$language,
+            stringsAsFactors = FALSE
         )
         nodes$group <- nodes$language
 

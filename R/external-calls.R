@@ -128,7 +128,8 @@ extract_call_content <- function (tags_r) {
 
     calls <- data.frame (
         tags_line = as.integer (calls [, 1]),
-        call = gsub ("^[[:punct:]]+", "", calls [, 2])
+        call = gsub ("^[[:punct:]]+", "", calls [, 2]),
+        stringsAsFactors = FALSE
     )
 
     rm_these <- c (
@@ -170,7 +171,8 @@ extract_call_content <- function (tags_r) {
     fn_lines <- data.frame (
         fn_name = fn_lines [, 1],
         file = fn_lines [, 2],
-        lines = as.integer (fn_lines [, 3])
+        lines = as.integer (fn_lines [, 3]),
+        stringsAsFactors = FALSE
     )
 
     for (f in unique (fn_lines$fn_name)) {
@@ -219,7 +221,10 @@ add_base_recommended_pkgs <- function (calls) {
         "codetools", "foreign", "lattice", "mgcv", "nlme", "nnet",
         "rpart", "spatial", "survival"
     )
-    ip <- data.frame (utils::installed.packages ())
+    ip <- data.frame (
+        utils::installed.packages (),
+        stringsAsFactors = FALSE
+    )
     rcmds <- rcmds [which (rcmds %in% ip$Package)]
 
     ll <- .libPaths ()
@@ -247,7 +252,8 @@ add_base_recommended_pkgs <- function (calls) {
 
         data.frame (
             pkg = i,
-            fn = fns
+            fn = fns,
+            stringsAsFactors = FALSE
         )
     })
 
@@ -286,7 +292,8 @@ add_other_pkgs_to_calls <- function (calls, path) {
         fns <- gsub ("^\\s*|\\\"|\\s*$", "", i [-1])
         data.frame (
             pkg = rep (pkg, length (fns)),
-            fn = fns
+            fn = fns,
+            stringsAsFactors = FALSE
         )    })
     imports <- do.call (rbind, imports)
 

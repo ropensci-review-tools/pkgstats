@@ -46,7 +46,7 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
     if (is.null (pkg_name)) {
         desc <- file.path (path, "DESCRIPTION")
         checkmate::assert_file (desc)
-        d <- data.frame (read.dcf (desc))
+        d <- data.frame (read.dcf (desc), stringsAsFactors = FALSE)
         pkg_name <- d [["Package"]]
     }
 
@@ -397,7 +397,8 @@ gtags_from_one_file <- function (ctags, gtags, f) {
             l = seq (
                 ctags_f$start [i],
                 ctags_f$end [i]
-            )
+            ),
+            stringsAsFactors = FALSE
         )
     })
     line_nums <- do.call (rbind, line_nums)
@@ -468,7 +469,8 @@ fn_var_call_graph_r <- function (fns, fn_vars, path) {
                     line2 = fn_calls$line2,
                     from = fn_calls$name,
                     to = fn_calls$text,
-                    language = "R"
+                    language = "R",
+                    stringsAsFactors = FALSE
                 )
             )
         }
@@ -485,7 +487,8 @@ fn_var_call_graph_src <- function (gtags) {
         line2 = gtags$line,
         from = gtags$from,
         to = gtags$tag,
-        language = gtags$language
+        language = gtags$language,
+        stringsAsFactors = FALSE
     )
 }
 
@@ -521,7 +524,8 @@ src_stats <- function (tags) {
         language = NA_character_,
         loc = 0L,
         npars = NA_integer_,
-        has_dots = NA
+        has_dots = NA,
+        stringsAsFactors = FALSE
     )
 
     if (!is.null (tags)) {
@@ -533,7 +537,8 @@ src_stats <- function (tags) {
             language = gsub ("^language:", "", tags$language),
             loc = tags$end - tags$start + 1,
             npars = NA_integer_,
-            has_dots = NA
+            has_dots = NA,
+            stringsAsFactors = FALSE
         )
         res <- res [which (!is.na (res$loc)), ]
     }

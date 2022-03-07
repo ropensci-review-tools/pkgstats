@@ -642,7 +642,7 @@ file_exts <- function (exts = NULL) {
                 c ('zsh'         , 'zsh'                   , '', '', '^\\s*#')
     )
 
-    x <- data.frame (x)
+    x <- data.frame (x, stringsAsFactors = FALSE)
     names (x) <- c ("ext", "type", "cmt_open", "cmt_close", "cmt")
 
     # add '.q' files because BDR uses these (for example, in 'boot'):

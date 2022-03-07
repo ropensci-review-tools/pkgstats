@@ -80,7 +80,8 @@ rd_stats <- function (path) {
         num_doclines = doclines,
         param_nchars_mn = nchars_mn,
         param_nchars_md = nchars_md,
-        row.names = NULL
+        row.names = NULL,
+        stringsAsFactors = FALSE
     )
 
     return (ret)
@@ -135,7 +136,8 @@ get_one_params <- function (man_file) {
             parameter = "(none)",
             nchar = NA_integer_,
             alias = aliases,
-            doclines = doclines
+            doclines = doclines,
+            stringsAsFactors = FALSE
         )
     } else {
         params <- strsplit (params, "\\n") [[1]]
@@ -170,7 +172,8 @@ get_one_params <- function (man_file) {
 
         res <- data.frame (
             parameter = par_name,
-            nchar = nchars
+            nchar = nchars,
+            stringsAsFactors = FALSE
         )
 
         if (nrow (res) > 0) {

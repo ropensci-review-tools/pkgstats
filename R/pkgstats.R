@@ -138,7 +138,8 @@ all_functions <- function (path) {
             fn_name = nms,
             loc = loc,
             npars = npars [1, ],
-            has_dots = as.logical (npars [2, ])
+            has_dots = as.logical (npars [2, ]),
+            stringsAsFactors = FALSE
         )
     }
 
@@ -178,14 +179,17 @@ add_src_to_fn_data <- function (fns, src) {
             exported = FALSE,
             param_nchars_md = NA_integer_,
             param_nchars_mn = NA_integer_,
-            num_doclines = NA_integer_
+            num_doclines = NA_integer_,
+            stringsAsFactors = FALSE
         )
     } else {
 
-        fns <- data.frame (fns [, seq (n)], # file_name, fn_name
+        fns <- data.frame (
+            fns [, seq (n)], # file_name, fn_name
             kind = "function",
             language = "R",
-            fns [, seq (ncol (fns)) [-seq (n)]]
+            fns [, seq (ncol (fns)) [-seq (n)]],
+            stringsAsFactors = FALSE
         )
     }
 

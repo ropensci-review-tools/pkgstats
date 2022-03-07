@@ -116,7 +116,10 @@ loc_stats <- function (path) {
     indentation <- average_leading_white (leading_white)
 
     index <- seq (nstats * nrow (ftypes))
-    s <- data.frame (t (matrix (s [index], nrow = nstats)))
+    s <- data.frame (
+        t (matrix (s [index], nrow = nstats)),
+        stringsAsFactors = FALSE
+    )
     names (s) <- c (
         "nlines",
         "ncode",

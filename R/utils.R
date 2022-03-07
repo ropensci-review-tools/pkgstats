@@ -132,7 +132,7 @@ get_processes <- function () {
     index <- cbind (index, c (index [-1] - 1, nchar (p [1])))
 
     p <- apply (index, 1, function (i) substring (p, i [1], i [2]))
-    p <- data.frame (p)
+    p <- data.frame (p, stringsAsFactors = FALSE)
     names (p) <- p [1, ]
     p <- p [-1, ]
 
@@ -153,7 +153,7 @@ wait_for_process <- function (what = "ctags") {
         p <- get_processes ()
         count <- count + 1
         if (count > 10) {
-              break
-          }
+            break
+        }
     }
 }

@@ -41,7 +41,8 @@ pkgstats_summary <- function (s = NULL) {
         package = s$desc$package,
         version = s$desc$version,
         date = s$desc$date,
-        license = s$desc$license
+        license = s$desc$license,
+        stringsAsFactors = FALSE
     )
 
     out <- cbind (out, loc_summary (s$loc))
@@ -76,7 +77,8 @@ null_stats <- function () {
         package = NA_character_,
         version = NA_character_,
         date = NA_character_,
-        license = NA_character_
+        license = NA_character_,
+        stringsAsFactors = FALSE
     )
 
     loc_nms <- c (
@@ -263,7 +265,8 @@ loc_summary <- function (x) {
         rel_space_vignettes = rel_space_vignettes,
         rel_space_tests = rel_space_tests,
         indentation = indentation,
-        nexpr = nexpr
+        nexpr = nexpr,
+        stringsAsFactors = FALSE
     )
 }
 
@@ -313,7 +316,8 @@ desc_summary <- function (x) {
         depends = x$depends,
         imports = x$imports,
         suggests = x$suggests,
-        linking_to = x$linking_to
+        linking_to = x$linking_to,
+        stringsAsFactors = FALSE
     )
 }
 
@@ -346,7 +350,8 @@ object_summary <- function (x) {
                 doclines_per_fn_not_exp_mn = 0,
                 doclines_per_fn_not_exp_md = 0,
                 docchars_per_par_exp_mn = 0,
-                docchars_per_par_exp_md = 0
+                docchars_per_par_exp_md = 0,
+                stringsAsFactors = FALSE
             )
         )
     }
@@ -448,7 +453,8 @@ object_summary <- function (x) {
         doclines_per_fn_not_exp_mn = doclines_per_fn_not_exp_mn,
         doclines_per_fn_not_exp_md = doclines_per_fn_not_exp_md,
         docchars_per_par_exp_mn = docchars_per_par_exp_mn,
-        docchars_per_par_exp_md = docchars_per_par_exp_md
+        docchars_per_par_exp_md = docchars_per_par_exp_md,
+        stringsAsFactors = FALSE
     )
 
 }
@@ -534,7 +540,8 @@ network_summary <- function (x) {
         num_terminal_edges_undir = num_terminal_edges_undir,
         node_degree_mn = node_degree_mn,
         node_degree_md = node_degree_md,
-        node_degree_max = node_degree_max
+        node_degree_max = node_degree_max,
+        stringsAsFactors = FALSE
     )
 }
 
@@ -562,7 +569,10 @@ external_call_summary <- function (x) {
     # tibbles put white space in there:
     res <- gsub ("\\s*", "", res)
 
-    res <- data.frame (external_calls = paste0 (res, collapse = ","))
+    res <- data.frame (
+        external_calls = paste0 (res, collapse = ","),
+        stringsAsFactors = FALSE
+    )
 
     return (res)
 }

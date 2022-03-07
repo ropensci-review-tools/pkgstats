@@ -28,7 +28,10 @@ desc_stats <- function (path) {
     desc <- file.path (path, "DESCRIPTION")
     checkmate::assert_file (desc)
 
-    d <- data.frame (read.dcf (desc))
+    d <- data.frame (
+        read.dcf (desc),
+        stringsAsFactors = FALSE
+    )
     license <- d$License
     urls <- NA_character_
     if ("URL" %in% names (d)) {
@@ -90,7 +93,8 @@ desc_stats <- function (path) {
         depends = dep,
         imports = imp,
         suggests = sug,
-        linking_to = lnk
+        linking_to = lnk,
+        stringsAsFactors = FALSE
     )
 }
 
