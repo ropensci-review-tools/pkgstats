@@ -8,13 +8,13 @@
   "codeRepository": "https://github.com/ropensci-review-tools/pkgstats",
   "issueTracker": "https://github.com/ropensci-review-tools/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.3.090",
+  "version": "0.0.3.91",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.1.2 (2021-11-01)",
+  "runtimePlatform": "R version 4.1.3 (2022-03-10)",
   "author": [
     {
       "@type": "Person",
@@ -241,7 +241,7 @@
     },
     "SystemRequirements": "ctags, global, C++11"
   },
-  "fileSize": "842.665KB",
+  "fileSize": "17833.546KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
@@ -259,9 +259,6 @@
     }
   ],
   "readme": "https://github.com/ropensci-review-tools/pkgstats/blob/main/README.md",
-  "contIntegration": [
-    "https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check",
-    "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"
-  ],
+  "contIntegration": ["https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check", "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"],
   "developmentStatus": "https://www.repostatus.org/#active"
 }
