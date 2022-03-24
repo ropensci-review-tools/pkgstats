@@ -302,7 +302,7 @@ add_other_pkgs_to_calls <- function (calls, path) {
         na_calls <- which (is.na (calls$package))
         calls$package [na_calls] <- imports$pkg [match (
             calls$call [na_calls],
-            imports$fn [na_calls]
+            imports$fn
         )]
     }
 
