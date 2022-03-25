@@ -346,6 +346,10 @@ add_other_pkgs_to_calls <- function (calls, path) {
     })
     external_calls <- do.call (rbind, external_calls)
 
+    if (is.null (external_calls)) {
+        return (calls)
+    }
+
     if (nrow (external_calls) == 0L) {
         return (calls)
     }
