@@ -306,7 +306,9 @@ add_other_pkgs_to_calls <- function (calls, path) {
 
     # Finally, manually catch any imported package calls which are not tagged by
     # ctags - this can happen for example if calls are buried inside things like
-    # `tryCatch`, or if they don't form full expressions.
+    # `tryCatch`, or if they don't form full expressions. This relies on
+    # getParseData, which is less reliable than ctags, but can catch some
+    # outliers.
     pkgs_not_called <- imports$pkg [which (!imports$pkg %in% calls$package)]
     if (length (pkgs_not_called) == 0L) {
         return (calls)
@@ -320,25 +322,27 @@ add_other_pkgs_to_calls <- function (calls, path) {
         pattern = "\\.(r|R|q|s|S)$"
     ))
     all_calls <- paste0 (imports_not_called$fn, collapse = "|")
+    tokens <- c ("FUNCTION", "SYMBOL_FUNCTION_CALL", "SPECIAL")
 
     external_calls <- lapply (r_files, function (i) {
-        r_file <- brio::read_lines (i)
-        if (!any (grepl (all_calls, r_file))) {
+
+        pd <- utils::getParseData (control_parse (i))
+        pd <- pd [grep (all_calls, pd$text), ]
+        pd <- pd [which (pd$token %in% tokens), ]
+
+        if (nrow (pd) == 0L) {
             return (NULL)
         }
 
-        out <- lapply (imports_not_called$fn, function (j) {
-            index <- grep (j, r_file)
-            cbind (
-                rep (j, length (index)),
-                index
-            )   })
-        index <- which (vapply (out, nrow, integer (1)) > 0L)
-        for (j in index) {
-            out [[j]] <- cbind (out [[j]], imports_not_called$pkg [j])
-        }
-        out <- do.call (rbind, out [index])
-        cbind (out, i)
+        data.frame (
+            tags_line = pd$text,
+            call = pd$text,
+            tag = pd$token,
+            file = paste0 ("R/", basename (i)),
+            kind = "unknown",
+            start = pd$line1,
+            end = pd$line2
+        )
     })
     external_calls <- do.call (rbind, external_calls)
 
@@ -346,19 +350,8 @@ add_other_pkgs_to_calls <- function (calls, path) {
         return (calls)
     }
 
-    external_calls <- data.frame (
-        tags_line = NA_integer_,
-        call = external_calls [, 1],
-        tag = NA_character_,
-        file = paste0 (
-            "R/",
-            basename (external_calls [, 4])
-        ),
-        kind = "unknown",
-        start = external_calls [, 2],
-        end = external_calls [, 2],
-        package = external_calls [, 3]
-    )
+    external_calls$package <-
+        imports_not_called$pkg [match (external_calls$call, imports_not_called$fn)]
 
     external_calls$tags_line <- seq (nrow (external_calls)) +
         max (calls$tags_line, na.rm = TRUE)
