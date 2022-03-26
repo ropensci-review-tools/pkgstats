@@ -53,37 +53,19 @@ extract_call_content <- function (tags_r) {
     content <- gsub ("\\\'.*\\\'", "", content)
     index <- which (tags_r$kind == "function")
 
-    # Remove everything within bracets of function definitions
-    bracket_content <- regmatches (
+    # Remove everything within bracets of function definitions.
+    br_content <- regmatches (
         content [index],
-        gregexpr ("(?<=\\().*?(?=\\))",
-            content [index],
-            perl = TRUE
-        )
+        regexpr ("\\([^\\)]+\\)", content [index])
     )
-    bracket_content <- vapply (
-        bracket_content, function (i) {
-            ifelse (length (i) == 0L,
-                "",
-                i [1]
-            )
-        },
-        character (1)
-    )
-
-    has_content <- which (nchar (bracket_content) > 0L)
-    bracket_content <- bracket_content [has_content]
-    index <- index [has_content]
-
     content [index] <- vapply (
         seq_along (index), function (i) {
-            content [index [i]] <-
-                gsub (bracket_content [i], "",
+                gsub (br_content [i], "()",
                     content [index [i]],
                     fixed = TRUE
                 )
-        },
-        character (1)
+            },
+        character (1L)
     )
 
     # Then convert all symbols which are not allowed in function names to
