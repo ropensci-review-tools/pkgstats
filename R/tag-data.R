@@ -21,20 +21,7 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
         error = function (e) e
     )
     if (methods::is (chk, "simpleError")) {
-        chk <- FALSE
-    }
-    if (!chk) {
-        n <- data.frame (matrix (nrow = 0, ncol = 4))
-        names (n) <- c ("file", "line1", "from", "to")
-        e <- data.frame (matrix (nrow = 0, ncol = 8))
-        names (e) <- c (
-            "tags_line", "call", "tag", "file", "kind",
-            "start", "end", "package"
-        )
-        return (list (
-            network = n,
-            external_calls = e
-        ))
+        return (dummy_tags_data ())
     }
 
     if (is.null (has_tabs)) {
@@ -119,6 +106,21 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
         network = network,
         stats = src_stats (rbind (tags_r, tags_src, tags_inst)),
         external_calls = external_calls
+    ))
+}
+
+dummy_tags_data <- function () {
+
+    n <- data.frame (matrix (nrow = 0, ncol = 4))
+    names (n) <- c ("file", "line1", "from", "to")
+    e <- data.frame (matrix (nrow = 0, ncol = 8))
+    names (e) <- c (
+        "tags_line", "call", "tag", "file", "kind",
+        "start", "end", "package"
+    )
+    return (list (
+        network = n,
+        external_calls = e
     ))
 }
 
