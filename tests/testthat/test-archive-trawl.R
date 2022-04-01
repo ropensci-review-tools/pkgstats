@@ -22,4 +22,6 @@ test_that ("archive trawl", {
 
     expect_s3_class (out, "data.frame")
     expect_equal (nrow (out), 1L)
+
+    unlink (archive_path, recursive = TRUE)
 })
