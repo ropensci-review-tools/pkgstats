@@ -1,11 +1,12 @@
 
 test_all <- (identical (Sys.getenv ("MPADGE_LOCAL"), "true") |
     identical (Sys.getenv ("GITHUB_WORKFLOW"), "test-coverage"))
+test_all <- FALSE
 
 test_that ("pkgstats", {
 
     if (!test_all) {
-        Sys.setenv ("PKGSTATS_NO_CTAGS" = "true")
+        Sys.setenv ("PKGSTATS_CRAN_TESTS" = "true")
     }
 
     path <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
@@ -15,7 +16,7 @@ test_that ("pkgstats", {
     s <- pkgstats (path)
     #    )
     if (!test_all) {
-        Sys.unsetenv ("PKGSTATS_NO_CTAGS")
+        Sys.unsetenv ("PKGSTATS_CRAN_TESTS")
     }
 
     expect_type (s, "list")

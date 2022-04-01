@@ -67,7 +67,7 @@ pkgstats <- function (path = ".") {
 
     # Running 'ctags_test()' on some CRAN machines takes too long (> 10s), so
     # this flag is used to switch off tagging routines on CRAN tests.
-    if (Sys.getenv ("PKGSTATS_NO_CTAGS") == "true") {
+    if (Sys.getenv ("PKGSTATS_CRAN_TESTS") == "true") {
         tags <- dummy_tags_data ()
     } else {
         # `s2$package` mucks up local linter
@@ -98,6 +98,10 @@ pkgstats <- function (path = ".") {
 #' Get all exported and internal functions
 #' @noRd
 all_functions <- function (path) {
+
+    if (Sys.getenv ("PKGSTATS_CRAN_TESTS") == "true") {
+        return (all_functions_dummy ())
+    }
 
     r_files <- normalizePath (list.files (
         file.path (path, "R"),
@@ -160,6 +164,24 @@ all_functions <- function (path) {
     }
 
     return (ret)
+}
+
+#' Dummy return from `all_funcitons()` function, triggered only on CRAN tests
+#' which otherwise take too long because of the `parse` calls.
+#' @noRd
+all_functions_dummy <- function () {
+
+    data.frame (
+        "file_name" = character (0),
+        "fn_name" = character (0),
+        "loc" = integer (0),
+        "npars" = integer (0),
+        "has_dots" = logical (0),
+        "exported" = logical (0),
+        "param_nchars_md" = numeric (0),
+        "param_nchars_mn" = numeric (0),
+        "num_doclines" = integer (0)
+    )
 }
 
 #' param src value of tags$stats from tags_data()
