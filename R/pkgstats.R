@@ -65,8 +65,14 @@ pkgstats <- function (path = ".") {
         fns$param_nchars_md [index] <- s3$param_nchars_md [index2]
     }
 
-    # `s2$package` mucks up local linter
-    tags <- tags_data (path, has_tabs, s2 [["package"]])
+    # Running 'ctags_test()' on some CRAN machines takes too long (> 10s), so
+    # this flag is used to switch off tagging routines on CRAN tests.
+    if (Sys.getenv ("PKGSTATS_NO_CTAGS") == "true") {
+        tags <- dummy_tags_data ()
+    } else {
+        # `s2$package` mucks up local linter
+        tags <- tags_data (path, has_tabs, s2 [["package"]])
+    }
 
     translations <- get_translations (path)
 

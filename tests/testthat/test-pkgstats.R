@@ -1,8 +1,12 @@
 
 test_all <- (identical (Sys.getenv ("MPADGE_LOCAL"), "true") |
-             identical (Sys.getenv ("GITHUB_WORKFLOW"), "test-coverage"))
+    identical (Sys.getenv ("GITHUB_WORKFLOW"), "test-coverage"))
 
 test_that ("pkgstats", {
+
+    if (!test_all) {
+        Sys.setenv ("PKGSTATS_NO_CTAGS" = "true")
+    }
 
     path <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
     # message is now produced once per session by readr, but can only be
@@ -10,6 +14,10 @@ test_that ("pkgstats", {
     # expect_message (
     s <- pkgstats (path)
     #    )
+    if (!test_all) {
+        Sys.unsetenv ("PKGSTATS_NO_CTAGS")
+    }
+
     expect_type (s, "list")
 
     nms <- c (
