@@ -117,7 +117,8 @@ get_one_params <- function (man_file) {
     rd <- tools::parse_Rd (f)
     chk <- file.remove (f) # nolint
 
-    out <- utils::capture.output (tools::Rd2txt (rd))
+    # For 'stages' param, see #40
+    out <- utils::capture.output (tools::Rd2txt (rd, stages = "build"))
     doclines <- length (out [out != ""])
 
     if (!rd_is_fn (rd)) {
