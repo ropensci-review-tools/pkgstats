@@ -65,4 +65,8 @@ Each analysis in an archive trawl spawns several \emph{unsupervised}
 processes, preventing the trawl from running in parallel. Accurate results
 can only be guaranteed by running this function as a single process.
 }
+\seealso{
+Other archive: 
+\code{\link{dl_pkgstats_data}()}
+}
 \concept{archive}
