@@ -265,8 +265,18 @@ count_doclines_src <- function (tags, path) {
                     tag_line_start - 1
                 )
                 not_code <- code [tag_not_code]
-                if (tags$language [i] %in% c ("language:C", "language:C++")) {
-                    ndoclines <- length (grep ("^\\/\\/", not_code))
+
+                this_lang <- gsub ("^language\\:", "", tags$language [i])
+                exts <- file_exts ()
+                ext_i <- exts [match (this_lang, exts$type), ]
+                ndoclines <- length (grep (ext_i$cmt, not_code))
+                if (ndoclines == 0L & nzchar (ext_i$cmt_open)) {
+                    cmt_open <- grep (ext_i$cmt_open, not_code)
+                    cmt_close <- grep (ext_i$cmt_close, not_code)
+                    if (length (cmt_open) > 0L & length (cmt_close) > 0L) {
+                        ndoclines <- max (cmt_close, na.rm = TRUE) -
+                            min (cmt_open, na.rm = TRUE)
+                    }
                 }
             }
         }
