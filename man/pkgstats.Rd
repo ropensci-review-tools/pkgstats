@@ -2,13 +2,13 @@
 % Please edit documentation in R/pkgstats.R
 \name{pkgstats}
 \alias{pkgstats}
-\title{Collates statistics from one local tarball}
+\title{Analyse statistics of one R package}
 \usage{
 pkgstats(path = ".")
 }
 \arguments{
 \item{path}{Either a path to a local source repository, or a local '.tar.gz'
-file containing code for an R package.}
+file, containing code for an R package.}
 }
 \value{
 List of statistics and data on function call networks (or object
@@ -32,7 +32,7 @@ contributed packages.}
 }
 }
 \description{
-Collates statistics from one local tarball
+Analyse statistics of one R package
 }
 \examples{
 # 'path' can be path to a package tarball:

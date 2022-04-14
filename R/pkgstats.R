@@ -1,7 +1,7 @@
-#' Collates statistics from one local tarball
+#' Analyse statistics of one R package
 #'
 #' @param path Either a path to a local source repository, or a local '.tar.gz'
-#' file containing code for an R package.
+#' file, containing code for an R package.
 #' @return List of statistics and data on function call networks (or object
 #' relationships in other languages). Includes the following components:
 #' \enumerate{
