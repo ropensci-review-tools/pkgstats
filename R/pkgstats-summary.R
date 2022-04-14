@@ -60,7 +60,9 @@ pkgstats_summary <- function (s = NULL) {
 
     # Append any languages not parsed by ctags:
     loc_langs <- unique (s$loc$language [s$loc$dir %in% c ("src", "inst")])
-    loc_langs <- grep ("^[^R]|^html", loc_langs, value = TRUE, ignore.case = TRUE)
+    loc_langs <- grep ("^[^R]|^html", loc_langs,
+        value = TRUE, ignore.case = TRUE
+    )
     langs <- unique (unlist (c (strsplit (out$languages, ",\\s"), loc_langs)))
     out$languages <- paste0 (langs, collapse = ", ")
 
@@ -223,8 +225,8 @@ loc_summary <- function (x) {
 
     }
 
-    if (files_R == 0) {
-        loc_R <- blank_lines_R <- comment_lines_R <- NA_integer_
+    if (files_R == 0) { # nolint
+        loc_R <- blank_lines_R <- comment_lines_R <- NA_integer_ # nolint
     } # nolint
     if (files_src == 0) {
         loc_src <- blank_lines_src <- comment_lines_src <- NA_integer_
