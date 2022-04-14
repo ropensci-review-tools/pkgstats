@@ -33,6 +33,8 @@
 #' s <- pkgstats (path)
 pkgstats <- function (path = ".") {
 
+    path <- check_path (path)
+
     tarball <- FALSE
     if (grepl ("\\.tar\\.gz$", path)) {
         tarball <- TRUE

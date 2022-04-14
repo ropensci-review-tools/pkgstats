@@ -10,7 +10,7 @@
 #' @export
 rd_stats <- function (path) {
 
-    check_path (path)
+    path <- check_path (path)
 
     rd_files <- list.files (file.path (path, "man"),
         pattern = "\\.Rd$",

@@ -1,16 +1,41 @@
 
 get_Rd_metadata <- utils::getFromNamespace (".Rd_get_metadata", "tools") # nolint
 
-#' Check path is an existing directory
+#' Check path is an existing root directory of an R package
+#'
+#' Uses `rprojroot::is_r_package` criterion:
+#' "contains a file "DESCRIPTION" with contents matching "^Package: "
 #' @noRd
 check_path <- function (path) {
 
-    if (!file.exists (path)) {
-        stop (paste0 (
-            "path [", path, "] does not exist. ",
-            "Did you first 'extract_tarball()'?"
-        ))
+    path <- normalizePath (path)
+
+    if (grepl ("\\.tar\\.gz$", path)) {
+
+        checkmate::assert_file_exists (path)
+
+    } else {
+
+        checkmate::assert_directory_exists (path)
+
+        count <- 1L
+        while (!"DESCRIPTION" %in% list.files (path) & count < 5L) {
+
+            path <- normalizePath (file.path (path, ".."))
+        }
+
+        desc <- list.files (
+            path,
+            pattern = "DESCRIPTION",
+            full.names = TRUE
+        )
+        desc <- brio::read_lines (desc)
+        if (!grepl ("^Package:\\s", desc [1])) {
+            stop ("Path does not correspond to an R package")
+        }
     }
+
+    return (path)
 }
 
 #' Decompose file paths into character vectors of named directories and final

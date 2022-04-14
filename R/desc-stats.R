@@ -23,11 +23,9 @@ aut_types <- function () {
 #' @export
 desc_stats <- function (path) {
 
-    check_path (path)
+    path <- check_path (path)
 
     desc <- file.path (path, "DESCRIPTION")
-    checkmate::assert_file (desc)
-
     d <- data.frame (
         read.dcf (desc),
         stringsAsFactors = FALSE
