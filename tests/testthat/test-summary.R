@@ -28,7 +28,7 @@ test_that ("pkgstats-summary", {
 
     expect_s3_class (s, "data.frame")
     expect_equal (nrow (s), 1L)
-    expect_equal (ncol (s), 92L)
+    expect_equal (ncol (s), 94L)
 
     skip_if (!test_all)
 
