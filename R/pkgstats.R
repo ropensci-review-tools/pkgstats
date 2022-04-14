@@ -239,7 +239,7 @@ add_src_to_fn_data <- function (fns, src, doclines) {
     out <- rbind (fns, src)
 
     # Then add src doclines on to output:
-    subdir <- regmatches (out$file_name, regexpr ("^.*\\/", out$file_name))
+    subdir <- regmatches (out$file_name, regexpr ("^.[^\\/]*\\/", out$file_name))
     subdir <- gsub ("\\/$", "", subdir)
     out <- split (out, f = factor (subdir))
 

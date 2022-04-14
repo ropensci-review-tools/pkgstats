@@ -210,7 +210,9 @@ src_stats <- function (tags) {
             has_dots = NA,
             stringsAsFactors = FALSE
         )
-        res <- res [which (!is.na (res$loc)), ]
+        # ctags does not count loc in Rust:
+        res <- res [which (!is.na (res$loc) |
+            res$language == "Rust"), ]
     }
 
     return (res)
@@ -232,19 +234,30 @@ count_doclines_src <- function (tags_src, path) {
         f <- file.path (path, tags_src$file [i])
         code <- brio::read_lines (f)
         tag_line_start <- tags_src$start [i]
-        all_line_nums <- tags_src [
-            tags_src$file == tags_src$file [i],
-            c ("start", "end")
-        ]
-        all_line_nums <- all_line_nums [all_line_nums$end < tag_line_start, ]
-        if (nrow (all_line_nums) > 0L) {
-            tag_not_code <- seq (
-                max (all_line_nums$end) + 1,
-                tag_line_start - 1
-            )
-            not_code <- code [tag_not_code]
-            if (tags_src$language [i] %in% c ("language:C", "language:C++")) {
-                ndoclines <- length (grep ("^\\/\\/", not_code))
+        # ctags does not tag end line numbers of Rust objects:
+        if (tags_src$language [i] == "language:Rust") {
+            all_ends <- grep ("^\\}", code)
+            prev_end <- 1L
+            if (any (all_ends < tag_line_start)) {
+                prev_end <- max (all_ends [which (all_ends < tag_line_start)])
+            }
+            not_code <- code [seq (prev_end + 1L, tag_line_start - 1L)]
+            ndoclines <- length (grep ("^\\s*\\/\\/", not_code))
+        } else {
+            all_line_nums <- tags_src [
+                tags_src$file == tags_src$file [i],
+                c ("start", "end")
+            ]
+            all_line_nums <- all_line_nums [all_line_nums$end < tag_line_start, ]
+            if (nrow (all_line_nums) > 0L) {
+                tag_not_code <- seq (
+                    max (all_line_nums$end) + 1,
+                    tag_line_start - 1
+                )
+                not_code <- code [tag_not_code]
+                if (tags_src$language [i] %in% c ("language:C", "language:C++")) {
+                    ndoclines <- length (grep ("^\\/\\/", not_code))
+                }
             }
         }
 
