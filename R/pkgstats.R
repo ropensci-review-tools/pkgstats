@@ -246,7 +246,7 @@ add_src_to_fn_data <- function (fns, src, doclines) {
     for (s in c ("src", "inst")) {
 
         if (!is.null (out [[s]])) {
-            index <- match (names (doclines$src), out [[s]]$fn_name)
+            index <- match (names (doclines [[s]]), out [[s]]$fn_name)
             out [[s]]$num_doclines [index] <- unname (doclines$src)
         }
     }
