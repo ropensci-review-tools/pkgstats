@@ -46,6 +46,9 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
     tags_src <- withr::with_dir (path, get_ctags ("src", has_tabs))
     tags_inst <- withr::with_dir (path, get_ctags ("inst", has_tabs))
 
+    doclines_src <- count_doclines_src (tags_src, path)
+    doclines_inst <- count_doclines_src (tags_inst, path)
+
     gtags <- NULL
 
     if (!is.null (tags_src) | !is.null (tags_inst)) {
@@ -105,7 +108,11 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
     return (list (
         network = network,
         stats = src_stats (rbind (tags_r, tags_src, tags_inst)),
-        external_calls = external_calls
+        external_calls = external_calls,
+        doclines = list (
+            src = doclines_src,
+            inst = doclines_inst
+        )
     ))
 }
 
@@ -205,6 +212,46 @@ src_stats <- function (tags) {
         )
         res <- res [which (!is.na (res$loc)), ]
     }
+
+    return (res)
+}
+
+#' Count documentation lines in src files.
+#'
+#' Currently only implemented for C and C++
+#' @param tags_src The output of `get_ctags("src")`.
+#' @return An integer vector of length equal to numbers of rows in `tags_src`,
+#' counting numbers of documentation lines for each tagged object.
+#' @noRd
+count_doclines_src <- function (tags_src, path) {
+
+    res <- vapply (seq (nrow (tags_src)), function (i) {
+
+        ndoclines <- 0L
+
+        f <- file.path (path, tags_src$file [i])
+        code <- brio::read_lines (f)
+        tag_line_start <- tags_src$start [i]
+        all_line_nums <- tags_src [
+            tags_src$file == tags_src$file [i],
+            c ("start", "end")
+        ]
+        all_line_nums <- all_line_nums [all_line_nums$end < tag_line_start, ]
+        if (nrow (all_line_nums) > 0L) {
+            tag_not_code <- seq (
+                max (all_line_nums$end) + 1,
+                tag_line_start - 1
+            )
+            not_code <- code [tag_not_code]
+            if (tags_src$language [i] %in% c ("language:C", "language:C++")) {
+                ndoclines <- length (grep ("^\\/\\/", not_code))
+            }
+        }
+
+        return (ndoclines)
+    }, integer (1L))
+
+    names (res) <- tags_src$tag
 
     return (res)
 }
