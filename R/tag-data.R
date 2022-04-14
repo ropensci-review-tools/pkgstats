@@ -221,21 +221,21 @@ src_stats <- function (tags) {
 #' Count documentation lines in src files.
 #'
 #' Currently only implemented for C and C++
-#' @param tags_src The output of `get_ctags("src")`.
-#' @return An integer vector of length equal to numbers of rows in `tags_src`,
+#' @param tags The output of `get_ctags("src")` or `get_ctags("inst")`
+#' @return An integer vector of length equal to numbers of rows in `tags`,
 #' counting numbers of documentation lines for each tagged object.
 #' @noRd
-count_doclines_src <- function (tags_src, path) {
+count_doclines_src <- function (tags, path) {
 
-    res <- vapply (seq (nrow (tags_src)), function (i) {
+    res <- vapply (seq (nrow (tags)), function (i) {
 
         ndoclines <- 0L
 
-        f <- file.path (path, tags_src$file [i])
+        f <- file.path (path, tags$file [i])
         code <- brio::read_lines (f)
-        tag_line_start <- tags_src$start [i]
+        tag_line_start <- tags$start [i]
         # ctags does not tag end line numbers of Rust objects:
-        if (tags_src$language [i] == "language:Rust") {
+        if (tags$language [i] == "language:Rust") {
             all_ends <- grep ("^\\}", code)
             prev_end <- 1L
             if (any (all_ends < tag_line_start)) {
@@ -244,18 +244,20 @@ count_doclines_src <- function (tags_src, path) {
             not_code <- code [seq (prev_end + 1L, tag_line_start - 1L)]
             ndoclines <- length (grep ("^\\s*\\/\\/", not_code))
         } else {
-            all_line_nums <- tags_src [
-                tags_src$file == tags_src$file [i],
+            all_line_nums <- tags [
+                tags$file == tags$file [i],
                 c ("start", "end")
             ]
-            all_line_nums <- all_line_nums [all_line_nums$end < tag_line_start, ]
+            all_line_nums <- all_line_nums [
+                all_line_nums$end < tag_line_start,
+            ]
             if (nrow (all_line_nums) > 0L) {
                 tag_not_code <- seq (
                     max (all_line_nums$end) + 1,
                     tag_line_start - 1
                 )
                 not_code <- code [tag_not_code]
-                if (tags_src$language [i] %in% c ("language:C", "language:C++")) {
+                if (tags$language [i] %in% c ("language:C", "language:C++")) {
                     ndoclines <- length (grep ("^\\/\\/", not_code))
                 }
             }
@@ -264,7 +266,7 @@ count_doclines_src <- function (tags_src, path) {
         return (ndoclines)
     }, integer (1L))
 
-    names (res) <- tags_src$tag
+    names (res) <- tags$tag
 
     return (res)
 }
