@@ -136,7 +136,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   1.201   0.110   2.205
+    ##   1.122   0.081   1.178
 
 ``` r
 names (p)
@@ -194,7 +194,7 @@ language and directory:
 
 1.  `nfiles` = Numbers of files in each directory and language.
 2.  `nlines` = Total numbers of lines in all files.
-3.  `nlines` = Total numbers of lines of code.
+3.  `ncode` = Total numbers of lines of code.
 4.  `ndoc` = Total numbers of documentation or comment lines.
 5.  `nempty` = Total numbers of empty of blank lines.
 6.  `nspaces` = Total numbers of white spaces in all code lines,
@@ -255,15 +255,15 @@ s <- pkgstats_summary (p)
 
 This function reduces the result of the [`pkgstats()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
-to a single line with 91 entries, represented as a `data.frame` with one
+to a single line with 92 entries, represented as a `data.frame` with one
 row and that number of columns. This format is intended to enable
 summary statistics from multiple packages to be aggregated by simply
-binding rows together. While 91 statistics might seem like a lot, the
+binding rows together. While 92 statistics might seem like a lot, the
 [`pkgstats_summary()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
 aims to return as many usable raw statistics as possible in order to
 flexibly allow higher-level statistics to be derived through combination
-and aggregation. These 91 statistics can be roughly grouped into the
+and aggregation. These 92 statistics can be roughly grouped into the
 following categories (not shown in the order in which they actually
 appear), with variable names in parentheses after each description. Some
 statistics are summarised as comma-delimited character strings, such as
@@ -406,7 +406,7 @@ data within each package are separated by a colon.
 s$external_calls
 ```
 
-    ## [1] "base:452:78,brio:7:1,dplyr:7:4,fs:4:2,graphics:10:2,hms:1:1,igraph:3:3,lattice:8:2,pbapply:1:1,pkgstats:108:63,readr:8:5,stats:16:2,sys:13:1,tools:2:2,utils:10:7,visNetwork:3:2,withr:5:1"
+    ## [1] "base:447:78,brio:7:1,dplyr:7:4,fs:4:2,graphics:10:2,hms:1:1,igraph:3:3,pbapply:1:1,pkgstats:99:60,readr:8:5,stats:16:2,sys:13:1,tools:2:2,utils:10:7,visNetwork:3:2,withr:5:1"
 
 This structure allows numbers of calls to all packages to be readily
 extracted with code like the following:
@@ -425,23 +425,22 @@ print (calls)
 ```
 
     ##       package n_total n_unique
-    ## 1        base     452       78
+    ## 1        base     447       78
     ## 2        brio       7        1
     ## 3       dplyr       7        4
     ## 4          fs       4        2
     ## 5    graphics      10        2
     ## 6         hms       1        1
     ## 7      igraph       3        3
-    ## 8     lattice       8        2
-    ## 9     pbapply       1        1
-    ## 10   pkgstats     108       63
-    ## 11      readr       8        5
-    ## 12      stats      16        2
-    ## 13        sys      13        1
-    ## 14      tools       2        2
-    ## 15      utils      10        7
-    ## 16 visNetwork       3        2
-    ## 17      withr       5        1
+    ## 8     pbapply       1        1
+    ## 9    pkgstats      99       60
+    ## 10      readr       8        5
+    ## 11      stats      16        2
+    ## 12        sys      13        1
+    ## 13      tools       2        2
+    ## 14      utils      10        7
+    ## 15 visNetwork       3        2
+    ## 16      withr       5        1
 
 The two numeric columns respectively show the total number of calls made
 to each package, and the total number of unique functions used within
@@ -600,16 +599,16 @@ head (p$external_calls)
     ## 1         1                 left_join                      name
     ## 2         1                        by                      name
     ## 3         1                         c                      name
-    ## 4         2                   .onLoad                   .onLoad
-    ## 5         3 add_base_recommended_pkgs add_base_recommended_pkgs
-    ## 6         4            add_if_missing            add_if_missing
+    ## 4         3 add_base_recommended_pkgs add_base_recommended_pkgs
+    ## 5         4            add_if_missing            add_if_missing
+    ## 6         5          add_igraph_stats          add_igraph_stats
     ##                   file     kind start end  package
     ## 1             R/plot.R nameattr    92  92    dplyr
     ## 2             R/plot.R nameattr    92  92     base
     ## 3             R/plot.R nameattr    92  92     base
-    ## 4           R/onload.R function     2   6 pkgstats
-    ## 5   R/external-calls.R function   204 265 pkgstats
-    ## 6 R/pkgstats-summary.R function   172 182 pkgstats
+    ## 4   R/external-calls.R function   204 265 pkgstats
+    ## 5 R/pkgstats-summary.R function   172 182 pkgstats
+    ## 6         R/tag-data.R function   491 509 pkgstats
 
 These data are converted to a summary form by the [`pkgstats_summary()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html),
@@ -632,25 +631,24 @@ print (x)
 ```
 
     ##           pkg n_total n_unique n_total_rel n_unique_rel
-    ## 1        base     452       78       0.687        0.441
+    ## 1        base     447       78       0.703        0.453
     ## 2        brio       7        1       0.011        0.006
     ## 3       dplyr       7        4       0.011        0.023
-    ## 4          fs       4        2       0.006        0.011
-    ## 5    graphics      10        2       0.015        0.011
+    ## 4          fs       4        2       0.006        0.012
+    ## 5    graphics      10        2       0.016        0.012
     ## 6         hms       1        1       0.002        0.006
     ## 7      igraph       3        3       0.005        0.017
-    ## 8     lattice       8        2       0.012        0.011
-    ## 9     pbapply       1        1       0.002        0.006
-    ## 10   pkgstats     108       63       0.164        0.356
-    ## 11      readr       8        5       0.012        0.028
-    ## 12      stats      16        2       0.024        0.011
-    ## 13        sys      13        1       0.020        0.006
-    ## 14      tools       2        2       0.003        0.011
-    ## 15      utils      10        7       0.015        0.040
-    ## 16 visNetwork       3        2       0.005        0.011
-    ## 17      withr       5        1       0.008        0.006
+    ## 8     pbapply       1        1       0.002        0.006
+    ## 9    pkgstats      99       60       0.156        0.349
+    ## 10      readr       8        5       0.013        0.029
+    ## 11      stats      16        2       0.025        0.012
+    ## 12        sys      13        1       0.020        0.006
+    ## 13      tools       2        2       0.003        0.012
+    ## 14      utils      10        7       0.016        0.041
+    ## 15 visNetwork       3        2       0.005        0.012
+    ## 16      withr       5        1       0.008        0.006
 
-Those data reveal, for example, that the `magrittr` package makes 452
+Those data reveal, for example, that the `magrittr` package makes 447
 individual calls to 78 unique functions from the “base” package.
 
 ## Code of Conduct

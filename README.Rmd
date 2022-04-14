@@ -163,16 +163,16 @@ directory:
 
 1. `nfiles` = Numbers of files in each directory and language.
 2. `nlines` = Total numbers of lines in all files.
-2. `nlines` = Total numbers of lines of code.
-3. `ndoc` = Total numbers of documentation or comment lines.
-4. `nempty` = Total numbers of empty of blank lines.
-5. `nspaces` = Total numbers of white spaces in all code lines, excluding
+3. `ncode` = Total numbers of lines of code.
+4. `ndoc` = Total numbers of documentation or comment lines.
+5. `nempty` = Total numbers of empty of blank lines.
+6. `nspaces` = Total numbers of white spaces in all code lines, excluding
    leading indentation spaces.
-6. `nchars` = Total numbers of non-white-space characters in all code lines.
-7. `nexpr` = Median numbers of nested expressions in all lines which have any
+7. `nchars` = Total numbers of non-white-space characters in all code lines.
+8. `nexpr` = Median numbers of nested expressions in all lines which have any
    expressions (see below).
-8. `ntabs` = Number of lines of code with initial tab indentation.
-8. `indentation` = Number of spaces by which code is indented (with `-1`
+9. `ntabs` = Number of lines of code with initial tab indentation.
+10. `indentation` = Number of spaces by which code is indented (with `-1`
    denoting tab-indentation).
 
 Numbers of nested expressions are counted as numbers of brackets or braces of
