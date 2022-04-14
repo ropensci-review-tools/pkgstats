@@ -91,7 +91,7 @@ pkgstats <- function (path = ".") {
         data_stats = data_stats,
         desc = s2,
         translations = translations,
-        objects = add_src_to_fn_data (fns, tags$stats, tags$doclines),
+        objects = add_src_to_fn_data (fns, tags$stats),
         network = tags$network,
         external_calls = tags$external_calls
     )
@@ -188,7 +188,7 @@ all_functions_dummy <- function () {
 
 #' param src value of tags$stats from tags_data()
 #' @noRd
-add_src_to_fn_data <- function (fns, src, doclines) {
+add_src_to_fn_data <- function (fns, src) {
 
     if (nrow (fns) == 0L) {
         return (fns)
@@ -234,23 +234,10 @@ add_src_to_fn_data <- function (fns, src, doclines) {
         for (n in nms) {
             src [n] <- NA_integer_
         }
+        src <- src [, match (names (fns), names (src))]
     }
 
     out <- rbind (fns, src)
-
-    # Then add src doclines on to output:
-    subdir <- regmatches (out$file_name, regexpr ("^.[^\\/]*\\/", out$file_name))
-    subdir <- gsub ("\\/$", "", subdir)
-    out <- split (out, f = factor (subdir))
-
-    for (s in c ("src", "inst")) {
-
-        if (!is.null (out [[s]])) {
-            index <- match (names (doclines [[s]]), out [[s]]$fn_name)
-            out [[s]]$num_doclines [index] <- unname (doclines$src)
-        }
-    }
-    out <- do.call (rbind, out)
 
     rownames (out) <- NULL
 

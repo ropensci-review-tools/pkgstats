@@ -46,8 +46,8 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
     tags_src <- withr::with_dir (path, get_ctags ("src", has_tabs))
     tags_inst <- withr::with_dir (path, get_ctags ("inst", has_tabs))
 
-    doclines_src <- count_doclines_src (tags_src, path)
-    doclines_inst <- count_doclines_src (tags_inst, path)
+    tags_src <- count_doclines_src (tags_src, path)
+    tags_inst <- count_doclines_src (tags_inst, path)
 
     gtags <- NULL
 
@@ -105,14 +105,12 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
         network$line2 <- NULL
     }
 
+    tags_r$doclines <- NA_integer_
+
     return (list (
         network = network,
         stats = src_stats (rbind (tags_r, tags_src, tags_inst)),
-        external_calls = external_calls,
-        doclines = list (
-            src = doclines_src,
-            inst = doclines_inst
-        )
+        external_calls = external_calls
     ))
 }
 
@@ -195,6 +193,7 @@ src_stats <- function (tags) {
         loc = 0L,
         npars = NA_integer_,
         has_dots = NA,
+        num_doclines = NA_integer_,
         stringsAsFactors = FALSE
     )
 
@@ -208,6 +207,7 @@ src_stats <- function (tags) {
             loc = tags$end - tags$start + 1,
             npars = NA_integer_,
             has_dots = NA,
+            num_doclines = tags$doclines,
             stringsAsFactors = FALSE
         )
         # ctags does not count loc in Rust:
@@ -222,10 +222,14 @@ src_stats <- function (tags) {
 #'
 #' Currently only implemented for C and C++
 #' @param tags The output of `get_ctags("src")` or `get_ctags("inst")`
-#' @return An integer vector of length equal to numbers of rows in `tags`,
+#' @return Modified version of `tags` with additional `doclines` column
 #' counting numbers of documentation lines for each tagged object.
 #' @noRd
 count_doclines_src <- function (tags, path) {
+
+    if (length (tags) == 0L) {
+        return (tags)
+    }
 
     res <- vapply (seq (nrow (tags)), function (i) {
 
@@ -270,7 +274,7 @@ count_doclines_src <- function (tags, path) {
         return (ndoclines)
     }, integer (1L))
 
-    names (res) <- tags$tag
+    tags$doclines <- res
 
-    return (res)
+    return (tags)
 }
