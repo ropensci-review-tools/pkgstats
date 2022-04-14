@@ -123,10 +123,11 @@ null_stats <- function () {
         "loc_per_fn_r_md", "loc_per_fn_r_exp_mn",
         "loc_per_fn_r_exp_md", "loc_per_fn_r_not_exp_mn",
         "loc_per_fn_r_not_exp_md", "loc_per_fn_src_mn",
-        "loc_per_fn_src_md", "languages", "doclines_per_fn_exp_mn",
-        "doclines_per_fn_exp_md", "doclines_per_fn_not_exp_mn",
-        "doclines_per_fn_not_exp_md", "docchars_per_par_exp_mn",
-        "docchars_per_par_exp_md"
+        "loc_per_fn_src_md", "languages",
+        "doclines_per_fn_exp_mn", "doclines_per_fn_exp_md",
+        "doclines_per_fn_not_exp_mn", "doclines_per_fn_not_exp_md",
+        "doclines_per_fn_src_mn", "doclines_per_fn_src_md",
+        "docchars_per_par_exp_mn", "docchars_per_par_exp_md"
     )
     out [obj_nms] <- NA_integer_
 
@@ -355,6 +356,8 @@ object_summary <- function (x) {
                 doclines_per_fn_exp_md = 0,
                 doclines_per_fn_not_exp_mn = 0,
                 doclines_per_fn_not_exp_md = 0,
+                doclines_per_fn_src_mn = 0,
+                doclines_per_fn_src_md = 0,
                 docchars_per_par_exp_mn = 0,
                 docchars_per_par_exp_md = 0,
                 stringsAsFactors = FALSE
@@ -420,6 +423,10 @@ object_summary <- function (x) {
     doclines_per_fn_not_exp_md <-
         stats::median (fns_r$num_doclines [index_not_exp], na.rm = TRUE)
 
+    doclines_src <- x$num_doclines [grep ("^(src|inst)", x$file_name)]
+    doclines_per_fn_src_mn <- mean (doclines_src, na.rm = TRUE)
+    doclines_per_fn_src_md <- stats::median (doclines_src, na.rm = TRUE)
+
     # exract nchars-per-param for exported only:
     nchars_tot <- x$param_nchars_mn * x$npars
     docchars_per_par_exp_mn <- sum (nchars_tot [index_exp], na.rm = TRUE) /
@@ -458,6 +465,8 @@ object_summary <- function (x) {
         doclines_per_fn_exp_md = doclines_per_fn_exp_md,
         doclines_per_fn_not_exp_mn = doclines_per_fn_not_exp_mn,
         doclines_per_fn_not_exp_md = doclines_per_fn_not_exp_md,
+        doclines_per_fn_src_mn = doclines_per_fn_src_mn,
+        doclines_per_fn_src_md = doclines_per_fn_src_md,
         docchars_per_par_exp_mn = docchars_per_par_exp_mn,
         docchars_per_par_exp_md = docchars_per_par_exp_md,
         stringsAsFactors = FALSE
