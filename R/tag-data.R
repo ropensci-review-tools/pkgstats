@@ -251,9 +251,13 @@ count_doclines_src <- function (tags, path) {
             all_line_nums <- all_line_nums [
                 all_line_nums$end < tag_line_start,
             ]
+            all_line_nums <- all_line_nums [
+                which (!is.na (all_line_nums$start) &
+                    !is.na (all_line_nums$end)),
+            ]
             if (nrow (all_line_nums) > 0L) {
                 tag_not_code <- seq (
-                    max (all_line_nums$end) + 1,
+                    max (all_line_nums$end, na.rm = TRUE) + 1,
                     tag_line_start - 1
                 )
                 not_code <- code [tag_not_code]
