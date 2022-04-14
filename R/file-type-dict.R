@@ -647,6 +647,8 @@ file_exts <- function (exts = NULL) {
 
     # add '.q' files because BDR uses these (for example, in 'boot'):
     x <- rbind (x, c ('q', 'R', '', '', '^\\s*#'))
+    # And Fortran, which is not included in standard perl cloc script:
+    x <- rbind (x, c ('f', 'Fortran', '', '', '^\\s*\\*'))
 
     if (!is.null (exts)) {
 
