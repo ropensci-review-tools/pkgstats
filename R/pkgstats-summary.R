@@ -58,6 +58,12 @@ pkgstats_summary <- function (s = NULL) {
 
     out <- cbind (out, object_summary (s$objects))
 
+    # Append any languages not parsed by ctags:
+    loc_langs <- unique (s$loc$language [s$loc$dir %in% c ("src", "inst")])
+    loc_langs <- grep ("^[^R]|^html", loc_langs, value = TRUE, ignore.case = TRUE)
+    langs <- unique (unlist (c (strsplit (out$languages, ",\\s"), loc_langs)))
+    out$languages <- paste0 (langs, collapse = ", ")
+
     out <- cbind (out, network_summary (s$network))
 
     out <- cbind (out,
