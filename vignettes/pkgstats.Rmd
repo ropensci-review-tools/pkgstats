@@ -1,0 +1,170 @@
+---
+title: "Package Statistics"
+author: 
+  - "Mark Padgham"
+date: "`r Sys.Date()`"
+vignette: >
+  %\VignetteIndexEntry{Package Statistics}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set (
+    collapse = TRUE,
+    warning = TRUE,
+    message = TRUE,
+    width = 120,
+    comment = "#>",
+    fig.retina = 2,
+    fig.path = "README-"
+)
+options (repos = c (
+    ropenscireviewtools = "https://ropensci-review-tools.r-universe.dev",
+    CRAN = "https://cloud.r-project.org"
+))
+library (pkgstats)
+```
+
+This vignette describes the statistics collated by `pkgstats`. The first
+section provides full descriptions of all data returned by [the main
+`pkgstats()`
+function](https://docs.ropensci.org/pkgstats/reference/pkgstats.html), and the
+second section describes the output of [the `pkgstats_summary()`
+function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
+which converts statistics to a single-row summary. Single-row summaries from
+multiple packages can be combined to represent the statistical properties of
+multiple packages in a single `data.frame` object. [The `pkgstats()`
+function](https://docs.ropensci.org/pkgstats/reference/pkgstats.html) is
+applied to all CRAN packages on a regular basis, with results accessible with
+[the `dl_pkgstats_data()`
+function](https://docs.ropensci.org/pkgstats/reference/dl_pkgstats_data.html).
+
+## 1. Description of Package Statistics
+
+The [main `pkgstats()`
+function](https://docs.ropensci.org/pkgstats/reference/pkgstats.html) returns a
+`list` of eight main components:
+
+1. `"loc"` summarising "Lines of Code" in package sub-directories and languages;
+2. `"vignettes"` containing counts of numbers of vignettes and demos;
+3. `"data_stats"` summarising data files;
+4. `"desc"` summarising the contents of the package "DESCRIPTION" file;
+5. `"translations"` summarising translations into other (human) languages;
+6. `"objects"`: a table of all "objects" in all languages;
+7. `"network"`: a table of relationships between objects, such as function calls; and
+8. `"external_calls"`: a detailed table of all calls made to all R functions.
+
+The following sub-sections provide further detail on these components (except
+the simpler components of `"vignettes"`, `"data_stats"`, and `"translations"`).
+The results use the output of applying the function to the source code of this package:
+
+```{r main-pkgstats-call}
+s <- pkgstats () # run in root directory of `pkgstats` source
+```
+
+
+### 1.1 Lines of Code
+
+Lines of code are counted using an internal routine specifically developed for
+R packages, and which provides more accurate and R-specific information than
+most open source code counting libraries. For example, the counts in `pkgstats`
+are able to distinguish and separately count code chunks and text lines in
+`.Rmd` files. 
+
+```{r loc}
+s$loc
+```
+
+That output includes the following components, grouped by both computer
+language and package directory:
+
+1. `nfiles` = Numbers of files in each directory and language.
+2. `nlines` = Total numbers of lines in all files.
+3. `ncode` = Total numbers of lines of code.
+4. `ndoc` = Total numbers of documentation or comment lines.
+5. `nempty` = Total numbers of empty of blank lines.
+6. `nspaces` = Total numbers of white spaces in all code lines, excluding
+   leading indentation spaces.
+7. `nchars` = Total numbers of non-white-space characters in all code lines.
+8. `nexpr` = Median numbers of nested expressions in all lines which have any
+   expressions (see below).
+9. `ntabs` = Number of lines of code with initial tab indentation.
+10. `indentation` = Number of spaces by which code is indented (with `-1`
+   denoting tab-indentation).
+
+Numbers of nested expressions are counted as numbers of brackets or braces of
+any type nested on a single line. The following line has one nested bracket:
+
+```{r nested1, eval = FALSE}
+x <- myfn ()
+```
+
+while the following has four:
+
+```{r nested4, eval = FALSE}
+x <- function () { return (myfn ()) }
+```
+
+Code with fewer nested expressions per line is generally easier to read, and
+this metric is provided as one indication of the general readability of
+code. A second relative indication may be extracted by converting numbers of
+spaces and characters to a measure of relative numbers of white spaces, noting
+that the `nchars` value quantifies total characters including white spaces.
+
+```{r rel-space}
+index <- which (s$loc$dir %in% c ("R", "src")) # consider source code only
+sum (s$loc$nspaces [index]) / sum (s$loc$nchars [index])
+```
+
+Finally, the `ntabs` statistic can be used to identify whether code uses tab
+characters as indentation, otherwise the `indentation` statistics indicate
+median numbers of white spaces by which code is indented. The `objects`,
+`network`, and `external_calls` items returned by the [`pkgstats()`
+function](https://docs.ropensci.org/pkgstats/reference/pkgstats.html) are
+described further below.
+
+### 1.2 `"desc"`: The package "DESCRIPTION" file
+
+The `desc` item looks like this:
+
+```{r desc}
+s$desc
+```
+
+This item includes the following components:
+
+- Package name, version, date, and license
+- Package URL(s) (`urls`)
+- URL for BugReports (`bugs`)
+- Number of contributors with role of *author* (`desc_n_aut`), *contributor*
+  (`desc_n_ctb`), *funder* (`desc_n_fnd`), *reviewer* (`desc_n_rev`), *thesis
+  advisor* (`ths`), and *translator* (`trl`, relating to translation between
+  computer and not spoken languages).
+- Comma-separated character entries for all `depends`, `imports`, `suggests`,
+  and `linking_to` packages.
+
+### 1.3 `"objects"`: Objects in all languages
+
+The `objects` item looks like this:
+
+```{r objects}
+head (s$objects)
+```
+
+Objects are primarily sorted by language, with R-language objects given first.
+These are mostly functions, and include statistics on:
+
+- lines of code used to define each function (`loc`);
+- numbers of parameters (`npars`);
+- whether or not the function includes a "three dots" parameter (that is,
+  `...`; identified by `has_dots`);
+- whether or not a function is exported (`exported`);
+- Mean and median numbers of character used to document each parameter
+  (`param_nchards_mn` and `param_nchards_md`, respectively); and
+- Total number of lines of documentation for that object / function.
+
+
+### 1.4 `"network"`: Relationships between objects
+
+### 1.5 `"external_calls"`: All calls made to all R functions
