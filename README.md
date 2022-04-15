@@ -136,7 +136,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   1.122   0.081   1.178
+    ##   1.130   0.108   1.220
 
 ``` r
 names (p)
@@ -207,42 +207,6 @@ language and directory:
 10. `indentation` = Number of spaces by which code is indented (with
     `-1` denoting tab-indentation).
 
-Numbers of nested expressions are counted as numbers of brackets or
-braces of any type nested on a single line. The following line has one
-nested bracket:
-
-``` r
-x <- myfn ()
-```
-
-while the following has four:
-
-``` r
-x <- function () { return (myfn ()) }
-```
-
-Code with fewer nested expressions per line is generally easier to read,
-and this metric is provided as one indication of the general readability
-of code. A second relative indication may be extracted by converting
-numbers of spaces and characters to a measure of relative numbers of
-white spaces, noting that the `nchars` value quantifies total characters
-including white spaces.
-
-``` r
-index <- which (p$loc$dir %in% c ("R", "src")) # consider source code only
-sum (p$loc$nspaces [index]) / sum (p$loc$nchars [index])
-```
-
-    ## [1] 0.2822417
-
-Finally, the `ntabs` statistic can be used to identify whether code uses
-tab characters as indentation, otherwise the `indentation` statistics
-indicate median numbers of white spaces by which code is indented. The
-`objects`, `network`, and `external_calls` items returned by the
-[`pkgstats()`
-function](https://docs.ropensci.org/pkgstats/reference/pkgstats.html)
-are described further below.
-
 ### Overview of statistics and the `pkgstats_summary()` function
 
 A summary of the `pkgstats` data can be obtained by submitting the
@@ -255,15 +219,15 @@ s <- pkgstats_summary (p)
 
 This function reduces the result of the [`pkgstats()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
-to a single line with 92 entries, represented as a `data.frame` with one
+to a single line with 94 entries, represented as a `data.frame` with one
 row and that number of columns. This format is intended to enable
 summary statistics from multiple packages to be aggregated by simply
-binding rows together. While 92 statistics might seem like a lot, the
+binding rows together. While 94 statistics might seem like a lot, the
 [`pkgstats_summary()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
 aims to return as many usable raw statistics as possible in order to
 flexibly allow higher-level statistics to be derived through combination
-and aggregation. These 92 statistics can be roughly grouped into the
+and aggregation. These 94 statistics can be roughly grouped into the
 following categories (not shown in the order in which they actually
 appear), with variable names in parentheses after each description. Some
 statistics are summarised as comma-delimited character strings, such as
