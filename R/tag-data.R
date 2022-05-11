@@ -105,7 +105,9 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
         network$line2 <- NULL
     }
 
-    tags_r$doclines <- NA_integer_
+    if (!is.null (tags_r)) {
+        tags_r$doclines <- NA_integer_
+    }
 
     return (list (
         network = network,
