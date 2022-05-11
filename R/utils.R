@@ -30,7 +30,7 @@ check_path <- function (path) {
             full.names = TRUE
         )
         desc <- brio::read_lines (desc)
-        if (!grepl ("^Package:\\s", desc [1])) {
+        if (!any (grepl ("^Package:\\s", desc))) {
             stop ("Path does not correspond to an R package")
         }
     }
