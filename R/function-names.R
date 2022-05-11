@@ -177,9 +177,12 @@ names_from_rd <- function (path, tarball) {
 
         if (!docType %in% c ("class", "data", "methods", "package")) {
             out <- unique (c (
-                get_Rd_metadata (rd_i, "name"),
                 get_Rd_metadata (rd_i, "alias")
             ))
+            if (length (out) == 0L) {
+                get_Rd_metadata (rd_i, "name")
+            }
+
             index <- grep ("method(s?|,?)$|class$|<\\-|\\[\\[|,|\\s", out)
             if (length (index) > 0L) {
                 out <- out [-index]
