@@ -238,3 +238,148 @@ rm_prev_files <- function (flist, prev_results) {
 
     return (flist)
 }
+
+#' Trawl a local CRAN archive to extract function names only from all packages
+#'
+#' @inheritParams pkgstats_from_archive
+#' @return A `data.frame` object with one row for each function in each package
+#' and the following columns:
+#' \itemize{
+#' \item Package name
+#' \item Package version
+#' \item Function name
+#' }
+#'
+#' @family archive
+#' @export
+pkgstats_fns_from_archive <- function (path,
+                                       archive = FALSE,
+                                       prev_results = NULL,
+                                       results_file = NULL,
+                                       chunk_size = 1000L,
+                                       num_cores = 1L,
+                                       results_path = tempdir ()) {
+
+    requireNamespace ("hms")
+    requireNamespace ("parallel")
+
+    if (!grepl ("tarball", path)) {
+        if (!dir.exists (file.path (path, "tarballs"))) {
+            stop ("path must contain a 'tarballs' directory")
+        }
+        path <- file.path (path, "tarballs")
+    }
+
+    if (basename (path) != "tarballs") {
+        stop ("path must be a directory named 'tarballs'")
+    }
+
+    if (!dir.exists (path)) {
+        stop ("[", path, "] directory does not exist")
+    }
+
+    res <- e <- NULL
+    out <- prev_results
+
+    flist <- list.files (
+        path,
+        recursive = archive,
+        full.names = TRUE,
+        pattern = "\\.tar\\.gz$"
+    )
+    flist <- normalizePath (flist)
+    flist <- rm_prev_files (flist, prev_results)
+    nfiles <- length (flist)
+
+    if (nfiles > 0) {
+
+        n <- ceiling (nfiles / chunk_size)
+        n <- factor (rep (seq (n), each = chunk_size)) [seq (nfiles)]
+        flist <- split (flist, f = n)
+
+        message (
+            "Starting trawl of ", nfiles,
+            " files in ", length (flist), " chunks"
+        )
+
+        results_path <- normalizePath (results_path, mustWork = FALSE)
+        if (!dir.exists (results_path)) {
+            dir.create (results_path)
+        }
+        results_files <- NULL
+
+        index <- 1 # name of temporary files
+        pt0 <- proc.time ()
+
+        for (f in flist) {
+
+            res <- parallel::mclapply (f, function (i) {
+
+                tryCatch (
+                    pkgstats::pkgstats_fn_names (i),
+                    error = function (e) NULL
+                )
+
+            }, mc.cores = num_cores)
+
+            fname <- file.path (
+                results_path,
+                paste0 ("pkgstats-fn-names-results-", index, ".Rds")
+            )
+            saveRDS (do.call (rbind, res), fname)
+            results_files <- c (results_files, fname)
+
+            prog <- index * chunk_size / nfiles
+            prog_fmt <- format (100 * prog, digits = 2)
+            pt1 <- as.integer ((proc.time () - pt0) [3])
+            t_per_file <- pt1 / (index * chunk_size)
+            t_total <- t_per_file * nfiles
+            t_rem <- hms::hms (t_total - pt1)
+
+            ndone <- min (c (nfiles, index * chunk_size))
+
+            message (
+                "[", ndone, " / ", nfiles,
+                "]  = ", prog_fmt, "%; (elapsed, remaining) = (",
+                pt1, ", ", t_rem, ")"
+            )
+
+            index <- index + 1
+        }
+
+        res <- do.call (rbind, lapply (results_files, readRDS))
+    }
+
+    out <- rbind (out, res)
+    rownames (out) <- NULL
+
+    chk <- file.remove (results_files) # nolint
+
+    if (!is.null (res) & !is.null (results_file)) {
+
+        if (!grepl (.Platform$file.sep, results_file)) {
+            results_file <- file.path (".", results_file)
+        }
+        results_file <- normalizePath (results_file, mustWork = FALSE)
+
+        results_path <- gsub (
+            basename (results_file), "",
+            results_file
+        )
+        results_path <- normalizePath (results_path)
+        if (!dir.exists (results_path)) {
+            stop ("Directory [", results_path, "] does not exist")
+        }
+
+        results_file <- basename (results_file)
+        results_file <- tools::file_path_sans_ext (results_file)
+        results_file <- file.path (
+            results_path,
+            paste0 (results_file, ".Rds")
+        )
+
+        saveRDS (out, results_file)
+    }
+
+    invisible (out)
+}

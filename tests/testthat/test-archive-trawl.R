@@ -13,6 +13,10 @@ test_that ("archive trawl", {
         pkgstats_from_archive (path),
         "path must contain a 'tarballs' directory"
     )
+    expect_error (
+        pkgstats_fns_from_archive (path),
+        "path must contain a 'tarballs' directory"
+    )
 
     tarball_path <- file.path (archive_path, "tarballs")
     dir.create (tarball_path, recursive = TRUE)
@@ -22,6 +26,12 @@ test_that ("archive trawl", {
 
     expect_s3_class (out, "data.frame")
     expect_equal (nrow (out), 1L)
+
+    out <- pkgstats_fns_from_archive (tarball_path)
+
+    expect_s3_class (out, "data.frame")
+    expect_equal (ncol (out), 3L)
+    expect_identical (names (out), c ("package", "version", "fn_name"))
 
     unlink (archive_path, recursive = TRUE)
 })
