@@ -60,11 +60,11 @@ extract_call_content <- function (tags_r) {
     )
     content [index] <- vapply (
         seq_along (index), function (i) {
-                gsub (br_content [i], "()",
-                    content [index [i]],
-                    fixed = TRUE
-                )
-            },
+            gsub (br_content [i], "()",
+                content [index [i]],
+                fixed = TRUE
+            )
+        },
         character (1L)
     )
 
@@ -88,6 +88,7 @@ extract_call_content <- function (tags_r) {
     content <- gsub ("\\b[0-9]", "", content)
     # anything after comments
     content <- gsub ("\\#.*$", "", content)
+    content [which (is.na (content))] <- ""
 
     # Then split all around space to obtain call references
     calls <- strsplit (content, "\\s+")
@@ -136,7 +137,8 @@ extract_call_content <- function (tags_r) {
 
     fn_lines <- apply (
         fns [, c ("tag", "file", "start", "end")], 1,
-        function (i) cbind (i [1], i [2], seq (i [3], i [4]))
+        function (i) cbind (i [1], i [2], seq (i [3], i [4])),
+        simplify = FALSE
     )
 
     if (is.list (fn_lines)) {
