@@ -146,6 +146,15 @@ names_from_rd <- function (path, tarball) {
     }
 
     flist <- normalizePath (flist)
+    # only extract Rd files from man directory:
+    is_man <- vapply (
+        fs::path_split (flist),
+        function (i) {
+                any (i == "man")
+            },
+        logical (1L)
+    )
+    flist <- flist [which (is_man)]
 
     if (chk != 0) {
     }
@@ -165,8 +174,8 @@ names_from_rd <- function (path, tarball) {
                 get_Rd_metadata (rd_i, "alias")
             ))
             methods <- unlist (lapply (rd_i, function (j) {
-                    get_Rd_metadata (j, "method")
-                }))
+                get_Rd_metadata (j, "method")
+            }))
             if (length (methods) > 0L) {
                 out <- NULL
             }
