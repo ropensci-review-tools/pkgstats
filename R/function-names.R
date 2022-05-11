@@ -150,8 +150,8 @@ names_from_rd <- function (path, tarball) {
     is_man <- vapply (
         fs::path_split (flist),
         function (i) {
-                any (i == "man")
-            },
+            any (i == "man")
+        },
         logical (1L)
     )
     flist <- flist [which (is_man)]
@@ -168,11 +168,15 @@ names_from_rd <- function (path, tarball) {
 
         out <- NULL
 
-        if (!docType %in% c ("package", "data")) {
+        if (!docType %in% c ("class", "data", "package")) {
             out <- unique (c (
                 get_Rd_metadata (rd_i, "name"),
                 get_Rd_metadata (rd_i, "alias")
             ))
+            index <- grep ("method(s?)$|class$", out)
+            if (length (index) > 0L) {
+                out <- out [-index]
+            }
             methods <- unlist (lapply (rd_i, function (j) {
                 get_Rd_metadata (j, "method")
             }))
