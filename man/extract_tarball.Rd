@@ -21,4 +21,8 @@ package
 f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 path <- extract_tarball (f)
 }
+\seealso{
+Other misc: 
+\code{\link{pkgstats_fn_names}()}
+}
 \concept{misc}
