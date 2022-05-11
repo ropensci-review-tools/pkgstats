@@ -173,7 +173,7 @@ names_from_rd <- function (path, tarball) {
                 get_Rd_metadata (rd_i, "name"),
                 get_Rd_metadata (rd_i, "alias")
             ))
-            index <- grep ("method(s?|,?)$|class$|<\\-|\\[\\[\\,|\\s", out)
+            index <- grep ("method(s?|,?)$|class$|<\\-|\\[\\[|,|\\s", out)
             if (length (index) > 0L) {
                 out <- out [-index]
             }
@@ -185,9 +185,6 @@ names_from_rd <- function (path, tarball) {
             }
         }
 
-        if (any (grepl ("\\[\\[|\\$|<\\-|,|\\s", out))) {
-                message (i)
-            }
         return (out)
     })
 
