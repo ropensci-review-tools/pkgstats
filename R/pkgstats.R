@@ -111,6 +111,10 @@ all_functions <- function (path) {
         pattern = "\\.(r|R|q|s|S)$"
     ))
 
+    if (length (r_files) == 0L) {
+        return (all_functions_dummy ())
+    }
+
     eval1 <- function (f) {
 
         p <- control_parse (file = f)
