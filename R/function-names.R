@@ -91,6 +91,12 @@ pkgstats_fn_names <- function (path) {
         fns <- gsub ("\\#.*$|\\\t", "", fns)
         fns <- unlist (strsplit (fns, ","))
         fns <- gsub ("^\\s*|\\s*$", "", fns)
+
+        # same grep as for names_from_rd below:
+        index <- grep ("method(s?|,?)$|class$|<\\-|\\[\\[|,|\\s", fns)
+        if (length (index) > 0) {
+            fns <- fns [-index]
+        }
     }
 
     # Then get imports to remove re-exported fns:
@@ -103,6 +109,7 @@ pkgstats_fn_names <- function (path) {
     )
 
     fns <- fns [which (!fns %in% imps)]
+    fns <- noquote (fns)
 
     pkg <- get_pkg_name_version (desc)
 
