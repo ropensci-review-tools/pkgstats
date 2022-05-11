@@ -116,7 +116,7 @@ pkgstats_fn_names <- function (path) {
     data.frame (
         package = pkg [1],
         version = pkg [2],
-        fn_name = fns,
+        fn_name = gsub ("^\\\"|\\\"$", "", fns),
         stringsAsFactors = FALSE
     )
 }
@@ -198,10 +198,7 @@ names_from_rd <- function (path, tarball) {
         return (out)
     })
 
-    nms <- unique (unlist (nms))
-    nms <- gsub ("^\\\"|\\\"$", "", nms)
-
-    return (nms)
+    return (unique (unlist (nms)))
 }
 
 get_pkg_name_version <- function (desc) {
