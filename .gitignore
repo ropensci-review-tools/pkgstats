@@ -16,6 +16,8 @@ aaa\.Rmd*
 # compiled object files
 *.o
 *.so
+data-raw
 docs
 inst/bin
+inst/WORDLIST
 windows
