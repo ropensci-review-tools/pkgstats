@@ -195,7 +195,10 @@ names_from_rd <- function (path, tarball) {
         return (out)
     })
 
-    return (unique (unlist (nms)))
+    nms <- unique (unlist (nms))
+    nms <- gsub ("^\\\"|\\\"$", "", nms)
+
+    return (nms)
 }
 
 get_pkg_name_version <- function (desc) {
