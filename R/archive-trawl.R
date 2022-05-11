@@ -350,6 +350,9 @@ pkgstats_fns_from_archive <- function (path,
         res <- do.call (rbind, lapply (results_files, readRDS))
     }
 
+    t_total <- hms::hms (as.integer (proc.time () [3] - pt0 [3]))
+    message ("\nTotal time = ", t_total)
+
     out <- rbind (out, res)
     rownames (out) <- NULL
 
