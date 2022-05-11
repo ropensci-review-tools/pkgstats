@@ -117,13 +117,23 @@ get_one_params <- function (man_file) {
     rd <- tools::parse_Rd (f)
     chk <- file.remove (f) # nolint
 
-    # For 'stages' param, see #40
-    out <- utils::capture.output (tools::Rd2txt (rd, stages = "build"))
-    doclines <- length (out [out != ""])
-
     if (!rd_is_fn (rd)) {
         return (res)
     }
+
+    out <- tryCatch (
+        utils::capture.output (tools::Rd2txt (rd)),
+        error = function (e) NULL
+    )
+    if (is.null (out)) {
+        # For 'stages' param, see #40
+        out <- tryCatch (
+            utils::capture.output (tools::Rd2txt (rd, stages = "build")),
+            error = function (e) NULL
+        )
+    }
+
+    doclines <- length (out [out != ""])
 
     aliases <- unique (c (
         get_Rd_metadata (rd, "name"),
