@@ -13,6 +13,54 @@ pkgstats_fn_names <- function (path) {
 
     path <- check_path (path)
 
+    nmsp <- get_namespace_contents (path)
+
+    desc_path <- get_desc_path (path)
+
+    if (any (grepl ("^exportPattern", nmsp))) {
+
+        tarball <- grepl ("\\.tar\\.gz$", path)
+        fns <- names_from_rd (path, tarball)
+
+    } else {
+
+        fns <- grep ("^export\\s?\\(", nmsp, value = TRUE)
+        fns <- gsub ("^export\\s?\\(|\\)\\s?$", "", fns)
+        fns <- gsub ("\\#.*$|\\\t", "", fns)
+        fns <- unlist (strsplit (fns, ","))
+        fns <- gsub ("^\\s*|\\s*$", "", fns)
+
+        # same grep as for names_from_rd below:
+        index <- grep ("method(s?|,?)$|class$|<\\-|\\[\\[|,|\\s", fns)
+        if (length (index) > 0) {
+            fns <- fns [-index]
+        }
+    }
+
+    # Then get imports to remove re-exported fns:
+    imps <- grep ("^importFrom", nmsp, value = TRUE)
+    imps <- gsub ("^importFrom\\(|\\)\\s?$", "", imps)
+    imps <- gsub ("^[^,]*,", "", imps)
+    imps <- gsub (
+        "^\\s*|\\s*$", "",
+        unlist (strsplit (imps, ","))
+    )
+
+    fns <- fns [which (!fns %in% imps)]
+    fns <- noquote (fns)
+
+    pkg <- get_pkg_name_version (desc_path)
+
+    data.frame (
+        package = pkg [1],
+        version = pkg [2],
+        fn_name = gsub ("^\\\"|\\\"$", "", fns),
+        stringsAsFactors = FALSE
+    )
+}
+
+get_namespace_contents <- function (path) {
+
     tarball <- grepl ("\\.tar\\.gz$", path)
 
     if (tarball) {
@@ -45,14 +93,6 @@ pkgstats_fn_names <- function (path) {
 
         nmsp <- file.path (tempdir (), nmsp)
 
-        desc <- grep ("DESCRIPTION", flist, value = TRUE)
-        chk <- utils::untar (
-            path,
-            files = desc,
-            exdir = tempdir ()
-        )
-        desc <- normalizePath (file.path (tempdir (), desc))
-
     } else {
 
         nmsp <- list.files (
@@ -63,13 +103,6 @@ pkgstats_fn_names <- function (path) {
         )
         nmsp <- normalizePath (nmsp [1])
 
-        desc <- list.files (
-            path,
-            recursive = TRUE,
-            full.names = TRUE,
-            pattern = "DESCRIPTION"
-        )
-        desc <- normalizePath (desc [1])
     }
 
     # See R source in src/library/base/R/namespace.R for reference, especially
@@ -80,45 +113,42 @@ pkgstats_fn_names <- function (path) {
         srcfile = NULL
     )
 
-    if (any (grepl ("^exportPattern", nmsp))) {
+    return (nmsp)
+}
 
-        fns <- names_from_rd (path, tarball)
+get_desc_path <- function (path) {
+
+    tarball <- grepl ("\\.tar\\.gz$", path)
+
+    if (tarball) {
+
+        flist <- utils::untar (
+            path,
+            exdir = tempdir (),
+            list = TRUE,
+            tar = "internal"
+        )
+
+        desc <- grep ("DESCRIPTION", flist, value = TRUE)
+        chk <- utils::untar (
+            path,
+            files = desc,
+            exdir = tempdir ()
+        )
+        desc <- normalizePath (file.path (tempdir (), desc))
 
     } else {
 
-        fns <- grep ("^export\\s?\\(", nmsp, value = TRUE)
-        fns <- gsub ("^export\\s?\\(|\\)\\s?$", "", fns)
-        fns <- gsub ("\\#.*$|\\\t", "", fns)
-        fns <- unlist (strsplit (fns, ","))
-        fns <- gsub ("^\\s*|\\s*$", "", fns)
-
-        # same grep as for names_from_rd below:
-        index <- grep ("method(s?|,?)$|class$|<\\-|\\[\\[|,|\\s", fns)
-        if (length (index) > 0) {
-            fns <- fns [-index]
-        }
+        desc <- list.files (
+            path,
+            recursive = TRUE,
+            full.names = TRUE,
+            pattern = "DESCRIPTION"
+        )
+        desc <- normalizePath (desc [1])
     }
 
-    # Then get imports to remove re-exported fns:
-    imps <- grep ("^importFrom", nmsp, value = TRUE)
-    imps <- gsub ("^importFrom\\(|\\)\\s?$", "", imps)
-    imps <- gsub ("^[^,]*,", "", imps)
-    imps <- gsub (
-        "^\\s*|\\s*$", "",
-        unlist (strsplit (imps, ","))
-    )
-
-    fns <- fns [which (!fns %in% imps)]
-    fns <- noquote (fns)
-
-    pkg <- get_pkg_name_version (desc)
-
-    data.frame (
-        package = pkg [1],
-        version = pkg [2],
-        fn_name = gsub ("^\\\"|\\\"$", "", fns),
-        stringsAsFactors = FALSE
-    )
+    return (desc)
 }
 
 names_from_rd <- function (path, tarball) {
@@ -170,12 +200,12 @@ names_from_rd <- function (path, tarball) {
 
         rd_i <- tools::parse_Rd (i)
 
-        docType <- get_Rd_metadata (rd_i, "docType")
-        docType <- ifelse (length (docType) == 0L, "", docType)
+        doc_type <- get_Rd_metadata (rd_i, "docType")
+        doc_type <- ifelse (length (doc_type) == 0L, "", doc_type)
 
         out <- NULL
 
-        if (!docType %in% c ("class", "data", "methods", "package")) {
+        if (!doc_type %in% c ("class", "data", "methods", "package")) {
             out <- unique (c (
                 get_Rd_metadata (rd_i, "alias")
             ))
