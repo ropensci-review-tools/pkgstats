@@ -19,8 +19,7 @@ pkgstats_fn_names <- function (path) {
 
     if (any (grepl ("^exportPattern", nmsp))) {
 
-        tarball <- grepl ("\\.tar\\.gz$", path)
-        fns <- names_from_rd (path, tarball)
+        fns <- aliases_from_rd (path, nmsp)
 
     } else {
 
@@ -30,7 +29,7 @@ pkgstats_fn_names <- function (path) {
         fns <- unlist (strsplit (fns, ","))
         fns <- gsub ("^\\s*|\\s*$", "", fns)
 
-        # same grep as for names_from_rd below:
+        # same grep as for aliases_from_rd below:
         index <- grep ("method(s?|,?)$|class$|<\\-|\\[\\[|,|\\s", fns)
         if (length (index) > 0) {
             fns <- fns [-index]
@@ -151,7 +150,52 @@ get_desc_path <- function (path) {
     return (desc)
 }
 
-names_from_rd <- function (path, tarball) {
+#' List all functions defined in R source code which match 'exportPattern'
+#'
+#' @noRd
+exp_ptn_r_fn_names <- function (path, nmsp) {
+
+    tarball <- grepl ("\\.tar\\.gz$", path)
+
+    if (tarball) {
+
+        path_dir <- extract_tarball (path)
+        s1 <- loc_stats (path_dir)
+        has_tabs <- any (s1$ntabs > 0L)
+        tags_r <- withr::with_dir (path_dir, get_ctags ("R", has_tabs))
+
+    } else {
+
+        s1 <- loc_stats (path)
+        has_tabs <- any (s1$ntabs > 0L)
+        tags_r <- withr::with_dir (path, get_ctags ("R", has_tabs))
+
+    }
+
+    tags_r <- tags_r [which (tags_r$kind == "function"), ]
+    exp_ptn <- gsub (
+        "^exportPattern\\(|\\)$|\\\"", "",
+        grep ("^exportPattern", nmsp, value = TRUE)
+    )
+    fns_exp_ptn <- grep (exp_ptn, tags_r$tag, value = TRUE)
+
+    return (fns_exp_ptn)
+}
+
+#' Get all aliases from .Rd files
+#'
+#' These are matched to actual function names from
+#' `exp_ptn_r_fn_names()`, and any class, data, method, or package definitions
+#' are removed.
+#'
+#' Removal of 'class', 'data', and 'package' aliases is straightforward. Removal
+#' of 'method' aliases simply ignores any aliases within any .Rd file that also
+#' includes a 'method' section. That is not entirely reliable, and may also
+#' include genuine function names.
+#' @noRd
+aliases_from_rd <- function (path, nmsp) {
+
+    tarball <- grepl ("\\.tar\\.gz$", path)
 
     if (tarball) {
 
@@ -194,6 +238,7 @@ names_from_rd <- function (path, tarball) {
     flist <- flist [which (is_man)]
 
     if (chk != 0) {
+        return (NULL)
     }
 
     nms <- lapply (flist, function (i) {
@@ -228,7 +273,11 @@ names_from_rd <- function (path, tarball) {
         return (out)
     })
 
-    return (unique (unlist (nms)))
+    nms <- unique (unlist (nms))
+
+    nms_exp_ptn <- exp_ptn_r_fn_names (path, nmsp)
+
+    return (nms [which (nms %in% nms_exp_ptn)])
 }
 
 get_pkg_name_version <- function (desc) {
