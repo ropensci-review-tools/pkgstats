@@ -9,18 +9,6 @@ test_that ("pkgstats", {
     }
 
     path <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
-    # add a fake importFrom call that is not used in pkg:
-    path <- extract_tarball (path)
-    f <- file.path (path, "R", "pkgstats-package.R")
-    p <- brio::read_lines (f)
-    i <- max (grep ("^\\#\\'\\s@aliases", p))
-    p <- c (
-        p [seq (1, i)],
-        "#' @importFrom jsonlite fromJSON",
-        p [seq (i + 1, length (p))]
-    )
-    brio::write_lines (p, f)
-    roxygen2::roxygenise (path)
 
     # message is now produced once per session by readr, but can only be
     # suppressed by Suggesting yet another package, `tidyselect`.
