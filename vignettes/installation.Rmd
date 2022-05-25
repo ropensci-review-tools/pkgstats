@@ -74,8 +74,9 @@ The `pkgstats` package includes a function to ensure your local installations
 of `universal-ctags` and `global` work correctly. Please ensure you see the
 following prior to proceeding:
 
-```{r ctags-check, eval = TRUE}
+```{r ctags-check, eval = FALSE}
 ctags_test ()
+#> [1] TRUE
 ```
 
 Note that GNU `global` can be linked at installation to the Universal Ctags
