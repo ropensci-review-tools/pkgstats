@@ -30,7 +30,9 @@
 #' s <- pkgstats (f)
 #' # or to a source directory:
 #' path <- extract_tarball (f)
+#' \dontrun{
 #' s <- pkgstats (path)
+#' }
 pkgstats <- function (path = ".") {
 
     path <- check_path (path)

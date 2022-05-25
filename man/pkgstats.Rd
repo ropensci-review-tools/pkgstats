@@ -40,7 +40,9 @@ f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 s <- pkgstats (f)
 # or to a source directory:
 path <- extract_tarball (f)
+\dontrun{
 s <- pkgstats (path)
+}
 }
 \seealso{
 Other stats: 
