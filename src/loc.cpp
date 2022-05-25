@@ -1,7 +1,6 @@
 #include "code-symbols.h"
 #include "loc.h"
 
-#include <cpp11.hpp>
 #include <numeric>
 using namespace cpp11;
 

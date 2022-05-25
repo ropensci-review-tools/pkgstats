@@ -5,6 +5,8 @@
 
 // https://stackoverflow.com/questions/1719070/what-is-the-right-approach-when-using-stl-container-for-median-calculation/1719155#1719155
 
+double median (std::vector <int> &v);
+
 double median (std::vector <int> &v)
 {
     if (v.size () == 0)

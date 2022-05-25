@@ -10,6 +10,8 @@
 #include <assert.h>
 #include <cctype> // isspace
 
+#include <cpp11.hpp>
+
 #include "utils.h"
 
 /* This is a self-contained and highly restricted version of a Lines-Of-Code
@@ -62,3 +64,8 @@ LocStats file_loc (const std::string f,
         const std::string cmt);
 
 } // end namespace loc
+
+cpp11::writable::integers cpp_loc(const cpp11::strings flist,
+        const cpp11::strings cmt_open,
+        const cpp11::strings cmt_close,
+        const cpp11::strings cmt);
