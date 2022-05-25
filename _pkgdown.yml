@@ -1,5 +1,8 @@
 url: https://docs.ropensci.org/pkgstats
 
+figures:
+  dev: grDevices::png
+
 reference:
 - title: Main functions
   contents:
