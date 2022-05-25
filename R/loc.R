@@ -62,7 +62,7 @@ get_file_types <- function (flist) {
 
 #' Internal calculation of Lines-of-Code Statistics
 #'
-#' @param path Directory to package being analysed
+#' @param path Directory to source code of package being analysed
 #' @return A list of statistics for each of three directories, 'R', 'src', and
 #' 'inst/include', each one having 5 statistics of total numbers of lines,
 #' numbers of empty lines, total numbers of white spaces, total numbers of
@@ -70,11 +70,12 @@ get_file_types <- function (flist) {
 #'
 #' @note NA values are returned for directories which do not exist.
 #' @family stats
+#' @export
 #' @examples
 #' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
+#' # have to extract tarball to call function on source code:
 #' path <- extract_tarball (f)
 #' loc_stats (path)
-#' @export
 loc_stats <- function (path) {
 
     path <- normalizePath (path)

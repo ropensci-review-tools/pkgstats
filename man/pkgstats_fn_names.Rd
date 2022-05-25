@@ -20,6 +20,12 @@ A \code{data.frame} with two columns:
 \description{
 Extract names of all functions for one R package
 }
+\examples{
+# 'path' can be path to a package tarball:
+f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
+path <- extract_tarball (f)
+s <- pkgstats_fn_names (path)
+}
 \seealso{
 Other misc: 
 \code{\link{extract_tarball}()}

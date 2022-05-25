@@ -9,6 +9,11 @@
 #' }
 #' @family misc
 #' @export
+#' @examples
+#' # 'path' can be path to a package tarball:
+#' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
+#' path <- extract_tarball (f)
+#' s <- pkgstats_fn_names (path)
 pkgstats_fn_names <- function (path) {
 
     path <- check_path (path)

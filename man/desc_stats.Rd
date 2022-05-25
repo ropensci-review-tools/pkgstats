@@ -7,13 +7,14 @@
 desc_stats(path)
 }
 \arguments{
-\item{path}{Directory to package being analysed}
+\item{path}{Directory to source code of package being analysed}
 }
 \description{
 Statistics from DESCRIPTION files
 }
 \examples{
 f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
+# have to extract tarball to call function on source code:
 path <- extract_tarball (f)
 desc_stats (path)
 }

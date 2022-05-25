@@ -2,12 +2,12 @@
 #'
 #' @inheritParams loc_stats
 #' @family stats
+#' @export
 #' @examples
 #' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 #' # have to extract tarball to call function on source code:
 #' path <- extract_tarball (f)
 #' rd_stats (path)
-#' @export
 rd_stats <- function (path) {
 
     path <- check_path (path)

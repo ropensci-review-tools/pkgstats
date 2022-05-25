@@ -7,7 +7,7 @@
 rd_stats(path)
 }
 \arguments{
-\item{path}{Directory to package being analysed}
+\item{path}{Directory to source code of package being analysed}
 }
 \description{
 Stats from '.Rd' files

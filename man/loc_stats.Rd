@@ -7,7 +7,7 @@
 loc_stats(path)
 }
 \arguments{
-\item{path}{Directory to package being analysed}
+\item{path}{Directory to source code of package being analysed}
 }
 \value{
 A list of statistics for each of three directories, 'R', 'src', and
@@ -23,6 +23,7 @@ NA values are returned for directories which do not exist.
 }
 \examples{
 f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
+# have to extract tarball to call function on source code:
 path <- extract_tarball (f)
 loc_stats (path)
 }

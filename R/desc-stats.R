@@ -16,11 +16,12 @@ aut_types <- function () {
 #'
 #' @inheritParams loc_stats
 #' @family stats
+#' @export
 #' @examples
 #' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
+#' # have to extract tarball to call function on source code:
 #' path <- extract_tarball (f)
 #' desc_stats (path)
-#' @export
 desc_stats <- function (path) {
 
     path <- check_path (path)
