@@ -2,10 +2,11 @@
 #' Extract names of all functions for one R package
 #'
 #' @inheritParams pkgstats
-#' @return A `data.frame` with two columns:
+#' @return A `data.frame` with three columns:
 #' \itemize{
-#' \item Name of package
-#' \item Name of function
+#' \item package: Name of package
+#' \item version: Package version
+#' \item fn_name: Name of function
 #' }
 #' @family misc
 #' @export
@@ -25,6 +26,16 @@ pkgstats_fn_names <- function (path) {
     if (any (grepl ("^exportPattern", nmsp))) {
 
         fns <- aliases_from_rd (path, nmsp)
+
+    } else if (!any (grepl ("^export", nmsp))) {
+
+        # no functions exported
+        return (data.frame (
+            package = character (0L),
+            version = character (0L),
+            fn_name = character (0L),
+            stringsAsFactors = FALSE
+        ))
 
     } else {
 

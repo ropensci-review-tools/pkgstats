@@ -11,10 +11,11 @@ pkgstats_fn_names(path)
 file, containing code for an R package.}
 }
 \value{
-A \code{data.frame} with two columns:
+A \code{data.frame} with three columns:
 \itemize{
-\item Name of package
-\item Name of function
+\item package: Name of package
+\item version: Package version
+\item fn_name: Name of function
 }
 }
 \description{
