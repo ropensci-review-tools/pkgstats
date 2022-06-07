@@ -6,6 +6,10 @@ test_all <- (
 
 test_that ("pkgstats-null-summary", {
 
+    if (!test_all) {
+        Sys.setenv ("PKGSTATS_CRAN_TESTS" = "true")
+    }
+
     path <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
     p <- pkgstats (path)
     s1 <- pkgstats_summary (p)
@@ -17,6 +21,10 @@ test_that ("pkgstats-null-summary", {
 })
 
 test_that ("pkgstats-summary", {
+
+    if (!test_all) {
+        Sys.setenv ("PKGSTATS_CRAN_TESTS" = "true")
+    }
 
     path <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 
