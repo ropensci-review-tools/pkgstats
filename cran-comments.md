@@ -1,4 +1,4 @@
-# CRAN notes for pkgstats_0.0.4 submission
+# CRAN notes for pkgstats_0.0.5 submission
 
 This is a first submission of a package for static code analysis of R packages. The submission does not yet have an accompanying DOI because the associated manuscript first requires the package to be published on CRAN. Our next submission will include the DOI.
 
@@ -13,3 +13,5 @@ GitHub actions:
 
 CRAN win-builder:
 * R-oldrelease, R-release, R-devel
+
+Package also checked using `Clang++ -Weverything`, and both local memory sanitzer and `rocker/r-devel-san` with clean results.
