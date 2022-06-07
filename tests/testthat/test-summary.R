@@ -12,6 +12,9 @@ test_that ("pkgstats-null-summary", {
 
     path <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
     p <- pkgstats (path)
+    if (!test_all) {
+        Sys.unsetenv ("PKGSTATS_CRAN_TESTS")
+    }
     s1 <- pkgstats_summary (p)
 
     s0 <- pkgstats_summary (NULL)
@@ -29,6 +32,9 @@ test_that ("pkgstats-summary", {
     path <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 
     p <- pkgstats (path)
+    if (!test_all) {
+        Sys.unsetenv ("PKGSTATS_CRAN_TESTS")
+    }
 
     expect_silent (
         s <- pkgstats_summary (p)

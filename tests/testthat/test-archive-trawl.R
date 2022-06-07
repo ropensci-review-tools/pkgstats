@@ -1,5 +1,12 @@
 
+test_all <- (identical (Sys.getenv ("MPADGE_LOCAL"), "true") |
+    identical (Sys.getenv ("GITHUB_WORKFLOW"), "test-coverage"))
+
 test_that ("archive trawl", {
+
+    if (!test_all) {
+        Sys.setenv ("PKGSTATS_CRAN_TESTS" = "true")
+    }
 
     f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
     tarball <- utils::tail (fs::path_split (fs::path_tidy (f)) [[1]], 1L)
@@ -34,4 +41,7 @@ test_that ("archive trawl", {
     expect_identical (names (out), c ("package", "version", "fn_name"))
 
     unlink (archive_path, recursive = TRUE)
+    if (!test_all) {
+        Sys.unsetenv ("PKGSTATS_CRAN_TESTS")
+    }
 })

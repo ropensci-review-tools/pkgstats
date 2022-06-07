@@ -14,7 +14,7 @@ test_that ("pkgstats", {
     # suppressed by Suggesting yet another package, `tidyselect`.
     # expect_message (
     s <- pkgstats (path)
-    #    )
+
     if (!test_all) {
         Sys.unsetenv ("PKGSTATS_CRAN_TESTS")
     }
