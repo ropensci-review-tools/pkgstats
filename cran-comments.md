@@ -9,9 +9,7 @@ The package has been checked on all environments listed below, and generates onl
 GitHub actions:
 * Linux: R-release, R-devel, R-oldrelease
 * OSX: R-release
-* Windows: R3.6, R4.0, R-devel
+* Windows: R-release, R-devel, R-oldrelease
 
 CRAN win-builder:
 * R-oldrelease, R-release, R-devel
-
-Package also checked using `Clang++ -Weverything`, and both local memory sanitzer and `rocker/r-devel-san` with clean results.
