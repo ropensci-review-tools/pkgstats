@@ -72,7 +72,7 @@ pkgstats_from_archive <- function (path,
     res <- NULL
     out <- prev_results
 
-    flist <- list_archive_files (path)
+    flist <- list_archive_files (path, archive)
     flist <- rm_prev_files (flist, prev_results)
     nfiles <- length (flist)
 
@@ -193,7 +193,7 @@ pkgstats_from_archive <- function (path,
     invisible (out)
 }
 
-list_archive_files <- function (path) {
+list_archive_files <- function (path, recursive = FALSE) {
 
     if (!grepl ("tarball", path)) {
         if (!dir.exists (file.path (path, "tarballs"))) {
@@ -212,7 +212,7 @@ list_archive_files <- function (path) {
 
     flist <- list.files (
         path,
-        recursive = archive,
+        recursive = recursive,
         full.names = TRUE,
         pattern = "\\.tar\\.gz$"
     )

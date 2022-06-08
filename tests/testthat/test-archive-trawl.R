@@ -16,7 +16,9 @@ test_that ("archive trawl", {
         dir.create (archive_path)
     }
     path <- file.path (archive_path, tarball)
-    file.copy (f, path)
+    if (!file.exists (path)) {
+        file.copy (f, path)
+    }
 
     expect_error (
         pkgstats_from_archive (path),
@@ -28,8 +30,12 @@ test_that ("archive trawl", {
     )
 
     tarball_path <- file.path (archive_path, "tarballs")
-    dir.create (tarball_path, recursive = TRUE)
-    file.copy (path, file.path (tarball_path, tarball))
+    if (!dir.exists (tarball_path)) {
+        dir.create (tarball_path, recursive = TRUE)
+    }
+    if (!file.exists (file.path (tarball_path, tarball))) {
+        file.copy (path, file.path (tarball_path, tarball))
+    }
 
     out <- pkgstats_from_archive (tarball_path)
 
