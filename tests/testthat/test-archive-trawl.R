@@ -9,10 +9,12 @@ test_that ("archive trawl", {
     }
 
     f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
-    tarball <- utils::tail (fs::path_split (fs::path_tidy (f)) [[1]], 1L)
+    tarball <- basename (f)
 
-    dir.create (file.path (tempdir (), "archive"))
     archive_path <- file.path (tempdir (), "archive")
+    if (!dir.exists (archive_path)) {
+        dir.create (archive_path)
+    }
     path <- file.path (archive_path, tarball)
     file.copy (f, path)
 
