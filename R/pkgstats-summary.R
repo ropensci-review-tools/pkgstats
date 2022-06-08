@@ -26,11 +26,13 @@
 #'   edges with zero centrality.
 #' }
 #' @family stats
+#' @export
 #' @examples
 #' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
+#' \dontrun{
 #' p <- pkgstats (f)
 #' s <- pkgstats_summary (p)
-#' @export
+#' }
 pkgstats_summary <- function (s = NULL) {
 
     if (is.null (s)) {

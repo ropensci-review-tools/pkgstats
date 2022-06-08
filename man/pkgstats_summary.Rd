@@ -41,8 +41,10 @@ edges with zero centrality.
 }
 \examples{
 f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
+\dontrun{
 p <- pkgstats (f)
 s <- pkgstats_summary (p)
+}
 }
 \seealso{
 Other stats: 
