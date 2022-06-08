@@ -9,12 +9,14 @@
 #' @param pkg_name Only used for external_call_network, to label
 #' package-internal calls.
 #' @family tags
+#' @export
 #' @examples
 #' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 #' # have to extract tarball to call function on source code:
 #' path <- extract_tarball (f)
+#' \dontrun{
 #' tags <- tags_data (path)
-#' @export
+#' }
 tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
 
     chk <- tryCatch (ctags_test (),

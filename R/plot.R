@@ -16,8 +16,10 @@
 #' @family output
 #' @examples
 #' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
+#' \dontrun{
 #' p <- pkgstats (f)
 #' plot_network (p)
+#' }
 #' @export
 plot_network <- function (s, plot = TRUE, vis_save = NULL) {
 

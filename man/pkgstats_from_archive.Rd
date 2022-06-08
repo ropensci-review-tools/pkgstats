@@ -65,6 +65,24 @@ Each analysis in an archive trawl spawns several \emph{unsupervised}
 processes, preventing the trawl from running in parallel. Accurate results
 can only be guaranteed by running this function as a single process.
 }
+\examples{
+# Create fake archive directory with single tarball:
+f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
+tarball <- basename (f)
+
+archive_path <- file.path (tempdir (), "archive")
+if (!dir.exists (archive_path)) {
+    dir.create (archive_path)
+}
+path <- file.path (archive_path, tarball)
+file.copy (f, path)
+tarball_path <- file.path (archive_path, "tarballs")
+dir.create (tarball_path, recursive = TRUE)
+file.copy (path, file.path (tarball_path, tarball))
+\dontrun{
+out <- pkgstats_from_archive (tarball_path)
+}
+}
 \seealso{
 Other archive: 
 \code{\link{dl_pkgstats_data}()},

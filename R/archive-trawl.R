@@ -39,6 +39,23 @@
 #'
 #' @family archive
 #' @export
+#' @examples
+#' # Create fake archive directory with single tarball:
+#' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
+#' tarball <- basename (f)
+#'
+#' archive_path <- file.path (tempdir (), "archive")
+#' if (!dir.exists (archive_path)) {
+#'     dir.create (archive_path)
+#' }
+#' path <- file.path (archive_path, tarball)
+#' file.copy (f, path)
+#' tarball_path <- file.path (archive_path, "tarballs")
+#' dir.create (tarball_path, recursive = TRUE)
+#' file.copy (path, file.path (tarball_path, tarball))
+#' \dontrun{
+#' out <- pkgstats_from_archive (tarball_path)
+#' }
 pkgstats_from_archive <- function (path,
                                    archive = TRUE,
                                    prev_results = NULL,
@@ -114,7 +131,10 @@ pkgstats_from_archive <- function (path,
                     if (save_full) {
                         saveRDS (s, file.path (results_path, pkg))
                     } else if (save_ex_calls) {
-                        saveRDS (s$external_calls, file.path (results_path, pkg))
+                        saveRDS (
+                            s$external_calls,
+                            file.path (results_path, pkg)
+                        )
                     }
                 }
 
