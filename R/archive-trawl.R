@@ -69,31 +69,10 @@ pkgstats_from_archive <- function (path,
     requireNamespace ("hms")
     requireNamespace ("parallel")
 
-    if (!grepl ("tarball", path)) {
-        if (!dir.exists (file.path (path, "tarballs"))) {
-            stop ("path must contain a 'tarballs' directory")
-        }
-        path <- file.path (path, "tarballs")
-    }
-
-    if (basename (path) != "tarballs") {
-        stop ("path must be a directory named 'tarballs'")
-    }
-
-    if (!dir.exists (path)) {
-        stop ("[", path, "] directory does not exist")
-    }
-
-    res <- e <- NULL
+    res <- NULL
     out <- prev_results
 
-    flist <- list.files (
-        path,
-        recursive = archive,
-        full.names = TRUE,
-        pattern = "\\.tar\\.gz$"
-    )
-    flist <- normalizePath (flist)
+    flist <- list_archive_files (path)
     flist <- rm_prev_files (flist, prev_results)
     nfiles <- length (flist)
 
@@ -214,6 +193,33 @@ pkgstats_from_archive <- function (path,
     invisible (out)
 }
 
+list_archive_files <- function (path) {
+
+    if (!grepl ("tarball", path)) {
+        if (!dir.exists (file.path (path, "tarballs"))) {
+            stop ("path must contain a 'tarballs' directory")
+        }
+        path <- file.path (path, "tarballs")
+    }
+
+    if (basename (path) != "tarballs") {
+        stop ("path must be a directory named 'tarballs'")
+    }
+
+    if (!dir.exists (path)) {
+        stop ("[", path, "] directory does not exist")
+    }
+
+    flist <- list.files (
+        path,
+        recursive = archive,
+        full.names = TRUE,
+        pattern = "\\.tar\\.gz$"
+    )
+
+    return (normalizePath (flist))
+}
+
 #' Remove files for which results have already been generated
 #' @param flist Full paths to all tarball files to be analysed
 #' @param prev_results `data.frame` of previous results
@@ -298,7 +304,7 @@ pkgstats_fns_from_archive <- function (path,
         stop ("[", path, "] directory does not exist")
     }
 
-    res <- e <- NULL
+    res <- NULL
     out <- prev_results
 
     flist <- list.files (
