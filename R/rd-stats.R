@@ -1,6 +1,9 @@
 #' Stats from '.Rd' files
 #'
 #' @inheritParams loc_stats
+#' @return A `data.frame` of function names and numbers of parameters and lines
+#' of documentation for each, along with mean and median numbers of characters
+#' used to document each parameter.
 #' @family stats
 #' @export
 #' @examples
