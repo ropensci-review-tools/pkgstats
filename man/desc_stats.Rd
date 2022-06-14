@@ -9,6 +9,11 @@ desc_stats(path)
 \arguments{
 \item{path}{Directory to source code of package being analysed}
 }
+\value{
+A \code{data.frame} with one row and 16 columns extracting various
+information from the 'DESCRIPTION' file, include websites, tallies of
+different kinds of authors and contributors, and package dependencies.
+}
 \description{
 Statistics from DESCRIPTION files
 }

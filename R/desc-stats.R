@@ -15,6 +15,9 @@ aut_types <- function () {
 #' Statistics from DESCRIPTION files
 #'
 #' @inheritParams loc_stats
+#' @return A `data.frame` with one row and 16 columns extracting various
+#' information from the 'DESCRIPTION' file, include websites, tallies of
+#' different kinds of authors and contributors, and package dependencies.
 #' @family stats
 #' @export
 #' @examples
