@@ -352,7 +352,10 @@ add_other_pkgs_to_calls <- function (calls, path) {
     }
 
     external_calls$package <-
-        imports_not_called$pkg [match (external_calls$call, imports_not_called$fn)]
+        imports_not_called$pkg [match (
+            external_calls$call,
+            imports_not_called$fn
+        )]
 
     external_calls$tags_line <- seq (nrow (external_calls)) +
         max (calls$tags_line, na.rm = TRUE)
