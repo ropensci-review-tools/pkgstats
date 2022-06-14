@@ -95,7 +95,7 @@ pkgstats <- function (path = ".") {
         data_stats = data_stats,
         desc = s2,
         translations = translations,
-        objects = add_src_to_fn_data (fns, tags$stats),
+        objects = add_src_to_fn_data (fns, tags$objects),
         network = tags$network,
         external_calls = tags$external_calls
     )

@@ -16,7 +16,7 @@
 #' and the data frame also include network metrics for each edge, calculated
 #' through representing the network in both directed (suffix "_dir") and
 #' undirected (suffix "_undir") forms.
-#' \item "stats" A `data.frame` of statistics on each object (generally
+#' \item "objects" A `data.frame` of statistics on each object (generally
 #' functions in R, and other kinds of objects in other source languages),
 #' including the kind of object, the language, numbers of lines-of-code,
 #' parameters, and lines of documentation, and a binary flag indicating whether
@@ -131,7 +131,7 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
 
     return (list (
         network = network,
-        stats = src_stats (rbind (tags_r, tags_src, tags_inst)),
+        objects = src_objects (rbind (tags_r, tags_src, tags_inst)),
         external_calls = external_calls
     ))
 }
@@ -205,7 +205,7 @@ rm_tabs <- function (d, nspaces = 2) {
 #' convert tags_src into same format as the function summary of R code
 #' @param tags tags_src from main fn
 #' @noRd
-src_stats <- function (tags) {
+src_objects <- function (tags) {
 
     res <- data.frame (
         file_name = NA_character_,

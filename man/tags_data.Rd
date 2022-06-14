@@ -26,7 +26,7 @@ source languages. This is effectively an edge-based network representation,
 and the data frame also include network metrics for each edge, calculated
 through representing the network in both directed (suffix "_dir") and
 undirected (suffix "_undir") forms.
-\item "stats" A \code{data.frame} of statistics on each object (generally
+\item "objects" A \code{data.frame} of statistics on each object (generally
 functions in R, and other kinds of objects in other source languages),
 including the kind of object, the language, numbers of lines-of-code,
 parameters, and lines of documentation, and a binary flag indicating whether
