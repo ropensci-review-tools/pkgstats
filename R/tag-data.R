@@ -8,6 +8,24 @@
 #' calling that function.
 #' @param pkg_name Only used for external_call_network, to label
 #' package-internal calls.
+#' @return A list of three items:
+#' \itemize{
+#' \item "network" A `data.frame` of relationships between objects, generally as
+#' calls between functions in R, but other kinds of relationships in other
+#' source languages. This is effectively an edge-based network representation,
+#' and the data frame also include network metrics for each edge, calculated
+#' through representing the network in both directed (suffix "_dir") and
+#' undirected (suffix "_undir") forms.
+#' \item "stats" A `data.frame` of statistics on each object (generally
+#' functions in R, and other kinds of objects in other source languages),
+#' including the kind of object, the language, numbers of lines-of-code,
+#' parameters, and lines of documentation, and a binary flag indicating whether
+#' or not R functions accept "three-dots" parameters (`...`).
+#' \item "external_calls" A `data.frame` of every call from within every R
+#' function to any external R package, including base and recommended packages.
+#' The location of each calls is recorded, along with the external function and
+#' package being called.
+#' }
 #' @family tags
 #' @export
 #' @examples
