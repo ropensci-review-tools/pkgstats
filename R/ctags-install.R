@@ -81,6 +81,8 @@ ctags_make <- function (ctags_dir, bin_dir = NULL, sudo = TRUE) {
 #' @param sudo Set to `FALSE` if `sudo` is not available, in which case a
 #' value for `bin_dir` will also have to be explicitly specified, and be a
 #' location where a binary is able to be installed without `sudo` privileges.
+#' @return Nothing; the function will fail if installation fails, otherwise
+#' returns nothing.
 #'
 #' @family tags
 #' @examples

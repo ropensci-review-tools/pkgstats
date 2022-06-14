@@ -14,6 +14,10 @@ defining location to install the binary, with default of \verb{/usr/local}.}
 value for \code{bin_dir} will also have to be explicitly specified, and be a
 location where a binary is able to be installed without \code{sudo} privileges.}
 }
+\value{
+Nothing; the function will fail if installation fails, otherwise
+returns nothing.
+}
 \description{
 'ctags' is installed with this package on both Windows and macOS systems;
 this is an additional function to install from source on Unix systems.
