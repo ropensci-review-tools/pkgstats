@@ -199,15 +199,28 @@ add_base_recommended_pkgs <- function (calls) {
     # recommended pkgs can not be (assumed to be) loaded. This list from
     # https://cran.r-project.org/src/contrib/4.1.0/Recommended/
     rcmds <- c (
-        "KernSmooth", "MASS", "Matrix", "boot", "class", "cluster",
-        "codetools", "foreign", "lattice", "mgcv", "nlme", "nnet",
-        "rpart", "spatial", "survival"
+        "boot",
+        "class",
+        "cluster",
+        "codetools",
+        "foreign",
+        "KernSmooth",
+        "lattice",
+        "MASS",
+        "Matrix",
+        "mgcv",
+        "nlme",
+        "nnet",
+        "rpart",
+        "spatial",
+        "survival"
     )
-    ip <- data.frame (
-        utils::installed.packages (),
-        stringsAsFactors = FALSE
-    )
-    rcmds <- rcmds [which (rcmds %in% ip$Package)]
+    is_installed <- vapply (rcmds, function (i) {
+        tryCatch (
+            find.package (i),
+            error = function (e) ""
+        )}, character (1L))
+    rcmds <- rcmds [which (nzchar (is_installed))]
 
     ll <- .libPaths ()
 
