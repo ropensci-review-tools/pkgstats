@@ -115,7 +115,7 @@ null_stats <- function () {
     desc_nms <- c (
         "urls", "bugs", "desc_n_aut", "desc_n_ctb", "desc_n_fnd",
         "desc_n_rev", "desc_n_ths", "desc_n_trl", "depends",
-        "imports", "suggests", "linking_to"
+        "imports", "suggests", "enhances", "linking_to"
     )
     out [desc_nms] <- NA_character_
     out [grep ("^desc\\_", desc_nms, value = TRUE)] <- NA_integer_
@@ -327,6 +327,7 @@ desc_summary <- function (x) {
         depends = x$depends,
         imports = x$imports,
         suggests = x$suggests,
+        enhances = x$enhances,
         linking_to = x$linking_to,
         stringsAsFactors = FALSE
     )
