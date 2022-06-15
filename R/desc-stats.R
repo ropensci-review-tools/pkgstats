@@ -40,33 +40,7 @@ desc_stats <- function (path) {
         urls <- d$URL
     }
 
-    if ("Authors.R" %in% names (d)) {
-        authors <- eval (parse (text = d$Authors.R))
-        # remove everything before and after square brackets
-        authors <- gsub ("^.*\\[|\\].*$", "", authors)
-        n_aut <- vapply (
-            aut_types (), function (i) {
-                length (grep (i, authors))
-            },
-            integer (1)
-        )
-    } else {
-        # There is no reliable way to establish numbers of authors for packages
-        # which only have an "Author" field, because these are not intended to
-        # be machine-parseable.
-        authors <- d$Author
-        if (grepl ("\\sand\\s", authors)) {
-            authors <- strsplit (authors, "\\sand\\s") [[1]]
-        } else if (grepl (",", authors)) {
-            authors <- strsplit (authors, ",") [[1]]
-        }
-        n_aut <- rep (0, length (aut_types ()))
-        names (n_aut) <- aut_types ()
-        n_aut [1] <- length (authors)
-    }
-
-    n_aut <- data.frame (matrix (n_aut, nrow = 1))
-    names (n_aut) <- aut_types ()
+    n_aut <- desc_authors (d)
 
     # Dependencies:
     dep <- extract_deps (d, "Depends")
@@ -98,6 +72,39 @@ desc_stats <- function (path) {
         linking_to = lnk,
         stringsAsFactors = FALSE
     )
+}
+
+desc_authors <- function (d) {
+
+    if ("Authors.R" %in% names (d)) {
+        authors <- eval (parse (text = d$Authors.R))
+        # remove everything before and after square brackets
+        authors <- gsub ("^.*\\[|\\].*$", "", authors)
+        n_aut <- vapply (
+            aut_types (), function (i) {
+                length (grep (i, authors))
+            },
+            integer (1)
+        )
+    } else {
+        # There is no reliable way to establish numbers of authors for packages
+        # which only have an "Author" field, because these are not intended to
+        # be machine-parseable.
+        authors <- d$Author
+        if (grepl ("\\sand\\s", authors)) {
+            authors <- strsplit (authors, "\\sand\\s") [[1]]
+        } else if (grepl (",", authors)) {
+            authors <- strsplit (authors, ",") [[1]]
+        }
+        n_aut <- rep (0, length (aut_types ()))
+        names (n_aut) <- aut_types ()
+        n_aut [1] <- length (authors)
+    }
+
+    n_aut <- data.frame (matrix (n_aut, nrow = 1))
+    names (n_aut) <- aut_types ()
+
+    return (n_aut)
 }
 
 extract_deps <- function (d, type = "Depends") {
