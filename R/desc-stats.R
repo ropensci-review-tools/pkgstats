@@ -28,6 +28,11 @@ aut_types <- function () {
 desc_stats <- function (path) {
 
     path <- check_path (path)
+    if (grepl ("\\.tar\\.gz$", path)) {
+        stop ("path must be directory containing package source",
+            call. = FALSE
+        )
+    }
 
     desc <- file.path (path, "DESCRIPTION")
     d <- data.frame (
