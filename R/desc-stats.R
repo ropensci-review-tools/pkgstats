@@ -29,9 +29,7 @@ desc_stats <- function (path) {
 
     path <- check_path (path)
     if (grepl ("\\.tar\\.gz$", path)) {
-        stop ("path must be directory containing package source",
-            call. = FALSE
-        )
+        stop ("path must be directory containing package source", call. = FALSE)
     }
 
     desc <- file.path (path, "DESCRIPTION")
@@ -51,6 +49,7 @@ desc_stats <- function (path) {
     dep <- extract_deps (d, "Depends")
     imp <- extract_deps (d, "Imports")
     sug <- extract_deps (d, "Suggests")
+    enh <- extract_deps (d, "Enhances")
     lnk <- extract_deps (d, "LinkingTo")
 
     bugs <- ifelse ("BugReports" %in% names (d),
@@ -74,6 +73,7 @@ desc_stats <- function (path) {
         depends = dep,
         imports = imp,
         suggests = sug,
+        enhances = enh,
         linking_to = lnk,
         stringsAsFactors = FALSE
     )
