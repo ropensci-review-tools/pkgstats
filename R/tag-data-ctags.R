@@ -104,6 +104,9 @@ get_ctags <- function (d = "R", has_tabs) {
     }
 
     tags <- tags [which (!grepl (excluded_file_ptn (), tags$file)), ]
+    if (nrow (tags) == 0L) {
+        return (NULL)
+    }
 
     tags$start <- as.integer (gsub ("^line\\:", "", tags$start))
 
