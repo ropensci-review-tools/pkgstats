@@ -8,13 +8,19 @@
   "codeRepository": "https://github.com/ropensci-review-tools/pkgstats",
   "issueTracker": "https://github.com/ropensci-review-tools/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.4.089",
+  "version": "0.0.5",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
   "runtimePlatform": "R version 4.2.0 (2022-04-22)",
+  "provider": {
+    "@id": "https://cran.r-project.org",
+    "@type": "Organization",
+    "name": "Comprehensive R Archive Network (CRAN)",
+    "url": "https://cran.r-project.org"
+  },
   "author": [
     {
       "@type": "Person",
@@ -265,7 +271,7 @@
     },
     "SystemRequirements": "ctags, global, C++11"
   },
-  "fileSize": "600.009KB",
+  "fileSize": "601.972KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
@@ -283,9 +289,6 @@
     }
   ],
   "readme": "https://github.com/ropensci-review-tools/pkgstats/blob/main/README.md",
-  "contIntegration": [
-    "https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check",
-    "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"
-  ],
+  "contIntegration": ["https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check", "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"],
   "developmentStatus": "https://www.repostatus.org/#active"
 }
