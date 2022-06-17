@@ -25,7 +25,15 @@ options (repos = c (
 ))
 ```
 
-The easiest way to install this package is [via the associated
+The `pkgstats` package [is on
+CRAN](https://cran.r-project.org/package=pkgstats), so can be installed
+directly with,
+
+```{r install, eval = FALSE}
+install.packages ("pkgstats")
+```
+
+The latest development version can be installed [via the associated
 `r-universe`](https://ropensci-review-tools.r-universe.dev/ui#builds). As
 shown there, simply enable the universe with
 
@@ -36,15 +44,8 @@ options (repos = c (
 ))
 ```
 
-And then install the usual way with,
-
-```{r install, eval = FALSE}
-install.packages ("pkgstats")
-```
-
-Alternatively, the package can be installed by running one of the following
-lines:
-
+And then call `install.packages()` the same way. Alternatively, the development
+version of the package can be installed by running one of the following lines:
 
 
 ```{r remotes, eval = FALSE}
