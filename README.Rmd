@@ -13,7 +13,7 @@ output:
 [![codecov](https://codecov.io/gh/ropensci-review-tools/pkgstats/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ropensci-review-tools/pkgstats)
 [![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/pkgstats)](https://cran.r-project.org/package=pkgstats/) 
-[![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![CRAN Downloads](https://cranlogs.r-pkg.org/badges/grand-total/pkgstats?color=orange)](https://cran.r-project.org/package=pkgstats)
 <!-- badges: end -->
 
 ```{r, include = FALSE, echo = FALSE}

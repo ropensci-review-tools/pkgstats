@@ -6,8 +6,8 @@ status](https://github.com/ropensci-review-tools/pkgstats/workflows/R-CMD-check/
 [![Project Status:
 Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/pkgstats)](https://cran.r-project.org/package=pkgstats/)
-[![Project Status:
-Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![CRAN
+Downloads](https://cranlogs.r-pkg.org/badges/grand-total/pkgstats?color=orange)](https://cran.r-project.org/package=pkgstats)
 <!-- badges: end -->
 
 # pkgstats
@@ -65,7 +65,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   1.730   0.113   1.822
+    ##   1.701   0.124   1.802
 
 ``` r
 names (p)
