@@ -5,6 +5,9 @@ status](https://github.com/ropensci-review-tools/pkgstats/workflows/R-CMD-check/
 [![codecov](https://codecov.io/gh/ropensci-review-tools/pkgstats/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ropensci-review-tools/pkgstats)
 [![Project Status:
 Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/pkgstats)](https://cran.r-project.org/package=pkgstats/)
+[![Project Status:
+Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 <!-- badges: end -->
 
 # pkgstats
@@ -62,7 +65,7 @@ system.time (
 ```
 
     ##    user  system elapsed 
-    ##   1.562   0.117   1.664
+    ##   1.730   0.113   1.822
 
 ``` r
 names (p)
@@ -84,7 +87,7 @@ p [!names (p) %in% c ("objects", "network", "external_calls")]
     ##   language dir   nfiles nlines ncode  ndoc nempty nspaces nchars nexpr ntabs
     ##   <chr>    <chr>  <int>  <int> <int> <int>  <int>   <int>  <int> <dbl> <int>
     ## 1 C++      src        3    365   277    21     67     933   7002     1     0
-    ## 2 R        R         19   3740  2698   535    507   27572  93993     1     0
+    ## 2 R        R         19   3741  2698   536    507   27575  94022     1     0
     ## 3 R        tests      7    348   266    10     72     770   6161     1     0
     ## # … with 1 more variable: indentation <int>
     ## 
@@ -98,7 +101,7 @@ p [!names (p) %in% c ("objects", "network", "external_calls")]
     ## 
     ## $desc
     ##    package version                date license
-    ## 1 pkgstats     9.9 2021-11-16 17:36:58   GPL-3
+    ## 1 pkgstats     9.9 2022-05-12 11:41:22   GPL-3
     ##                                                                                      urls
     ## 1 https://docs.ropensci.org/pkgstats/,\nhttps://github.com/ropensci-review-tools/pkgstats
     ##                                                       bugs aut ctb fnd rev ths
@@ -107,8 +110,8 @@ p [!names (p) %in% c ("objects", "network", "external_calls")]
     ## 1   0      NA brio, checkmate, dplyr, fs, igraph, methods, readr, sys, withr
     ##                                                                         suggests
     ## 1 hms, knitr, pbapply, pkgbuild, Rcpp, rmarkdown, roxygen2, testthat, visNetwork
-    ##   linking_to
-    ## 1      cpp11
+    ##   enhances linking_to
+    ## 1       NA      cpp11
     ## 
     ## $translations
     ## [1] NA
@@ -129,15 +132,15 @@ s <- pkgstats_summary (p)
 
 This function reduces the result of the [`pkgstats()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
-to a single line with 94 entries, represented as a `data.frame` with one
+to a single line with 95 entries, represented as a `data.frame` with one
 row and that number of columns. This format is intended to enable
 summary statistics from multiple packages to be aggregated by simply
-binding rows together. While 94 statistics might seem like a lot, the
+binding rows together. While 95 statistics might seem like a lot, the
 [`pkgstats_summary()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
 aims to return as many usable raw statistics as possible in order to
 flexibly allow higher-level statistics to be derived through combination
-and aggregation. These 94 statistics can be roughly grouped into the
+and aggregation. These 95 statistics can be roughly grouped into the
 following categories (not shown in the order in which they actually
 appear), with variable names in parentheses after each description. Some
 statistics are summarised as comma-delimited character strings, such as
