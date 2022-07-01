@@ -82,7 +82,17 @@ desc_stats <- function (path) {
 desc_authors <- function (d) {
 
     if ("Authors.R" %in% names (d)) {
-        authors <- eval (parse (text = d$Authors.R))
+        authors <- tryCatch (
+            eval (parse (text = d$Authors.R)),
+            error = function (e) NULL
+        )
+        if (is.null (authors)) {
+            # some pkgs fail to parse, like surveillance_1.20.0
+            authors <- lapply (
+                strsplit (d$Authors.R, ")),"),
+                function (i) paste0 (i, ")")
+            )
+        }
         # remove everything before and after square brackets
         authors <- gsub ("^.*\\[|\\].*$", "", authors)
         n_aut <- vapply (
