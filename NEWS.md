@@ -4,6 +4,7 @@
 ## Minor changes
 
 - Added this news file
+- Parse 'Authors@R' field of DESC even when `parse()` fails
 
 
 0.1.1
