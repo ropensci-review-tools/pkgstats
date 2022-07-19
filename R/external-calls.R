@@ -324,6 +324,9 @@ add_other_pkgs_to_calls <- function (calls, path) {
     external_calls <- lapply (r_files, function (i) {
 
         pd <- utils::getParseData (control_parse (i))
+        if (is.null (pd)) {
+            return (NULL)
+        }
         pd <- pd [grep (all_calls, pd$text), ]
         pd <- pd [which (pd$token %in% tokens), ]
 
