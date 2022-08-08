@@ -22,7 +22,7 @@ test_that ("archive trawl", {
 
     expect_error (
         pkgstats_from_archive (path),
-        "path must contain a 'tarballs' directory"
+        "Assertion on 'path' failed"
     )
     expect_error (
         pkgstats_fns_from_archive (path),
