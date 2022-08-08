@@ -116,21 +116,7 @@ pkgstats_from_archive <- function (path,
             saveRDS (do.call (rbind, res), fname)
             results_files <- c (results_files, fname)
 
-            prog <- index * chunk_size / nfiles
-            prog_fmt <- format (100 * prog, digits = 2)
-            pt1 <- as.integer ((proc.time () - pt0) [3])
-            t_per_file <- pt1 / (index * chunk_size)
-            t_total <- t_per_file * nfiles
-            t_rem <- hms::hms (t_total - pt1)
-
-            ndone <- min (c (nfiles, index * chunk_size))
-
-            message (
-                "[", ndone, " / ", nfiles,
-                "]  = ", prog_fmt, "%; (elapsed, remaining) = (",
-                pt1, ", ", t_rem, ")"
-            )
-
+            archive_trawl_progress_message (index, chunk_size, nfiles, pt0)
             index <- index + 1
         }
 
@@ -278,4 +264,22 @@ one_summary_from_archive <- function (path, save_full, save_ex_calls, results_pa
     }
 
     return (summ)
+}
+
+archive_trawl_progress_message <- function (index, chunk_size, nfiles, pt0) {
+
+    prog <- index * chunk_size / nfiles
+    prog_fmt <- format (100 * prog, digits = 2)
+    pt1 <- as.integer ((proc.time () - pt0) [3])
+    t_per_file <- pt1 / (index * chunk_size)
+    t_total <- t_per_file * nfiles
+    t_rem <- hms::hms (t_total - pt1)
+
+    ndone <- min (c (nfiles, index * chunk_size))
+
+    message (
+        "[", ndone, " / ", nfiles,
+        "]  = ", prog_fmt, "%; (elapsed, remaining) = (",
+        pt1, ", ", t_rem, ")"
+    )
 }
