@@ -69,6 +69,25 @@ pkgstats_from_archive <- function (path,
     requireNamespace ("hms")
     requireNamespace ("parallel")
 
+    checkmate::assert_string (path)
+    checkmate::assert_directory_exists (path)
+    if (!is.null (prev_results)) {
+        checkmate::assert_string (prev_results)
+        checkmate::assert_file_exists (prev_results)
+    }
+    if (!is.null (results_file)) {
+        checkmate::assert_string (results_file)
+    }
+    checkmate::assert_int (chunk_size, lower = 1L)
+    checkmate::assert_int (num_cores, lower = 1L)
+    checkmate::assert_logical (archive)
+    checkmate::assert_scalar (archive)
+    checkmate::assert_logical (save_full)
+    checkmate::assert_scalar (save_full)
+    checkmate::assert_logical (save_ex_calls)
+    checkmate::assert_scalar (save_ex_calls)
+    checkmate::assert_string (results_path)
+
     res <- NULL
     out <- prev_results
 
