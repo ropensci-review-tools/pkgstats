@@ -46,7 +46,7 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
 
     if (is.null (has_tabs)) {
         has_tabs <- any (loc_stats (path)$ntabs > 0L)
-    } else if (!is.logical (has_tabs) | length (has_tabs) > 1L) {
+    } else if (!is.logical (has_tabs) || length (has_tabs) > 1L) {
         stop ("has_tabs must either be NULL or a single logical value")
     }
 
@@ -71,7 +71,7 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
 
     gtags <- NULL
 
-    if (!is.null (tags_src) | !is.null (tags_inst)) {
+    if (!is.null (tags_src) || !is.null (tags_inst)) {
 
         no_gtags <- withr::with_dir (path, make_gtags ())
 
