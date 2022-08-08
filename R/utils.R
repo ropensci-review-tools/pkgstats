@@ -95,7 +95,8 @@ control_parse <- function (file) {
         index <- which (grepl (ptn, x) & grepl (expr, x))
         x [index] <- gsub (ptn, "", x [index])
 
-        out <- tryCatch (parse (text = x, keep.source = TRUE, encoding = "UTF-8"),
+        out <- tryCatch (
+            parse (text = x, keep.source = TRUE, encoding = "UTF-8"),
             error = function (e) e
         )
 

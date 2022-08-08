@@ -2,7 +2,9 @@
 .onLoad <- function (libname, pkgname) { # nolint
 
     bin <- normalizePath (file.path (libname, pkgname, "bin"), mustWork = FALSE)
-    Sys.setenv (PATH = paste (bin, Sys.getenv ("PATH"), sep = .Platform$path.sep))
+    Sys.setenv (
+        PATH = paste (bin, Sys.getenv ("PATH"), sep = .Platform$path.sep)
+    )
 }
 
 .onUnload <- function (libname, pkgname) { # nolint
