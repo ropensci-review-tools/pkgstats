@@ -229,14 +229,15 @@ rm_prev_files <- function (flist, prev_results) {
     return (flist)
 }
 
-one_summary_from_archive <- function (path, save_full, save_ex_calls, results_path) {
+one_summary_from_archive <- function (path, save_full,
+                                      save_ex_calls, results_path) {
 
     s <- tryCatch (
         pkgstats::pkgstats (path),
         error = function (e) NULL
     )
 
-    if (save_full | save_ex_calls) {
+    if (save_full || save_ex_calls) {
         pkg <- utils::tail (decompose_path (path) [[1]], 1L)
         pkg <- gsub ("\\.tar\\.gz$", "", pkg)
         if (save_full) {
