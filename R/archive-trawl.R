@@ -100,35 +100,13 @@ pkgstats_from_archive <- function (path,
 
             res <- parallel::mclapply (f, function (i) {
 
-                s <- tryCatch (pkgstats::pkgstats (i),
-                    error = function (e) NULL
+                one_summary_from_archive (
+                    i,
+                    save_full,
+                    save_ex_calls,
+                    results_path
                 )
 
-                if (save_full | save_ex_calls) {
-                    pkg <- utils::tail (decompose_path (i) [[1]], 1L)
-                    pkg <- gsub ("\\.tar\\.gz$", "", pkg)
-                    if (save_full) {
-                        saveRDS (s, file.path (results_path, pkg))
-                    } else if (save_ex_calls) {
-                        saveRDS (
-                            s$external_calls,
-                            file.path (results_path, pkg)
-                        )
-                    }
-                }
-
-                summ <- tryCatch (pkgstats::pkgstats_summary (s),
-                    error = function (e) NULL
-                )
-                if (is.null (summ)) { # pkgstats failed
-                    summ <- pkgstats_summary () # null summary
-                    p <- strsplit (i, .Platform$file.sep) [[1]]
-                    p <- strsplit (utils::tail (p, 1), "\\_") [[1]]
-                    summ ["package"] <- p [1]
-                    summ ["version"] <-
-                        gsub ("\\.tar\\.gz$", "", p [2])
-                }
-                return (summ)
             }, mc.cores = num_cores)
 
             fname <- file.path (
@@ -263,4 +241,41 @@ rm_prev_files <- function (flist, prev_results) {
     }
 
     return (flist)
+}
+
+one_summary_from_archive <- function (path, save_full, save_ex_calls, results_path) {
+
+    s <- tryCatch (
+        pkgstats::pkgstats (path),
+        error = function (e) NULL
+    )
+
+    if (save_full | save_ex_calls) {
+        pkg <- utils::tail (decompose_path (path) [[1]], 1L)
+        pkg <- gsub ("\\.tar\\.gz$", "", pkg)
+        if (save_full) {
+            saveRDS (s, file.path (results_path, pkg))
+        } else if (save_ex_calls) {
+            saveRDS (
+                s$external_calls,
+                file.path (results_path, pkg)
+            )
+        }
+    }
+
+    summ <- tryCatch (
+        pkgstats::pkgstats_summary (s),
+        error = function (e) NULL
+    )
+
+    if (is.null (summ)) { # pkgstats failed
+        summ <- pkgstats_summary () # null summary
+        p <- strsplit (path, .Platform$file.sep) [[1]]
+        p <- strsplit (utils::tail (p, 1), "\\_") [[1]]
+        summ ["package"] <- p [1]
+        summ ["version"] <-
+            gsub ("\\.tar\\.gz$", "", p [2])
+    }
+
+    return (summ)
 }
