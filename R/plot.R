@@ -108,7 +108,7 @@ plot_network <- function (s, plot = TRUE, vis_save = NULL) {
 
     vn <- visNetwork::visLegend (vn, main = "Language")
 
-    if (plot | !is.null (vis_save)) {
+    if (plot || !is.null (vis_save)) {
 
         if (!is.null (vis_save)) {
             if (!is.character (vis_save)) {
