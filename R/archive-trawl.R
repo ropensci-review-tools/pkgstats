@@ -98,16 +98,31 @@ pkgstats_from_archive <- function (path,
 
         for (f in flist) {
 
-            res <- parallel::mclapply (f, function (i) {
+            if (num_cores > 1L) {
 
-                one_summary_from_archive (
-                    i,
-                    save_full,
-                    save_ex_calls,
-                    results_path
-                )
+                res <- parallel::mclapply (f, function (i) {
 
-            }, mc.cores = num_cores)
+                    one_summary_from_archive (
+                        i,
+                        save_full,
+                        save_ex_calls,
+                        results_path
+                    )
+
+                }, mc.cores = num_cores)
+
+            } else {
+
+                res <- lapply (f, function (i) {
+
+                    one_summary_from_archive (
+                        i,
+                        save_full,
+                        save_ex_calls,
+                        results_path
+                    )
+                })
+            }
 
             fname <- file.path (
                 results_path,
