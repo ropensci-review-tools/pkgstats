@@ -164,7 +164,7 @@ pkgstats_from_archive <- function (path,
 
     chk <- file.remove (results_files) # nolint
 
-    if (!is.null (res) & !is.null (results_file)) {
+    if (!is.null (res) && !is.null (results_file)) {
 
         if (!grepl (.Platform$file.sep, results_file)) {
             results_file <- file.path (".", results_file)
@@ -384,7 +384,7 @@ pkgstats_fns_from_archive <- function (path,
 
     chk <- file.remove (results_files) # nolint
 
-    if (!is.null (res) & !is.null (results_file)) {
+    if (!is.null (res) && !is.null (results_file)) {
 
         if (!grepl (.Platform$file.sep, results_file)) {
             results_file <- file.path (".", results_file)
