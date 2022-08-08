@@ -41,7 +41,7 @@ has_git <- function () {
 #' @noRd
 ctags_make <- function (ctags_dir, bin_dir = NULL, sudo = TRUE) {
 
-    if (!sudo & is.null (bin_dir)) {
+    if (!sudo && is.null (bin_dir)) {
         stop ("A value for 'bin_dir' must be specified when 'sudo = FALSE'")
     }
 
