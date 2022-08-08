@@ -19,7 +19,7 @@ check_path <- function (path) {
         checkmate::assert_directory_exists (path)
 
         count <- 1L
-        while (!"DESCRIPTION" %in% list.files (path) & count < 5L) {
+        while (!"DESCRIPTION" %in% list.files (path) && count < 5L) {
 
             path <- normalizePath (file.path (path, ".."))
         }
@@ -77,12 +77,12 @@ control_parse <- function (file) {
     )
 
     count <- 0
-    while (methods::is (out, "simpleError") &
+    while (methods::is (out, "simpleError") &&
         count < floor (length (x) / 10)) {
 
         g <- gregexpr ("\'.*\'", out$message)
         ptn <- gsub ("\'", "", regmatches (out$message, g) [[1]])
-        if (substring (ptn, 1, 1) == "\\" & substring (ptn, 2, 2) != "\\") {
+        if (substring (ptn, 1, 1) == "\\" && substring (ptn, 2, 2) != "\\") {
             ptn <- paste0 ("\\", ptn)
         }
 
