@@ -130,27 +130,7 @@ pkgstats_from_archive <- function (path,
 
     if (!is.null (res) && !is.null (results_file)) {
 
-        if (!grepl (.Platform$file.sep, results_file)) {
-            results_file <- file.path (".", results_file)
-        }
-        results_file <- normalizePath (results_file, mustWork = FALSE)
-
-        results_path <- gsub (
-            basename (results_file), "",
-            results_file
-        )
-        results_path <- normalizePath (results_path)
-        if (!dir.exists (results_path)) {
-            stop ("Directory [", results_path, "] does not exist")
-        }
-
-        results_file <- basename (results_file)
-        results_file <- tools::file_path_sans_ext (results_file)
-        results_file <- file.path (
-            results_path,
-            paste0 (results_file, ".Rds")
-        )
-
+        results_file <- archive_results_file_name (results_file)
         saveRDS (out, results_file)
     }
 
@@ -283,4 +263,32 @@ archive_trawl_progress_message <- function (index, chunk_size, nfiles, pt0) {
         "]  = ", prog_fmt, "%; (elapsed, remaining) = (",
         pt1, ", ", t_rem, ")"
     )
+}
+
+#' Check and convert 'results_file' to '.Rds' in an existing directory
+#' @noRd
+archive_results_file_name <- function (results_file) {
+
+    if (!grepl (.Platform$file.sep, results_file)) {
+        results_file <- file.path (".", results_file)
+    }
+    results_file <- normalizePath (results_file, mustWork = FALSE)
+
+    results_path <- gsub (
+        basename (results_file), "",
+        results_file
+    )
+    results_path <- normalizePath (results_path)
+    if (!dir.exists (results_path)) {
+        stop ("Directory [", results_path, "] does not exist")
+    }
+
+    results_file <- basename (results_file)
+    results_file <- tools::file_path_sans_ext (results_file)
+    results_file <- file.path (
+        results_path,
+        paste0 (results_file, ".Rds")
+    )
+
+    return (results_file)
 }
