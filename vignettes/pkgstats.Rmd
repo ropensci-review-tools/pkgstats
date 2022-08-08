@@ -227,6 +227,12 @@ This item includes the following components:
 - Comma-separated character entries for all `depends`, `imports`, `suggests`,
   and `linking_to` packages.
 
+The "Date" field is taken from the "Date/Publication" field automatically
+inserted by CRAN on package publication, or for non-CRAN packages to the
+"mtime" value (modification time) value of the DESCRIPTION file. Note that
+"date" values extracted by `pkgstats` do not use "Date" values from DESCRIPTION
+files (as these are manually-entered, and potentially unreliable).
+
 ### 1.3 `"objects"`: Objects in all languages
 
 The `objects` item contains all code objects identified by
