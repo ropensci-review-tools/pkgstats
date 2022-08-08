@@ -108,7 +108,7 @@ pkgstats_from_archive <- function (path,
 
         results_path <- normalizePath (results_path, mustWork = FALSE)
         if (!dir.exists (results_path)) {
-            dir.create (results_path)
+            dir.create (results_path, recursive = TRUE)
         }
         results_files <- NULL
 
