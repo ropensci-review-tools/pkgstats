@@ -22,6 +22,7 @@ check_path <- function (path) {
         while (!"DESCRIPTION" %in% list.files (path) && count < 5L) {
 
             path <- normalizePath (file.path (path, ".."))
+            count <- count + 1L
         }
 
         desc <- list.files (
@@ -29,6 +30,9 @@ check_path <- function (path) {
             pattern = "DESCRIPTION",
             full.names = TRUE
         )
+        if (length (desc) == 0L) {
+            stop ("Path does not correspond to an R package")
+        }
         desc <- brio::read_lines (desc)
         if (!any (grepl ("^Package:\\s", desc))) {
             stop ("Path does not correspond to an R package")

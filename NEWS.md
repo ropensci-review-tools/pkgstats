@@ -5,6 +5,7 @@
 
 - Added this news file
 - Parse 'Authors@R' field of DESC even when `parse()` fails
+- Fix bug on CRAN packages with no DESCRIPTION file (#51; these do exist!)
 
 
 0.1.1
