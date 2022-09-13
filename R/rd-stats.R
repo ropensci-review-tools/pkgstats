@@ -24,6 +24,7 @@ rd_stats <- function (path) {
         params <- lapply (rd_files, get_one_params)
     )
     params <- do.call (rbind, params)
+    params <- params [which (!is.na (params$parameter)), ]
     params_sp <- NULL
     if (!is.null (params)) {
         params_sp <- split (params, f = factor (params$alias))
