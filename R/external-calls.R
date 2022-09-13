@@ -101,7 +101,7 @@ extract_call_content <- function (tags_r) {
         }
     })
     calls <- do.call (rbind, calls)
-    calls <- calls [which (!calls [, 2] == ""), ]
+    calls <- calls [which (!calls [, 2] == ""), , drop = FALSE]
 
     if (length (calls) == 0L) {
         return (NULL)
@@ -118,14 +118,14 @@ extract_call_content <- function (tags_r) {
         "NA", "...", "\\", "Inf", ":", ".",
         "function"
     )
-    calls <- calls [which (!calls$call %in% rm_these), ]
-    calls <- calls [which (!grepl ("\\$$|^\"|^\'", calls$call)), ]
+    calls <- calls [which (!calls$call %in% rm_these), , drop = FALSE]
+    calls <- calls [which (!grepl ("\\$$|^\"|^\'", calls$call)), , drop = FALSE]
     calls$tag <- tags_r$tag [calls$tags_line]
     calls$file <- tags_r$file [calls$tags_line]
 
     # rm global variables
     globals <- unique (tags_r$tag [which (tags_r$kind == "globalVar")])
-    calls <- calls [which (!calls$call %in% globals), ]
+    calls <- calls [which (!calls$call %in% globals), , drop = FALSE]
 
     # Finally remove any functionVars (internal variables). This requires
     # matching them to the calling environment, so only those which exist in
