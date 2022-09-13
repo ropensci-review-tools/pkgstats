@@ -173,6 +173,8 @@ get_one_params <- function (man_file) {
                 desc <- unlist (eval (i [[3]]))
                 if (is.null (nm)) {
                     nm <- "(NULL)"
+                } else if (length (nm) > 1) {
+                    nm <- gsub ("\\s+", " ", paste0 (nm, collapse = ""))
                 }
             }
             list (
@@ -181,7 +183,7 @@ get_one_params <- function (man_file) {
             )
         })
 
-        par_name <- vapply (nms, function (i) i$par_name, character (1))
+        par_name <- vapply (nms, function (i) i$par_name [1], character (1))
         nchars <- vapply (nms, function (i) i$nchars, integer (1))
 
         res <- data.frame (
