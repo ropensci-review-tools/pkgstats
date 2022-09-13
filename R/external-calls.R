@@ -141,7 +141,11 @@ extract_call_content <- function (tags_r) {
         simplify = FALSE
     )
 
-    if (is.list (fn_lines)) {
+    if (length (fn_lines) == 0L) { # There are no function calls
+
+        return (NULL)
+
+    } else if (is.list (fn_lines)) {
 
         fn_lines <- do.call (rbind, fn_lines)
 
