@@ -173,6 +173,9 @@ all_functions <- function (path) {
     }
 
     ret <- do.call (rbind, lapply (r_files, eval1))
+    if (length (ret) == 0L) {
+        return (all_functions_dummy ())
+    }
     if (nrow (ret) > 0L) {
         # append "R" directory to file names:
         ret$file_name <- paste0 (
