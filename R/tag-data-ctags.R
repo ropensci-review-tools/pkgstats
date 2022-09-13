@@ -87,19 +87,22 @@ get_ctags <- function (d = "R", has_tabs) {
     }
 
     suppressWarnings (
-        tags <- readr::read_tsv (
-            f,
-            col_names = cnames,
-            col_types = ctypes,
-            col_select = cnames,
-            progress = FALSE,
-            lazy = FALSE
+        tags <- tryCatch (
+            readr::read_tsv (
+                f,
+                col_names = cnames,
+                col_types = ctypes,
+                col_select = cnames,
+                progress = FALSE,
+                lazy = FALSE
+            ),
+            error = function (e) NULL
         )
     )
 
     chk <- rm_file_no_err (f)
 
-    if (nrow (tags) == 0) {
+    if (is.null (tags) || nrow (tags) == 0L) {
         return (NULL)
     }
 
