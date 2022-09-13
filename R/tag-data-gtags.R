@@ -46,13 +46,16 @@ get_gtags <- function () {
     )
     cnames <- c ("tag", "line", "file", "content")
     suppressWarnings (
-        gtags <- readr::read_tsv (
-            paste0 (x, collapse = "\n"),
-            col_names = cnames,
-            col_types = ctypes,
-            col_select = cnames,
-            progress = FALSE,
-            lazy = FALSE
+        gtags <- tryCatch (
+            readr::read_tsv (
+                paste0 (x, collapse = "\n"),
+                col_names = cnames,
+                col_types = ctypes,
+                col_select = cnames,
+                progress = FALSE,
+                lazy = FALSE
+            ),
+            error = function (e) NULL
         )
     )
 
