@@ -221,6 +221,7 @@ rm_prev_files <- function (flist, prev_results) {
             if (methods::is (prev_results, "error")) {
                 stop ("Unable to read prev_results: ", prev_results$message)
             }
+            prev_results <- prev_results [which (!is.na (prev_results$package)), ]
         }
 
         tars <- vapply (
