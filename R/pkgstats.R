@@ -144,15 +144,19 @@ all_functions <- function (path) {
         )
         npars <- vapply (
             p, function (i) {
+                dummy <- rep (NA_integer_, 2L)
+                if (is.symbol (as.list (i) [[3]])) {
+                    return (dummy)
+                }
                 call_i <- as.list (i) [[3]]
                 if (length (call_i) < 2) { # not a fn
-                    return (rep (NA_integer_, 2))
+                    return (dummy)
                 }
                 c2 <- call_i [[2]]
                 # if the call has an empty field, c2 won't necessary exist
                 nms <- tryCatch (names (c2), error = function (e) NULL)
                 if (is.null (nms)) {
-                    return (rep (NA_integer_, 2))
+                    return (dummy)
                 }
                 c (length (c2), "..." %in% nms) },
             integer (2)
