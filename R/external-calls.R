@@ -275,7 +275,10 @@ add_other_pkgs_to_calls <- function (calls, path) {
         return (calls)
     }
 
-    n <- parse (text = brio::read_lines (f))
+    n <- tryCatch (
+        parse (text = brio::read_lines (f)),
+        error = function (e) NULL
+    )
     imports <- gsub (
         "^importFrom\\s?\\(|\\)$", "",
         grep ("^importFrom", n, value = TRUE)
