@@ -164,13 +164,22 @@ get_one_params <- function (man_file) {
         params <- tryCatch (as.list (parse (text = params)),
             error = function (e) NULL
         )
+
+        eval_one_param_item <- function (p) {
+            nm <- tryCatch (eval (p), error = function (e) NULL)
+            if (is.null (nm)) {
+                nm <- as.character (p)
+            }
+            return (unlist (nm))
+        }
+
         nms <- lapply (params, function (i) {
-            i <- as.list (i)
+            p_i <- as.list (i)
             nm <- NA_character_
             desc <- NA_integer_
-            if (length (i) >= 3) {
-                nm <- unlist (eval (i [[2]]))
-                desc <- unlist (eval (i [[3]]))
+            if (length (p_i) >= 3) {
+                nm <- eval_one_param_item (p_i [[2]])
+                desc <- eval_one_param_item (p_i [[3]])
                 if (is.null (nm)) {
                     nm <- "(NULL)"
                 } else if (length (nm) > 1) {
