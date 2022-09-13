@@ -103,7 +103,7 @@ control_parse <- function (file) {
             expr <- gsub ("\\", "\\\\", expr, fixed = TRUE)
         }
         index <- which (grepl (ptn, x, fixed = TRUE) & grepl (expr, x, fixed = TRUE))
-        x [index] <- gsub (ptn, "", x [index])
+        x [index] <- gsub (ptn, "", x [index], fixed = TRUE)
 
         nchars <- sum (nchar (x))
 
