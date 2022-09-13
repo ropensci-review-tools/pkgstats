@@ -81,7 +81,7 @@ get_ctags <- function (d = "R", has_tabs) {
         tokenizer = readr::tokenizer_tsv (),
         n_max = 100L
     )
-    if (!any (n_flds == length (cnames))) {
+    if (any (n_flds != length (cnames))) {
         chk <- rm_file_no_err (f)
         return (NULL)
     }
