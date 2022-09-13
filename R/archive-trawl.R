@@ -134,12 +134,18 @@ pkgstats_from_archive <- function (path,
 
                 res <- lapply (f, function (i) {
 
-                    one_summary_from_archive (
+                    summ1 <- one_summary_from_archive (
                         i,
                         save_full,
                         save_ex_calls,
                         results_path
                     )
+
+                    # insert tarball name on pkgs which fail:
+                    if (is.na (summ1$package)) {
+                        summ1$package <- basename (i)
+                    }
+                    return (summ1)
                 })
             }
 
