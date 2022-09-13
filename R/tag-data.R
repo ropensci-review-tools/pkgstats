@@ -262,6 +262,8 @@ count_doclines_src <- function (tags, path) {
         return (tags)
     }
 
+    tags$language [which (is.na (tags$language))] <- ""
+
     res <- vapply (seq (nrow (tags)), function (i) {
 
         ndoclines <- 0L
