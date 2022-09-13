@@ -92,6 +92,10 @@ rd_stats <- function (path) {
 
 rd_is_fn <- function (rd) {
 
+    if (is.null (rd)) {
+        return (FALSE)
+    }
+
     tags <- vapply (rd, function (i) attr (i, "Rd_tag"), character (1))
     tags <- gsub ("\\\\", "", grep ("^\\\\", tags, value = TRUE))
 
@@ -117,7 +121,10 @@ get_one_params <- function (man_file) {
     ptn <- paste0 ("Rdtemp-", Sys.getpid (), "-")
     f <- tempfile (pattern = ptn, fileext = ".Rd")
     brio::write_lines (x, f)
-    rd <- tools::parse_Rd (f)
+    rd <- tryCatch (
+        tools::parse_Rd (f),
+        error = function (e) NULL
+    )
     chk <- file.remove (f) # nolint
 
     if (!rd_is_fn (rd)) {
