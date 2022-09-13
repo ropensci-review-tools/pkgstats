@@ -149,7 +149,12 @@ all_functions <- function (path) {
                     return (rep (NA_integer_, 2))
                 }
                 c2 <- call_i [[2]]
-                c (length (c2), "..." %in% names (c2)) },
+                # if the call has an empty field, c2 won't necessary exist
+                nms <- tryCatch (names (c2), error = function (e) NULL)
+                if (is.null (nms)) {
+                    return (rep (NA_integer_, 2))
+                }
+                c (length (c2), "..." %in% nms) },
             integer (2)
         )
 
