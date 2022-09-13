@@ -10,7 +10,7 @@ external_call_network <- function (tags_r, path, pkg_name) {
 
     calls <- extract_call_content (tags_r)
 
-    if (length (calls) == 0L) {
+    if (length (calls) == 0L || nrow (calls) == 0L) {
         return (NULL)
     }
 
