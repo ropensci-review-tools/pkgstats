@@ -158,6 +158,7 @@ pkgstats_from_archive <- function (path,
     }
 
     out <- rbind (out, res)
+    out <- out [which (!is.na (out$package)), ]
     rownames (out) <- NULL
 
     chk <- file.remove (results_files) # nolint
