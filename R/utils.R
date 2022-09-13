@@ -81,6 +81,7 @@ control_parse <- function (file) {
     )
 
     count <- 0
+    nchars0 <- sum (nchar (x))
     while (methods::is (out, "simpleError") &&
         count < floor (length (x) / 10)) {
 
@@ -96,15 +97,22 @@ control_parse <- function (file) {
         if (grepl ("\\\\", expr)) {
             expr <- gsub ("\\", "\\\\", expr, fixed = TRUE)
         }
-        index <- which (grepl (ptn, x) & grepl (expr, x))
+        index <- which (grepl (ptn, x, fixed = TRUE) & grepl (expr, x, fixed = TRUE))
         x [index] <- gsub (ptn, "", x [index])
+
+        nchars <- sum (nchar (x))
 
         out <- tryCatch (
             parse (text = x, keep.source = TRUE, encoding = "UTF-8"),
             error = function (e) e
         )
 
-        count <- count + 1L
+        if (nchars == nchars0) {
+            count <- length (x)
+        } else {
+            count <- count + 1L
+            nchars0 <- nchars
+        }
     }
 
     return (out)
