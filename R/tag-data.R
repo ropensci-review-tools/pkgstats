@@ -188,9 +188,18 @@ rm_tabs <- function (d, nspaces = 2) {
     exts <- paste0 (exts$ext, "$", collapse = "|")
     files <- files [grep (exts, files)]
     files <- files [which (!grepl ("^Makevars", files))]
+    # also remove pdf and html files
+    files <- files [which (!grepl ("\\.(pdf|html)$", files, ignore.case = TRUE))]
 
     for (f in files) {
-        x <- suppressWarnings (brio::read_lines (f))
+        x <- tryCatch (
+            suppressWarnings (brio::read_lines (f)),
+            error = function (e) NULL
+        )
+        if (is.null (x)) {
+            next
+        }
+
         has_tabs <- any (grepl ("\\t", x))
         if (has_tabs) {
             x <- gsub ("^\\t", sp, x)
