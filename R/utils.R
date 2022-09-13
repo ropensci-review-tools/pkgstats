@@ -87,6 +87,11 @@ control_parse <- function (file) {
 
         g <- gregexpr ("\'.*\'", out$message)
         ptn <- gsub ("\'", "", regmatches (out$message, g) [[1]])
+        if (length (ptn) == 0L) {
+            count <- length (x)
+            next
+        }
+
         if (substring (ptn, 1, 1) == "\\" && substring (ptn, 2, 2) != "\\") {
             ptn <- paste0 ("\\", ptn)
         }
