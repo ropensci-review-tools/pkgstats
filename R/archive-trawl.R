@@ -276,31 +276,25 @@ one_summary_from_archive <- function (path, save_full,
         file.remove (logfiles$stderr)
     }
 
-    ps <- tryCatch (
-        callr::r_bg (
-            func = pkgstats::pkgstats,
-            args = list (path = path),
-            stdout = logfiles$stdout,
-            stderr = logfiles$stderr,
-            package = TRUE
-        ),
-        error = function (e) NULL
+    ps <- callr::r_bg (
+        func = pkgstats::pkgstats,
+        args = list (path = path),
+        stdout = logfiles$stdout,
+        stderr = logfiles$stderr,
+        package = TRUE
     )
 
-    s <- NULL
-    if (!is.null (ps)) {
-        p0 <- proc.time ()
+    p0 <- proc.time ()
+    elapsed <- proc.time () [3] - p0 [3]
+    while (ps$is_alive () && elapsed < 300) {
+        ps$wait ()
         elapsed <- proc.time () [3] - p0 [3]
-        while (ps$is_alive () && elapsed < 300) {
-            ps$wait ()
-            elapsed <- proc.time () [3] - p0 [3]
-        }
-        if (elapsed < 300) {
-            s <- ps$get_result ()
-        } else {
-            ps$kill ()
-            s <- NULL
-        }
+    }
+    if (elapsed < 300) {
+        s <- tryCatch (ps$get_result (), error = function (e) NULL)
+    } else {
+        ps$kill ()
+        s <- NULL
     }
 
     if (save_full || save_ex_calls) {
