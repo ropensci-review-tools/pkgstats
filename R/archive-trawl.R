@@ -142,11 +142,13 @@ pkgstats_from_archive <- function (path,
                         results_path
                     )
 
-                    # pkgs which fail:
+                    # pkgs which fail - this should not happen, but for some
+                    # reason does, so "fail" is for debugging
                     if (is.na (summ1$package)) {
                         pkg_vers <- get_pkg_version (i)
-                        summ1$package <- pkg_vers [1]
-                        summ1$version <- pkg_vers [2]
+                        summ1 ["package"] <- pkg_vers [1]
+                        summ1 ["version"] <- pkg_vers [2]
+                        summ1 ["date"] <- "fail"
                     }
                     return (summ1)
                 })
@@ -318,7 +320,6 @@ one_summary_from_archive <- function (path, save_full,
         pkg_vers <- get_pkg_version (path)
         summ ["package"] <- pkg_vers [1]
         summ ["version"] <- pkg_vers [2]
-        summ ["date"] <- "fail"
     }
 
     return (summ)
