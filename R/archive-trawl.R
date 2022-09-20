@@ -68,6 +68,7 @@ pkgstats_from_archive <- function (path,
 
     requireNamespace ("hms")
     requireNamespace ("parallel")
+    requireNamespace ("callr")
 
     checkmate::assert_string (path)
     checkmate::assert_directory_exists (path)
@@ -253,13 +254,46 @@ rm_prev_files <- function (flist, prev_results) {
     return (flist)
 }
 
+#' Apply 'pkgstats' to one path and return the summary
+#'
+#' The archive trawl often stops for reasons which are not reproducible when
+#' running individual calls. This therefore uses `callr` to run call processes
+#' in the background, and terminate after 5 minutes with an error.
+#' @noRd
 one_summary_from_archive <- function (path, save_full,
                                       save_ex_calls, results_path) {
 
-    s <- tryCatch (
-        pkgstats::pkgstats (path),
-        error = function (e) NULL
+    logfiles <- list (
+        stdout = file.path (tempdir (), "pkgstats-stdout"),
+        stderr = file.path (tempdir (), "pkgstats-stderr")
     )
+    if (file.exists (logfiles$stdout)) {
+        file.remove (logfiles$stdout)
+    }
+    if (file.exists (logfiles$stderr)) {
+        file.remove (logfiles$stderr)
+    }
+
+    ps <- callr::r_bg (
+        func = pkgstats::pkgstats,
+        args = list (path = path),
+        stdout = logfiles$stdout,
+        stderr = logfiles$stderr,
+        package = TRUE
+    )
+
+    p0 <- proc.time ()
+    elapsed <- proc.time () [3] - p0 [3]
+    while (ps$is_alive () && elapsed < 300) {
+        ps$wait ()
+        elapsed <- proc.time () [3] - p0 [3]
+    }
+    if (elapsed < 300) {
+        s <- ps$get_result ()
+    } else {
+        ps$kill ()
+        s <- NULL
+    }
 
     if (save_full || save_ex_calls) {
         pkg <- utils::tail (decompose_path (path) [[1]], 1L)
@@ -284,6 +318,7 @@ one_summary_from_archive <- function (path, save_full,
         pkg_vers <- get_pkg_version (path)
         summ ["package"] <- pkg_vers [1]
         summ ["version"] <- pkg_vers [2]
+        summ ["date"] <- "fail"
     }
 
     return (summ)
