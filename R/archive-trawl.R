@@ -141,9 +141,11 @@ pkgstats_from_archive <- function (path,
                         results_path
                     )
 
-                    # insert tarball name on pkgs which fail:
+                    # pkgs which fail:
                     if (is.na (summ1$package)) {
-                        summ1$package <- basename (i)
+                        pkg_vers <- get_pkg_version (i)
+                        summ1$package <- pkg_vers [1]
+                        summ1$version <- pkg_vers [2]
                     }
                     return (summ1)
                 })
@@ -333,4 +335,21 @@ archive_results_file_name <- function (results_file) {
     )
 
     return (results_file)
+}
+
+#' Separate package name and version from a tarball name
+#'
+#' This is only used to fill in 'package' and 'version' columns of packages
+#' which fail main 'pkgstats' call, to fill those columns regardless.
+#'
+#' @param path Full path to local tarball
+#' @noRd
+get_pkg_version <- function (path) {
+
+    pkg <- basename (path)
+    v_i <- regexpr ("\\_([0-9]|[[:punct:]]).*\\.tar\\.gz$", pkg)
+    v <- gsub ("^\\_|\\.tar\\.gz$", "", regmatches (pkg, v_i))
+    pkg <- substr (pkg, 1, v_i - 1)
+
+    c (pkg, v)
 }
