@@ -281,11 +281,9 @@ one_summary_from_archive <- function (path, save_full,
 
     if (is.null (summ)) { # pkgstats failed
         summ <- pkgstats_summary () # null summary
-        p <- strsplit (path, .Platform$file.sep) [[1]]
-        p <- strsplit (utils::tail (p, 1), "\\_") [[1]]
-        summ ["package"] <- p [1]
-        summ ["version"] <-
-            gsub ("\\.tar\\.gz$", "", p [2])
+        pkg_vers <- get_pkg_version (path)
+        summ ["package"] <- pkg_vers [1]
+        summ ["version"] <- pkg_vers [2]
     }
 
     return (summ)
