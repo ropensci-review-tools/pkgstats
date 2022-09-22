@@ -134,22 +134,12 @@ pkgstats_from_archive <- function (path,
 
                 res <- lapply (f, function (i) {
 
-                    summ1 <- one_summary_from_archive (
+                    one_summary_from_archive (
                         i,
                         save_full,
                         save_ex_calls,
                         results_path
                     )
-
-                    # pkgs which fail - this should not happen, but for some
-                    # reason does, so "fail" is for debugging
-                    if (is.na (summ1$package)) {
-                        pkg_vers <- get_pkg_version (i)
-                        summ1 ["package"] <- pkg_vers [1]
-                        summ1 ["version"] <- pkg_vers [2]
-                        summ1 ["date"] <- "fail"
-                    }
-                    return (summ1)
                 })
             }
 
