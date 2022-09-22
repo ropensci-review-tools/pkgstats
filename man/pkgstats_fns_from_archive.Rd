@@ -15,11 +15,12 @@ pkgstats_fns_from_archive(
 )
 }
 \arguments{
-\item{path}{Path to local CRAN archive}
+\item{path}{Path to local archive of R packages, either as source
+directories, or '.tar.gz' files such as in a CRAN mirror.}
 
 \item{archive}{If \code{TRUE}, extract statistics for all packages in the
-\verb{/Archive} sub-directory, otherwise only statistics for main \code{tarballs}
-directory (that is, current packages only).}
+\verb{/Archive} sub-directory, otherwise only statistics for main directory (that
+is, current packages only).}
 
 \item{prev_results}{Result of previous call to this function, if available.
 Submitting previous results will ensure that only newer packages not present
