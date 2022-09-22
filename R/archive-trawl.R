@@ -306,6 +306,9 @@ one_summary_from_archive <- function (path, save_full,
         s <- NULL
     }
 
+    tryCatch (file.remove (logfiles$stdout), error = function (e) NULL)
+    tryCatch (file.remove (logfiles$stderr), error = function (e) NULL)
+
     if (save_full || save_ex_calls) {
         pkg <- utils::tail (decompose_path (path) [[1]], 1L)
         pkg <- gsub ("\\.tar\\.gz$", "", pkg)
