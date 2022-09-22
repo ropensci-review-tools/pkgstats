@@ -327,7 +327,7 @@ one_summary_from_archive <- function (path, save_full,
         error = function (e) NULL
     )
 
-    if (is.null (summ)) { # pkgstats failed
+    if (is.null (summ) || is.na (summ$package)) { # pkgstats failed
         summ <- pkgstats_summary () # null summary
         pkg_vers <- get_pkg_version (path)
         summ ["package"] <- pkg_vers [1]
