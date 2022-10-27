@@ -285,11 +285,12 @@ one_summary_from_archive <- function (path, save_full,
 
     p0 <- proc.time ()
     elapsed <- proc.time () [3] - p0 [3]
-    while (ps$is_alive () && elapsed < 300) {
-        ps$wait ()
+    timeout <- 300
+    while (ps$is_alive () && elapsed < timeout) {
+        ps$wait (timeout = 10)
         elapsed <- proc.time () [3] - p0 [3]
     }
-    if (elapsed < 300) {
+    if (elapsed < (timeout - 1)) {
         s <- tryCatch (ps$get_result (), error = function (e) NULL)
     } else {
         ps$kill ()
