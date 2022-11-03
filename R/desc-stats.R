@@ -37,6 +37,8 @@ desc_stats <- function (path) {
         read.dcf (desc),
         stringsAsFactors = FALSE
     )
+    # gee 4.13-2 and -3 have Version = "4.13-2/3 (Gee version 98/1/27)"
+    version <- gsub ("\\s+.*$", "", d$Version)
     license <- d$License
     urls <- NA_character_
     if ("URL" %in% names (d)) {
@@ -64,7 +66,7 @@ desc_stats <- function (path) {
 
     data.frame (
         package = d$Package,
-        version = d$Version,
+        version = version,
         date = desc_date,
         license = license,
         urls = urls,
