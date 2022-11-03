@@ -108,6 +108,7 @@ pkgstats_from_archive <- function (path,
         flist <- rm_prev_files (flist, prev_results)
     }
     flist <- exclude_these_tarballs (flist)
+    flist <- rm_tars_with_different_desc (flist)
     npkgs <- length (flist)
 
     if (npkgs > 0) {
@@ -271,10 +272,35 @@ rm_prev_files <- function (flist, prev_results) {
     return (flist)
 }
 
+#' Some archive tarballs have version numbers in 'DESCRIPTION' files that differ
+#' from the tarball numbers. This function re-maps the tarball names to match
+#' the internal version numbers, to ensure these tarball file names are removed
+#' as having been processed.
+#' @noRd
+rm_tars_with_different_desc <- function (flist) {
+
+    # first is a grep pattern; second is direct replacement
+    dat <- list (
+        c ("acepack\\_1\\.1\\.tar\\.gz$", "acepack_1.0.4.tar.gz"),
+        c ("bats\\_0\\.1\\-3\\.tar\\.gz$", "bats-0.1-2.tar.gz")
+    )
+
+    for (d in dat) {
+        index <- grep (d [1], flist)
+        if (length (index) == 1L) {
+            flist <- flist [-index]
+        }
+    }
+
+    return (flist)
+}
+
 #' These packages fail on main 'pkgstats' call, and can not be processed at all.
+#'
 #' The 'dse' tarballs have multiple packages in sub-directories with multiple
 #' 'DESCRIPTION' files, so can not be processed as single packages, and thus do
 #' not return any package names or versions.
+#'
 #' @noRd
 exclude_these_tarballs <- function (flist) {
 
