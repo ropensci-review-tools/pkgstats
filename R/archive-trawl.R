@@ -105,6 +105,7 @@ pkgstats_from_archive <- function (path,
     if (all (grepl ("\\.tar\\.gz$", flist))) {
         flist <- rm_prev_files (flist, prev_results)
     }
+    flist <- exclude_these_tarballs (flist)
     npkgs <- length (flist)
 
     if (npkgs > 0) {
@@ -263,6 +264,26 @@ rm_prev_files <- function (flist, prev_results) {
         )
 
         flist <- flist [which (!tars %in% prev_tars)]
+    }
+
+    return (flist)
+}
+
+#' These packages fail on main 'pkgstats' call, and can not be processed at all.
+#' The 'dse' tarballs have multiple packages in sub-directories with multiple
+#' 'DESCRIPTION' files, so can not be processed as single packages, and thus do
+#' not return any package names or versions.
+#' @noRd
+exclude_these_tarballs <- function (flist) {
+
+    exclude <- c (
+        "dse_R2000.4-1.tar.gz",
+        "dse_R2000.6-1.tar.gz"
+    )
+    index <- lapply (exclude, function (i) grep (i, flist, fixed = TRUE))
+    index <- unlist (index)
+    if (length (index) > 0L) {
+        flist <- flist [-index]
     }
 
     return (flist)
