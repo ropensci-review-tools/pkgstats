@@ -37,7 +37,11 @@ desc_stats <- function (path) {
         read.dcf (desc),
         stringsAsFactors = FALSE
     )
-    # gee 4.13-2 and -3 have Version = "4.13-2/3 (Gee version 98/1/27)"
+    # The following pkgs have extra guff in version strings:
+    # "X-X.X (version YY/MM/DD)"
+    # gee 4.13-2
+    # gee 4.13-3
+    # nlme 3-1.2
     version <- gsub ("\\s+.*$", "", d$Version)
     license <- d$License
     urls <- NA_character_
