@@ -101,6 +101,7 @@ pkgstats_from_archive <- function (path,
     }
 
     res <- NULL
+    results_files <- NULL
     out <- prev_results
 
     flist <- list_archive_files (path, archive)
@@ -126,7 +127,6 @@ pkgstats_from_archive <- function (path,
         if (!dir.exists (results_path)) {
             dir.create (results_path, recursive = TRUE)
         }
-        results_files <- NULL
 
         index <- 1 # name of temporary files
         pt0 <- proc.time ()
@@ -177,7 +177,9 @@ pkgstats_from_archive <- function (path,
     out <- out [which (!is.na (out$package)), ]
     rownames (out) <- NULL
 
-    chk <- file.remove (results_files) # nolint
+    if (!is.null (results_files)) {
+        chk <- file.remove (results_files) # nolint
+    }
 
     if (!is.null (res) && !is.null (results_file)) {
 
