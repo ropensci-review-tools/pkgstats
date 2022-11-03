@@ -300,16 +300,19 @@ rm_tars_with_different_desc <- function (flist) {
 
 #' These packages fail on main 'pkgstats' call, and can not be processed at all.
 #'
-#' The 'dse' tarballs have multiple packages in sub-directories with multiple
-#' 'DESCRIPTION' files, so can not be processed as single packages, and thus do
-#' not return any package names or versions.
+#' The 'dse' and 'VR' tarballs have multiple packages in sub-directories with
+#' multiple 'DESCRIPTION' files, so can not be processed as single packages, and
+#' thus do not return any package names or versions.
 #'
 #' @noRd
 exclude_these_tarballs <- function (flist) {
 
     exclude <- c (
         "dse_R2000.4-1.tar.gz",
-        "dse_R2000.6-1.tar.gz"
+        "dse_R2000.6-1.tar.gz",
+        "VR_5.3pl037-1.tar.gz",
+        "VR_5.3pl037-2.tar.gz",
+        "VR_6.1-4.tar.gz"
     )
     index <- lapply (exclude, function (i) grep (i, flist, fixed = TRUE))
     index <- unlist (index)
