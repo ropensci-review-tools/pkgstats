@@ -91,11 +91,13 @@ pkgstats_from_archive <- function (path,
         prev_results <- readRDS (prev_results)
     }
 
-    if (!identical (names (prev_results), names (pkgstats_summary ()))) {
-        stop (
-            "'prev_results' must contain a ",
-            "'data.frame' of 'pkgstats' summaries"
-        )
+    if (!is.null (prev_results)) {
+        if (!identical (names (prev_results), names (pkgstats_summary ()))) {
+            stop (
+                "'prev_results' must contain a ",
+                "'data.frame' of 'pkgstats' summaries"
+            )
+        }
     }
 
     res <- NULL
