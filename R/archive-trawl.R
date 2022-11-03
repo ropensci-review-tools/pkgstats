@@ -283,7 +283,7 @@ rm_tars_with_different_desc <- function (flist) {
     dat <- list (
         c ("acepack\\_1\\.1\\.tar\\.gz$", "acepack_1.0.4.tar.gz"),
         c ("bats\\_0\\.1\\-3\\.tar\\.gz$", "bats-0.1-2.tar.gz"),
-        c ("HTML\\0\\.4\\-1\\.tar\\.gz$", "HTML-0.4.tar.gz"),
+        c ("HTML\\_0\\.4\\-1\\.tar\\.gz$", "HTML-0.4.tar.gz"),
         c ("survival5\\_1\\.0\\.tar\\.gz$", "survival5-1.0-0.tar.gz"),
         c ("timeslab\\_1\\.0\\-1\\.tar\\.gz$", "timeslab_1.0.tar.gz")
     )
