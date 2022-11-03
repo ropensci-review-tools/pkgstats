@@ -86,6 +86,18 @@ pkgstats_from_archive <- function (path,
     checkmate::assert_scalar (save_ex_calls)
     checkmate::assert_string (results_path)
 
+    if (is.character (prev_results)) {
+        checkmate::assert_file_exists (prev_results)
+        prev_results <- readRDS (prev_results)
+    }
+
+    if (!identical (names (prev_results), names (pkgstats_summary ()))) {
+        stop (
+            "'prev_results' must contain a ",
+            "'data.frame' of 'pkgstats' summaries"
+        )
+    }
+
     res <- NULL
     out <- prev_results
 
