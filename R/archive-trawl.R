@@ -460,3 +460,52 @@ get_pkg_version <- function (path) {
 
     c (pkg, v)
 }
+
+#' Internal function to convert columns in result of archive trawl to expected,
+#' generally numeric, types.
+#' @noRd
+convert_trawl_columns <- function (x) {
+
+    int_cols <- c (
+        "^files\\_",
+        "^loc\\_",
+        "^blank\\_",
+        "^comment\\_",
+        "^indentation$",
+        "^rel\\_space$",
+        "^num\\_",
+        "^desc\\_n\\_",
+        "^n\\_fns\\_(r|s)",
+        "^n\\_edges",
+        "^n\\_clusters"
+    )
+    num_cols <- c (
+        "^rel\\_space\\_",
+        "^nexpr$",
+        "^rel\\_space\\_",
+        "^data\\_size\\_",
+        "^n\\_fns\\_per",
+        "^npars\\_",
+        "^doclines\\_per\\_",
+        "^docchars\\_per\\_",
+        "^centrality\\_",
+        "^node\\_degree\\_",
+        "^cpl\\_instability"
+    )
+
+    cols <- names (x)
+
+    int_cols <- lapply (int_cols, function (i) grep (i, cols))
+    int_cols <- sort (unlist (int_cols))
+    for (i in int_cols) {
+        storage.mode (x [[i]]) <- "integer"
+    }
+
+    num_cols <- lapply (num_cols, function (i) grep (i, cols))
+    num_cols <- sort (unlist (num_cols))
+    for (i in num_cols) {
+        storage.mode (x [[i]]) <- "numeric"
+    }
+
+    return (x)
+}

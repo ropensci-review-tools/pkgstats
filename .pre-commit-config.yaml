@@ -8,6 +8,7 @@ repos:
         args: [--style_pkg=spaceout, --style_fun=spaceout_style]    
         additional_dependencies:
         - ropensci-review-tools/spaceout
+        - styler
           #-   id: roxygenize
           #additional_dependencies:
           #- pkgbuild
