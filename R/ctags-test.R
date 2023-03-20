@@ -105,15 +105,8 @@ ctags_test <- function (quiet = TRUE) {
         dir.create (td)
         chk <- file.copy (pkgstats_path, td, recursive = TRUE)
         # unlink (pkgstats_path, recursive = TRUE) # done in unload
-        gtags_test <- withr::with_envvar (
-            c ("GTAGSLABEL" = "new-ctags"),
-            withr::with_dir (
-                file.path (td, "pkgstats"),
-                system2 ("gtags",
-                    stdout = TRUE, stderr = TRUE
-                )
-            )
-        )
+        cmd <- "export GTAGS_LABEL=new-ctags; gtags"
+        gtags_test <- withr::with_dir (file.path (td, "pkgstats"), system (cmd, intern = TRUE))
         gtags_check <- length (gtags_test) == 0L
         if (!gtags_check) {
             gtags_check <- any (grepl ("error", gtags_test, ignore.case = TRUE))
