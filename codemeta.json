@@ -4,20 +4,17 @@
   "identifier": "pkgstats",
   "description": "Static code analyses for R packages using the external code-tagging libraries \"ctags\" and \"gtags\". Static analyses enable packages to be analysed very quickly, generally a couple of seconds at most. The package also provides access to a database generating by applying the main function to the full CRAN archive, enabling the statistical properties of any package to be compared with all other CRAN packages.",
   "name": "pkgstats: Metrics of R Packages",
-  "relatedLink": [
-    "https://docs.ropensci.org/pkgstats/",
-    "https://CRAN.R-project.org/package=pkgstats"
-  ],
+  "relatedLink": ["https://docs.ropensci.org/pkgstats/", "https://CRAN.R-project.org/package=pkgstats"],
   "codeRepository": "https://github.com/ropensci-review-tools/pkgstats",
   "issueTracker": "https://github.com/ropensci-review-tools/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.1.3.005",
+  "version": "0.1.3.6",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.2.2 (2022-10-31)",
+  "runtimePlatform": "R version 4.3.1 (2023-06-16)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -298,7 +295,7 @@
     },
     "SystemRequirements": "ctags, global, C++11"
   },
-  "fileSize": "25343.142KB",
+  "fileSize": "491.7KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
@@ -317,9 +314,6 @@
   ],
   "releaseNotes": "https://github.com/ropensci-review-tools/pkgstats/blob/master/NEWS.md",
   "readme": "https://github.com/ropensci-review-tools/pkgstats/blob/main/README.md",
-  "contIntegration": [
-    "https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check",
-    "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"
-  ],
+  "contIntegration": ["https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check", "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"],
   "developmentStatus": "https://www.repostatus.org/#active"
 }
