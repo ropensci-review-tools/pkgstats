@@ -42,6 +42,8 @@ get_ctags <- function (d = "R", has_tabs) {
         fields <- "eFKlnN"
     } else if (d %in% c ("src", "inst")) {
         fields <- "eFKlnN"
+    } else { # Generic for adapation to other non-R-pkg dirs
+        fields <- "eFKlnN"
     }
 
     ptn <- paste0 ("ctags-", Sys.getpid (), "-")
