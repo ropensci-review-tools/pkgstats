@@ -7,7 +7,7 @@ get_ctags <- function (d = "R", has_tabs) {
         return (NULL)
     }
 
-    path_dir <- file.path (getwd (), d)
+    path_dir <- normalizePath (file.path (getwd (), d))
 
     # tab-characters muck up parsing of tag content so have to be removed.
     # This requires modifying the code, so the whole directory is copied to
