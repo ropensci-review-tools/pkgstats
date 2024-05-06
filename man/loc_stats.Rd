@@ -30,8 +30,8 @@ loc_stats (path)
 \seealso{
 Other stats: 
 \code{\link{desc_stats}()},
-\code{\link{pkgstats_summary}()},
 \code{\link{pkgstats}()},
+\code{\link{pkgstats_summary}()},
 \code{\link{rd_stats}()}
 }
 \concept{stats}

@@ -26,8 +26,8 @@ desc_stats (path)
 \seealso{
 Other stats: 
 \code{\link{loc_stats}()},
-\code{\link{pkgstats_summary}()},
 \code{\link{pkgstats}()},
+\code{\link{pkgstats_summary}()},
 \code{\link{rd_stats}()}
 }
 \concept{stats}

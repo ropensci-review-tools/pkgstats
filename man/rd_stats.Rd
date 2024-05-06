@@ -27,7 +27,7 @@ rd_stats (path)
 Other stats: 
 \code{\link{desc_stats}()},
 \code{\link{loc_stats}()},
-\code{\link{pkgstats_summary}()},
-\code{\link{pkgstats}()}
+\code{\link{pkgstats}()},
+\code{\link{pkgstats_summary}()}
 }
 \concept{stats}
