@@ -1,8 +1,0 @@
-all: winlibs
-
-winlibs:
-	mkdir -p ../inst
-	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" --vanilla "../tools/winlibs.R"
-	cp -rf ../windows/universal-ctags-5.9.20210530.0/bin ../inst/
-
-.PHONY: all winlibs
