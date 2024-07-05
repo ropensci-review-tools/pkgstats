@@ -1,6 +1,10 @@
 0.1.1.00x (dev)
 ===================
 
+## Major changes
+
+- Former 'configure' and 'Makevars.win' files which used to download ctags binaries on package install now removed, and replaced with internal functions in `zzz.R` called on first package load.
+
 ## Minor changes
 
 - Added this news file
