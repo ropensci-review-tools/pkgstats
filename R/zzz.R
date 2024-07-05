@@ -1,7 +1,7 @@
 # nocov start
 .onLoad <- function (libname, pkgname) { # nolint
 
-    if (!interactive ()) {
+    if (!interactive () || ami::on_cran ()) {
         return ()
     }
 
