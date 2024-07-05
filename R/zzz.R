@@ -10,15 +10,15 @@
     os <- Sys.info () ["sysname"]
 
     if (os == "Darwin") {
-        message ("This package requires downloading and installing binary 'universal-ctags' software from:")
-        message ("https://github.com/autobrew/archive/tree/master/high_sierra")
+        packageStartupMessage ("This package requires downloading and installing binary 'universal-ctags' software from:")
+        packageStartupMessage ("https://github.com/autobrew/archive/tree/master/high_sierra")
         chk <- readline ("Do you agree (y/n)?")
         if (substring (tolower (chk), 1, 1) == "y") {
             install_ctags_macos (pkg_path)
         }
     } else if (os == "Windows") {
-        message ("This package requires downloading and installing binary 'universal-ctags' software from:")
-        message ("https://github.com/rwinlib/universal-ctags/")
+        packageStartupMessage ("This package requires downloading and installing binary 'universal-ctags' software from:")
+        packageStartupMessage ("https://github.com/rwinlib/universal-ctags/")
         chk <- readline ("Do you agree (y/n)?")
         if (substring (tolower (chk), 1, 1) == "y") {
             install_ctags_windows (pkg_path)
