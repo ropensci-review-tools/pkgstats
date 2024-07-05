@@ -1,15 +1,15 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.1.5.008
+Version: 0.1.5.009
 Authors@R: 
     person("Mark", "Padgham", , "mark.padgham@email.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-2172-5265"))
 Description: Static code analyses for R packages using the external code-tagging
-    libraries "ctags" and "gtags". Static analyses enable packages to be
+    libraries 'ctags' and 'gtags'. Static analyses enable packages to be
     analysed very quickly, generally a couple of seconds at most. The package
     also provides access to a database generating by applying the main function
-    to the full CRAN archive, enabling the statistical properties of any package
-    to be compared with all other CRAN packages.
+    to the full 'CRAN' archive, enabling the statistical properties of any package
+    to be compared with all other 'CRAN' packages.
 License: GPL-3
 URL: https://docs.ropensci.org/pkgstats/,
     https://github.com/ropensci-review-tools/pkgstats
