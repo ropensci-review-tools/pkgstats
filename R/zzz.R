@@ -1,7 +1,7 @@
 # nocov start
-.onLoad <- function (libname, pkgname) { # nolint
+.onAttach <- function (libname, pkgname) { # nolint
 
-    if (!interactive () || ami::on_cran ()) {
+    if (!interactive () || ami::on_cran () || ctags_test ()) {
         return ()
     }
 
