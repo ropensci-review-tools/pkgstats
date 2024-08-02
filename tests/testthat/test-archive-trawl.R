@@ -73,9 +73,13 @@ test_that ("archive update errors", {
     expect_error (pkgstats_update (datasets::Orange), msg)
     dat <- null_stats ()
     expect_error (pkgstats_update (dat), msg)
+    # param must have >= 20000 rows:
     dat <- dat [rep (1, 19999), ]
     expect_error (pkgstats_update (dat), msg)
     dat <- null_stats () [rep (1, 20000), -ncol (null_stats ())]
+    expect_error (pkgstats_update (dat), msg)
+    dat <- null_stats () [rep (1, 20000), ]
+    names (dat) [1] <- "a"
     expect_error (pkgstats_update (dat), msg)
 })
 
@@ -102,9 +106,25 @@ test_that ("archive update", {
     pkg_version <- prev_results$version [1]
     prev_results <- prev_results [-1, ]
 
-    out <- pkgstats_update (prev_results = prev_results, num_cores = 1L)
-    expect_equal (nrow (out), nrow (prev_results) + 1)
-    expect_true (pkg_name %in% out$package)
+    out1 <- pkgstats_update (
+        prev_results = prev_results,
+        num_cores = 1L,
+        results_path = fs::path (fs::path_temp (), "pkgstats-results")
+    )
+    expect_equal (nrow (out1), nrow (prev_results) + 1)
+    expect_true (pkg_name %in% out1$package)
+
+    results_file <- fs::path (fs::path_temp (), "junk")
+    out2 <- pkgstats_update (
+        prev_results = prev_results,
+        num_cores = 2L,
+        results_path = fs::path (fs::path_temp (), "pkgstats-results"),
+        results_file = results_file
+    )
+    expect_identical (out1, out2)
+    expect_false (file.exists (results_file))
+    expect_true (file.exists (paste0 (results_file, ".Rds")))
 
     unlink (archive$archive_path, recursive = TRUE)
+    unlink (results_file)
 })
