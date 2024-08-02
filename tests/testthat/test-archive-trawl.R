@@ -65,6 +65,20 @@ test_that ("archive trawl", {
     }
 })
 
+test_that ("archive update errors", {
+
+    msg <- "'prev_results' must be given"
+    expect_error (pkgstats_update (), msg)
+    expect_error (pkgstats_update ("a"), msg)
+    expect_error (pkgstats_update (datasets::Orange), msg)
+    dat <- null_stats ()
+    expect_error (pkgstats_update (dat), msg)
+    dat <- dat [rep (1, 19999), ]
+    expect_error (pkgstats_update (dat), msg)
+    dat <- null_stats () [rep (1, 20000), -ncol (null_stats ())]
+    expect_error (pkgstats_update (dat), msg)
+})
+
 test_that ("archive update", {
 
     # Fake prev_results to contain all current CRAN packages minus one, and
@@ -88,7 +102,7 @@ test_that ("archive update", {
     pkg_version <- prev_results$version [1]
     prev_results <- prev_results [-1, ]
 
-    out <- pkgstats_update (prev_results = prev_results)
+    out <- pkgstats_update (prev_results = prev_results, num_cores = 1L)
     expect_equal (nrow (out), nrow (prev_results) + 1)
     expect_true (pkg_name %in% out$package)
 

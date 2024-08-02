@@ -51,12 +51,17 @@ pkgstats_update <- function (prev_results = NULL,
     checkmate::assert_scalar (save_ex_calls)
     checkmate::assert_string (results_path)
 
+    msg <- paste0 (
+        "'prev_results' must be given, and must be a 'data.frame' from a ",
+        "previous call to 'pkgstats_from_archive()' or 'pkgstats_update()'."
+    )
+    if (is.null (prev_results)) stop (msg, call. = FALSE)
     if (!is.null (prev_results)) {
+        if (!inherits (prev_results, "data.frame")) stop (msg, call. = FALSE)
+        if (nrow (prev_results) < 20000) stop (msg, call. = FALSE)
+        if (ncol (prev_results) != ncol (null_stats ())) stop (msg, call. = FALSE)
         if (!identical (names (prev_results), names (pkgstats_summary ()))) {
-            stop (
-                "'prev_results' must contain a ",
-                "'data.frame' of 'pkgstats' summaries"
-            )
+            stop (msg, call. = FALSE)
         }
     }
 
