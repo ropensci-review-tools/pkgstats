@@ -46,7 +46,7 @@ are saved for each package to files in \code{results_path} (only if \code{save_f
 }
 \description{
 Note that this function only updates data from current CRAN packages, and
-not from archived package. Any packages which have been updated multiple
+not from archived packages. Any packages which have been updated multiple
 times since generation of previous results will only be updated with the
 most recent data, and not with data from any intermediate updates.
 }
