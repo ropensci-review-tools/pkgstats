@@ -64,3 +64,33 @@ test_that ("archive trawl", {
         Sys.unsetenv ("PKGSTATS_CRAN_TESTS")
     }
 })
+
+test_that ("archive update", {
+
+    # Fake prev_results to contain all current CRAN packages minus one, and
+    # expect that update will add the missing package. This will actually
+    # download the package, so should only be run locally and on GitHub
+    # runners.
+
+    skip_if_not (test_all)
+
+    archive <- setup_test_archive ()
+    tarball_path <- setup_test_tarball (archive)
+
+    cran_pkgs <- tools::CRAN_package_db ()
+    index <- rep (1, times = nrow (cran_pkgs))
+    prev_results <- null_stats () [index, ]
+    prev_results$package <- cran_pkgs$Package
+    prev_results$version <- cran_pkgs$Version
+
+    i <- 1
+    pkg_name <- prev_results$package [1]
+    pkg_version <- prev_results$version [1]
+    prev_results <- prev_results [-1, ]
+
+    out <- pkgstats_update (prev_results = prev_results)
+    expect_equal (nrow (out), nrow (prev_results) + 1)
+    expect_true (pkg_name %in% out$package)
+
+    unlink (archive$archive_path, recursive = TRUE)
+})
