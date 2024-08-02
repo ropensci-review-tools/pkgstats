@@ -1,4 +1,3 @@
-
 #' Trawl a local CRAN archive and extract statistics from all packages
 #'
 #' @param path Path to local archive of R packages, either as source
