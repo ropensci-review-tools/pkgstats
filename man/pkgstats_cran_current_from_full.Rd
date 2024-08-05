@@ -4,7 +4,7 @@
 \alias{pkgstats_cran_current_from_full}
 \title{Reduce \code{data.frame} of full CRAN archive data to current packages only.}
 \usage{
-pkgstats_cran_current_from_full(prev_results)
+pkgstats_cran_current_from_full(prev_results, results_file = NULL)
 }
 \arguments{
 \item{prev_results}{Result of previous call to this function, if available.
@@ -12,6 +12,11 @@ Submitting previous results will ensure that only newer packages not present
 in previous result will be analysed, with new results simply appended to
 previous results. This parameter can also specify a file to be read with
 \code{readRDS()}.}
+
+\item{results_file}{Can be used to specify the name or full path of a \code{.Rds}
+file to which results should be saved once they have been generated. The
+'.Rds' extension will be automatically appended, and any other extensions
+will be ignored.}
 }
 \description{
 Reduce \code{data.frame} of full CRAN archive data to current packages only.
