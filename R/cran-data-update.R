@@ -161,8 +161,11 @@ list_new_cran_updates <- function (prev_results) {
     cran_tarball <- paste0 (cran_pkgs$Package, "_", cran_pkgs$Version)
 
     cran_pkgs <- cran_pkgs [which (!cran_tarball %in% prev_tarball), ]
-    paste0 (cran_pkgs$Package, "_", cran_pkgs$Version)
-
+    ret <- character (0L)
+    if (nrow (cran_pkgs) > 0) {
+        ret <- paste0 (cran_pkgs$Package, "_", cran_pkgs$Version)
+    }
+    return (ret)
 }
 
 one_summary_from_cran <- function (i,
