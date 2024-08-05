@@ -71,6 +71,7 @@ out <- pkgstats_from_archive (tarball_path)
 \seealso{
 Other archive: 
 \code{\link{dl_pkgstats_data}()},
+\code{\link{pkgstats_cran_current_from_full}()},
 \code{\link{pkgstats_fns_from_archive}()},
 \code{\link{pkgstats_from_archive}()}
 }
