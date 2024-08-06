@@ -8,7 +8,7 @@
   "codeRepository": "https://github.com/ropensci-review-tools/pkgstats",
   "issueTracker": "https://github.com/ropensci-review-tools/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.1.5.028",
+  "version": "0.1.6",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -69,6 +69,18 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=hms"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "httr2",
+      "name": "httr2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=httr2"
     },
     {
       "@type": "SoftwareApplication",
@@ -301,12 +313,9 @@
     },
     "SystemRequirements": "ctags, global"
   },
-  "fileSize": "473.3KB",
+  "fileSize": "487.293KB",
   "releaseNotes": "https://github.com/ropensci-review-tools/pkgstats/blob/master/NEWS.md",
   "readme": "https://github.com/ropensci-review-tools/pkgstats/blob/main/README.md",
-  "contIntegration": [
-    "https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check",
-    "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"
-  ],
+  "contIntegration": ["https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check", "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"],
   "developmentStatus": "https://www.repostatus.org/#active"
 }
