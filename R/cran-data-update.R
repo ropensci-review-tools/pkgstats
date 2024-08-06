@@ -199,9 +199,17 @@ check_prev_results <- function (prev_results) {
     if (!is.null (prev_results)) {
         if (!inherits (prev_results, "data.frame")) stop (msg, call. = FALSE)
         if (nrow (prev_results) < 20000) stop (msg, call. = FALSE)
-        if (ncol (prev_results) != ncol (null_stats ())) stop (msg, call. = FALSE)
-        if (!identical (names (prev_results), names (pkgstats_summary ()))) {
-            stop (msg, call. = FALSE)
+        if (ncol (prev_results) > 3L) {
+            if (ncol (prev_results) != ncol (null_stats ())) stop (msg, call. = FALSE)
+            if (!identical (names (prev_results), names (pkgstats_summary ()))) {
+                stop (msg, call. = FALSE)
+            }
+        } else {
+            if (ncol (prev_results) != 3L) stop (msg, call. = FALSE)
+            nms <- c ("package", "version", "fn_name")
+            if (!identical (names (prev_results), nms)) {
+                stop (msg, call. = FALSE)
+            }
         }
     }
 }
