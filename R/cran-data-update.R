@@ -142,10 +142,12 @@ pkgstats_update <- function (prev_results = NULL,
     invisible (out)
 }
 
+get_cran_db <- memoise::memoise (tools::CRAN_package_db)
+
 list_new_cran_updates <- function (prev_results) {
 
-    prev_tarball <- paste0 (prev_results$package, "_", prev_results$version)
-    cran_pkgs <- tools::CRAN_package_db ()
+    prev_tarball <- unique (paste0 (prev_results$package, "_", prev_results$version))
+    cran_pkgs <- get_cran_db ()
     cran_tarball <- paste0 (cran_pkgs$Package, "_", cran_pkgs$Version)
 
     cran_pkgs <- cran_pkgs [which (!cran_tarball %in% prev_tarball), ]

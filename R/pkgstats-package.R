@@ -1,4 +1,5 @@
 #' @keywords internal
+#' @importFrom memoise memoise
 #' @aliases pkgstats-package
 "_PACKAGE"
 

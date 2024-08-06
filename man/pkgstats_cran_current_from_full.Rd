@@ -25,6 +25,7 @@ Reduce \code{data.frame} of full CRAN archive data to current packages only.
 Other archive: 
 \code{\link{dl_pkgstats_data}()},
 \code{\link{pkgstats_fns_from_archive}()},
+\code{\link{pkgstats_fns_update}()},
 \code{\link{pkgstats_from_archive}()},
 \code{\link{pkgstats_update}()}
 }

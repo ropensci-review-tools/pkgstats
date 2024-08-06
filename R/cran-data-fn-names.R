@@ -145,3 +145,112 @@ pkgstats_fns_from_archive <- function (path,
 
     invisible (out)
 }
+
+#' Update function names data from previous data and newly updated CRAN
+#' packages only.
+#'
+#' @inheritParams pkgstats_from_archive
+#' @return A `data.frame` object with one row for each function in each package
+#' and the following columns:
+#' \itemize{
+#' \item Package name
+#' \item Package version
+#' \item Function name
+#' }
+#'
+#' @family archive
+#' @export
+pkgstats_fns_update <- function (prev_results = NULL,
+                                 results_file = NULL,
+                                 chunk_size = 1000L,
+                                 num_cores = 1L,
+                                 results_path = tempdir ()) {
+
+    requireNamespace ("hms")
+    requireNamespace ("parallel")
+
+    checkmate::assert_int (chunk_size, lower = 1L)
+    checkmate::assert_int (num_cores, lower = 1L)
+    checkmate::assert_string (results_path)
+    check_prev_results (prev_results)
+
+    res <- NULL
+    out <- prev_results
+
+    new_cran_pkgs <- list_new_cran_updates (prev_results)
+
+    npkgs <- length (new_cran_pkgs)
+
+    if (npkgs > 0) {
+
+        n <- ceiling (npkgs / chunk_size)
+        n <- factor (rep (seq (n), each = chunk_size)) [seq (npkgs)]
+        new_cran_pkgs <- split (new_cran_pkgs, f = n)
+
+        message (
+            "Starting trawl of ", npkgs,
+            " files in ", length (new_cran_pkgs), " chunks"
+        )
+
+        results_path <- normalizePath (results_path, mustWork = FALSE)
+        if (!dir.exists (results_path)) {
+            dir.create (results_path, recursive = TRUE)
+        }
+
+        index <- 1 # name of temporary files
+        pt0 <- proc.time ()
+
+        for (f in new_cran_pkgs) {
+
+            if (num_cores > 1L) {
+
+                res <- parallel::mclapply (f, function (i) {
+
+                    tryCatch (
+                        pkgstats::pkgstats_fn_names (i),
+                        error = function (e) NULL
+                    )
+
+                }, mc.cores = num_cores)
+
+            } else {
+
+                res <- lapply (f, function (i) {
+
+                    tryCatch (
+                        pkgstats::pkgstats_fn_names (i),
+                        error = function (e) NULL
+                    )
+                })
+            }
+
+            fname <- file.path (
+                results_path,
+                paste0 ("pkgstats-results-", index, ".Rds")
+            )
+            saveRDS (do.call (rbind, res), fname)
+            results_files <- c (results_files, fname)
+
+            archive_trawl_progress_message (index, chunk_size, npkgs, pt0)
+            index <- index + 1
+        }
+
+        res <- do.call (rbind, lapply (results_files, readRDS))
+    }
+
+    out <- rbind (out, res)
+
+    tarball <- paste0 (out$package, "_", out$version)
+    cran_pkgs <- get_cran_db ()
+    cran_tarball <- paste0 (cran_pkgs$Package, "_", cran_pkgs$Version)
+    index <- which (tarball %in% cran_tarball)
+    out <- out [index, ]
+
+    if (!is.null (res) && !is.null (results_file)) {
+
+        results_file <- archive_results_file_name (results_file)
+        saveRDS (out, results_file)
+    }
+
+    invisible (out)
+}
