@@ -1,0 +1,31 @@
+on:
+  schedule:
+    - cron: 0 0 * * *
+
+name: Update pkgstats Results
+
+jobs:
+
+  update-pkgstats-results:
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install this package
+        run: R CMD INSTALL .
+
+      - name: Call the function
+        run: |
+          Rscript -e "pkgstats::pkgstats_update()"
+        with:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
