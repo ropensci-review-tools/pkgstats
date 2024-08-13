@@ -1,3 +1,5 @@
+RELEASE_TAG <- "0.1.6"
+
 #' Update pkgstats` data on GitHub release
 #'
 #' @param upload If `TRUE`, upload updated results to GitHub release.
@@ -101,7 +103,7 @@ dl_prev_data <- function (results_path, what = "all") {
         file = f,
         repo = "ropensci-review-tools/pkgstats",
         dest = results_path,
-        tag = "v0.1.6"
+        tag = RELEASE_TAG
     )
     path [[1]]$request$output$path
 }
