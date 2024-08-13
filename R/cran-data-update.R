@@ -1,4 +1,4 @@
-RELEASE_TAG <- "0.1.6"
+RELEASE_TAG <- "v0.1.6"
 
 #' Update pkgstats` data on GitHub release
 #'
@@ -105,7 +105,12 @@ dl_prev_data <- function (results_path, what = "all") {
         dest = results_path,
         tag = RELEASE_TAG
     )
-    path [[1]]$request$output$path
+    if (!is.null (path)) {
+        path <- path [[1]]$request$output$path
+    } else { # downloaded files already exist
+        path <- fs::dir_ls (results_path, regexp = f, fixed = TRUE)
+    }
+    return (path)
 }
 
 get_cran_db <- memoise::memoise (tools::CRAN_package_db)
