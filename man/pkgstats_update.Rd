@@ -13,7 +13,9 @@ pkgstats_update(upload = TRUE)
 Local path to directory containing updated results.
 }
 \description{
-Update pkgstats` data on GitHub release
+This function is intended for internal rOpenSci use only. Usage by any
+unauthorized users will error and have no effect unless run with \code{upload = FALSE}, in which case updated data will be created in the sub-directory
+"pkgstats-results" of R's current temporary directory.
 }
 \seealso{
 Other archive: 

@@ -2,6 +2,11 @@ RELEASE_TAG <- "v0.1.6"
 
 #' Update pkgstats` data on GitHub release
 #'
+#' This function is intended for internal rOpenSci use only. Usage by any
+#' unauthorized users will error and have no effect unless run with `upload =
+#' FALSE`, in which case updated data will be created in the sub-directory
+#' "pkgstats-results" of R's current temporary directory.
+#'
 #' @param upload If `TRUE`, upload updated results to GitHub release.
 #' @return Local path to directory containing updated results.
 #' @family archive
