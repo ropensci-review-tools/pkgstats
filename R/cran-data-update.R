@@ -38,14 +38,10 @@ pkgstats_update <- function (upload = TRUE) {
 
     res <- lapply (new_cran_pkgs, function (p) {
 
-        tarball_path <- dl_one_tarball (results_path, p)
-        if (is.null (tarball_path)) {
-            next
-        }
-
         stats <- fn_names <- NULL
 
-        if (file.exists (tarball_path)) {
+        tarball_path <- dl_one_tarball (results_path, p)
+        if (!is.null (tarball_path) && file.exists (tarball_path)) {
 
             stats <- one_summary_from_archive (
                 tarball_path,
