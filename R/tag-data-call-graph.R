@@ -65,7 +65,7 @@ add_igraph_stats <- function (g, directed = TRUE) {
         directed = directed
     )
 
-    cl <- igraph::clusters (g_igr)
+    cl <- igraph::components (g_igr)
     index <- match (g$from, names (cl$membership))
     if (directed) {
         nms <- c ("cluster_dir", "centrality_dir")
