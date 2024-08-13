@@ -83,12 +83,21 @@ pkgstats_update <- function (upload = TRUE) {
     fn_nm_pkgs <- paste0 (fn_names$package, "_", fn_names$version)
     fn_names <- fn_names [which (fn_nm_pkgs %in% stats_pkgs_current), ]
 
-    stats_file <- fs::path (results_path, "pkgstats-CRAN-all.Rds")
-    stats_file_current <- fs::path (results_path, "pkgstats-CRAN-current.Rds")
-    fn_names_file <- fs::path (results_path, "pkgstats-fn-names.Rds")
-    saveRDS (stats, stats_file)
-    saveRDS (stats_current, stats_file_current)
-    saveRDS (fn_names, fn_names_file)
+    dat <- list (
+        "pkgstats-CRAN-all.Rds" = stats,
+        "pkgstats-CRAN-current.Rds" = stats_current,
+        "pkgstats-fn-names.Rds" = fn_names
+    )
+
+    for (i in seq_along (dat)) {
+        fpath <- fs::path (results_path, names (dat) [i])
+        saveRDS (dat [[i]], fpath)
+        piggyback::pb_upload (
+            file = fpath,
+            repo = "ropensci-review-tools/pkgstats",
+            tag = RELEASE_TAG
+        )
+    }
 }
 
 dl_prev_data <- function (results_path, what = "all") {
