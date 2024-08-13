@@ -7,7 +7,7 @@ pkgstats_cran_current_from_full <- function (prev_results, results_file = NULL) 
 
     prev_tarball <- paste0 (prev_results$package, "_", prev_results$version)
 
-    cran_pkgs <- tools::CRAN_package_db ()
+    cran_pkgs <- get_cran_db ()
     cran_tarball <- paste0 (cran_pkgs$Package, "_", cran_pkgs$Version)
 
     index <- which (prev_tarball %in% cran_tarball)

@@ -1,148 +1,136 @@
-#' Update local `data.frame` of `pkgstats` data with data from all packages
-#' uploaded to CRAN since creation of local data.
+#' Update pkgstats` data on GitHub release
 #'
-#' Note that this function only updates data from current CRAN packages, and
-#' not from archived packages. Any packages which have been updated multiple
-#' times since generation of previous results will only be updated with the
-#' most recent data, and not with data from any intermediate updates.
-#'
-#' @inheritParams pkgstats_from_archive
-#' @param prev_results Result of previous call either to this function, or to
-#' \link{pkgstats_from_archive}, as a `data.frame`  of statistics, with one row
-#' for each package.
-#'
+#' @param upload If `TRUE`, upload updated results to GitHub release.
+#' @return Local path to directory containing updated results.
 #' @family archive
 #' @export
-#' @examples
-#' # Create fake archive directory with single tarball:
-#' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
-#' tarball <- basename (f)
-#'
-#' archive_path <- file.path (tempdir (), "archive")
-#' if (!dir.exists (archive_path)) {
-#'     dir.create (archive_path)
-#' }
-#' path <- file.path (archive_path, tarball)
-#' file.copy (f, path)
-#' tarball_path <- file.path (archive_path, "tarballs")
-#' dir.create (tarball_path, recursive = TRUE)
-#' file.copy (path, file.path (tarball_path, tarball))
-#' \dontrun{
-#' out <- pkgstats_from_archive (tarball_path)
-#' }
-pkgstats_update <- function (prev_results = NULL,
-                             results_file = NULL,
-                             chunk_size = 1000L,
-                             num_cores = 1L,
-                             save_full = FALSE,
-                             save_ex_calls = FALSE,
-                             results_path = tempdir ()) {
+pkgstats_update <- function (upload = TRUE) {
 
     requireNamespace ("callr")
     requireNamespace ("hms")
     requireNamespace ("httr2")
-    requireNamespace ("parallel")
+    requireNamespace ("piggyback")
 
-    checkmate::assert_int (chunk_size, lower = 1L)
-    checkmate::assert_int (num_cores, lower = 1L)
-    checkmate::assert_logical (save_full)
-    checkmate::assert_scalar (save_full)
-    checkmate::assert_logical (save_ex_calls)
-    checkmate::assert_scalar (save_ex_calls)
-    checkmate::assert_string (results_path)
+    results_path <- fs::dir_create (fs::path (fs::path_temp (), "pkgstats-results"))
 
-    check_prev_results (prev_results)
+    stats_prev_path <- dl_prev_data (results_path, what = "all")
+    stats_prev <- readRDS (stats_prev_path)
+    fn_names_prev_path <- dl_prev_data (results_path, what = "fn_names")
+    fn_names_prev <- readRDS (fn_names_prev_path)
 
-    res <- results_files <- NULL
-    out <- prev_results
+    check_prev_results (stats_prev)
+    check_prev_results (fn_names_prev)
 
-    new_cran_pkgs <- list_new_cran_updates (prev_results)
+    new_cran_pkgs <- list_new_cran_updates (stats_prev)
 
     npkgs <- length (new_cran_pkgs)
 
-    if (npkgs > 0) {
+    if (npkgs == 0) {
+        return (NULL)
+    }
 
-        n <- ceiling (npkgs / chunk_size)
-        n <- factor (rep (seq (n), each = chunk_size)) [seq (npkgs)]
-        new_cran_pkgs <- split (new_cran_pkgs, f = n)
+    message (
+        "Downloading and analysing ", npkgs, " packages."
+    )
 
-        message (
-            "Starting trawl of ", npkgs,
-            " files in ", length (new_cran_pkgs), " chunks"
-        )
+    index <- 1 # name of temporary files
+    pt0 <- proc.time ()
 
-        results_path <- normalizePath (results_path, mustWork = FALSE)
-        if (!dir.exists (results_path)) {
-            dir.create (results_path, recursive = TRUE)
+    res <- lapply (new_cran_pkgs, function (p) {
+
+        tarball_path <- dl_one_tarball (results_path, p)
+        if (is.null (tarball_path)) {
+            next
         }
 
-        index <- 1 # name of temporary files
-        pt0 <- proc.time ()
+        stats <- fn_names <- NULL
 
-        for (f in new_cran_pkgs) {
+        if (file.exists (tarball_path)) {
 
-            if (num_cores > 1L) {
-
-                res <- parallel::mclapply (f, function (i) {
-
-                    one_summary_from_cran (
-                        i,
-                        save_full,
-                        save_ex_calls,
-                        results_path
-                    )
-
-                }, mc.cores = num_cores)
-
-            } else {
-
-                res <- lapply (f, function (i) {
-
-                    one_summary_from_cran (
-                        i,
-                        save_full,
-                        save_ex_calls,
-                        results_path
-                    )
-                })
-            }
-
-            fname <- file.path (
-                results_path,
-                paste0 ("pkgstats-results-", index, ".Rds")
+            stats <- one_summary_from_archive (
+                tarball_path,
+                save_full = FALSE,
+                save_ex_calls = FALSE,
+                results_path
             )
-            saveRDS (do.call (rbind, res), fname)
-            results_files <- c (results_files, fname)
+            fn_names <- tryCatch (
+                pkgstats::pkgstats_fn_names (tarball_path),
+                error = function (e) NULL
+            )
 
-            archive_trawl_progress_message (index, chunk_size, npkgs, pt0)
-            index <- index + 1
+            tarball_dir <- gsub ("\\.tar\\.gz$", "", tarball_path)
+            unlink (tarball_dir, recursive = TRUE)
+            unlink (tarball_path, recursive = TRUE)
         }
 
-        res <- do.call (rbind, lapply (results_files, readRDS))
+        archive_trawl_progress_message (index, 1, npkgs, pt0)
+        index <- index + 1
+
+        list (stats = stats, fn_names = fn_names)
+    })
+
+    stats <- do.call (rbind, lapply (res, function (i) i$stats))
+    fn_names <- do.call (rbind, lapply (res, function (i) i$fn_names))
+
+    if (!inherits (stats$date, "POSIXt")) {
+        stats$date <- as.POSIXct (stats$date, "%y-%m-%d %H-%M-%S")
     }
 
-    if (inherits (out$date, "POSIXt")) {
-        res$date <- as.POSIXct (res$date, "%y-%m-%d %H-%M-%S")
-    }
+    stats <- rbind (stats_prev, stats [which (!is.na (stats$package)), ])
+    stats_current <- pkgstats_cran_current_from_full (stats)
+    fn_names <- rbind (fn_names_prev, fn_names [which (!is.na (fn_names$package)), ])
 
-    out <- rbind (out, res)
-    out <- out [which (!is.na (out$package)), ]
-    rownames (out) <- NULL
+    # Reduce fn_names to only current pkgs:
+    stats_pkgs_current <- paste0 (stats_current$package, "_", stats_current$version)
+    fn_nm_pkgs <- paste0 (fn_names$package, "_", fn_names$version)
+    fn_names <- fn_names [which (fn_nm_pkgs %in% stats_pkgs_current), ]
 
-    if (!is.null (results_files)) {
-        chk <- file.remove (results_files) # nolint
-    }
+    stats_file <- fs::path (results_path, "pkgstats-CRAN-all.Rds")
+    stats_file_current <- fs::path (results_path, "pkgstats-CRAN-current.Rds")
+    fn_names_file <- fs::path (results_path, "pkgstats-fn-names.Rds")
+    saveRDS (stats, stats_file)
+    saveRDS (stats_current, stats_file_current)
+    saveRDS (fn_names, fn_names_file)
+}
 
-    if (!is.null (res) && !is.null (results_file)) {
-
-        results_file <- archive_results_file_name (results_file)
-        saveRDS (out, results_file)
-    }
-
-    invisible (out)
+dl_prev_data <- function (results_path, what = "all") {
+    what <- match.arg (what, c ("all", "current", "fn_names"))
+    files <- c (
+        all = "pkgstats-CRAN-all.Rds",
+        current = "pkgstats-CRAN-current.Rds",
+        fn_names = "pkgstats-fn-names.Rds"
+    )
+    f <- files [what]
+    path <- piggyback::pb_download (
+        file = f,
+        repo = "ropensci-review-tools/pkgstats",
+        dest = results_path,
+        tag = "v0.1.6"
+    )
+    path [[1]]$request$output$path
 }
 
 get_cran_db <- memoise::memoise (tools::CRAN_package_db)
+
+dl_one_tarball <- function (results_path, tarball) {
+
+    cran_url <- "https://cran.r-project.org/src/contrib/"
+    tarball <- paste0 (tarball, ".tar.gz")
+    url <- paste0 (cran_url, tarball)
+    path <- fs::path (results_path, tarball)
+
+    (!fs::file_exists (path))
+    req <- httr2::request (url) |>
+        httr2::req_headers ("Accept" = "application/octet-stream")
+    resp <- httr2::req_perform (req)
+
+    if (httr2::resp_is_error (resp)) {
+        return (NULL)
+    }
+
+    writeBin (httr2::resp_body_raw (resp), path)
+    return (path)
+}
 
 list_new_cran_updates <- function (prev_results) {
 
@@ -156,38 +144,6 @@ list_new_cran_updates <- function (prev_results) {
         ret <- paste0 (cran_pkgs$Package, "_", cran_pkgs$Version)
     }
     return (ret)
-}
-
-one_summary_from_cran <- function (i,
-                                   save_full = FALSE,
-                                   save_ex_calls = FALSE,
-                                   results_path = tempdir ()) {
-
-    cran_url <- "https://cran.r-project.org/src/contrib/"
-    tarball <- paste0 (i, ".tar.gz")
-    url <- paste0 (cran_url, tarball)
-    path <- fs::path (fs::path_temp (), tarball)
-
-    req <- httr2::request (url) |>
-        httr2::req_headers ("Accept" = "application/octet-stream")
-    resp <- httr2::req_perform (req)
-
-    if (httr2::resp_is_error (resp)) {
-        return (NULL)
-    }
-
-    writeBin (httr2::resp_body_raw (resp), path)
-
-    s <- one_summary_from_archive (
-        path = path,
-        save_full = save_full,
-        save_ex_calls = save_ex_calls,
-        results_path = results_path
-    )
-
-    unlink (path)
-
-    return (s)
 }
 
 check_prev_results <- function (prev_results) {
