@@ -35,14 +35,13 @@ pkgstats_update <- function (upload = TRUE) {
         "Downloading and analysing ", npkgs, " packages."
     )
 
-    index <- 1 # name of temporary files
     pt0 <- proc.time ()
 
-    res <- lapply (new_cran_pkgs, function (p) {
+    res <- lapply (seq_along (new_cran_pkgs), function (p) {
 
         stats <- fn_names <- NULL
 
-        tarball_path <- dl_one_tarball (results_path, p)
+        tarball_path <- dl_one_tarball (results_path, new_cran_pkgs [p])
         if (!is.null (tarball_path) && file.exists (tarball_path)) {
 
             stats <- one_summary_from_archive (
@@ -61,8 +60,7 @@ pkgstats_update <- function (upload = TRUE) {
             unlink (tarball_path, recursive = TRUE)
         }
 
-        archive_trawl_progress_message (index, 1, npkgs, pt0)
-        index <- index + 1
+        archive_trawl_progress_message (p, 1, npkgs, pt0)
 
         list (stats = stats, fn_names = fn_names)
     })
