@@ -1,7 +1,4 @@
 on:
-  push:
-    branches:
-      - main
   schedule:
     - cron: 0 0 * * *
 
@@ -42,9 +39,6 @@ jobs:
           sudo make install
 
       - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::covr, any::xml2
-          needs: coverage
 
       - name: Install this package
         run: R CMD INSTALL .
