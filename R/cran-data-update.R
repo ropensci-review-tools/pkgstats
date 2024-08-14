@@ -134,7 +134,10 @@ dl_one_tarball <- function (results_path, tarball) {
     url <- paste0 (cran_url, tarball)
     path <- fs::path (results_path, tarball)
 
-    (!fs::file_exists (path))
+    if (fs::file_exists (path)) {
+        return (NULL)
+    }
+
     req <- httr2::request (url) |>
         httr2::req_headers ("Accept" = "application/octet-stream")
     resp <- httr2::req_perform (req)
