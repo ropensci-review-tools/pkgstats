@@ -33,11 +33,18 @@ walk_one_tree <- function (tree) {
 
     it <- treesitter::tree_walk (tree)
 
+    get_row_start_end <- function (it) {
+        point_start <- treesitter::node_start_point (it$node ())
+        point_end <- treesitter::node_end_point (it$node ())
+        c (treesitter::point_row (point_start), treesitter::point_row (point_end))
+    }
+
     reached_foot <- FALSE
     first_identifier <- TRUE
     get_next_open <- FALSE
 
     grammar_types <- node_text <- next_open <- fn_name <- character (0L)
+    row_start <- row_end <- integer (0L)
 
     while (!reached_foot) {
         field_name <- NA_to_char (it$field_name ())
@@ -45,6 +52,9 @@ walk_one_tree <- function (tree) {
         if (field_name == "function" && !grammar_type %in% c ("call", "extract_operator")) {
             grammar_types <- c (grammar_types, grammar_type)
             node_text <- c (node_text, treesitter::node_text (it$node ()))
+            row <- get_row_start_end (it)
+            row_start <- c (row_start, row [1L])
+            row_end <- c (row_end, row [1L])
             get_next_open <- TRUE
         } else if (grammar_type == "identifier" && first_identifier) {
             fn_name <- treesitter::node_text (it$node ())
@@ -74,6 +84,8 @@ walk_one_tree <- function (tree) {
     data.frame (
         fn_name = fn_name,
         grammar_type = grammar_types,
-        node_text = node_text
+        node_text = node_text,
+        start = row_start,
+        end = row_end
     ) [which (next_open != "["), ]
 }
