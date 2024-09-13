@@ -32,8 +32,12 @@ external_call_network <- function (tags_r, path, pkg_name) {
     calls$end <- tags_r$end [index]
 
     calls$package <- NA_character_
-    pkg_fns <- unique (tags_r$tag [tags_r$kind == "function"])
-    pkg_fns <- pkg_fns [which (!grepl ("^anonFunc", pkg_fns))]
+    if (tags_are_treesitter) {
+        pkg_fns <- unique (tags_r$fn_name)
+    } else {
+        pkg_fns <- unique (tags_r$tag [tags_r$kind == "function"])
+        pkg_fns <- pkg_fns [which (!grepl ("^anonFunc", pkg_fns))]
+    }
     calls$package [which (calls$call %in% pkg_fns)] <- pkg_name
 
     calls <- add_base_recommended_pkgs (calls)
