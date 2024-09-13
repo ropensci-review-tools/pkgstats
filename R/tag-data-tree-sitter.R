@@ -25,6 +25,8 @@ tree_sitter_calls <- function (parser, path, d = "R") {
         cbind (file = rep (f, nrow (res)), res)
     })
     fn_calls <- do.call (rbind, fn_calls)
+    rownames (fn_calls) <- NULL
+    return (fn_calls)
 }
 
 walk_one_tree <- function (tree) {
