@@ -1,4 +1,3 @@
-
 #' Map calls from within each function to external packages
 #'
 #' @param path Path to package being analysed
@@ -8,19 +7,37 @@
 #' @noRd
 external_call_network <- function (tags_r, path, pkg_name) {
 
-    calls <- extract_call_content (tags_r)
+    tags_are_treesitter <- "grammar_type" %in% names (tags_r)
+
+    if (tags_are_treesitter) {
+        calls <- data.frame (
+            tags_line = tags_r$start,
+            call = tags_r$node_text,
+            tag = tags_r$grammar_type,
+            file = paste0 ("R/", basename (tags_r$file))
+        )
+        tags_r$kind <- "function"
+        index <- seq_len (nrow (tags_r))
+    } else { # ctags
+        calls <- extract_call_content (tags_r)
+        index <- calls$tags_line
+    }
 
     if (length (calls) == 0L || nrow (calls) == 0L) {
         return (NULL)
     }
 
-    calls$kind <- tags_r$kind [calls$tags_line]
-    calls$start <- tags_r$start [calls$tags_line]
-    calls$end <- tags_r$end [calls$tags_line]
+    calls$kind <- tags_r$kind [index]
+    calls$start <- tags_r$start [index]
+    calls$end <- tags_r$end [index]
 
     calls$package <- NA_character_
-    pkg_fns <- unique (tags_r$tag [tags_r$kind == "function"])
-    pkg_fns <- pkg_fns [which (!grepl ("^anonFunc", pkg_fns))]
+    if (tags_are_treesitter) {
+        pkg_fns <- unique (tags_r$fn_name)
+    } else {
+        pkg_fns <- unique (tags_r$tag [tags_r$kind == "function"])
+        pkg_fns <- pkg_fns [which (!grepl ("^anonFunc", pkg_fns))]
+    }
     calls$package [which (calls$call %in% pkg_fns)] <- pkg_name
 
     calls <- add_base_recommended_pkgs (calls)
@@ -38,6 +55,13 @@ external_call_network <- function (tags_r, path, pkg_name) {
     calls <- add_other_pkgs_to_calls (calls, path)
 
     calls <- calls [which (!is.na (calls$package)), ]
+
+    # Some of these from tree-sitter flag sub-setting operations as calls;
+    # these are removed here:
+    index <- grep ("\\\"|\\(|\\)|\\]|\\]", calls$call)
+    if (length (index) > 0L) {
+        calls <- calls [-index, ]
+    }
 
     rownames (calls) <- NULL
 

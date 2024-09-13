@@ -1,4 +1,3 @@
-
 #' use ctags and gtags to parse call data
 #'
 #' @param path Path to local repository
@@ -61,7 +60,8 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
 
     tags_r <- withr::with_dir (path, get_ctags ("R", has_tabs))
 
-    external_calls <- external_call_network (tags_r, path, pkg_name)
+    tags_treesitter <- get_treesitter_tags (path)
+    external_calls <- external_call_network (tags_treesitter, path, pkg_name)
 
     tags_src <- withr::with_dir (path, get_ctags ("src", has_tabs))
     tags_inst <- withr::with_dir (path, get_ctags ("inst", has_tabs))

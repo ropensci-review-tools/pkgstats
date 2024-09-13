@@ -1,3 +1,4 @@
+NA_to_char <- function (i) ifelse (is.na (i), "", i)
 
 get_Rd_metadata <- utils::getFromNamespace (".Rd_get_metadata", "tools") # nolint
 
