@@ -45,6 +45,7 @@ install_ctags_macos <- function (pkg_path) {
 install_ctags_windows <- function (pkg_path) {
     u <- "https://github.com/rwinlib/universal-ctags/archive/refs/tags/v5.9.20210530.0.zip" # nolint
     ctags_path <- normalizePath (file.path (
+        pkg_path,
         "windows",
         paste0 ("universal-ctags-", tools::file_path_sans_ext (gsub ("^v", "", basename (u)))),
         "bin"
