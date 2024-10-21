@@ -4,7 +4,6 @@
 ^CODE_OF_CONDUCT\.md$
 ^CONTRIBUTING.md$
 ^README\.Rmd$
-^README\.md$
 ^\.Rproj\.user$
 ^\.github$
 ^\.hooks$
