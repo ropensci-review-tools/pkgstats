@@ -1,4 +1,3 @@
-
 get_Rd_metadata <- utils::getFromNamespace (".Rd_get_metadata", "tools") # nolint
 
 #' Check path is an existing root directory of an R package
@@ -8,7 +7,7 @@ get_Rd_metadata <- utils::getFromNamespace (".Rd_get_metadata", "tools") # nolin
 #' @noRd
 check_path <- function (path) {
 
-    path <- normalizePath (path)
+    path <- fs::path_real (path)
 
     if (grepl ("\\.tar\\.gz$", path)) {
 
@@ -19,16 +18,17 @@ check_path <- function (path) {
         checkmate::assert_directory_exists (path)
 
         count <- 1L
-        while (!"DESCRIPTION" %in% list.files (path) && count < 5L) {
+        flist <- basename (fs::dir_ls (path))
+        while (!"DESCRIPTION" %in% flist && count < 5L) {
 
-            path <- normalizePath (file.path (path, ".."))
+            path <- fs::path_real (fs::path (path, ".."))
+            flist <- basename (fs::dir_ls (path))
             count <- count + 1L
         }
 
-        desc <- list.files (
+        desc <- fs::dir_ls (
             path,
-            pattern = "DESCRIPTION",
-            full.names = TRUE
+            regexp = "DESCRIPTION"
         )
         if (length (desc) == 0L) {
             stop ("Path does not correspond to an R package")
