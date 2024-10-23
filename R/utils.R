@@ -66,7 +66,7 @@ expand_path <- function (path) {
 #' @noRd
 decompose_path <- function (f) {
 
-    # https://github.com/r-lib/fs/blob/4cc4b56c26b9d7f177a676fbb331133bb2584b86/R/path.R
+    # https://github.com/r-lib/fs/blob/4cc4b56c26b9d7f177a676fbb331133bb2584b86/R/path.R # nolint
     strsplit (f, "^(?=/)(?!//)|(?<!^)(?<!^/)/", perl = TRUE)
 }
 
@@ -117,7 +117,8 @@ control_parse <- function (file) {
         if (grepl ("\\\\", expr)) {
             expr <- gsub ("\\", "\\\\", expr, fixed = TRUE)
         }
-        index <- which (grepl (ptn, x, fixed = TRUE) & grepl (expr, x, fixed = TRUE))
+        index <- which (grepl (ptn, x, fixed = TRUE) &
+            grepl (expr, x, fixed = TRUE))
         x [index] <- gsub (ptn, "", x [index], fixed = TRUE)
 
         nchars <- sum (nchar (x))

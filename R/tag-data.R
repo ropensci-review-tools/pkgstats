@@ -1,4 +1,3 @@
-
 #' use ctags and gtags to parse call data
 #'
 #' @param path Path to local repository
@@ -185,7 +184,8 @@ rm_tabs <- function (d, nspaces = 2) {
     files <- files [grep (exts, files)]
     files <- files [which (!grepl ("^Makevars", files))]
     # also remove pdf and html files
-    files <- files [which (!grepl ("\\.(pdf|html)$", files, ignore.case = TRUE))]
+    index <- which (!grepl ("\\.(pdf|html)$", files, ignore.case = TRUE))
+    files <- files [index]
 
     for (f in files) {
         x <- tryCatch (
@@ -260,7 +260,7 @@ count_doclines_src <- function (tags, path) {
 
     tags$language [which (is.na (tags$language))] <- ""
 
-    res <- vapply (seq (nrow (tags)), function (i) {
+    res <- vapply (seq_len (nrow (tags)), function (i) {
 
         ndoclines <- 0L
 

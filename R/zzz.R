@@ -10,14 +10,22 @@
     os <- Sys.info () ["sysname"]
 
     if (os == "Darwin") {
-        packageStartupMessage ("This package requires downloading and installing binary 'universal-ctags' software from:")
-        packageStartupMessage ("https://github.com/autobrew/archive/tree/master/high_sierra")
+        packageStartupMessage (
+            "This package requires downloading and ",
+            "installing binary 'universal-ctags' software from:"
+        )
+        packageStartupMessage (
+            "https://github.com/autobrew/archive/tree/master/high_sierra"
+        )
         chk <- readline ("Do you agree (y/n)?")
         if (substring (tolower (chk), 1, 1) == "y") {
             install_ctags_macos (pkg_path)
         }
     } else if (os == "Windows") {
-        packageStartupMessage ("This package requires downloading and installing binary 'universal-ctags' software from:")
+        packageStartupMessage (
+            "This package requires downloading and installing ",
+            "binary 'universal-ctags' software from:"
+        )
         packageStartupMessage ("https://github.com/rwinlib/universal-ctags/")
         chk <- readline ("Do you agree (y/n)?")
         if (substring (tolower (chk), 1, 1) == "y") {
@@ -47,7 +55,10 @@ install_ctags_windows <- function (pkg_path) {
     ctags_path <- normalizePath (fs::path (
         pkg_path,
         "windows",
-        paste0 ("universal-ctags-", tools::file_path_sans_ext (gsub ("^v", "", basename (u)))),
+        paste0 (
+            "universal-ctags-",
+            tools::file_path_sans_ext (gsub ("^v", "", basename (u)))
+        ),
         "bin"
     ))
     if (!fs::dir_exists ("windows")) {
