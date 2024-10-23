@@ -109,10 +109,9 @@ all_functions <- function (path) {
         return (all_functions_dummy ())
     }
 
-    r_files <- normalizePath (list.files (
-        file.path (path, "R"),
-        full.names = TRUE,
-        pattern = "\\.(r|R|q|s|S)$"
+    r_files <- expand_path (fs::dir_ls (
+        fs::path (path, "R"),
+        regexp = "\\.(r|R|q|s|S)$"
     ))
 
     if (length (r_files) == 0L) {
@@ -178,11 +177,7 @@ all_functions <- function (path) {
     }
     if (nrow (ret) > 0L) {
         # append "R" directory to file names:
-        ret$file_name <- paste0 (
-            "R",
-            .Platform$file.sep,
-            ret$file_name
-        )
+        ret$file_name <- as.character (fs::path ("R", ret$file_name))
     }
 
     return (ret)
