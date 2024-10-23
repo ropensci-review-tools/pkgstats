@@ -1,11 +1,11 @@
 # nocov start
 .onAttach <- function (libname, pkgname) { # nolint
 
-    if (!interactive () || ami::on_cran () || ctags_test ()) {
+    if (!interactive () || ami::on_cran ()) {
         return ()
     }
 
-    pkg_path <- normalizePath (file.path (libname, pkgname), mustWork = FALSE)
+    pkg_path <- fs::path_abs (fs::path (libname, pkgname))
 
     os <- Sys.info () ["sysname"]
 
@@ -28,35 +28,36 @@
 
 install_ctags_macos <- function (pkg_path) {
 
-    ctags_dir <- file.path (pkg_path, "inst", "bin")
-    if (!dir.exists (ctags_dir)) {
-        dir.create (ctags_dir, recursive = TRUE)
+    ctags_dir <- fs::path (pkg_path, "inst", "bin")
+    if (!fs::dir_exists (ctags_dir)) {
+        fs::dir_create (ctags_dir, recurse = TRUE)
     }
-    ctags_path <- file.path (ctags_dir, "ctags")
+    ctags_path <- fs::path (ctags_dir, "ctags")
     if (!file.exists (ctags_path)) {
         u <- "https://autobrew.github.io/archive/high_sierra/universal-ctags-p5.9.20210530.0.tar.xz" # nolint
         f <- basename (u)
         utils::download.file (u, f, quiet = TRUE)
         utils::untar (f, extras = "--strip-components=1", exdir = ctags_dir)
-        unlink (f)
+        fs::file_delete (f)
     }
 }
 
 install_ctags_windows <- function (pkg_path) {
     u <- "https://github.com/rwinlib/universal-ctags/archive/refs/tags/v5.9.20210530.0.zip" # nolint
-    ctags_path <- normalizePath (file.path (
+    ctags_path <- normalizePath (fs::path (
         pkg_path,
         "windows",
         paste0 ("universal-ctags-", tools::file_path_sans_ext (gsub ("^v", "", basename (u)))),
         "bin"
     ))
-    if (!dir.exists ("windows")) {
-        dir.create ("windows", recursive = TRUE, showWarnings = FALSE)
+    if (!fs::dir_exists ("windows")) {
+        fs::dir_create ("windows", recurse = TRUE)
     }
-    if (!file.exists (ctags_path)) {
-        utils::download.file (u, "lib.zip", quiet = TRUE)
-        utils::unzip ("lib.zip", exdir = "windows")
-        unlink ("lib.zip")
+    if (!fs::file_exists (ctags_path)) {
+        f <- "lib.zip"
+        utils::download.file (u, f, quiet = TRUE)
+        utils::unzip (f, exdir = "windows")
+        fs::file_delete (f)
     }
 }
 # nocov end
