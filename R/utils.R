@@ -42,6 +42,21 @@ check_path <- function (path) {
     return (path)
 }
 
+#' Expand path
+#'
+#' The `fs::path_real()` function does the same direct expansion, but requires
+#' that path to exist. This version expands both "~" and "." without requiring
+#' that full paths necessarily exist. 'fs' has a `path_expand()` function which
+#' expands "~" only, but not ".". This function reverses the name of that one,
+#' to avoid confusion.
+#'
+#' @param path Vector of one or more paths
+#' @return Expanded, absolute versions of input argument.
+#' @noRd
+expand_path <- function (path) {
+    fs::path_abs (fs::path_expand (path))
+}
+
 #' Decompose file paths into character vectors of named directories and final
 #' file names
 #'
