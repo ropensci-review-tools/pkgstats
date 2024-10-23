@@ -47,7 +47,7 @@ pkgstats_update <- function (upload = TRUE) {
         stats <- fn_names <- NULL
 
         tarball_path <- dl_one_tarball (results_path, new_cran_pkgs [p])
-        if (!is.null (tarball_path) && file.exists (tarball_path)) {
+        if (!is.null (tarball_path) && fs::file_exists (tarball_path)) {
 
             stats <- one_summary_from_archive (
                 tarball_path,
