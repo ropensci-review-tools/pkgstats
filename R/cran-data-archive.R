@@ -60,7 +60,7 @@ pkgstats_from_archive <- function (path,
                                    num_cores = 1L,
                                    save_full = FALSE,
                                    save_ex_calls = FALSE,
-                                   results_path = tempdir ()) {
+                                   results_path = fs::path_temp ()) {
 
     requireNamespace ("hms")
     requireNamespace ("parallel")
@@ -122,9 +122,9 @@ pkgstats_from_archive <- function (path,
             " files in ", length (flist), " chunks"
         )
 
-        results_path <- normalizePath (results_path, mustWork = FALSE)
-        if (!dir.exists (results_path)) {
-            dir.create (results_path, recursive = TRUE)
+        results_path <- fs::path_norm (results_path)
+        if (!fs::dir_exists (results_path)) {
+            fs::dir_create (results_path, recurse = TRUE)
         }
 
         index <- 1 # name of temporary files
@@ -193,31 +193,29 @@ list_archive_files <- function (path, recursive = FALSE) {
 
     tarballs <- grepl ("tarballs", path)
     if (!tarballs) {
-        flist <- list.files (path, full.names = TRUE, recursive = FALSE)
+        flist <- fs::dir_ls (path, full.names = TRUE, recurse = FALSE)
         tarballs <- any (grepl ("tarballs", flist))
         if (tarballs) {
             path <- fs::path (path, "tarballs")
         }
     }
 
-    if (!dir.exists (path)) {
+    if (!fs::dir_exists (path)) {
         stop ("[", path, "] directory does not exist")
     }
 
     if (tarballs) {
-        flist <- list.files (
+        flist <- fs::dir_ls (
             path,
-            recursive = recursive,
-            full.names = TRUE,
-            pattern = "\\.tar\\.gz$"
+            recurse = recursive,
+            regexp = "\\.tar\\.gz$"
         )
     } else {
-        flist <- list.files (
+        flist <- fs::dir_ls (
             path,
-            recursive = FALSE,
-            full.names = TRUE
+            recurse = FALSE
         )
-        flist <- flist [dir.exists (flist)]
+        flist <- flist [which (fs::dir_exists (flist))]
         # Reduce to directories with "DESCRIPTION" files
         desc_paths <- fs::path (flist, "DESCRIPTION")
         flist <- flist [which (fs::file_exists (desc_paths))]
@@ -329,8 +327,8 @@ one_summary_from_archive <- function (path, save_full,
                                       save_ex_calls, results_path) {
 
     logfiles <- list (
-        stdout = fs::path (tempdir (), "pkgstats-stdout"),
-        stderr = fs::path (tempdir (), "pkgstats-stderr")
+        stdout = fs::path (fs::path_temp (), "pkgstats-stdout"),
+        stderr = fs::path (fs::path_temp (), "pkgstats-stderr")
     )
     if (fs::file_exists (logfiles$stdout)) {
         fs::file_delete (logfiles$stdout)
@@ -417,14 +415,14 @@ archive_results_file_name <- function (results_file) {
     if (!grepl (.Platform$file.sep, results_file)) {
         results_file <- fs::path (".", results_file)
     }
-    results_file <- normalizePath (results_file, mustWork = FALSE)
+    results_file <- fs::path_norm (results_file)
 
     results_path <- gsub (
         basename (results_file), "",
         results_file
     )
-    results_path <- normalizePath (results_path)
-    if (!dir.exists (results_path)) {
+    results_path <- fs::path_norm (results_path)
+    if (!fs::dir_exists (results_path)) {
         stop ("Directory [", results_path, "] does not exist")
     }
 
