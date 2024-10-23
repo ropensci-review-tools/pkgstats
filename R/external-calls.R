@@ -319,10 +319,9 @@ add_other_pkgs_to_calls <- function (calls, path) {
 
     imports_not_called <- imports [imports$pkg %in% pkgs_not_called, ]
 
-    r_files <- normalizePath (list.files (
+    r_files <- expand_path (fs::dir_ls (
         fs::path (path, "R"),
-        full.names = TRUE,
-        pattern = "\\.(r|R|q|s|S)$"
+        regexp = "\\.(r|R|q|s|S)$"
     ))
     all_calls <- paste0 (imports_not_called$fn, collapse = "|")
     tokens <- c ("FUNCTION", "SYMBOL_FUNCTION_CALL", "SPECIAL")
