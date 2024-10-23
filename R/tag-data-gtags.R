@@ -4,11 +4,11 @@
 #' @noRd
 make_gtags <- function () {
 
-    path <- fs::path_tidy (normalizePath ("."))
-    flist <- list.files (path,
-        recursive = TRUE,
-        full.names = TRUE,
-        pattern = "GRTAGS$|GPATH$|GTAGS$"
+    path <- expand_path (".")
+    flist <- fs::dir_ls (
+        path,
+        recurse = TRUE,
+        regexp = "GRTAGS$|GPATH$|GTAGS$"
     )
 
     if (length (flist) == 0) {
@@ -21,7 +21,7 @@ make_gtags <- function () {
 
 get_gtags <- function () {
 
-    f <- tempfile (pattern = "global_")
+    f <- fs::file_temp (pattern = "global_")
     sys::exec_wait ("global", args = c ("-rx", "."), std_out = f)
     wait_for_process ("global")
 
@@ -103,18 +103,17 @@ gtags_from_one_file <- function (ctags, gtags, f) {
 
 rm_gtags_files <- function (path) {
 
-    flist <- list.files (
+    flist <- fs::dir_ls (
         path,
-        recursive = TRUE,
-        full.names = TRUE,
-        pattern = "GRTAGS$|GPATH$|GTAGS$"
+        recurse = TRUE,
+        regexp = "GRTAGS$|GPATH$|GTAGS$"
     )
 
     ret <- NULL
 
     if (length (flist) > 0) {
 
-        ret <- tryCatch (file.remove (flist),
+        ret <- tryCatch (fs::file_delete (flist),
             error = function (e) e
         )
     }

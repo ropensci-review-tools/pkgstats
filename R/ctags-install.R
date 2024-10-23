@@ -11,8 +11,8 @@ clone_ctags <- function (destdir = NULL) {
     if (is.null (destdir)) {
         stop ("destdir must be specified", call. = FALSE)
     }
-    destdir <- normalizePath (destdir, mustWork = FALSE)
-    if (!dir.exists (destdir)) {
+    destdir <- expand_path (destdir)
+    if (!fs::dir_exists (destdir)) {
         stop ("Directory [", destdir,
             "] does not exist",
             call. = FALSE
@@ -25,7 +25,7 @@ clone_ctags <- function (destdir = NULL) {
         sys::exec_wait ("git", args = c ("clone", u))
     })
 
-    return (file.path (destdir, "ctags"))
+    return (fs::path (destdir, "ctags"))
 }
 
 has_git <- function () {
@@ -45,11 +45,11 @@ ctags_make <- function (ctags_dir, bin_dir = NULL, sudo = TRUE) {
         stop ("A value for 'bin_dir' must be specified when 'sudo = FALSE'")
     }
 
-    f <- tempfile (pattern = "ctags-make-", fileext = ".txt")
+    f <- fs::file_temp (pattern = "ctags-make-", fileext = ".txt")
 
     confargs <- NULL
     if (!is.null (bin_dir)) {
-        if (!dir.exists (bin_dir)) {
+        if (!fs::dir_exists (bin_dir)) {
             stop ("bin_dir [", bin_dir, "] does not exist.", call. = FALSE)
         }
         confargs <- paste0 ("--prefix=", bin_dir)

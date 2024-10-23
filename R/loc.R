@@ -1,4 +1,3 @@
-
 #' Find average amount of leading white space from a vector of all values of
 #' white space.
 #'
@@ -78,16 +77,13 @@ get_file_types <- function (flist) {
 #' loc_stats (path)
 loc_stats <- function (path) {
 
-    path <- normalizePath (path)
+    path <- expand_path (path)
 
     dirs <- c ("R", "src", "inst", "tests", "vignettes")
-    paths <- file.path (path, dirs)
-    paths [3] <- file.path (paths [3], "include")
+    paths <- fs::path (path, dirs)
+    paths <- paths [which (fs::dir_exists (paths))]
 
-    flist <- list.files (paths,
-        recursive = TRUE,
-        full.names = TRUE
-    )
+    flist <- fs::dir_ls (paths, recurse = TRUE)
     # .Rmd files generally excluded except in vignettes:
     rmd_vignettes <- grep ("vignettes.*\\.Rmd$", flist, value = TRUE)
     flist <- flist [which (!grepl (excluded_file_ptn (), flist))]
@@ -97,7 +93,7 @@ loc_stats <- function (path) {
 
     fdirs <- gsub (paste0 (path, .Platform$file.sep), "", ftypes$file)
     fdirs <- vapply (strsplit (fdirs, .Platform$file.sep), function (i) {
-        i [1]
+        paste0 (i [-length (i)], collapse = .Platform$file.sep)
     },
     character (1),
     USE.NAMES = FALSE

@@ -11,7 +11,7 @@ fn_var_call_graph_r <- function (fns, fn_vars, path) {
         })
         fns_index <- do.call (rbind, fns_index)
 
-        f_full <- fs::path_tidy (normalizePath (file.path (path, f)))
+        f_full <- expand_path (fs::path (path, f))
 
         p <- control_parse (file = f_full)
         if (methods::is (p, "simpleError")) {

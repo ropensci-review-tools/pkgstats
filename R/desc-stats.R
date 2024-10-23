@@ -32,7 +32,7 @@ desc_stats <- function (path) {
         stop ("path must be directory containing package source", call. = FALSE)
     }
 
-    desc <- file.path (path, "DESCRIPTION")
+    desc <- fs::path (path, "DESCRIPTION")
     d <- data.frame (
         read.dcf (desc),
         stringsAsFactors = FALSE

@@ -157,11 +157,12 @@ null_stats <- function () {
 loc_summary <- function (x) {
 
     # suprress no visible binding notes:
-    nfiles <- ncode <- ndoc <- nempty <- nspaces <- nchars <- NULL
+    nfiles <- ncode <- ndoc <- nempty <- nspaces <- nchars <- language <- NULL
 
     indentation <- loc_indentation (x)
 
-    xg <- dplyr::group_by (x, dir)
+    xf <- dplyr::filter (x, language != "YAML")
+    xg <- dplyr::group_by (xf, dir)
     x <- dplyr::summarise (
         xg,
         nfiles = sum (nfiles),

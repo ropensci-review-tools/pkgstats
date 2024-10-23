@@ -39,7 +39,7 @@ ctags_test <- function (quiet = TRUE) {
     )
     brio::write_lines (x, path = f_in)
 
-    f_out <- tempfile (fileext = ".txt")
+    f_out <- fs::file_temp (ext = ".txt")
     cmd <- paste0 ("ctags --sort=no --fields=+KZ -f ", f_out, " ", f_in)
     system (cmd)
 
@@ -69,7 +69,7 @@ ctags_test <- function (quiet = TRUE) {
         )
     )
 
-    file.remove (c (f_in, f_out))
+    fs::file_delete (c (f_in, f_out))
 
     expected_kinds <- c (
         "globalVar",
@@ -90,29 +90,29 @@ ctags_test <- function (quiet = TRUE) {
         ctags_check <- all (tags$kind == expected_kinds)
     }
 
-    td <- file.path (tempdir (), "pkgstats-gtags-test")
-    if (dir.exists (td)) {
+    td <- fs::path (fs::path_temp (), "pkgstats-gtags-test")
+    if (fs::dir_exists (td)) {
         gtags_check <- TRUE
     } else {
         f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
         pkgstats_path <- extract_tarball (f)
-        if (dir.exists (td)) {
-            chk <- unlink (td, recursive = TRUE)
+        if (fs::dir_exists (td)) {
+            fs::dir_delete (td)
         }
-        if (file.exists (td)) {
-            chk <- file.remove (td)
+        if (fs::file_exists (td)) {
+            chk <- fs::file_delete (td)
         }
-        dir.create (td)
-        chk <- file.copy (pkgstats_path, td, recursive = TRUE)
+        fs::dir_create (td, recurse = TRUE)
+        chk <- fs::dir_copy (pkgstats_path, td)
         # unlink (pkgstats_path, recursive = TRUE) # done in unload
         cmd <- "export GTAGS_LABEL=new-ctags; gtags"
-        gtags_test <- withr::with_dir (file.path (td, "pkgstats"), system (cmd, intern = TRUE))
+        gtags_test <- withr::with_dir (fs::path (td, "pkgstats"), system (cmd, intern = TRUE))
         gtags_check <- length (gtags_test) == 0L
         if (!gtags_check) {
             gtags_check <- any (grepl ("error", gtags_test, ignore.case = TRUE))
         }
 
-        unlink (td, recursive = TRUE)
+        fs::file_delete (td)
     }
 
     check <- ctags_check & gtags_check
@@ -146,7 +146,7 @@ has_ctags <- function () {
 #' @noRd
 which_ctags <- function () {
 
-    f <- tempfile (pattern = "ctags-out-", fileext = ".txt")
+    f <- fs::file_temp (pattern = "ctags-out-", fileext = ".txt")
     sys::exec_wait ("ctags", args = "--version", std_out = f)
     which_ctags <- brio::read_lines (f)
     regmatches (which_ctags [1], regexpr ("\\w+", which_ctags [1]))

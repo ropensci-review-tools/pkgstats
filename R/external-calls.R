@@ -1,4 +1,3 @@
-
 #' Map calls from within each function to external packages
 #'
 #' @param path Path to package being analysed
@@ -230,13 +229,13 @@ add_base_recommended_pkgs <- function (calls) {
 
     pkg_calls <- lapply (rcmds, function (i) {
 
-        rpath <- file.path (ll [1], i)
-        if (!dir.exists (rpath)) {
+        rpath <- fs::path (ll [1], i)
+        if (!fs::dir_exists (rpath)) {
             return (NULL)
         }
 
-        f <- file.path (rpath, "NAMESPACE")
-        if (!file.exists (f)) {
+        f <- fs::path (rpath, "NAMESPACE")
+        if (!fs::file_exists (f)) {
             return (NULL)
         }
 
@@ -274,8 +273,8 @@ add_base_recommended_pkgs <- function (calls) {
 #' @noRd
 add_other_pkgs_to_calls <- function (calls, path) {
 
-    f <- file.path (path, "NAMESPACE")
-    if (!file.exists (f)) {
+    f <- fs::path (path, "NAMESPACE")
+    if (!fs::file_exists (f)) {
         return (calls)
     }
 
@@ -320,10 +319,9 @@ add_other_pkgs_to_calls <- function (calls, path) {
 
     imports_not_called <- imports [imports$pkg %in% pkgs_not_called, ]
 
-    r_files <- normalizePath (list.files (
-        file.path (path, "R"),
-        full.names = TRUE,
-        pattern = "\\.(r|R|q|s|S)$"
+    r_files <- expand_path (fs::dir_ls (
+        fs::path (path, "R"),
+        regexp = "\\.(r|R|q|s|S)$"
     ))
     all_calls <- paste0 (imports_not_called$fn, collapse = "|")
     tokens <- c ("FUNCTION", "SYMBOL_FUNCTION_CALL", "SPECIAL")

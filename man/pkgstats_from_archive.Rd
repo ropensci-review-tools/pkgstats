@@ -13,7 +13,7 @@ pkgstats_from_archive(
   num_cores = 1L,
   save_full = FALSE,
   save_ex_calls = FALSE,
-  results_path = tempdir()
+  results_path = fs::path_temp()
 )
 }
 \arguments{

@@ -1,4 +1,3 @@
-
 get_Rd_metadata <- utils::getFromNamespace (".Rd_get_metadata", "tools") # nolint
 
 #' Check path is an existing root directory of an R package
@@ -8,7 +7,7 @@ get_Rd_metadata <- utils::getFromNamespace (".Rd_get_metadata", "tools") # nolin
 #' @noRd
 check_path <- function (path) {
 
-    path <- normalizePath (path)
+    path <- fs::path_real (path)
 
     if (grepl ("\\.tar\\.gz$", path)) {
 
@@ -19,16 +18,17 @@ check_path <- function (path) {
         checkmate::assert_directory_exists (path)
 
         count <- 1L
-        while (!"DESCRIPTION" %in% list.files (path) && count < 5L) {
+        flist <- basename (fs::dir_ls (path))
+        while (!"DESCRIPTION" %in% flist && count < 5L) {
 
-            path <- normalizePath (file.path (path, ".."))
+            path <- fs::path_real (fs::path (path, ".."))
+            flist <- basename (fs::dir_ls (path))
             count <- count + 1L
         }
 
-        desc <- list.files (
+        desc <- fs::dir_ls (
             path,
-            pattern = "DESCRIPTION",
-            full.names = TRUE
+            regexp = "DESCRIPTION"
         )
         if (length (desc) == 0L) {
             stop ("Path does not correspond to an R package")
@@ -42,6 +42,21 @@ check_path <- function (path) {
     return (path)
 }
 
+#' Expand path
+#'
+#' The `fs::path_real()` function does the same direct expansion, but requires
+#' that path to exist. This version expands both "~" and "." without requiring
+#' that full paths necessarily exist. 'fs' has a `path_expand()` function which
+#' expands "~" only, but not ".". This function reverses the name of that one,
+#' to avoid confusion.
+#'
+#' @param path Vector of one or more paths
+#' @return Expanded, absolute versions of input argument.
+#' @noRd
+expand_path <- function (path) {
+    fs::path_abs (fs::path_expand (path))
+}
+
 #' Decompose file paths into character vectors of named directories and final
 #' file names
 #'
@@ -51,7 +66,7 @@ check_path <- function (path) {
 #' @noRd
 decompose_path <- function (f) {
 
-    # https://github.com/r-lib/fs/blob/4cc4b56c26b9d7f177a676fbb331133bb2584b86/R/path.R
+    # https://github.com/r-lib/fs/blob/4cc4b56c26b9d7f177a676fbb331133bb2584b86/R/path.R # nolint
     strsplit (f, "^(?=/)(?!//)|(?<!^)(?<!^/)/", perl = TRUE)
 }
 
@@ -102,7 +117,8 @@ control_parse <- function (file) {
         if (grepl ("\\\\", expr)) {
             expr <- gsub ("\\", "\\\\", expr, fixed = TRUE)
         }
-        index <- which (grepl (ptn, x, fixed = TRUE) & grepl (expr, x, fixed = TRUE))
+        index <- which (grepl (ptn, x, fixed = TRUE) &
+            grepl (expr, x, fixed = TRUE))
         x [index] <- gsub (ptn, "", x [index], fixed = TRUE)
 
         nchars <- sum (nchar (x))

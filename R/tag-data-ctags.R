@@ -3,20 +3,20 @@
 #' @noRd
 get_ctags <- function (d = "R", has_tabs) {
 
-    if (!dir.exists (file.path (getwd (), d))) {
+    if (!fs::dir_exists (fs::path (fs::path_wd (), d))) {
         return (NULL)
     }
 
-    path_dir <- normalizePath (file.path (getwd (), d))
+    path_dir <- expand_path (fs::path (fs::path_wd (), d))
 
     # tab-characters muck up parsing of tag content so have to be removed.
     # This requires modifying the code, so the whole directory is copied to
     # tempdir() and the new path returned. `path_sub` in the following is the
     # path to substitute out of file names given by ctags
-    wd <- path_sub <- getwd ()
+    wd <- path_sub <- fs::path_wd ()
     if (has_tabs) {
         path_sub <- path_dir <- rm_tabs (path_dir)
-        path_dir <- fs::path_tidy (normalizePath (file.path (path_dir, d)))
+        path_dir <- expand_path (fs::path (path_dir, d))
         wd <- setwd (path_dir)
         on.exit ({
             unlink (path_sub, recursive = TRUE)
@@ -47,7 +47,7 @@ get_ctags <- function (d = "R", has_tabs) {
     }
 
     ptn <- paste0 ("ctags-", Sys.getpid (), "-")
-    f <- tempfile (pattern = ptn, fileext = ".txt")
+    f <- fs::file_temp (pattern = ptn, ext = ".txt")
     args <- c (
         "-R",
         paste0 ("--fields=", fields),

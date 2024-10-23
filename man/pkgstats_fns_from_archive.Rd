@@ -11,7 +11,7 @@ pkgstats_fns_from_archive(
   results_file = NULL,
   chunk_size = 1000L,
   num_cores = 1L,
-  results_path = tempdir()
+  results_path = fs::path_temp()
 )
 }
 \arguments{

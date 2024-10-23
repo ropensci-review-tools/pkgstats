@@ -17,36 +17,35 @@ pkgstats_fns_from_archive <- function (path,
                                        results_file = NULL,
                                        chunk_size = 1000L,
                                        num_cores = 1L,
-                                       results_path = tempdir ()) {
+                                       results_path = fs::path_temp ()) {
 
     requireNamespace ("hms")
     requireNamespace ("parallel")
 
     if (!grepl ("tarball", path)) {
-        if (!dir.exists (file.path (path, "tarballs"))) {
+        if (!fs::dir_exists (fs::path (path, "tarballs"))) {
             stop ("path must contain a 'tarballs' directory")
         }
-        path <- file.path (path, "tarballs")
+        path <- fs::path (path, "tarballs")
     }
 
     if (basename (path) != "tarballs") {
         stop ("path must be a directory named 'tarballs'")
     }
 
-    if (!dir.exists (path)) {
+    if (!fs::dir_exists (path)) {
         stop ("[", path, "] directory does not exist")
     }
 
     res <- NULL
     out <- prev_results
 
-    flist <- list.files (
+    flist <- fs::dir_ls (
         path,
-        recursive = archive,
-        full.names = TRUE,
-        pattern = "\\.tar\\.gz$"
+        recurse = archive,
+        regexpr = "\\.tar\\.gz$"
     )
-    flist <- normalizePath (flist)
+    flist <- expand_path (flist)
     flist <- rm_prev_files (flist, prev_results)
     nfiles <- length (flist)
 
@@ -61,9 +60,9 @@ pkgstats_fns_from_archive <- function (path,
             " files in ", length (flist), " chunks"
         )
 
-        results_path <- normalizePath (results_path, mustWork = FALSE)
-        if (!dir.exists (results_path)) {
-            dir.create (results_path)
+        results_path <- expand_path (results_path)
+        if (!fs::dir_exists (results_path)) {
+            fs::dir_create (results_path)
         }
         results_files <- NULL
 
@@ -81,7 +80,7 @@ pkgstats_fns_from_archive <- function (path,
 
             }, mc.cores = num_cores)
 
-            fname <- file.path (
+            fname <- fs::path (
                 results_path,
                 paste0 ("pkgstats-fn-names-results-", index, ".Rds")
             )
@@ -115,27 +114,27 @@ pkgstats_fns_from_archive <- function (path,
     out <- rbind (out, res)
     rownames (out) <- NULL
 
-    chk <- file.remove (results_files) # nolint
+    chk <- fs::file_delete (results_files) # nolint
 
     if (!is.null (res) && !is.null (results_file)) {
 
         if (!grepl (.Platform$file.sep, results_file)) {
-            results_file <- file.path (".", results_file)
+            results_file <- fs::path (".", results_file)
         }
-        results_file <- normalizePath (results_file, mustWork = FALSE)
+        results_file <- expand_path (results_file)
 
         results_path <- gsub (
             basename (results_file), "",
             results_file
         )
-        results_path <- normalizePath (results_path)
-        if (!dir.exists (results_path)) {
+        results_path <- expand_path (results_path)
+        if (!fs::dir_exists (results_path)) {
             stop ("Directory [", results_path, "] does not exist")
         }
 
         results_file <- basename (results_file)
         results_file <- tools::file_path_sans_ext (results_file)
-        results_file <- file.path (
+        results_file <- fs::path (
             results_path,
             paste0 (results_file, ".Rds")
         )
@@ -192,9 +191,9 @@ pkgstats_fns_update <- function (prev_results = NULL,
             " files in ", length (new_cran_pkgs), " chunks"
         )
 
-        results_path <- normalizePath (results_path, mustWork = FALSE)
-        if (!dir.exists (results_path)) {
-            dir.create (results_path, recursive = TRUE)
+        results_path <- expand_path (results_path)
+        if (!fs::dir_exists (results_path)) {
+            fs::dir_create (results_path, recurse = TRUE)
         }
 
         index <- 1 # name of temporary files
@@ -224,7 +223,7 @@ pkgstats_fns_update <- function (prev_results = NULL,
                 })
             }
 
-            fname <- file.path (
+            fname <- fs::path (
                 results_path,
                 paste0 ("pkgstats-results-", index, ".Rds")
             )

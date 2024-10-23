@@ -1,28 +1,25 @@
-
 get_num_vignettes <- function (path) {
 
     nv <- 0L
 
-    if ("build" %in% list.files (path)) {
+    if ("build" %in% fs::dir_ls (path)) {
 
-        flist <- list.files (file.path (path, "build"),
+        flist <- fs::dir_ls (fs::path (path, "build"),
             full.names = TRUE
         )
         vfile <- grep ("vignette", flist, value = TRUE)
         if (length (vfile) > 0) {
             nv <- nrow (readRDS (vfile [1]))
         }
-    } else if ("vignettes" %in% list.files (path)) {
-        nv <- length (list.files (
-            file.path (path, "vignettes"),
-            pattern = "\\.[rR]md$",
-            recursive = TRUE
+    } else if ("vignettes" %in% fs::dir_ls (path)) {
+        nv <- length (fs::dir_ls (
+            fs::path (path, "vignettes"),
+            regexp = "\\.[rR]md$"
         ))
         if (nv == 0L) {
-            nv <- length (list.files (
-                file.path (path, "vignettes"),
-                pattern = "\\.[rR]$",
-                recursive = TRUE
+            nv <- length (fs::dir_ls (
+                fs::path (path, "vignettes"),
+                regexp = "\\.[rR]$"
             ))
         }
     }
@@ -34,9 +31,9 @@ get_num_demos <- function (path) {
 
     nd <- 0L
 
-    if ("demo" %in% list.files (path)) {
+    if ("demo" %in% fs::dir_ls (path)) {
 
-        dindex <- file.path (path, "demo", "00Index")
+        dindex <- fs::path (path, "demo", "00Index")
         nd <- length (brio::read_lines (dindex))
     }
 
@@ -47,19 +44,13 @@ get_data_stats <- function (path) {
 
     nd <- c (n = 0L, total_size = 0L, median_size = 0L)
 
-    if ("data" %in% list.files (path)) {
+    if ("data" %in% fs::dir_ls (path)) {
 
-        flist <- list.files (file.path (path, "data"),
-            full.names = TRUE,
-            pattern = "\\.rd",
+        flist <- fs::dir_ls (fs::path (path, "data"),
+            regexp = "\\.rd",
             ignore.case = TRUE
         )
-        sizes <- vapply (flist, function (i) {
-            file.info (i)$size
-        },
-        numeric (1),
-        USE.NAMES = FALSE
-        )
+        sizes <- fs::file_info (flist)$size
 
         nd [1] <- length (flist)
         nd [2] <- as.integer (sum (sizes))
@@ -76,13 +67,13 @@ get_translations <- function (path) {
 
     ll <- NA_character_
 
-    po_dir <- normalizePath (file.path (path, "po"), mustWork = FALSE)
+    po_dir <- expand_path (fs::path (path, "po"))
 
-    if (file.exists (po_dir)) {
+    if (fs::dir_exists (po_dir)) {
 
         ll <- gsub (
             "^R-|\\.po$", "",
-            list.files (po_dir, pattern = "\\.po$")
+            fs::dir_ls (po_dir, regexp = "\\.po$")
         )
         # pkgs may generate translations without having any, and then will only
         # have '.pot' files with no usable translation fields.

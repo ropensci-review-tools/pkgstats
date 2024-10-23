@@ -10,7 +10,7 @@
 #' path <- extract_tarball (f)
 extract_tarball <- function (tarball) {
 
-    if (!file.exists (tarball)) {
+    if (!fs::file_exists (tarball)) {
         stop ("file [", tarball, "] does not exist")
     }
     if (!checkmate::testCharacter (tarball,
@@ -24,10 +24,10 @@ extract_tarball <- function (tarball) {
     }
 
     flist <- utils::untar (tarball,
-        exdir = tempdir (),
+        exdir = fs::path_temp (),
         list = TRUE, tar = "internal"
     )
-    if (utils::untar (tarball, exdir = tempdir (), tar = "internal") != 0) {
+    if (utils::untar (tarball, exdir = fs::path_temp (), tar = "internal") != 0) {
         stop ("Unable to extract tarball to 'tempdir'")
     }
 
@@ -38,7 +38,7 @@ extract_tarball <- function (tarball) {
     USE.NAMES = FALSE
     )
     fdir <- names (table (fdir)) [1]
-    path <- normalizePath (file.path (tempdir (), fdir))
+    path <- fs::path_real (fs::path (fs::path_temp (), fdir))
 
     chk <- rename_files_in_r (path)
     if (!chk) {
@@ -58,24 +58,14 @@ extract_tarball <- function (tarball) {
 #' @noRd
 rename_files_in_r <- function (path) {
 
-    fr <- normalizePath (list.files (file.path (path, "R"),
-        full.names = TRUE
-    ))
+    path <- fs::path_real (path)
+    f_sq <- fs::dir_ls (fs::path (path, "R"), regexp = "\\.(s|S|q)$")
 
-    index <- grep ("\\.(s|S|q)$", fr, ignore.case = TRUE)
+    if (length (f_sq) > 0) {
 
-    chk <- TRUE
-
-    if (length (index) > 0) {
-
-        for (f in fr [index]) {
-
-            chk <- c (
-                chk,
-                file.rename (f, gsub ("\\.[a-zA-Z]$", ".R", f))
-            )
-        }
+        f_r <- fs::path_ext_set (f_sq, "R")
+        fs::file_move (f_sq, f_r)
     }
 
-    return (all (chk))
+    return (TRUE)
 }
