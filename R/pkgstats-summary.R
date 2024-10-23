@@ -161,7 +161,8 @@ loc_summary <- function (x) {
 
     indentation <- loc_indentation (x)
 
-    xg <- dplyr::group_by (x, dir)
+    xf <- dplyr::filter (x, language != "YAML")
+    xg <- dplyr::group_by (xf, dir)
     x <- dplyr::summarise (
         xg,
         nfiles = sum (nfiles),
