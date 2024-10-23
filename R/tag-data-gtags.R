@@ -5,7 +5,8 @@
 make_gtags <- function () {
 
     path <- expand_path (".")
-    flist <- fs::dir_ls (path,
+    flist <- fs::dir_ls (
+        path,
         recurse = TRUE,
         regexp = "GRTAGS$|GPATH$|GTAGS$"
     )
@@ -105,7 +106,7 @@ rm_gtags_files <- function (path) {
     flist <- fs::dir_ls (
         path,
         recurse = TRUE,
-        pattern = "GRTAGS$|GPATH$|GTAGS$"
+        regexp = "GRTAGS$|GPATH$|GTAGS$"
     )
 
     ret <- NULL

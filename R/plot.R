@@ -116,7 +116,7 @@ plot_network <- function (s, plot = TRUE, vis_save = NULL) {
             if (length (vis_save) > 1) {
                 stop ("vis_save must be a single character")
             }
-            if (!fs::direxists (fs::path_dir (vis_save))) {
+            if (!fs::dir_exists (fs::path_dir (vis_save))) {
                 stop (
                     "directory [", fs::path_dir (vis_save),
                     "] does not exist"

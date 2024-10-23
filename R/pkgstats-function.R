@@ -83,7 +83,7 @@ pkgstats <- function (path = ".") {
     translations <- get_translations (path)
 
     if (tarball) {
-        chk <- unlink (path, recursive = TRUE)
+        chk <- fs::file_delete (path)
     }
 
     list (

@@ -117,7 +117,7 @@ get_one_params <- function (man_file) {
     index <- index1 [which (!index1 %in% index2)]
     x [index] <- gsub ("%.*$", "", x [index])
     ptn <- paste0 ("Rdtemp-", Sys.getpid (), "-")
-    f <- fs::file_temp (pattern = ptn, fileext = ".Rd")
+    f <- fs::file_temp (pattern = ptn, ext = ".Rd")
     brio::write_lines (x, f)
     rd <- tryCatch (
         tools::parse_Rd (f),
