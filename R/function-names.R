@@ -114,7 +114,7 @@ get_namespace_contents <- function (path) {
             recurse = TRUE,
             regexp = "NAMESPACE"
         )
-        nmsp <- fs::path_abs (nmsp [1])
+        nmsp <- expand_path (nmsp [1])
 
     }
 
@@ -148,7 +148,7 @@ get_desc_path <- function (path) {
             files = desc,
             exdir = fs::path_temp ()
         )
-        desc <- fs::path_abs (fs::path (fs::path_temp (), desc))
+        desc <- expand_path (fs::path (fs::path_temp (), desc))
 
     } else {
 
@@ -157,7 +157,7 @@ get_desc_path <- function (path) {
             recurse = TRUE,
             regexp = "DESCRIPTION"
         )
-        desc <- fs::path_abs (desc [1])
+        desc <- expand_path (desc [1])
     }
 
     return (desc)
@@ -238,7 +238,7 @@ aliases_from_rd <- function (path, nmsp) {
         )
     }
 
-    flist <- fs::path_abs (flist)
+    flist <- expand_path (flist)
     # only extract Rd files from man directory:
     is_man <- vapply (
         fs::path_split (flist),

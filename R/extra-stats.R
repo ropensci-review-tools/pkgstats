@@ -67,7 +67,7 @@ get_translations <- function (path) {
 
     ll <- NA_character_
 
-    po_dir <- fs::path_abs (fs::path (path, "po"))
+    po_dir <- expand_path (fs::path (path, "po"))
 
     if (fs::dir_exists (po_dir)) {
 
