@@ -51,7 +51,7 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
     }
 
     if (is.null (pkg_name)) {
-        desc <- file.path (path, "DESCRIPTION")
+        desc <- fs::path (path, "DESCRIPTION")
         checkmate::assert_file (desc)
         d <- data.frame (read.dcf (desc), stringsAsFactors = FALSE)
         pkg_name <- d [["Package"]]
@@ -167,20 +167,16 @@ rm_tabs <- function (d, nspaces = 2) {
     tmpd <- paste0 (sample (c (letters, LETTERS), size = 8, replace = TRUE),
         collapse = ""
     )
-    tmpd <- file.path (tempdir (), tmpd)
-    dir.create (tmpd, recursive = TRUE)
-    chk <- file.copy (d, tmpd, recursive = TRUE) # copies 'd' as sub-dir of tmpd
+    tmpd <- fs::path (fs::path_temp (), tmpd)
+    fs::dir_create (tmpd, recurse = TRUE)
+    chk <- fs::file_copy (d, tmpd) # copies 'd' as sub-dir of tmpd
     if (any (!chk)) {
         stop ("Unable to copy files from [", d, "] to tempdir()")
     }
 
     sp <- paste0 (rep (" ", nspaces), collapse = "")
 
-    files <- normalizePath (list.files (
-        tmpd,
-        full.names = TRUE,
-        recursive = TRUE
-    ))
+    files <- expand_path (fs::dir_ls (tmpd, recurse = TRUE))
 
     exts <- file_exts ()
     exts$ext <- gsub ("+", "\\+", exts$ext, fixed = TRUE)
@@ -208,7 +204,7 @@ rm_tabs <- function (d, nspaces = 2) {
         }
     }
 
-    return (normalizePath (tmpd))
+    return (expand_path (tmpd))
 }
 
 #' convert tags_src into same format as the function summary of R code
@@ -268,7 +264,7 @@ count_doclines_src <- function (tags, path) {
 
         ndoclines <- 0L
 
-        f <- file.path (path, tags$file [i])
+        f <- fs::path (path, tags$file [i])
         code <- brio::read_lines (f)
         tag_line_start <- tags$start [i]
         # ctags does not tag end line numbers of Rust objects:

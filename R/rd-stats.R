@@ -15,10 +15,7 @@ rd_stats <- function (path) {
 
     path <- check_path (path)
 
-    rd_files <- list.files (file.path (path, "man"),
-        pattern = "\\.Rd$",
-        full.names = TRUE
-    )
+    rd_files <- fs::dir_ls (fs::path (path, "man"), regexp = "\\.Rd$")
 
     suppressWarnings (
         params <- lapply (rd_files, get_one_params)
@@ -48,7 +45,7 @@ rd_stats <- function (path) {
     }, numeric (1))
 
     # excluce imported fns:
-    nmspc <- file.path (path, "NAMESPACE")
+    nmspc <- fs::path (path, "NAMESPACE")
     # some packages have no NAMESPACE files (like adehabitat 1.2-1)
     if (file.exists (nmspc)) {
 
