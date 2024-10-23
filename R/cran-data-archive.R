@@ -158,7 +158,7 @@ pkgstats_from_archive <- function (path,
                 })
             }
 
-            fname <- file.path (
+            fname <- fs::path (
                 results_path,
                 paste0 ("pkgstats-results-", index, ".Rds")
             )
@@ -177,7 +177,7 @@ pkgstats_from_archive <- function (path,
     rownames (out) <- NULL
 
     if (!is.null (results_files)) {
-        chk <- file.remove (results_files) # nolint
+        fs::file_delete (results_files)
     }
 
     if (!is.null (res) && !is.null (results_file)) {
@@ -196,7 +196,7 @@ list_archive_files <- function (path, recursive = FALSE) {
         flist <- list.files (path, full.names = TRUE, recursive = FALSE)
         tarballs <- any (grepl ("tarballs", flist))
         if (tarballs) {
-            path <- file.path (path, "tarballs")
+            path <- fs::path (path, "tarballs")
         }
     }
 
@@ -219,11 +219,11 @@ list_archive_files <- function (path, recursive = FALSE) {
         )
         flist <- flist [dir.exists (flist)]
         # Reduce to directories with "DESCRIPTION" files
-        desc_paths <- file.path (flist, "DESCRIPTION")
-        flist <- flist [file.exists (desc_paths)]
+        desc_paths <- fs::path (flist, "DESCRIPTION")
+        flist <- flist [which (fs::file_exists (desc_paths))]
     }
 
-    return (normalizePath (flist))
+    return (fs::path_norm (flist))
 }
 
 #' Remove files for which results have already been generated
@@ -240,7 +240,7 @@ rm_prev_files <- function (flist, prev_results) {
             if (length (prev_results) > 1) {
                 stop ("prev_results must be a single-length character")
             }
-            if (!file.exists (prev_results)) {
+            if (!fs::file_exists (prev_results)) {
                 stop ("file [", prev_results, "] does not exist")
             }
             prev_results <- tryCatch (readRDS (prev_results),
@@ -253,12 +253,7 @@ rm_prev_files <- function (flist, prev_results) {
                 prev_results [which (!is.na (prev_results$package)), ]
         }
 
-        tars <- vapply (
-            flist, function (i) {
-                utils::tail (strsplit (i, .Platform$file.sep) [[1]], 1)
-            },
-            character (1)
-        )
+        tars <- basename (flist)
 
         prev_tars <- paste0 (
             prev_results$package,
@@ -334,14 +329,14 @@ one_summary_from_archive <- function (path, save_full,
                                       save_ex_calls, results_path) {
 
     logfiles <- list (
-        stdout = file.path (tempdir (), "pkgstats-stdout"),
-        stderr = file.path (tempdir (), "pkgstats-stderr")
+        stdout = fs::path (tempdir (), "pkgstats-stdout"),
+        stderr = fs::path (tempdir (), "pkgstats-stderr")
     )
-    if (file.exists (logfiles$stdout)) {
-        file.remove (logfiles$stdout)
+    if (fs::file_exists (logfiles$stdout)) {
+        fs::file_delete (logfiles$stdout)
     }
-    if (file.exists (logfiles$stderr)) {
-        file.remove (logfiles$stderr)
+    if (fs::file_exists (logfiles$stderr)) {
+        fs::file_delete (logfiles$stderr)
     }
 
     ps <- callr::r_bg (
@@ -366,18 +361,18 @@ one_summary_from_archive <- function (path, save_full,
         s <- NULL
     }
 
-    tryCatch (file.remove (logfiles$stdout), error = function (e) NULL)
-    tryCatch (file.remove (logfiles$stderr), error = function (e) NULL)
+    tryCatch (fs::file_delete (logfiles$stdout), error = function (e) NULL)
+    tryCatch (fs::file_delete (logfiles$stderr), error = function (e) NULL)
 
     if (save_full || save_ex_calls) {
         pkg <- utils::tail (decompose_path (path) [[1]], 1L)
         pkg <- gsub ("\\.tar\\.gz$", "", pkg)
         if (save_full) {
-            saveRDS (s, file.path (results_path, pkg))
+            saveRDS (s, fs::path (results_path, pkg))
         } else if (save_ex_calls) {
             saveRDS (
                 s$external_calls,
-                file.path (results_path, pkg)
+                fs::path (results_path, pkg)
             )
         }
     }
@@ -420,7 +415,7 @@ archive_trawl_progress_message <- function (index, chunk_size, npkgs, pt0) {
 archive_results_file_name <- function (results_file) {
 
     if (!grepl (.Platform$file.sep, results_file)) {
-        results_file <- file.path (".", results_file)
+        results_file <- fs::path (".", results_file)
     }
     results_file <- normalizePath (results_file, mustWork = FALSE)
 
@@ -435,7 +430,7 @@ archive_results_file_name <- function (results_file) {
 
     results_file <- basename (results_file)
     results_file <- tools::file_path_sans_ext (results_file)
-    results_file <- file.path (
+    results_file <- fs::path (
         results_path,
         paste0 (results_file, ".Rds")
     )
