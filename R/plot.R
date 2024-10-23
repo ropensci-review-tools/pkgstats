@@ -1,4 +1,3 @@
-
 #' Plot interactive \pkg{visNetwork} visualisation of object-relationship
 #' network of package.
 #'
@@ -117,24 +116,17 @@ plot_network <- function (s, plot = TRUE, vis_save = NULL) {
             if (length (vis_save) > 1) {
                 stop ("vis_save must be a single character")
             }
-            if (!dir.exists (dirname (vis_save))) {
+            if (!fs::direxists (fs::path_dir (vis_save))) {
                 stop (
-                    "directory [", dirname (vis_save),
+                    "directory [", fs::path_dir (vis_save),
                     "] does not exist"
                 )
             }
 
-            vis_save <- paste0 (
-                tools::file_path_sans_ext (vis_save),
-                ".html"
-            )
-            path <- strsplit (vis_save, .Platform$file.sep) [[1]]
-            # can't use normalizePath because that fails if path does not exist
-            path <- paste0 (path [-length (path)],
-                collapse = .Platform$file.sep
-            )
-            if (!file.exists (path)) {
-                dir.create (path, recursive = TRUE)
+            vis_save <- fs::path_ext_set (vis_save, "html")
+            path <- fs::path_dir (vis_save)
+            if (!fs::dir_exists (path)) {
+                fs::dir_create (path, recurse = TRUE)
             }
             visNetwork::visSave (vn, vis_save, selfcontained = TRUE)
 
