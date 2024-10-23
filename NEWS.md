@@ -1,4 +1,4 @@
-0.1.1.00x (dev)
+0.2.0.00x (dev)
 ===================
 
 ## Major changes
@@ -10,6 +10,8 @@
 - Added this news file
 - Parse 'Authors@R' field of DESC even when `parse()` fails
 - Fix bug on CRAN packages with no DESCRIPTION file (#51; these do exist!)
+- Update all file path manipulations to use 'fs' pkg (#68)
+- Improve lines-of-code counts, including capturing tinytest files, and remove others (#67)
 
 
 0.1.1
