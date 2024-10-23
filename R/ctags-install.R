@@ -11,7 +11,7 @@ clone_ctags <- function (destdir = NULL) {
     if (is.null (destdir)) {
         stop ("destdir must be specified", call. = FALSE)
     }
-    destdir <- fs::path_norm (destdir)
+    destdir <- fs::path_abs (destdir)
     if (!fs::dir_exists (destdir)) {
         stop ("Directory [", destdir,
             "] does not exist",

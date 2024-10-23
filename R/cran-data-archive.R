@@ -122,7 +122,7 @@ pkgstats_from_archive <- function (path,
             " files in ", length (flist), " chunks"
         )
 
-        results_path <- fs::path_norm (results_path)
+        results_path <- fs::path_abs (results_path)
         if (!fs::dir_exists (results_path)) {
             fs::dir_create (results_path, recurse = TRUE)
         }
@@ -221,7 +221,7 @@ list_archive_files <- function (path, recursive = FALSE) {
         flist <- flist [which (fs::file_exists (desc_paths))]
     }
 
-    return (fs::path_norm (flist))
+    return (fs::path_abs (flist))
 }
 
 #' Remove files for which results have already been generated
@@ -415,13 +415,13 @@ archive_results_file_name <- function (results_file) {
     if (!grepl (.Platform$file.sep, results_file)) {
         results_file <- fs::path (".", results_file)
     }
-    results_file <- fs::path_norm (results_file)
+    results_file <- fs::path_abs (results_file)
 
     results_path <- gsub (
         basename (results_file), "",
         results_file
     )
-    results_path <- fs::path_norm (results_path)
+    results_path <- fs::path_abs (results_path)
     if (!fs::dir_exists (results_path)) {
         stop ("Directory [", results_path, "] does not exist")
     }

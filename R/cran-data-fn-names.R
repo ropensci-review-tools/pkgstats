@@ -45,7 +45,7 @@ pkgstats_fns_from_archive <- function (path,
         recurse = archive,
         regexpr = "\\.tar\\.gz$"
     )
-    flist <- fs::path_norm (flist)
+    flist <- fs::path_abs (flist)
     flist <- rm_prev_files (flist, prev_results)
     nfiles <- length (flist)
 
@@ -60,7 +60,7 @@ pkgstats_fns_from_archive <- function (path,
             " files in ", length (flist), " chunks"
         )
 
-        results_path <- fs::path_norm (results_path)
+        results_path <- fs::path_abs (results_path)
         if (!fs::dir_exists (results_path)) {
             fs::dir_create (results_path)
         }
@@ -121,13 +121,13 @@ pkgstats_fns_from_archive <- function (path,
         if (!grepl (.Platform$file.sep, results_file)) {
             results_file <- fs::path (".", results_file)
         }
-        results_file <- fs::path_norm (results_file)
+        results_file <- fs::path_abs (results_file)
 
         results_path <- gsub (
             basename (results_file), "",
             results_file
         )
-        results_path <- fs::path_norm (results_path)
+        results_path <- fs::path_abs (results_path)
         if (!fs::dir_exists (results_path)) {
             stop ("Directory [", results_path, "] does not exist")
         }
@@ -191,7 +191,7 @@ pkgstats_fns_update <- function (prev_results = NULL,
             " files in ", length (new_cran_pkgs), " chunks"
         )
 
-        results_path <- fs::path_norm (results_path)
+        results_path <- fs::path_abs (results_path)
         if (!fs::dir_exists (results_path)) {
             fs::dir_create (results_path, recurse = TRUE)
         }
