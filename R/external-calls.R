@@ -230,7 +230,7 @@ add_base_recommended_pkgs <- function (calls) {
     pkg_calls <- lapply (rcmds, function (i) {
 
         rpath <- fs::path (ll [1], i)
-        if (!fs::direxists (rpath)) {
+        if (!fs::dir_exists (rpath)) {
             return (NULL)
         }
 
