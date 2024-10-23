@@ -168,8 +168,8 @@ rm_tabs <- function (d, nspaces = 2) {
     )
     tmpd <- fs::path (fs::path_temp (), tmpd)
     fs::dir_create (tmpd, recurse = TRUE)
-    chk <- fs::file_copy (d, tmpd) # copies 'd' as sub-dir of tmpd
-    if (any (!chk)) {
+    chk <- fs::dir_copy (d, tmpd) # copies 'd' as sub-dir of tmpd
+    if (length (chk) != length (d)) {
         stop ("Unable to copy files from [", d, "] to tempdir()")
     }
 
