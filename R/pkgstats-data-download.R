@@ -45,7 +45,7 @@ dl_pkgstats_data <- function (current = TRUE,
         grep ("all", assets$name, ignore.case = TRUE)
     )
     dl_url <- assets$browser_download_url [i]
-    f <- file.path (path, basename (dl_url))
+    f <- fs::path (path, basename (dl_url))
 
     curl::curl_download (url = dl_url, destfile = f, quiet = quiet)
     if (!quiet) {
