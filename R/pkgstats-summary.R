@@ -486,9 +486,14 @@ network_summary <- function (x) {
     n_clusters <- length (unique (x$cluster_dir))
     n_edges <- ifelse (is.null (x), 0L, nrow (x))
 
-    dirs <- fs::path_dir (x$file)
-    n_edges_r <- length (which (basename (dirs) == "R"))
-    n_edges_src <- length (which (basename (dirs) != "R"))
+    dirs <- vapply (x$file, function (i) {
+        strsplit (i, .Platform$file.sep) [[1]] [1]
+    },
+    character (1),
+    USE.NAMES = FALSE
+    )
+    n_edges_r <- length (which (dirs == "R"))
+    n_edges_src <- length (which (dirs != "R"))
 
     centrality_dir_mn <-
         centrality_dir_mn_no0 <-
