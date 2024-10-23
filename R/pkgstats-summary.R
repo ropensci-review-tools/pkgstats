@@ -157,7 +157,7 @@ null_stats <- function () {
 loc_summary <- function (x) {
 
     # suprress no visible binding notes:
-    nfiles <- ncode <- ndoc <- nempty <- nspaces <- nchars <- NULL
+    nfiles <- ncode <- ndoc <- nempty <- nspaces <- nchars <- language <- NULL
 
     indentation <- loc_indentation (x)
 
