@@ -2,7 +2,9 @@ get_num_vignettes <- function (path) {
 
     nv <- 0L
 
-    if ("build" %in% fs::dir_ls (path)) {
+    path_ls <- basename (fs::dir_ls (path))
+
+    if ("build" %in% path_ls) {
 
         flist <- fs::dir_ls (fs::path (path, "build"),
             full.names = TRUE
@@ -11,7 +13,7 @@ get_num_vignettes <- function (path) {
         if (length (vfile) > 0) {
             nv <- nrow (readRDS (vfile [1]))
         }
-    } else if ("vignettes" %in% fs::dir_ls (path)) {
+    } else if ("vignettes" %in% path_ls) {
         nv <- length (fs::dir_ls (
             fs::path (path, "vignettes"),
             regexp = "\\.[rR]md$"
@@ -31,7 +33,9 @@ get_num_demos <- function (path) {
 
     nd <- 0L
 
-    if ("demo" %in% fs::dir_ls (path)) {
+    path_ls <- basename (fs::dir_ls (path))
+
+    if ("demo" %in% path_ls) {
 
         dindex <- fs::path (path, "demo", "00Index")
         nd <- length (brio::read_lines (dindex))
@@ -44,7 +48,9 @@ get_data_stats <- function (path) {
 
     nd <- c (n = 0L, total_size = 0L, median_size = 0L)
 
-    if ("data" %in% fs::dir_ls (path)) {
+    path_ls <- basename (fs::dir_ls (path))
+
+    if ("data" %in% path_ls) {
 
         flist <- fs::dir_ls (fs::path (path, "data"),
             regexp = "\\.rd",
