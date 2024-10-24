@@ -1,34 +1,6 @@
 test_all <- (identical (Sys.getenv ("MPADGE_LOCAL"), "true") |
     identical (Sys.getenv ("GITHUB_WORKFLOW"), "test-coverage"))
 
-setup_test_archive <- function () {
-    f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
-    tarball <- basename (f)
-
-    archive_path <- file.path (tempdir (), "archive")
-    if (!dir.exists (archive_path)) {
-        dir.create (archive_path)
-    }
-    path <- file.path (archive_path, tarball)
-    if (!file.exists (path)) {
-        file.copy (f, path)
-    }
-
-    list (tarball = tarball, path = path, archive_path = archive_path)
-}
-
-setup_test_tarball <- function (archive) {
-    tarball_path <- file.path (archive$archive_path, "tarballs")
-    if (!dir.exists (tarball_path)) {
-        dir.create (tarball_path, recursive = TRUE)
-    }
-    if (!file.exists (file.path (tarball_path, archive$tarball))) {
-        file.copy (archive$path, file.path (tarball_path, archive$tarball))
-    }
-
-    return (tarball_path)
-}
-
 test_that ("archive trawl", {
 
     if (!test_all) {
@@ -36,6 +8,19 @@ test_that ("archive trawl", {
     }
 
     archive <- setup_test_archive ()
+
+    expect_type (archive, "list")
+    expect_length (archive, 3L)
+    expect_identical (names (archive), c ("tarball", "path", "archive_path"))
+
+    v <- get_pkg_version (archive$path)
+    expect_type (v, "character")
+    expect_length (v, 2L)
+    expect_identical (v, c ("pkgstats", "9.9"))
+
+    f <- archive_results_file_name ("aaa.txt")
+    expect_equal (basename (f), "aaa.Rds")
+    expect_equal (f, fs::path (fs::path_wd (), "aaa.Rds"))
 
     expect_error (
         pkgstats_from_archive (archive$path),
@@ -63,4 +48,61 @@ test_that ("archive trawl", {
     if (!test_all) {
         Sys.unsetenv ("PKGSTATS_CRAN_TESTS")
     }
+})
+
+test_that ("archive_trawl with save options", {
+
+    if (!test_all) {
+        Sys.setenv ("PKGSTATS_CRAN_TESTS" = "true")
+    }
+
+    archive <- setup_test_archive ()
+    rds_name <- gsub ("\\.tar\\.gz$", ".Rds", archive$tarball)
+    tarball_path <- setup_test_tarball (archive)
+
+    tempfiles <- basename (fs::dir_ls (fs::path_temp (), type = "file"))
+    expect_false (rds_name %in% tempfiles)
+
+    out <- pkgstats_from_archive (tarball_path, save_full = TRUE)
+    tempfiles <- basename (fs::dir_ls (fs::path_temp (), type = "file"))
+    expect_true (rds_name %in% tempfiles)
+
+    rds_path <- fs::path (fs::path_temp (), rds_name)
+    dat <- readRDS (rds_path)
+    expect_type (dat, "list")
+    expect_length (dat, 8L)
+    nms <- c (
+        "loc",
+        "vignettes",
+        "data_stats",
+        "desc",
+        "translations",
+        "objects",
+        "network",
+        "external_calls"
+    )
+    expect_identical (names (dat), nms)
+    fs::file_delete (rds_path)
+
+    out <- pkgstats_from_archive (tarball_path, save_ex_calls = TRUE)
+    tempfiles <- basename (fs::dir_ls (fs::path_temp (), type = "file"))
+    expect_true (rds_name %in% tempfiles)
+
+    dat <- readRDS (rds_path)
+    expect_s3_class (dat, "data.frame")
+    nms <- c (
+        "tags_line", "call", "tag", "file", "kind", "start", "end", "package"
+    )
+    expect_equal (names (dat), nms)
+    expect_equal (ncol (dat), 8L)
+    if (test_all) {
+        expect_true (nrow (dat) > 500L)
+    }
+    fs::file_delete (rds_path)
+
+    unlink (archive$archive_path, recursive = TRUE)
+    if (!test_all) {
+        Sys.unsetenv ("PKGSTATS_CRAN_TESTS")
+    }
+
 })
