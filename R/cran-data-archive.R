@@ -364,7 +364,7 @@ one_summary_from_archive <- function (path, save_full,
 
     if (save_full || save_ex_calls) {
         pkg <- utils::tail (decompose_path (path) [[1]], 1L)
-        pkg <- gsub ("\\.tar\\.gz$", "", pkg)
+        pkg <- gsub ("\\.tar\\.gz$", ".Rds", pkg)
         if (save_full) {
             saveRDS (s, fs::path (results_path, pkg))
         } else if (save_ex_calls) {
