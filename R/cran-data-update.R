@@ -11,6 +11,8 @@ RELEASE_TAG <- "v0.1.6"
 #' @return Local path to directory containing updated results.
 #' @family archive
 #' @export
+
+# nocov start
 pkgstats_update <- function (upload = TRUE) {
 
     requireNamespace ("callr")
@@ -102,6 +104,7 @@ pkgstats_update <- function (upload = TRUE) {
         )
     }
 }
+# nocov end
 
 dl_prev_data <- function (results_path, what = "all") {
     what <- match.arg (what, c ("all", "current", "fn_names"))

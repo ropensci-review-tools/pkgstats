@@ -159,6 +159,8 @@ pkgstats_fns_from_archive <- function (path,
 #'
 #' @family archive
 #' @export
+
+# nocov start
 pkgstats_fns_update <- function (prev_results = NULL,
                                  results_file = NULL,
                                  chunk_size = 1000L,
@@ -253,3 +255,4 @@ pkgstats_fns_update <- function (prev_results = NULL,
 
     invisible (out)
 }
+# nocov end
