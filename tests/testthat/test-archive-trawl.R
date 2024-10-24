@@ -95,7 +95,9 @@ test_that ("archive_trawl with save options", {
     )
     expect_equal (names (dat), nms)
     expect_equal (ncol (dat), 8L)
-    expect_true (nrow (dat) > 500L)
+    if (test_all) {
+        expect_true (nrow (dat) > 500L)
+    }
     fs::file_delete (rds_path)
 
     unlink (archive$archive_path, recursive = TRUE)
