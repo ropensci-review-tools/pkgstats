@@ -161,8 +161,15 @@ loc_summary <- function (x) {
 
     indentation <- loc_indentation (x)
 
+    rm_dirs <- c ("inst/doc", "inst/extdata")
+    x <- x [which (!x$dir %in% rm_dirs), ]
+    rm_langs <- c ("HTML", "CSS", "YAML")
+    x <- x [which (!x$language %in% rm_langs), ]
+
     test_dirs <- c ("inst/tinytest", "tests/testthat")
     x$dir [x$dir %in% test_dirs] <- "tests"
+
+    x$dir [grep ("^inst\\/", x$dir)] <- "inst"
 
     xf <- dplyr::filter (x, language != "YAML")
     xg <- dplyr::group_by (xf, dir)
