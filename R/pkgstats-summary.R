@@ -169,19 +169,20 @@ loc_summary <- function (x) {
     test_dirs <- c ("inst/tinytest", "tests/testthat")
     x$dir [x$dir %in% test_dirs] <- "tests"
 
+    # Presume everything else in inst is genuine code:
     x$dir [grep ("^inst\\/", x$dir)] <- "inst"
 
     xf <- dplyr::filter (x, language != "YAML")
     xg <- dplyr::group_by (xf, dir)
     x <- dplyr::summarise (
         xg,
-        nfiles = sum (nfiles),
-        ncode = sum (ncode),
-        ndoc = sum (ndoc),
-        nempty = sum (nempty),
-        nspaces = sum (nspaces),
-        nchars = sum (nchars),
-        nexpr = stats::median (nexpr)
+        nfiles = sum (nfiles, na.rm = TRUE),
+        ncode = sum (ncode, na.rm = TRUE),
+        ndoc = sum (ndoc, na.rm = TRUE),
+        nempty = sum (nempty, na.rm = TRUE),
+        nspaces = sum (nspaces, na.rm = TRUE),
+        nchars = sum (nchars, na.rm = TRUE),
+        nexpr = stats::median (nexpr, na.rm = TRUE)
     )
     # nexpr is not truly accurate, but acceptable here
 
