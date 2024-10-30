@@ -45,7 +45,7 @@ ctags_make <- function (ctags_dir, bin_dir = NULL, sudo = TRUE) {
         stop ("A value for 'bin_dir' must be specified when 'sudo = FALSE'")
     }
 
-    f <- fs::file_temp (pattern = "ctags-make-", fileext = ".txt")
+    f <- fs::file_temp (pattern = "ctags-make-", ext = ".txt")
 
     confargs <- NULL
     if (!is.null (bin_dir)) {
