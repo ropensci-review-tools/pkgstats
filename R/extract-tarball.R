@@ -59,7 +59,11 @@ extract_tarball <- function (tarball) {
 rename_files_in_r <- function (path) {
 
     path <- fs::path_real (path)
-    f_sq <- fs::dir_ls (fs::path (path, "R"), regexp = "\\.(s|S|q)$")
+    path_r <- fs::path (path, "R")
+    if (!fs::dir_exists (path_r)) {
+        return (FALSE)
+    }
+    f_sq <- fs::dir_ls (path_r, regexp = "\\.(s|S|q)$")
 
     if (length (f_sq) > 0) {
 
