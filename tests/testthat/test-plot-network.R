@@ -1,6 +1,5 @@
-
-test_all <- (identical (Sys.getenv ("MPADGE_LOCAL"), "true") |
-             identical (Sys.getenv ("GITHUB_WORKFLOW"), "test-coverage"))
+test_all <- (identical (Sys.getenv ("MPADGE_LOCAL"), "true") ||
+    identical (Sys.getenv ("GITHUB_JOB"), "test-coverage"))
 
 skip_if (!test_all)
 
@@ -11,8 +10,8 @@ test_that ("plot-network", {
 
     requireNamespace ("visNetwork")
     expect_silent (
-       net <- plot_network (s, plot = FALSE)
-       )
+        net <- plot_network (s, plot = FALSE)
+    )
 
     expect_s3_class (net, "visNetwork")
     expect_type (net, "list")
