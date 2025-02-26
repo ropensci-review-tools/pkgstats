@@ -172,8 +172,10 @@ loc_summary <- function (x) {
     # Presume everything else in inst is genuine code:
     x$dir [grep ("^inst\\/", x$dir)] <- "inst"
 
-    xf <- dplyr::filter (x, language != "YAML")
-    xg <- dplyr::group_by (xf, dir)
+    if ("YAML" %in% x$language) {
+        x <- dplyr::filter (x, language != "YAML")
+    }
+    xg <- dplyr::group_by (x, dir)
     x <- dplyr::summarise (
         xg,
         nfiles = sum (nfiles, na.rm = TRUE),
