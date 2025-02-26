@@ -72,7 +72,8 @@ plot_network <- function (s, plot = TRUE, vis_save = NULL) {
         edges <- dplyr::count (edges, from, to, language, centrality)
         edges <- edges [which (!is.na (edges$from)), ]
 
-        obj <- s$objects [which (s$objects$kind == "function"), ]
+        obj <- dplyr::filter (s$objects, kind == "function")
+        obj <- dplyr::filter (obj, !grepl ("^anonFunc", fn_name))
         obj <- obj [which (!duplicated (obj$fn_name)), ]
         nodes <- data.frame (
             id = obj$fn_name,
