@@ -103,7 +103,9 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
         }
     }
 
-    fns_r <- tags_r [which (tags_r$kind == "function" & !is.na (tags_r$tag)), ]
+    # Functions defined from namespaces of other packages are tagged as global variables.
+    kinds <- c ("function", "globalVar")
+    fns_r <- tags_r [which (tags_r$kind %in% kinds & !is.na (tags_r$tag)), ]
     fn_vars_r <- tags_r [which (tags_r$kind == "functionVar" &
         !is.na (tags_r$tag)), ]
 
