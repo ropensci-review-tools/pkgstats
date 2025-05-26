@@ -130,8 +130,10 @@ get_ctags <- function (d = "R", has_tabs) {
 
     files <- fs::path_split (tags$file)
     len_path_sub <- length (fs::path_split (path_sub) [[1]])
-    tags$file <- vapply (
-        files, function (i) {
+    index <- which (vapply (files, length, integer (1L)) >= len_path_sub)
+    tags$file <- NA_character_
+    tags$file [index] <- vapply (
+        files [index], function (i) {
             do.call (file.path, as.list (i [-seq (len_path_sub)]))
         },
         character (1)
