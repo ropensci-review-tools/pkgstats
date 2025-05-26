@@ -66,8 +66,8 @@ pkgstats_fn_names <- function (path) {
     pkg <- get_pkg_name_version (desc_path)
 
     data.frame (
-        package = pkg [1],
-        version = pkg [2],
+        package = pkg [1] [seq_along (fns)],
+        version = pkg [2] [seq_along (fns)],
         fn_name = gsub ("^\\\"|\\\"$", "", fns),
         stringsAsFactors = FALSE
     )
@@ -226,6 +226,9 @@ aliases_from_rd <- function (path, nmsp) {
             files = rd,
             exdir = fs::path_temp ()
         )
+        if (chk != 0) {
+            return (NULL)
+        }
 
         flist <- fs::path (fs::path_temp (), rd)
 
@@ -248,10 +251,6 @@ aliases_from_rd <- function (path, nmsp) {
         logical (1L)
     )
     flist <- flist [which (is_man)]
-
-    if (chk != 0) {
-        return (NULL)
-    }
 
     nms <- lapply (flist, function (i) {
 
