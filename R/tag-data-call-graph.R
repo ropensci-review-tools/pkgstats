@@ -6,6 +6,11 @@ fn_var_call_graph_r <- function (fns, fn_vars, path) {
 
         fns_f <- fns [fns$file == f, ]
         fns_f <- fns_f [order (fns_f$start), c ("tag", "start", "end")]
+        fns_f <- fns_f [which (!is.na (fns_f$start) & !is.na (fns_f$end)), ]
+        if (nrow (fns_f) < 1L) {
+            next
+        }
+
         fns_index <- lapply (seq (nrow (fns_f)), function (i) {
             cbind (i, seq (fns_f$start [i], fns_f$end [i]))
         })
