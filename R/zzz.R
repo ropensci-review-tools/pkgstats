@@ -31,6 +31,8 @@
         if (substring (tolower (chk), 1, 1) == "y") {
             install_ctags_windows (pkg_path)
         }
+        ctags_path <- get_ctags_path(pkg_path)
+        Sys.setenv(PATH = paste0(Sys.getenv("PATH"), ";", ctags_path))
     }
 }
 
@@ -50,17 +52,23 @@ install_ctags_macos <- function (pkg_path) {
     }
 }
 
+get_ctags_path <- function(pkg_path){
+  u <- "https://github.com/rwinlib/universal-ctags/archive/refs/tags/v5.9.20210530.0.zip" # nolint
+  ctags_path <- normalizePath (fs::path (
+    pkg_path,
+    "windows",
+    paste0 (
+      "universal-ctags-",
+      tools::file_path_sans_ext (gsub ("^v", "", basename (u)))
+    ),
+    "bin"
+  ), mustWork = FALSE)
+  ctags_path
+}
+
 install_ctags_windows <- function (pkg_path) {
     u <- "https://github.com/rwinlib/universal-ctags/archive/refs/tags/v5.9.20210530.0.zip" # nolint
-    ctags_path <- normalizePath (fs::path (
-        pkg_path,
-        "windows",
-        paste0 (
-            "universal-ctags-",
-            tools::file_path_sans_ext (gsub ("^v", "", basename (u)))
-        ),
-        "bin"
-    ), mustWork = FALSE)
+    ctags_path <- get_ctags_path(pkg_path)
     ctag_win_path <- fs::path_abs (fs::path (pkg_path, "windows"))
     if (!fs::dir_exists (ctag_win_path)) {
         fs::dir_create (ctag_win_path, recurse = TRUE)
