@@ -60,14 +60,15 @@ install_ctags_windows <- function (pkg_path) {
             tools::file_path_sans_ext (gsub ("^v", "", basename (u)))
         ),
         "bin"
-    ))
-    if (!fs::dir_exists ("windows")) {
-        fs::dir_create ("windows", recurse = TRUE)
+    ), mustWork = FALSE)
+    ctag_win_path <- fs::path_abs (fs::path (pkg_path, "windows"))
+    if (!fs::dir_exists (ctag_win_path)) {
+        fs::dir_create (ctag_win_path, recurse = TRUE)
     }
     if (!fs::file_exists (ctags_path)) {
         f <- "lib.zip"
         utils::download.file (u, f, quiet = TRUE)
-        utils::unzip (f, exdir = "windows")
+        utils::unzip (f, exdir = ctag_win_path)
         fs::file_delete (f)
     }
 }
