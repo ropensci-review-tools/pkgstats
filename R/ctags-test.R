@@ -120,7 +120,7 @@ ctags_test <- function (quiet = TRUE) {
 
         fs::file_delete (td)
     }
-    #browser()
+    
     check <- ctags_check & gtags_check
 
     if (!check) {
