@@ -75,7 +75,7 @@ install_ctags_windows <- function (pkg_path) {
     }
     if (!fs::file_exists (ctags_path)) {
         f <- "lib.zip"
-        utils::download.file (u, f, quiet = TRUE)
+        utils::download.file (u, f, quiet = TRUE, mode = "wb")
         utils::unzip (f, exdir = ctag_win_path)
         fs::file_delete (f)
     }
