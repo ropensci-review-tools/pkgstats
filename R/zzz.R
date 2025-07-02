@@ -51,24 +51,24 @@ install_ctags_macos <- function (pkg_path) {
 }
 
 install_ctags_windows <- function (pkg_path) {
-    u <- "https://github.com/rwinlib/universal-ctags/archive/refs/tags/v5.9.20210530.0.zip" # nolint
-    ctags_path <- normalizePath (fs::path (
-        pkg_path,
-        "windows",
-        paste0 (
-            "universal-ctags-",
-            tools::file_path_sans_ext (gsub ("^v", "", basename (u)))
-        ),
-        "bin"
-    ))
-    if (!fs::dir_exists ("windows")) {
-        fs::dir_create ("windows", recurse = TRUE)
-    }
-    if (!fs::file_exists (ctags_path)) {
-        f <- "lib.zip"
-        utils::download.file (u, f, quiet = TRUE)
-        utils::unzip (f, exdir = "windows")
-        fs::file_delete (f)
-    }
+  u <- "https://github.com/rwinlib/universal-ctags/archive/refs/tags/v5.9.20210530.0.zip" # nolint
+  ctags_path <- normalizePath (fs::path (
+    pkg_path,
+    "windows", 
+    paste0 (
+      "universal-ctags-",
+      tools::file_path_sans_ext (gsub ("^v", "", basename (u)))
+    ),
+    "bin"), 
+    mustWork = FALSE)
+  if (!fs::dir_exists (ctags_path)) {
+    fs::dir_create (ctags_path, recurse = TRUE)
+  }
+  if (!length(fs::dir_ls (ctags_path, regexp = ".*\\.exe$")) > 0) {
+    f <- tempfile(fileext = "pkgstats_ctags_lib.zip")
+    utils::download.file (u, f, quiet = TRUE, mode = "wb")
+    utils::unzip (f, exdir = ctags_path, junkpaths = TRUE)
+    fs::file_delete (f)
+  }
 }
 # nocov end
