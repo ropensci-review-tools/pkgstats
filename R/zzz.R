@@ -32,4 +32,18 @@
     }
 }
 
+.onLoad <- function(libname, pkgname) {
+  
+  os <- Sys.info () ["sysname"]
+  
+  if (os == "Windows") {
+    pkg_path <- system.file(package = "pkgstats")
+    pkg_path <- gsub("/inst", "", pkg_path)
+    ctags_path <- get_ctags_path_win(pkg_path)
+    if(!grepl("universal-ctags-5.9.20210530.0", Sys.getenv("PATH"))){
+      Sys.setenv(PATH = paste0(Sys.getenv("PATH"), ";", ctags_path))
+    }
+  }
+  
+}
 # nocov end
