@@ -62,9 +62,9 @@ pkgstats_from_archive <- function (path,
                                    save_ex_calls = FALSE,
                                    results_path = fs::path_temp ()) {
 
-    requireNamespace ("hms")
-    requireNamespace ("parallel")
-    requireNamespace ("callr")
+    requireNamespace ("hms", quietly = TRUE)
+    requireNamespace ("parallel", quietly = TRUE)
+    requireNamespace ("callr", quietly = TRUE)
 
     checkmate::assert_string (path)
     checkmate::assert_directory_exists (path)
@@ -84,6 +84,7 @@ pkgstats_from_archive <- function (path,
     checkmate::assert_logical (save_ex_calls)
     checkmate::assert_scalar (save_ex_calls)
     checkmate::assert_string (results_path)
+    checkmate::assert_directory_exists (results_path)
 
     if (is.character (prev_results)) {
         checkmate::assert_file_exists (prev_results)

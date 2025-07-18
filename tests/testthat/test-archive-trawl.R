@@ -60,14 +60,17 @@ test_that ("archive_trawl with save options", {
     rds_name <- gsub ("\\.tar\\.gz$", ".Rds", archive$tarball)
     tarball_path <- setup_test_tarball (archive)
 
-    tempfiles <- basename (fs::dir_ls (fs::path_temp (), type = "file"))
+    tempfiles <-
+        basename (fs::dir_ls (fs::path_temp (), type = "file", recurse = TRUE))
     expect_false (rds_name %in% tempfiles)
 
     out <- pkgstats_from_archive (tarball_path, save_full = TRUE)
-    tempfiles <- basename (fs::dir_ls (fs::path_temp (), type = "file"))
+    tempfiles <-
+        basename (fs::dir_ls (fs::path_temp (), type = "file", recurse = TRUE))
     expect_true (rds_name %in% tempfiles)
 
     rds_path <- fs::path (fs::path_temp (), rds_name)
+    expect_true (fs::file_exists (rds_path))
     dat <- readRDS (rds_path)
     expect_type (dat, "list")
     expect_length (dat, 8L)
