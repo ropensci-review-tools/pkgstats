@@ -15,10 +15,10 @@ RELEASE_TAG <- "v0.1.6"
 # nocov start
 pkgstats_update <- function (upload = TRUE) {
 
-    requireNamespace ("callr")
-    requireNamespace ("hms")
-    requireNamespace ("httr2")
-    requireNamespace ("piggyback")
+    requireNamespace ("callr", quietly = TRUE)
+    requireNamespace ("hms", quietly = TRUE)
+    requireNamespace ("httr2", quietly = TRUE)
+    requireNamespace ("piggyback", quietly = TRUE)
 
     results_path <- fs::dir_create (fs::path (fs::path_temp (), "pkgstats-results"))
 
