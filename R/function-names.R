@@ -66,8 +66,8 @@ pkgstats_fn_names <- function (path) {
     pkg <- get_pkg_name_version (desc_path)
 
     data.frame (
-        package = pkg [1] [seq_along (fns)],
-        version = pkg [2] [seq_along (fns)],
+        package = rep (pkg [1], length (fns)),
+        version = rep (pkg [2], length (fns)),
         fn_name = gsub ("^\\\"|\\\"$", "", fns),
         stringsAsFactors = FALSE
     )
@@ -81,7 +81,6 @@ get_namespace_contents <- function (path) {
 
         flist <- utils::untar (
             path,
-            exdir = fs::path_temp (),
             list = TRUE,
             tar = "internal"
         )
@@ -107,6 +106,10 @@ get_namespace_contents <- function (path) {
 
         nmsp <- fs::path (fs::path_temp (), nmsp)
 
+        on.exit ({
+            fs::dir_delete (fs::path_dir (nmsp))
+        })
+
     } else {
 
         nmsp <- fs::dir_ls (
@@ -120,13 +123,13 @@ get_namespace_contents <- function (path) {
 
     # See R source in src/library/base/R/namespace.R for reference, especially
     # the `parseNamespaceFile()` function.
-    nmsp <- parse (
+    nmsp_parsed <- parse (
         nmsp,
         keep.source = FALSE,
         srcfile = NULL
     )
 
-    return (nmsp)
+    return (nmsp_parsed)
 }
 
 get_desc_path <- function (path) {
