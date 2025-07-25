@@ -81,7 +81,6 @@ get_namespace_contents <- function (path) {
 
         flist <- utils::untar (
             path,
-            exdir = fs::path_temp (),
             list = TRUE,
             tar = "internal"
         )
@@ -107,6 +106,10 @@ get_namespace_contents <- function (path) {
 
         nmsp <- fs::path (fs::path_temp (), nmsp)
 
+        on.exit ({
+            fs::dir_delete (fs::path_dir (nmsp))
+        })
+
     } else {
 
         nmsp <- fs::dir_ls (
@@ -120,13 +123,13 @@ get_namespace_contents <- function (path) {
 
     # See R source in src/library/base/R/namespace.R for reference, especially
     # the `parseNamespaceFile()` function.
-    nmsp <- parse (
+    nmsp_parsed <- parse (
         nmsp,
         keep.source = FALSE,
         srcfile = NULL
     )
 
-    return (nmsp)
+    return (nmsp_parsed)
 }
 
 get_desc_path <- function (path) {
