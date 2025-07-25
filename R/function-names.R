@@ -66,8 +66,8 @@ pkgstats_fn_names <- function (path) {
     pkg <- get_pkg_name_version (desc_path)
 
     data.frame (
-        package = pkg [1] [seq_along (fns)],
-        version = pkg [2] [seq_along (fns)],
+        package = rep (pkg [1], length (fns)),
+        version = rep (pkg [2], length (fns)),
         fn_name = gsub ("^\\\"|\\\"$", "", fns),
         stringsAsFactors = FALSE
     )
