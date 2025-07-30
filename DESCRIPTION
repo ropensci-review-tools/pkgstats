@@ -28,6 +28,7 @@ Imports:
     memoise,
     methods,
     readr,
+    roxygen2,
     sys,
     withr
 Suggests: 
@@ -42,7 +43,6 @@ Suggests:
     pkgbuild,
     Rcpp,
     rmarkdown,
-    roxygen2,
     testthat (>= 3.0.0),
     tibble,
     visNetwork

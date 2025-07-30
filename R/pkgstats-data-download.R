@@ -12,8 +12,8 @@ dl_pkgstats_data <- function (current = TRUE,
                               path = tempdir (),
                               quiet = FALSE) {
 
-    requireNamespace ("curl")
-    requireNamespace ("jsonlite")
+    requireNamespace ("curl", quietly = TRUE)
+    requireNamespace ("jsonlite", quietly = TRUE)
 
     u <- paste0 (
         "https://api.github.com/repos/",

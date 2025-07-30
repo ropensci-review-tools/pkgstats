@@ -19,8 +19,8 @@ pkgstats_fns_from_archive <- function (path,
                                        num_cores = 1L,
                                        results_path = fs::path_temp ()) {
 
-    requireNamespace ("hms")
-    requireNamespace ("parallel")
+    requireNamespace ("hms", quietly = TRUE)
+    requireNamespace ("parallel", quietly = TRUE)
 
     if (!grepl ("tarball", path)) {
         if (!fs::dir_exists (fs::path (path, "tarballs"))) {
@@ -167,8 +167,8 @@ pkgstats_fns_update <- function (prev_results = NULL,
                                  num_cores = 1L,
                                  results_path = tempdir ()) {
 
-    requireNamespace ("hms")
-    requireNamespace ("parallel")
+    requireNamespace ("hms", quietly = TRUE)
+    requireNamespace ("parallel", quietly = TRUE)
 
     checkmate::assert_int (chunk_size, lower = 1L)
     checkmate::assert_int (num_cores, lower = 1L)

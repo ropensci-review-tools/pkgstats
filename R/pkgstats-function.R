@@ -69,6 +69,21 @@ pkgstats <- function (path = ".") {
         fns$num_doclines [index] <- s3$num_doclines [index2]
         fns$param_nchars_mn [index] <- s3$param_nchars_mn [index2]
         fns$param_nchars_md [index] <- s3$param_nchars_md [index2]
+
+        # Get stats for non-exported fns
+        roxy_stats <- roxygen_block_stats (path)
+        roxy_stats <- roxy_stats [which (!roxy_stats$exported), ]
+        roxy_stats <- roxy_stats [which (roxy_stats$fn_name %in% fns$fn_name), ]
+        index <- match (roxy_stats$fn_name, fns$fn_name)
+        par_is_numeric <- vapply (
+            names (roxy_stats),
+            function (i) is.numeric (roxy_stats [[i]]),
+            logical (1L)
+        )
+        var_names <- names (roxy_stats) [which (par_is_numeric)]
+        for (v in var_names) {
+            fns [[v]] [index] <- roxy_stats [[v]]
+        }
     }
 
     # Running 'ctags_test()' on some CRAN machines takes too long (> 10s), so
