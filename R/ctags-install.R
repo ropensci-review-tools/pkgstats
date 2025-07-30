@@ -91,89 +91,89 @@ ctags_make <- function (ctags_dir, bin_dir = NULL, sudo = TRUE) {
 #' }
 #' @export
 ctags_install <- function (bin_dir = NULL, sudo = TRUE) {
-    
-    pkg_path <- system.file(package = "pkgstats")
-    pkg_path <- gsub("/inst", "", pkg_path)
-    
+
+    pkg_path <- system.file (package = "pkgstats")
+    pkg_path <- gsub ("/inst", "", pkg_path)
+
     os <- Sys.info () ["sysname"]
-    
+
     if (os == "Darwin") {
-        install_ctags_macos(pkg_path)
-    } 
-    
-    if (os == "Windows") {
-        install_ctags_windows(pkg_path)
+        install_ctags_macos (pkg_path)
     }
-    
+
+    if (os == "Windows") {
+        install_ctags_windows (pkg_path)
+    }
+
     if (.Platform$OS.type == "unix" & os != "Darwin") {
         ctags_dir <- clone_ctags (destdir = tempdir ())
         ctags_make (ctags_dir, bin_dir, sudo)
-    
+
         if (!has_gtags ()) {
             gtags_install (sudo = sudo)
         }
-    
+
         if (!sudo) {
             # system ("hash -d ctags")
             system ("hash ctags")
             system ("hash gtags")
         }
     }
-    
+
     if (tryCatch (ctags_test (),
-                  error = function (e) FALSE
+        error = function (e) FALSE
     )) {
-      # already installed and okay
-      message("ctags installed and passed test.")
-      return (NULL)
+        # already installed and okay
+        message ("ctags installed and passed test.")
+        return (NULL)
     }
 }
 
 install_ctags_macos <- function (pkg_path) {
-  
-  ctags_dir <- fs::path (pkg_path, "inst", "bin")
-  if (!fs::dir_exists (ctags_dir)) {
-    fs::dir_create (ctags_dir, recurse = TRUE)
-  }
-  ctags_path <- fs::path (ctags_dir, "ctags")
-  if (!file.exists (ctags_path)) {
-    u <- "https://autobrew.github.io/archive/high_sierra/universal-ctags-p5.9.20210530.0.tar.xz" # nolint
-    f <- basename (u)
-    utils::download.file (u, f, quiet = TRUE)
-    utils::untar (f, extras = "--strip-components=1", exdir = ctags_dir)
-    fs::file_delete (f)
-  }
+
+    ctags_dir <- fs::path (pkg_path, "inst", "bin")
+    if (!fs::dir_exists (ctags_dir)) {
+        fs::dir_create (ctags_dir, recurse = TRUE)
+    }
+    ctags_path <- fs::path (ctags_dir, "ctags")
+    if (!file.exists (ctags_path)) {
+        u <- "https://autobrew.github.io/archive/high_sierra/universal-ctags-p5.9.20210530.0.tar.xz" # nolint
+        f <- basename (u)
+        utils::download.file (u, f, quiet = TRUE)
+        utils::untar (f, extras = "--strip-components=1", exdir = ctags_dir)
+        fs::file_delete (f)
+    }
 }
 
-get_ctags_path_win <- function(pkg_path){
-  u <- "https://github.com/rwinlib/universal-ctags/archive/refs/tags/v5.9.20210530.0.zip" # nolint
-  ctags_path <- normalizePath (fs::path (
-    pkg_path,
-    "windows",
-    paste0 (
-      "universal-ctags-",
-      tools::file_path_sans_ext (gsub ("^v", "", basename (u)))
-    ),
-    "bin"
-  ), mustWork = FALSE)
-  ctags_path
+get_ctags_path_win <- function (pkg_path) {
+    u <- "https://github.com/rwinlib/universal-ctags/archive/refs/tags/v5.9.20210530.0.zip" # nolint
+    ctags_path <- normalizePath (fs::path (
+        pkg_path,
+        "windows",
+        paste0 (
+            "universal-ctags-",
+            tools::file_path_sans_ext (gsub ("^v", "", basename (u)))
+        ),
+        "bin"
+    ), mustWork = FALSE)
+    ctags_path
 }
 
 install_ctags_windows <- function (pkg_path) {
-  u <- "https://github.com/rwinlib/universal-ctags/archive/refs/tags/v5.9.20210530.0.zip" # nolint
-  ctags_path <- get_ctags_path_win(pkg_path)
-  ctag_win_path <- fs::path_abs (fs::path (pkg_path, "windows"))
-  if (!fs::dir_exists (ctag_win_path)) {
-    fs::dir_create (ctag_win_path, recurse = TRUE)
-  }
-  if (!fs::file_exists (ctags_path)) {
-    f <- tempfile(fileext = "pkgstats_ctags_lib.zip")
-    utils::download.file (u, f, quiet = TRUE)
-    utils::unzip (f, exdir = ctags_path, junkpaths = TRUE)
-    fs::file_delete (f)
-  }
-  if(!grepl("universal-ctags-5.9.20210530.0", Sys.getenv("PATH"))){
-    Sys.setenv(PATH = paste0(Sys.getenv("PATH"), ";", ctags_path))
-  }
+    u <- "https://github.com/rwinlib/universal-ctags/archive/refs/tags/v5.9.20210530.0.zip" # nolint
+    ctags_path <- get_ctags_path_win (pkg_path)
+    ctag_win_path <- fs::path_abs (fs::path (pkg_path, "windows"))
+    if (!fs::dir_exists (ctag_win_path)) {
+        fs::dir_create (ctag_win_path, recurse = TRUE)
+    }
+    if (!fs::file_exists (ctags_path)) {
+        f <- tempfile (fileext = "pkgstats_ctags_lib.zip")
+        utils::download.file (u, f, quiet = TRUE)
+        utils::unzip (f, exdir = ctags_path, junkpaths = TRUE)
+        fs::file_delete (f)
+    }
+    if (!grepl ("universal-ctags-5.9.20210530.0", Sys.getenv ("PATH"))) {
+        Sys.setenv (PATH = paste0 (Sys.getenv ("PATH"), ";", ctags_path))
+    }
 }
 # nocov end
