@@ -94,7 +94,3 @@ by first running the following command:
 ```{r unsetenv, eval = FALSE}
 Sys.unsetenv (c ("GTAGSCONF", "GTAGSLABEL"))
 ```
-
-See [information on how to install the
-plugin](https://cvs.savannah.gnu.org/viewvc/global/global/plugin-factory/PLUGIN_HOWTO.pygments?revision=1.6&view=markup)
-for more details.
