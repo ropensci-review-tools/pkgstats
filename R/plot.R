@@ -22,6 +22,9 @@
 #' @export
 plot_network <- function (s, plot = TRUE, vis_save = NULL) {
 
+    # suppress no visible binding notes:
+    kind <- NULL
+
     requireNamespace ("visNetwork", quietly = TRUE)
 
     if (!all (c (
@@ -73,7 +76,7 @@ plot_network <- function (s, plot = TRUE, vis_save = NULL) {
         edges <- edges [which (!is.na (edges$from)), ]
 
         obj <- dplyr::filter (s$objects, kind == "function")
-        obj <- dplyr::filter (obj, !grepl ("^anonFunc", fn_name))
+        obj <- dplyr::filter (obj, !grepl ("^anonFunc", obj$fn_name))
         obj <- obj [which (!duplicated (obj$fn_name)), ]
         nodes <- data.frame (
             id = obj$fn_name,
