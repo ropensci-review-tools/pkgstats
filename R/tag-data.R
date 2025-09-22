@@ -177,7 +177,7 @@ rm_tabs <- function (d, nspaces = 2) {
 
     sp <- paste0 (rep (" ", nspaces), collapse = "")
 
-    files <- expand_path (fs::dir_ls (tmpd, recurse = TRUE))
+    files <- expand_path (fs::dir_ls (tmpd, recurse = TRUE, type = "file"))
 
     exts <- file_exts ()
     exts$ext <- gsub ("+", "\\+", exts$ext, fixed = TRUE)
@@ -190,6 +190,7 @@ rm_tabs <- function (d, nspaces = 2) {
     files <- files [index]
 
     for (f in files) {
+        message (f)
         x <- tryCatch (
             suppressWarnings (brio::read_lines (f)),
             error = function (e) NULL
@@ -200,9 +201,14 @@ rm_tabs <- function (d, nspaces = 2) {
 
         has_tabs <- any (grepl ("\\t", x))
         if (has_tabs) {
-            x <- gsub ("^\\t", sp, x)
-            x <- gsub ("\\t", " ", x) # replace non-leading tabs with single
-            brio::write_lines (x, path = f)
+            # The input string from 'brio' above can be invalid and cause
+            # 'gsub' to fail (try on antiword)
+            xt <- tryCatch (gsub ("^\\t", sp, x), error = function (e) x)
+            # And replace non-leading tabs with single
+            xt <- tryCatch (gsub ("\\t", " ", xt), error = function (e) xt)
+            if (!identical (x, xt)) {
+                brio::write_lines (x, path = f)
+            }
         }
     }
 
