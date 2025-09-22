@@ -190,7 +190,6 @@ rm_tabs <- function (d, nspaces = 2) {
     files <- files [index]
 
     for (f in files) {
-        message (f)
         x <- tryCatch (
             suppressWarnings (brio::read_lines (f)),
             error = function (e) NULL
