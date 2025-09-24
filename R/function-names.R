@@ -61,7 +61,9 @@ pkgstats_fn_names <- function (path) {
     )
 
     fns <- fns [which (!fns %in% imps)]
-    fns <- noquote (fns)
+    if (!is.null (fns)) {
+        fns <- noquote (fns)
+    }
 
     pkg <- get_pkg_name_version (desc_path)
 
