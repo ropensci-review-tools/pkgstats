@@ -76,8 +76,10 @@ ctags_make <- function (ctags_dir, bin_dir = NULL, sudo = TRUE) {
 #' 'ctags' is installed with this package on both Windows and macOS systems;
 #' this is an additional function to install from source on Unix systems.
 #'
-#' @param bin_dir Prefix to pass to the `autoconf` configure command
-#' defining location to install the binary, with default of `/usr/local`.
+#' @param bin_dir This parameter only has an effect on *nix-type operating
+#' systems (such as Linux), on which it's a prefix to pass to the
+#' `autoconf` configure command defining location to install the binary, with
+#' default of `/usr/local`.
 #' @param sudo Set to `FALSE` if `sudo` is not available, in which case a
 #' value for `bin_dir` will also have to be explicitly specified, and be a
 #' location where a binary is able to be installed without `sudo` privileges.

@@ -7,8 +7,10 @@
 ctags_install(bin_dir = NULL, sudo = TRUE)
 }
 \arguments{
-\item{bin_dir}{Prefix to pass to the \code{autoconf} configure command
-defining location to install the binary, with default of \verb{/usr/local}.}
+\item{bin_dir}{This parameter only has an effect on *nix-type operating
+systems (such as Linux), on which it's a prefix to pass to the
+\code{autoconf} configure command defining location to install the binary, with
+default of \verb{/usr/local}.}
 
 \item{sudo}{Set to \code{FALSE} if \code{sudo} is not available, in which case a
 value for \code{bin_dir} will also have to be explicitly specified, and be a
