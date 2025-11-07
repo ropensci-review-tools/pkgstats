@@ -1,6 +1,8 @@
-# CRAN notes for pkgstats_0.1.1 submission
+# CRAN notes for pkgstats_0.2.1 submission
 
-This is a re-submission of a recent first submission which failed vignette builds on CRAN windows machines. This version fixes those failures.
+This is a re-submission of a previously archived package.
+
+The submission currently generates on note regarding a possibly invalid URL. This is, however, for Wikipedia, and generates a "429: Too Many Requests" error on win-builder machines. The URL is valid.
 
 
 ## Test environments
