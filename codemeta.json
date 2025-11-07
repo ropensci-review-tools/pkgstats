@@ -8,7 +8,7 @@
   "codeRepository": "https://github.com/ropensci-review-tools/pkgstats",
   "issueTracker": "https://github.com/ropensci-review-tools/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.2.0.069",
+  "version": "0.2.0.070",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -22,6 +22,20 @@
       "familyName": "Padgham",
       "email": "mark.padgham@email.com",
       "@id": "https://orcid.org/0000-0003-2172-5265"
+    }
+  ],
+  "contributor": [
+    {
+      "@type": "Person",
+      "givenName": "Michael",
+      "familyName": "Sumner",
+      "@id": "https://orcid.org/0000-0002-2471-7511"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Jeffrey",
+      "familyName": "Hollister",
+      "@id": "https://orcid.org/0000-0002-9254-9740"
     }
   ],
   "maintainer": [
@@ -337,8 +351,8 @@
     },
     "SystemRequirements": "ctags, global"
   },
-  "fileSize": "5596.126KB",
-  "releaseNotes": "https://github.com/ropensci-review-tools/pkgstats/blob/master/NEWS.md",
+  "fileSize": "1605.298KB",
+  "releaseNotes": "https://github.com/ropensci-review-tools/pkgstats/blob/main/NEWS.md",
   "readme": "https://github.com/ropensci-review-tools/pkgstats/blob/main/README.md",
   "contIntegration": [
     "https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check",

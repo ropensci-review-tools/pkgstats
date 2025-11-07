@@ -356,11 +356,12 @@ project, you agree to abide by its terms.
 ## Contributors
 
 
+
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 
-All contributions to this project are gratefully acknowledged using the [`allcontributors` package](https://github.com/ropensci/allcontributors) following the [all-contributors](https://allcontributors.org) specification. Contributions of any kind are welcome!
+All contributions to this project are gratefully acknowledged using the [`allcontributors` package](https://github.com/ropensci/allcontributors) following the [allcontributors](https://allcontributors.org) specification. Contributions of any kind are welcome!
 
 ### Code
 
@@ -372,6 +373,12 @@ All contributions to this project are gratefully acknowledged using the [`allcon
 <img src="https://avatars.githubusercontent.com/u/6697851?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=mpadge">mpadge</a>
+</td>
+<td align="center">
+<a href="https://github.com/jhollist">
+<img src="https://avatars.githubusercontent.com/u/5438539?v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=jhollist">jhollist</a>
 </td>
 <td align="center">
 <a href="https://github.com/jeroen">
@@ -455,7 +462,7 @@ All contributions to this project are gratefully acknowledged using the [`allcon
 <tr>
 <td align="center">
 <a href="https://github.com/krlmlr">
-<img src="https://avatars.githubusercontent.com/u/1741643?v=4" width="100px;" alt=""/>
+<img src="https://avatars.githubusercontent.com/u/1741643?u=caaf26641c159b84fe1b6d506f57fcea302a556c&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Akrlmlr">krlmlr</a>
 </td>
@@ -470,6 +477,24 @@ All contributions to this project are gratefully acknowledged using the [`allcon
 <img src="https://avatars.githubusercontent.com/u/8360597?u=824f03caa87c92420352e3dd9a05470320a67412&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Amaelle">maelle</a>
+</td>
+<td align="center">
+<a href="https://github.com/mdsumner">
+<img src="https://avatars.githubusercontent.com/u/4107631?u=77e928f4bb904a5c2e8927a02194b86662408329&v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Amdsumner">mdsumner</a>
+</td>
+<td align="center">
+<a href="https://github.com/kellijohnson-NOAA">
+<img src="https://avatars.githubusercontent.com/u/4108564?u=503d9aecc5fadf069c75e493e5abf72c7537b06f&v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Akellijohnson-NOAA">kellijohnson-NOAA</a>
+</td>
+<td align="center">
+<a href="https://github.com/ScottClaessens">
+<img src="https://avatars.githubusercontent.com/u/26170108?u=af7101b58069fc6dae648825e6aeb1bd4be561e0&v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3AScottClaessens">ScottClaessens</a>
 </td>
 <td align="center">
 <a href="https://github.com/schneiderpy">

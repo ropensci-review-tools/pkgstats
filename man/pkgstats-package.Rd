@@ -19,5 +19,11 @@ Useful links:
 \author{
 \strong{Maintainer}: Mark Padgham \email{mark.padgham@email.com} (\href{https://orcid.org/0000-0003-2172-5265}{ORCID})
 
+Other contributors:
+\itemize{
+  \item Michael Sumner (\href{https://orcid.org/0000-0002-2471-7511}{ORCID}) [contributor]
+  \item Jeffrey Hollister (\href{https://orcid.org/0000-0002-9254-9740}{ORCID}) [contributor]
+}
+
 }
 \keyword{internal}
