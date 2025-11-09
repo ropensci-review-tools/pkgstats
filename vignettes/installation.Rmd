@@ -94,3 +94,15 @@ by first running the following command:
 ```{r unsetenv, eval = FALSE}
 Sys.unsetenv (c ("GTAGSCONF", "GTAGSLABEL"))
 ```
+
+# Installation on macOS systems
+
+On macOS, GNU `global` and `ctags` can be easily installed with Homebrew. First follow the instructions at [https://brew.sh/](https://brew.sh/) to install Homebrew if you don't have it already. Then run the following command in your terminal:
+
+```bash
+brew install global
+```
+
+::: callout-note
+Do not install `ctags` via Homebrew manually with `brew install ctags` as the installed version will conflict with `global`. Installing `global` with the command above will automatically install a compatible version of `ctags`.
+:::
