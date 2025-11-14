@@ -7,7 +7,9 @@ Authors@R:
       person("Michael", "Sumner", role = c("ctb"), 
              comment = c(ORCID = "0000-0002-2471-7511")),       
       person("Jeffrey", "Hollister", role = c("ctb"), 
-             comment = c(ORCID = "0000-0002-9254-9740")))
+             comment = c(ORCID = "0000-0002-9254-9740")),
+      person("Egor", "Kotov", role = c("ctb"), 
+             comment = c(ORCID = "0000-0001-6690-5345")))
 Description: Static code analyses for R packages using the external code-tagging
     libraries 'ctags' and 'gtags'. Static analyses enable packages to be
     analysed very quickly, generally a couple of seconds at most. The package
