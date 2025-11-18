@@ -44,9 +44,9 @@ use ctags and gtags to parse call data
 f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 # have to extract tarball to call function on source code:
 path <- extract_tarball (f)
-\dontrun{
+\dontshow{if (ctags_test ()) withAutoprint(\{ # examplesIf}
 tags <- tags_data (path)
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other tags: 

@@ -31,9 +31,8 @@
 #' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 #' # have to extract tarball to call function on source code:
 #' path <- extract_tarball (f)
-#' \dontrun{
+#' @examplesIf ctags_test ()
 #' tags <- tags_data (path)
-#' }
 tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
 
     chk <- tryCatch (ctags_test (),
