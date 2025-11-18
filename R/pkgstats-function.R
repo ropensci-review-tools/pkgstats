@@ -27,14 +27,11 @@
 #' @examples
 #' # 'path' can be path to a package tarball:
 #' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
-#' \dontrun{
+#' @examplesIf ctags_test ()
 #' s <- pkgstats (f)
-#' }
 #' # or to a source directory:
 #' path <- extract_tarball (f)
-#' \dontrun{
 #' s <- pkgstats (path)
-#' }
 pkgstats <- function (path = ".") {
 
     path <- check_path (path)
