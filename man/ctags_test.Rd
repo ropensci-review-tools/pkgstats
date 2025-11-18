@@ -20,8 +20,12 @@ This uses the example from
 and also checks the GNU global installation.
 }
 \examples{
+# The function errors if not ctags or gtags found.
 \donttest{
-ctags_test ()
+ctags_okay <- !is.null (tryCatch (
+    ctags_test (),
+    error = function (e) NULL
+))
 }
 }
 \seealso{

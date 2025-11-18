@@ -9,8 +9,12 @@
 #' correctly installed.
 #' @family tags
 #' @examples
+#' # The function errors if not ctags or gtags found.
 #' \donttest{
-#' ctags_test ()
+#' ctags_okay <- !is.null (tryCatch (
+#'     ctags_test (),
+#'     error = function (e) NULL
+#' ))
 #' }
 #' @export
 ctags_test <- function (quiet = TRUE) {
