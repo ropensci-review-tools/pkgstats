@@ -20,7 +20,7 @@ This uses the example from
 and also checks the GNU global installation.
 }
 \examples{
-\dontrun{
+\donttest{
 ctags_test ()
 }
 }

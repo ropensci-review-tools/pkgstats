@@ -9,7 +9,7 @@
 #' correctly installed.
 #' @family tags
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' ctags_test ()
 #' }
 #' @export
@@ -90,12 +90,12 @@ ctags_test <- function (quiet = TRUE) {
     }
 
     td <- fs::path (fs::path_temp (), "pkgstats-gtags-test")
-    
+
     if (fs::dir_exists (td)) {
         gtags_check <- TRUE
     } else {
         f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
-        
+
         pkgstats_path <- extract_tarball (f)
         if (fs::dir_exists (td)) {
             fs::dir_delete (td)
@@ -106,12 +106,12 @@ ctags_test <- function (quiet = TRUE) {
         fs::dir_create (td, recurse = TRUE)
         chk <- fs::dir_copy (pkgstats_path, td)
         # unlink (pkgstats_path, recursive = TRUE) # done in unload
-        if (.Platform$OS.type == "windows"){
-          cmd <- "set GTAGS_LABEL=new-ctags; gtags"
-          gtags_test <- withr::with_dir (fs::path (td, "pkgstats"), shell (cmd, intern = TRUE))
+        if (.Platform$OS.type == "windows") {
+            cmd <- "set GTAGS_LABEL=new-ctags; gtags"
+            gtags_test <- withr::with_dir (fs::path (td, "pkgstats"), shell (cmd, intern = TRUE))
         } else {
-          cmd <- "export GTAGS_LABEL=new-ctags; gtags"
-          gtags_test <- withr::with_dir (fs::path (td, "pkgstats"), system (cmd, intern = TRUE))
+            cmd <- "export GTAGS_LABEL=new-ctags; gtags"
+            gtags_test <- withr::with_dir (fs::path (td, "pkgstats"), system (cmd, intern = TRUE))
         }
         gtags_check <- length (gtags_test) == 0L
         if (!gtags_check) {
@@ -120,7 +120,7 @@ ctags_test <- function (quiet = TRUE) {
 
         fs::file_delete (td)
     }
-    
+
     check <- ctags_check & gtags_check
 
     if (!check) {
@@ -143,7 +143,7 @@ ctags_test <- function (quiet = TRUE) {
 }
 
 has_ctags <- function () {
-  
+
     ctags_path <- dirname (Sys.which ("ctags"))
     nzchar (ctags_path)
 }
