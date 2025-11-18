@@ -31,9 +31,10 @@
 #' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 #' # have to extract tarball to call function on source code:
 #' path <- extract_tarball (f)
-#' \dontrun{
+#' # `ctags_test()` errors when no ctags installation can be found:
+#' ctags_okay <- !is.null (tryCatch (ctags_test (), error = function (e) NULL))
+#' @examplesIf ctags_okay
 #' tags <- tags_data (path)
-#' }
 tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
 
     chk <- tryCatch (ctags_test (),

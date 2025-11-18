@@ -30,7 +30,7 @@ called from all other functions within a package.
 }
 \examples{
 f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
-\dontrun{
+\donttest{
 p <- pkgstats (f)
 plot_network (p)
 }

@@ -1,6 +1,9 @@
 #' Reduce `data.frame` of full CRAN archive data to current packages only.
 #'
 #' @inheritParams pkgstats_from_archive
+#' @return A `data.frame` object with one row for each package containing
+#' summary statistics generated from the \link{pkgstats_summary} function.
+#'
 #' @family archive
 #' @export
 pkgstats_cran_current_from_full <- function (prev_results, results_file = NULL) {

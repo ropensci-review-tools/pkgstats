@@ -15,7 +15,7 @@
 #' @family output
 #' @examples
 #' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
-#' \dontrun{
+#' \donttest{
 #' p <- pkgstats (f)
 #' plot_network (p)
 #' }

@@ -18,6 +18,10 @@ file to which results should be saved once they have been generated. The
 '.Rds' extension will be automatically appended, and any other extensions
 will be ignored.}
 }
+\value{
+A \code{data.frame} object with one row for each package containing
+summary statistics generated from the \link{pkgstats_summary} function.
+}
 \description{
 Reduce \code{data.frame} of full CRAN archive data to current packages only.
 }
