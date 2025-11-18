@@ -23,6 +23,7 @@ Other contributors:
 \itemize{
   \item Michael Sumner (\href{https://orcid.org/0000-0002-2471-7511}{ORCID}) [contributor]
   \item Jeffrey Hollister (\href{https://orcid.org/0000-0002-9254-9740}{ORCID}) [contributor]
+  \item Egor Kotov (\href{https://orcid.org/0000-0001-6690-5345}{ORCID}) [contributor]
 }
 
 }
