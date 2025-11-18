@@ -125,7 +125,7 @@ ctags_test <- function (quiet = TRUE) {
         fs::file_delete (td)
     }
 
-    check <- ctags_check & gtags_check
+    check <- ctags_check && gtags_check
 
     if (!check) {
         if (!quiet) {
