@@ -41,10 +41,10 @@ edges with zero centrality.
 }
 \examples{
 f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
-\dontrun{
+\dontshow{if (ctags_test ()) withAutoprint(\{ # examplesIf}
 p <- pkgstats (f)
 s <- pkgstats_summary (p)
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other stats: 

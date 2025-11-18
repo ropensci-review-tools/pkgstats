@@ -29,10 +29,9 @@
 #' @export
 #' @examples
 #' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
-#' \dontrun{
+#' @examplesIf ctags_test ()
 #' p <- pkgstats (f)
 #' s <- pkgstats_summary (p)
-#' }
 pkgstats_summary <- function (s = NULL) {
 
     if (is.null (s)) {
