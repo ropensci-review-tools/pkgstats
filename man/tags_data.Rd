@@ -44,7 +44,9 @@ use ctags and gtags to parse call data
 f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 # have to extract tarball to call function on source code:
 path <- extract_tarball (f)
-\dontshow{if (ctags_test ()) withAutoprint(\{ # examplesIf}
+# `ctags_test()` errors when no ctags installation can be found:
+ctags_okay <- !is.null (tryCatch (ctags_test (), error = function (e) NULL))
+\dontshow{if (ctags_okay) withAutoprint(\{ # examplesIf}
 tags <- tags_data (path)
 \dontshow{\}) # examplesIf}
 }
