@@ -5,6 +5,10 @@
 #' and also checks the GNU global installation.
 #' @param quiet If `TRUE`, display on screen whether or not 'ctags' is correctly
 #' installed.
+#' @param noerror If `FALSE` (default), this function will error if either
+#' 'ctags' or 'gtags' are not installed. If `TRUE`, the function will complete
+#' without erroring, and issue appropriate messages regarding required but
+#' non-installed system libraries.
 #' @return 'TRUE' or 'FALSE' respectively indicating whether or not 'ctags' is
 #' correctly installed.
 #' @family tags
@@ -17,12 +21,22 @@
 #' ))
 #' }
 #' @export
-ctags_test <- function (quiet = TRUE) {
+ctags_test <- function (quiet = TRUE, noerror = FALSE) {
     if (!has_ctags ()) {
-        stop ("No ctags installation found.", call. = FALSE)
+        if (noerror) {
+            message ("No ctags installation found.")
+            return (FALSE)
+        } else {
+            stop ("No ctags installation found.", call. = FALSE)
+        }
     }
     if (!has_gtags ()) {
-        stop ("No GNU global installation found.", call. = FALSE)
+        if (noerror) {
+            message ("No GNU global installation found.")
+            return (FALSE)
+        } else {
+            stop ("No GNU global installation found.", call. = FALSE)
+        }
     }
 
     f_in <- tempfile (fileext = ".R")
