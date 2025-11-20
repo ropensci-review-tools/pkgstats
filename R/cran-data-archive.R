@@ -49,9 +49,7 @@
 #' tarball_path <- file.path (archive_path, "tarballs")
 #' dir.create (tarball_path, recursive = TRUE)
 #' file.copy (path, file.path (tarball_path, tarball))
-#' \dontrun{
 #' out <- pkgstats_from_archive (tarball_path)
-#' }
 pkgstats_from_archive <- function (path,
                                    archive = TRUE,
                                    prev_results = NULL,
