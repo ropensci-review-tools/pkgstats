@@ -82,14 +82,14 @@ p [!names (p) %in% c ("objects", "network", "external_calls")]
 ```
 
     ## $loc
-    ## # A tibble: 3 × 12
-    ## # Groups:   language, dir [3]
-    ##   language dir   nfiles nlines ncode  ndoc nempty nspaces nchars nexpr ntabs
-    ##   <chr>    <chr>  <int>  <int> <int> <int>  <int>   <int>  <int> <dbl> <int>
-    ## 1 C++      src        3    365   277    21     67     933   7002     1     0
-    ## 2 R        R         19   3741  2698   536    507   27575  94022     1     0
-    ## 3 R        tests      7    348   266    10     72     770   6161     1     0
-    ## # … with 1 more variable: indentation <int>
+    ## # A tibble: 4 × 12
+    ##   langage dir        nfiles nlines ncode  ndoc nempty nspaces nchars nexpr ntabs
+    ##   <chr>   <chr>       <int>  <int> <int> <int>  <int>   <int>  <int> <dbl> <int>
+    ## 1 C++     src             3    365   277    21     67     933   7002     1     0
+    ## 2 R       R              19   3741  2698   536    507   27575  94022     1     0
+    ## 3 R       tests           2    146   121     1     24     395   2423     1     0
+    ## 4 R       tests/tes…      5    202   145     9     48     375   3738     1     0
+    ## # ℹ 1 more variable: indentation <int>
     ## 
     ## $vignettes
     ## vignettes     demos 
@@ -101,7 +101,7 @@ p [!names (p) %in% c ("objects", "network", "external_calls")]
     ## 
     ## $desc
     ##    package version                date license
-    ## 1 pkgstats     9.9 2022-05-12 11:41:22   GPL-3
+    ## 1 pkgstats     9.9 2022-05-12 19:41:22   GPL-3
     ##                                                                                      urls
     ## 1 https://docs.ropensci.org/pkgstats/,\nhttps://github.com/ropensci-review-tools/pkgstats
     ##                                                       bugs aut ctb fnd rev ths
@@ -152,26 +152,26 @@ demonstrated immediately below.
 
 **Package Summaries**
 
--   name (`package`)
--   Package version (`version`)
--   Package date, as modification time of `DESCRIPTION` file where not
-    explicitly stated (`date`)
--   License (`license`)
--   Languages, as a single comma-separated character value
-    (`languages`), and excluding `R` itself.
--   List of translations where package includes translations files,
-    given as list of (spoken) language codes (`translations`).
+- name (`package`)
+- Package version (`version`)
+- Package date, as modification time of `DESCRIPTION` file where not
+  explicitly stated (`date`)
+- License (`license`)
+- Languages, as a single comma-separated character value (`languages`),
+  and excluding `R` itself.
+- List of translations where package includes translations files, given
+  as list of (spoken) language codes (`translations`).
 
 **Information from `DESCRIPTION` file**
 
--   Package URL(s) (`url`)
--   URL for BugReports (`bugs`)
--   Number of contributors with role of *author* (`desc_n_aut`),
-    *contributor* (`desc_n_ctb`), *funder* (`desc_n_fnd`), *reviewer*
-    (`desc_n_rev`), *thesis advisor* (`ths`), and *translator* (`trl`,
-    relating to translation between computer and not spoken languages).
--   Comma-separated character entries for all `depends`, `imports`,
-    `suggests`, and `linking_to` packages.
+- Package URL(s) (`url`)
+- URL for BugReports (`bugs`)
+- Number of contributors with role of *author* (`desc_n_aut`),
+  *contributor* (`desc_n_ctb`), *funder* (`desc_n_fnd`), *reviewer*
+  (`desc_n_rev`), *thesis advisor* (`ths`), and *translator* (`trl`,
+  relating to translation between computer and not spoken languages).
+- Comma-separated character entries for all `depends`, `imports`,
+  `suggests`, and `linking_to` packages.
 
 Numbers of entries in each the of the last two kinds of items can be
 obtained from by a simple `strsplit` call, like this:
@@ -179,6 +179,7 @@ obtained from by a simple `strsplit` call, like this:
 ``` r
 deps <- strsplit (s$suggests, ", ") [[1]]
 length (deps)
+print (deps)
 ```
 
     ## [1] 9
@@ -192,34 +193,34 @@ print (deps)
 
 **Numbers of files and associated data**
 
--   Number of vignettes (`num_vignettes`)
--   Number of demos (`num_demos`)
--   Number of data files (`num_data_files`)
--   Total size of all package data (`data_size_total`)
--   Median size of package data files (`data_size_median`)
--   Numbers of files in main sub-directories (`files_R`, `files_src`,
-    `files_inst`, `files_vignettes`, `files_tests`), where numbers are
-    recursively counted in all sub-directories, and where `inst` only
-    counts files in the `inst/include` sub-directory.
+- Number of vignettes (`num_vignettes`)
+- Number of demos (`num_demos`)
+- Number of data files (`num_data_files`)
+- Total size of all package data (`data_size_total`)
+- Median size of package data files (`data_size_median`)
+- Numbers of files in main sub-directories (`files_R`, `files_src`,
+  `files_inst`, `files_vignettes`, `files_tests`), where numbers are
+  recursively counted in all sub-directories, and where `inst` only
+  counts files in the `inst/include` sub-directory.
 
 **Statistics on lines of code**
 
--   Total lines of code in each sub-directory (`loc_R`, `loc_src`,
-    `loc_ins`, `loc_vignettes`, `loc_tests`).
--   Total numbers of blank lines in each sub-directory (`blank_lines_R`,
-    `blank_lines_src`, `blank_lines_inst`, `blank_lines_vignette`,
-    `blank_lines_tests`).
--   Total numbers of comment lines in each sub-directory
-    (`comment_lines_R`, `comment_lines_src`, `comment_lines_inst`,
-    `comment_lines_vignettes`, `comment_lines_tests`).
--   Measures of relative white space in each sub-directory
-    (`rel_space_R`, `rel_space_src`, `rel_space_inst`,
-    `rel_space_vignettes`, `rel_space_tests`), as well as an overall
-    measure for the `R/`, `src/`, and `inst/` directories (`rel_space`).
--   The number of spaces used to indent code (`indentation`), with
-    values of -1 indicating indentation with tab characters.
--   The median number of nested expression per line of code, counting
-    only those lines which have any expressions (`nexpr`).
+- Total lines of code in each sub-directory (`loc_R`, `loc_src`,
+  `loc_ins`, `loc_vignettes`, `loc_tests`).
+- Total numbers of blank lines in each sub-directory (`blank_lines_R`,
+  `blank_lines_src`, `blank_lines_inst`, `blank_lines_vignette`,
+  `blank_lines_tests`).
+- Total numbers of comment lines in each sub-directory
+  (`comment_lines_R`, `comment_lines_src`, `comment_lines_inst`,
+  `comment_lines_vignettes`, `comment_lines_tests`).
+- Measures of relative white space in each sub-directory (`rel_space_R`,
+  `rel_space_src`, `rel_space_inst`, `rel_space_vignettes`,
+  `rel_space_tests`), as well as an overall measure for the `R/`,
+  `src/`, and `inst/` directories (`rel_space`).
+- The number of spaces used to indent code (`indentation`), with values
+  of -1 indicating indentation with tab characters.
+- The median number of nested expression per line of code, counting only
+  those lines which have any expressions (`nexpr`).
 
 **Statistics on individual objects (including functions)**
 
@@ -227,46 +228,45 @@ These statistics all refer to “functions”, but actually represent more
 general “objects,” such as global variables or class definitions
 (generally from languages other than R), as detailed below.
 
--   Numbers of functions in R (`n_fns_r`)
--   Numbers of exported and non-exported R functions
-    (`n_fns_r_exported`, `n_fns_r_not_exported`)
--   Number of functions (or objects) in other computer languages
-    (`n_fns_src`), including functions in both `src` and `inst/include`
-    directories.
--   Number of functions (or objects) per individual file in R and in all
-    other (`src`) directories (`n_fns_per_file_r`,
-    `n_fns_per_file_src`).
--   Median and mean numbers of parameters per exported R function
-    (`npars_exported_mn`, `npars_exported_md`).
--   Mean and median lines of code per function in R and other languages,
-    including distinction between exported and non-exported R functions
-    (`loc_per_fn_r_mn`, `loc_per_fn_r_md`, `loc_per_fn_r_exp_m`,
-    `loc_per_fn_r_exp_md`, `loc_per_fn_r_not_exp_mn`,
-    `loc_per_fn_r_not_exp_m`, `loc_per_fn_src_mn`, `loc_per_fn_src_md`).
--   Equivalent mean and median numbers of documentation lines per
-    function (`doclines_per_fn_exp_mn`, `doclines_per_fn_exp_md`,
-    `doclines_per_fn_not_exp_m`, `doclines_per_fn_not_exp_md`,
-    `docchars_per_par_exp_mn`, `docchars_per_par_exp_m`).
+- Numbers of functions in R (`n_fns_r`)
+- Numbers of exported and non-exported R functions (`n_fns_r_exported`,
+  `n_fns_r_not_exported`)
+- Number of functions (or objects) in other computer languages
+  (`n_fns_src`), including functions in both `src` and `inst/include`
+  directories.
+- Number of functions (or objects) per individual file in R and in all
+  other (`src`) directories (`n_fns_per_file_r`, `n_fns_per_file_src`).
+- Median and mean numbers of parameters per exported R function
+  (`npars_exported_mn`, `npars_exported_md`).
+- Mean and median lines of code per function in R and other languages,
+  including distinction between exported and non-exported R functions
+  (`loc_per_fn_r_mn`, `loc_per_fn_r_md`, `loc_per_fn_r_exp_m`,
+  `loc_per_fn_r_exp_md`, `loc_per_fn_r_not_exp_mn`,
+  `loc_per_fn_r_not_exp_m`, `loc_per_fn_src_mn`, `loc_per_fn_src_md`).
+- Equivalent mean and median numbers of documentation lines per function
+  (`doclines_per_fn_exp_mn`, `doclines_per_fn_exp_md`,
+  `doclines_per_fn_not_exp_m`, `doclines_per_fn_not_exp_md`,
+  `docchars_per_par_exp_mn`, `docchars_per_par_exp_m`).
 
 **Network Statistics**
 
 The full structure of the `network` table is described below, with
 summary statistics including:
 
--   Number of edges, including distinction between languages (`n_edges`,
-    `n_edges_r`, `n_edges_src`).
--   Number of distinct clusters in package network (`n_clusters`).
--   Mean and median centrality of all network edges, calculated from
-    both directed and undirected representations of network
-    (`centrality_dir_mn`, `centrality_dir_md`, `centrality_undir_mn`,
-    `centrality_undir_md`).
--   Equivalent centrality values excluding edges with centrality of zero
-    (`centrality_dir_mn_no0`, `centrality_dir_md_no0`,
-    `centrality_undir_mn_no0`, `centrality_undir_md_no`).
--   Numbers of terminal edges (`num_terminal_edges_dir`,
-    `num_terminal_edges_undir`).
--   Summary statistics on node degree (`node_degree_mn`,
-    `node_degree_md`, `node_degree_max`)
+- Number of edges, including distinction between languages (`n_edges`,
+  `n_edges_r`, `n_edges_src`).
+- Number of distinct clusters in package network (`n_clusters`).
+- Mean and median centrality of all network edges, calculated from both
+  directed and undirected representations of network
+  (`centrality_dir_mn`, `centrality_dir_md`, `centrality_undir_mn`,
+  `centrality_undir_md`).
+- Equivalent centrality values excluding edges with centrality of zero
+  (`centrality_dir_mn_no0`, `centrality_dir_md_no0`,
+  `centrality_undir_mn_no0`, `centrality_undir_md_no`).
+- Numbers of terminal edges (`num_terminal_edges_dir`,
+  `num_terminal_edges_undir`).
+- Summary statistics on node degree (`node_degree_mn`, `node_degree_md`,
+  `node_degree_max`)
 
 **External Call Statistics**
 
@@ -355,157 +355,201 @@ project, you agree to abide by its terms.
 
 ## Contributors
 
-
-
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+
 <!-- prettier-ignore-start -->
+
 <!-- markdownlint-disable -->
 
-All contributions to this project are gratefully acknowledged using the [`allcontributors` package](https://github.com/ropensci/allcontributors) following the [allcontributors](https://allcontributors.org) specification. Contributions of any kind are welcome!
+All contributions to this project are gratefully acknowledged using the
+[`allcontributors` package](https://github.com/ropensci/allcontributors)
+following the [allcontributors](https://allcontributors.org)
+specification. Contributions of any kind are welcome!
 
 ### Code
 
 <table>
 
 <tr>
+
 <td align="center">
+
 <a href="https://github.com/mpadge">
 <img src="https://avatars.githubusercontent.com/u/6697851?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=mpadge">mpadge</a>
 </td>
+
 <td align="center">
+
 <a href="https://github.com/jhollist">
 <img src="https://avatars.githubusercontent.com/u/5438539?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=jhollist">jhollist</a>
 </td>
+
 <td align="center">
+
 <a href="https://github.com/jeroen">
 <img src="https://avatars.githubusercontent.com/u/216319?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=jeroen">jeroen</a>
 </td>
+
 <td align="center">
+
 <a href="https://github.com/Bisaloo">
 <img src="https://avatars.githubusercontent.com/u/10783929?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=Bisaloo">Bisaloo</a>
 </td>
+
 <td align="center">
+
 <a href="https://github.com/thomaszwagerman">
 <img src="https://avatars.githubusercontent.com/u/36264706?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=thomaszwagerman">thomaszwagerman</a>
 </td>
+
 </tr>
 
 </table>
-
 
 ### Issue Authors
 
 <table>
 
 <tr>
+
 <td align="center">
+
 <a href="https://github.com/helske">
 <img src="https://avatars.githubusercontent.com/u/1560448?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+author%3Ahelske">helske</a>
 </td>
+
 <td align="center">
+
 <a href="https://github.com/rpodcast">
 <img src="https://avatars.githubusercontent.com/u/1043111?u=bb3a363381b39a5172b817ae513c6d10ab1d239a&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+author%3Arpodcast">rpodcast</a>
 </td>
+
 <td align="center">
+
 <a href="https://github.com/assignUser">
 <img src="https://avatars.githubusercontent.com/u/16141871?u=b8095df6a10813031922a72335bd6579d5494c16&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+author%3AassignUser">assignUser</a>
 </td>
+
 <td align="center">
+
 <a href="https://github.com/GFabien">
 <img src="https://avatars.githubusercontent.com/u/39873986?u=0c2a28f666efccb0c0b9b23e8584749ab41da789&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+author%3AGFabien">GFabien</a>
 </td>
+
 <td align="center">
+
 <a href="https://github.com/pawelru">
 <img src="https://avatars.githubusercontent.com/u/12943682?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+author%3Apawelru">pawelru</a>
 </td>
+
 <td align="center">
+
 <a href="https://github.com/stitam">
 <img src="https://avatars.githubusercontent.com/u/49147718?u=c8736db475d31efad6ebd07b7bc76e4d7241d884&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+author%3Astitam">stitam</a>
 </td>
+
 <td align="center">
+
 <a href="https://github.com/willgearty">
 <img src="https://avatars.githubusercontent.com/u/7232514?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+author%3Awillgearty">willgearty</a>
 </td>
+
 </tr>
 
 </table>
-
 
 ### Issue Contributors
 
 <table>
 
 <tr>
+
 <td align="center">
+
 <a href="https://github.com/krlmlr">
 <img src="https://avatars.githubusercontent.com/u/1741643?u=caaf26641c159b84fe1b6d506f57fcea302a556c&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Akrlmlr">krlmlr</a>
 </td>
+
 <td align="center">
+
 <a href="https://github.com/noamross">
 <img src="https://avatars.githubusercontent.com/u/571752?u=49b086850e1716aa25615cea39250c51e085a5d8&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Anoamross">noamross</a>
 </td>
+
 <td align="center">
+
 <a href="https://github.com/maelle">
 <img src="https://avatars.githubusercontent.com/u/8360597?u=824f03caa87c92420352e3dd9a05470320a67412&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Amaelle">maelle</a>
 </td>
+
 <td align="center">
+
 <a href="https://github.com/mdsumner">
 <img src="https://avatars.githubusercontent.com/u/4107631?u=77e928f4bb904a5c2e8927a02194b86662408329&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Amdsumner">mdsumner</a>
 </td>
+
 <td align="center">
+
 <a href="https://github.com/kellijohnson-NOAA">
 <img src="https://avatars.githubusercontent.com/u/4108564?u=503d9aecc5fadf069c75e493e5abf72c7537b06f&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Akellijohnson-NOAA">kellijohnson-NOAA</a>
 </td>
+
 <td align="center">
+
 <a href="https://github.com/ScottClaessens">
 <img src="https://avatars.githubusercontent.com/u/26170108?u=af7101b58069fc6dae648825e6aeb1bd4be561e0&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3AScottClaessens">ScottClaessens</a>
 </td>
+
 <td align="center">
+
 <a href="https://github.com/schneiderpy">
 <img src="https://avatars.githubusercontent.com/u/77991319?u=4242d4c5942fced6368dd5c68221e6618092cbf8&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Aschneiderpy">schneiderpy</a>
 </td>
+
 </tr>
 
 </table>
 
 <!-- markdownlint-enable -->
+
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->

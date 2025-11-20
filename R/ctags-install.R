@@ -89,7 +89,7 @@ ctags_make <- function (ctags_dir, bin_dir = NULL, sudo = TRUE) {
 #' @family tags
 #' @examples
 #' \dontrun{
-#' ctags_install (bin_dir = "/usr/local") # default
+#' ctags_install (bin_dir = "/usr/local") # default Linux location.
 #' }
 #' @export
 ctags_install <- function (bin_dir = NULL, sudo = TRUE) {

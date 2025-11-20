@@ -16,7 +16,7 @@ output:
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/grand-total/pkgstats?color=orange)](https://cran.r-project.org/package=pkgstats)
 <!-- badges: end -->
 
-```{r, include = FALSE, echo = FALSE}
+```{r, include = FALSE, echo = FALSE, eval = FALSE}
 if (identical (Sys.getenv ("IN_PKGDOWN"), "true")) {
     pkgstats::ctags_install ()
 }
@@ -69,21 +69,68 @@ using an internally bundled `.tar.gz` "tarball" of this package. The
 `system.time` call demonstrates that the static code analyses of `pkgstats` are
 generally very fast.
 
-```{r demo}
+```{r demo, eval = FALSE}
 library (pkgstats)
 tarball <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 system.time (
     p <- pkgstats (tarball)
 )
+```
+```{r demo-tarball, echo = FALSE}
+library (pkgstats)
+tarball <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
+path <- extract_tarball (tarball)
+```
+
+
+
+```{r demo-output-systime, echo = FALSE, eval = TRUE}
+c (user = 1.701, system = 0.124, elapsed = 1.802)
+```
+
+```{r demo-names, eval = FALSE}
 names (p)
 ```
+
+```{r demo-output, echo = FALSE, eval = TRUE}
+c (
+    "loc", "vignettes", "data_stats", "desc", "translations",
+    "objects", "network", "external_calls"
+)
+```
+
 
 The result is a list of various data extracted from the code. All except for
 `objects` and `network` represent summary data:
 
-```{r}
+```{r pout, eval = FALSE, echo = TRUE}
 p [!names (p) %in% c ("objects", "network", "external_calls")]
 ```
+
+```{r pout-fakey, eval = TRUE, echo = FALSE}
+p <- list (
+    loc = tibble::tibble (
+        langage = c ("C++", "R", "R", "R"),
+        dir = c ("src", "R", "tests", "tests/testthat"),
+        nfiles = as.integer (c (3, 19, 2, 5)),
+        nlines = as.integer (c (365, 3741, 146, 202)),
+        ncode = as.integer (c (277, 2698, 121, 145)),
+        ndoc = as.integer (c (21, 536, 1, 9)),
+        nempty = as.integer (c (67, 507, 24, 48)),
+        nspaces = as.integer (c (933, 27575, 395, 375)),
+        nchars = as.integer (c (7002, 94022, 2423, 3738)),
+        nexpr = rep (1, 4),
+        ntabs = rep (0L, 4),
+        indentation = rep (4L, 4)
+    ),
+    vignettes = c (vignettes = 0L, demos = 0L),
+    data_stats = c (n = 0L, total_size = 0L, median_size = 0L),
+    desc = desc_stats (path),
+    translations = NA
+)
+p
+```
+
 
 The various components of these results are described in further detail in the
 [main package
@@ -96,21 +143,27 @@ A summary of the `pkgstats` data can be obtained by submitting the object
 returned from `pkgstats()` to the [`pkgstats_summary()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html):
 
-```{r summary, echo = TRUE}
+```{r summary, echo = TRUE, eval = FALSE}
 s <- pkgstats_summary (p)
 ```
 
+```{r summary-ncols, echo = FALSE, eval = TRUE}
+ncol_s <- 95L
+```
+
+
+
 This function reduces the result of the [`pkgstats()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
-to a single line with `r ncol (s)` entries, represented as a `data.frame` with
+to a single line with `r ncol_s` entries, represented as a `data.frame` with
 one row and that number of columns. This format is intended to enable summary
 statistics from multiple packages to be aggregated by simply binding rows
-together. While `r ncol (s)` statistics might seem like a lot, the
+together. While `r ncol_s` statistics might seem like a lot, the
 [`pkgstats_summary()`
 function](https://docs.ropensci.org/pkgstats/reference/pkgstats_summary.html)
 aims to return as many usable raw statistics as possible in order to flexibly
 allow higher-level statistics to be derived through combination and
-aggregation. These `r ncol (s)` statistics can be roughly grouped into the
+aggregation. These `r ncol_s` statistics can be roughly grouped into the
 following categories (not shown in the order in which they actually appear),
 with variable names in parentheses after each description. Some statistics are
 summarised as comma-delimited character strings, such as translations into
@@ -145,10 +198,25 @@ of all package dependencies, as demonstrated immediately below.
 Numbers of entries in each the of the last two kinds of items can be obtained
 from by a simple `strsplit` call, like this:
 
-```{r strsplit}
+```{r strsplit, echo = TRUE, eval = FALSE}
 deps <- strsplit (s$suggests, ", ") [[1]]
 length (deps)
 print (deps)
+```
+
+```{r strsplit-out1, echo = FALSE, eval = TRUE}
+9L
+```
+
+```{r strsplit-deps, echo = TRUE, eval = FALSE}
+print (deps)
+```
+
+```{r strsplit-out2, echo = FALSE, eval = TRUE}
+c (
+    "hms", "knitr", "pbapply", "pkgbuild", "Rcpp",
+    "rmarkdown", "roxygen2", "testthat", "visNetwork"
+)
 ```
 
 **Numbers of files and associated data**
@@ -238,14 +306,23 @@ of function calls, and total numbers of unique function calls. Data for each
 package are separated by a comma, while data within each package are separated
 by a colon.
 
-```{r summary-external-calls}
+```{r summary-external-calls, echo = TRUE, eval = FALSE}
 s$external_calls
 ```
+```{r external-calls-out, echo = FALSE, eval = TRUE}
+paste0 (
+    "base:447:78,brio:7:1,dplyr:7:4,fs:4:2,graphics:10:2,",
+    "hms:1:1,igraph:3:3,pbapply:1:1,pkgstats:99:60,readr:8:5,",
+    "stats:16:2,sys:13:1,tools:2:2,utils:10:7,visNetwork:3:2,withr:5:1"
+)
+```
+
+
 
 This structure allows numbers of calls to all packages to be readily extracted
 with code like the following:
 
-```{r summary-exteranl-calls-transform}
+```{r summary-external-calls-transform, echo = TRUE, eval = FALSE}
 calls <- do.call (
     rbind,
     strsplit (strsplit (s$external_call, ",") [[1]], ":")
@@ -257,6 +334,24 @@ calls <- data.frame (
 )
 print (calls)
 ```
+
+```{r summary-external-calls-out, echo = FALSE, eval = TRUE}
+data.frame (
+    package = c (
+        "base", "brio", "dplyr", "fs", "graphics", "hms", "igraph", "pbapply",
+        "pkgstats", "readr", "stats", "sys", "tools", "utils", "visNetwork",
+        "withr"
+    ),
+    n_total = as.integer (c (
+        447, 7, 7, 4, 10, 1, 3, 1, 99, 8, 16, 13, 2, 10, 3, 5
+    )),
+    n_unique = as.integer (c (
+        78, 1, 4, 2, 2, 1, 3, 1, 60, 5, 2, 1, 2, 7, 2, 1
+    ))
+)
+```
+
+
 
 The two numeric columns respectively show the total number of calls made to
 each package, and the total number of unique functions used within those
