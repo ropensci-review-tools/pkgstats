@@ -37,9 +37,7 @@ Analyse statistics of one R package
 \examples{
 # 'path' can be path to a package tarball:
 f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
-chk <- tryCatch (ctags_test (), error = function (e) NULL)
-# 'ctags_test' errors if not installed:
-\dontshow{if (!is.null (chk)) withAutoprint(\{ # examplesIf}
+\dontshow{if (ctags_test (noerror = TRUE)) withAutoprint(\{ # examplesIf}
 s <- pkgstats (f)
 # or to a source directory:
 path <- extract_tarball (f)

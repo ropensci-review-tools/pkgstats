@@ -122,9 +122,7 @@ ctags_install <- function (bin_dir = NULL, sudo = TRUE) {
         }
     }
 
-    if (tryCatch (ctags_test (),
-        error = function (e) FALSE
-    )) {
+    if (ctags_test (noerror = TRUE)) {
         # already installed and okay
         message ("ctags installed and passed test.")
         return (NULL)

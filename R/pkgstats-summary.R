@@ -29,9 +29,7 @@
 #' @export
 #' @examples
 #' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
-#' # `ctags_test()` errors when no ctags installation can be found:
-#' ctags_okay <- !is.null (tryCatch (ctags_test (), error = function (e) NULL))
-#' @examplesIf ctags_okay
+#' @examplesIf ctags_test (noerror = TRUE)
 #' p <- pkgstats (f)
 #' s <- pkgstats_summary (p)
 pkgstats_summary <- function (s = NULL) {

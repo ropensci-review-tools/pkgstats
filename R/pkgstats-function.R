@@ -27,9 +27,7 @@
 #' @examples
 #' # 'path' can be path to a package tarball:
 #' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
-#' chk <- tryCatch (ctags_test (), error = function (e) NULL)
-#' # 'ctags_test' errors if not installed:
-#' @examplesIf !is.null (chk)
+#' @examplesIf ctags_test (noerror = TRUE)
 #' s <- pkgstats (f)
 #' # or to a source directory:
 #' path <- extract_tarball (f)
