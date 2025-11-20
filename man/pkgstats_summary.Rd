@@ -41,9 +41,7 @@ edges with zero centrality.
 }
 \examples{
 f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
-# `ctags_test()` errors when no ctags installation can be found:
-ctags_okay <- !is.null (tryCatch (ctags_test (), error = function (e) NULL))
-\dontshow{if (ctags_okay) withAutoprint(\{ # examplesIf}
+\dontshow{if (ctags_test (noerror = TRUE)) withAutoprint(\{ # examplesIf}
 p <- pkgstats (f)
 s <- pkgstats_summary (p)
 \dontshow{\}) # examplesIf}
