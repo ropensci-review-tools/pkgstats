@@ -30,7 +30,10 @@ pkgstats_update <- function (upload = TRUE) {
     check_prev_results (stats_prev)
     check_prev_results (fn_names_prev)
 
-    new_cran_pkgs <- list_new_cran_updates (stats_prev)
+    new_cran_pkgs <- unique (c (
+        list_new_cran_updates (stats_prev),
+        list_new_cran_updates (fn_names_prev)
+    ))
 
     npkgs <- length (new_cran_pkgs)
 
@@ -51,18 +54,19 @@ pkgstats_update <- function (upload = TRUE) {
         tarball_path <- dl_one_tarball (results_path, new_cran_pkgs [p])
         if (!is.null (tarball_path) && fs::file_exists (tarball_path)) {
 
+            tarball_dir <- extract_tarball (tarball_path)
+
             stats <- one_summary_from_archive (
-                tarball_path,
+                tarball_dir,
                 save_full = FALSE,
                 save_ex_calls = FALSE,
                 results_path
             )
             fn_names <- tryCatch (
-                pkgstats::pkgstats_fn_names (tarball_path),
+                pkgstats::pkgstats_fn_names (tarball_dir),
                 error = function (e) NULL
             )
 
-            tarball_dir <- gsub ("\\.tar\\.gz$", "", tarball_path)
             unlink (tarball_dir, recursive = TRUE)
             unlink (tarball_path, recursive = TRUE)
         }
