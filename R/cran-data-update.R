@@ -137,7 +137,9 @@ get_cran_db <- memoise::memoise (tools::CRAN_package_db)
 dl_one_tarball <- function (results_path, tarball) {
 
     cran_url <- "https://cran.r-project.org/src/contrib/"
-    tarball <- paste0 (tarball, ".tar.gz")
+    if (!grepl ("\\.tar\\.gz$", tarball)) {
+        tarball <- paste0 (tarball, ".tar.gz")
+    }
     url <- paste0 (cran_url, tarball)
     path <- fs::path (results_path, tarball)
 
@@ -148,8 +150,14 @@ dl_one_tarball <- function (results_path, tarball) {
     # No native pipe here...
     req <- httr2::request (url)
     req <- httr2::req_headers (req, "Accept" = "application/octet-stream")
-    resp <- httr2::req_perform (req)
+    resp <- tryCatch (
+        httr2::req_perform (req),
+        error = function (e) NULL
+    )
 
+    if (is.null (resp)) {
+        return (NULL)
+    }
     if (httr2::resp_is_error (resp)) {
         return (NULL)
     }
