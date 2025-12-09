@@ -8,13 +8,13 @@
   "codeRepository": "https://github.com/ropensci-review-tools/pkgstats",
   "issueTracker": "https://github.com/ropensci-review-tools/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.2.0.094",
+  "version": "0.2.1",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.5.1 (2025-06-13)",
+  "runtimePlatform": "R version 4.5.2 (2025-10-31)",
   "author": [
     {
       "@type": "Person",
@@ -36,6 +36,12 @@
       "givenName": "Jeffrey",
       "familyName": "Hollister",
       "@id": "https://orcid.org/0000-0002-9254-9740"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Egor",
+      "familyName": "Kotov",
+      "@id": "https://orcid.org/0000-0001-6690-5345"
     }
   ],
   "maintainer": [
@@ -351,18 +357,10 @@
     },
     "SystemRequirements": "ctags, global"
   },
-  "fileSize": "1605.298KB",
+  "fileSize": "1610.465KB",
   "releaseNotes": "https://github.com/ropensci-review-tools/pkgstats/blob/main/NEWS.md",
   "readme": "https://github.com/ropensci-review-tools/pkgstats/blob/main/README.md",
-  "contIntegration": [
-    "https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check",
-    "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"
-  ],
+  "contIntegration": ["https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check", "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"],
   "developmentStatus": "https://www.repostatus.org/#active",
-  "keywords": [
-    "code-analysis",
-    "code-statistics",
-    "r",
-    "software-analysis"
-  ]
+  "keywords": ["code-analysis", "code-statistics", "r", "software-analysis"]
 }
