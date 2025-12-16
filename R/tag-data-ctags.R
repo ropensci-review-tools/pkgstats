@@ -117,7 +117,9 @@ get_ctags <- function (d = "R", has_tabs) {
         return (NULL)
     }
 
-    tags$start <- as.integer (gsub ("^line\\:", "", tags$start))
+    tags$start <- suppressWarnings (
+        as.integer (gsub ("^line\\:", "", tags$start))
+    )
 
     # end tags may fail, and dump text other than "end:XX", so:
     index0 <- grep ("^end\\:", tags$end)
