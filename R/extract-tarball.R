@@ -2,7 +2,9 @@
 #' package
 #'
 #' @param tarball Full path to local tarball of an R package.
+#' @param exdir Directory into which tarballs are to be extracted.
 #' @return Path to extracted version of package (in `tempdir()`).
+#'
 #' @family misc
 #' @export
 #' @examples
