@@ -5,10 +5,12 @@
 \title{Extract tarball of a package into temp directory and return path to extracted
 package}
 \usage{
-extract_tarball(tarball)
+extract_tarball(tarball, exdir = fs::path_temp())
 }
 \arguments{
 \item{tarball}{Full path to local tarball of an R package.}
+
+\item{exdir}{Directory into which tarballs are to be extracted.}
 }
 \value{
 Path to extracted version of package (in \code{tempdir()}).

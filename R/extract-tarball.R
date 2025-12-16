@@ -2,13 +2,15 @@
 #' package
 #'
 #' @param tarball Full path to local tarball of an R package.
+#' @param exdir Directory into which tarballs are to be extracted.
 #' @return Path to extracted version of package (in `tempdir()`).
+#'
 #' @family misc
 #' @export
 #' @examples
 #' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 #' path <- extract_tarball (f)
-extract_tarball <- function (tarball) {
+extract_tarball <- function (tarball, exdir = fs::path_temp ()) {
 
     if (!fs::file_exists (tarball)) {
         stop ("file [", tarball, "] does not exist")
@@ -24,10 +26,11 @@ extract_tarball <- function (tarball) {
     }
 
     flist <- utils::untar (tarball,
-        exdir = fs::path_temp (),
-        list = TRUE, tar = "internal"
+        exdir = exdir,
+        list = TRUE,
+        tar = "internal"
     )
-    if (utils::untar (tarball, exdir = fs::path_temp (), tar = "internal") != 0) {
+    if (utils::untar (tarball, exdir = exdir, tar = "internal") != 0) {
         stop ("Unable to extract tarball to 'tempdir'")
     }
 
@@ -38,7 +41,7 @@ extract_tarball <- function (tarball) {
     USE.NAMES = FALSE
     )
     fdir <- names (table (fdir)) [1]
-    path <- fs::path_real (fs::path (fs::path_temp (), fdir))
+    path <- fs::path_real (fs::path (exdir, fdir))
 
     chk <- rename_files_in_r (path)
     if (!chk) {

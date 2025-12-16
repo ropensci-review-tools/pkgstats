@@ -114,7 +114,9 @@ ctags_test <- function (quiet = TRUE, noerror = FALSE) {
     } else {
         f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 
-        pkgstats_path <- extract_tarball (f)
+        exdir <- fs::path (fs::path_temp (), "pkgstats_ctags_test")
+        fs::dir_create (exdir)
+        pkgstats_path <- extract_tarball (f, exdir = exdir)
         if (fs::dir_exists (td)) {
             fs::dir_delete (td)
         }
@@ -137,6 +139,7 @@ ctags_test <- function (quiet = TRUE, noerror = FALSE) {
         }
 
         fs::file_delete (td)
+        fs::dir_delete (exdir)
     }
 
     check <- ctags_check && gtags_check

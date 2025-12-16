@@ -26,7 +26,7 @@ this is an additional function to install from source on Unix systems.
 }
 \examples{
 \dontrun{
-ctags_install (bin_dir = "/usr/local") # default
+ctags_install (bin_dir = "/usr/local") # default Linux location.
 }
 }
 \seealso{
