@@ -16,7 +16,7 @@ get_num_vignettes <- function (path) {
     } else if ("vignettes" %in% path_ls) {
         nv <- length (fs::dir_ls (
             fs::path (path, "vignettes"),
-            regexp = "\\.[rR]md$"
+            regexp = "\\.[rRq]md$"
         ))
         if (nv == 0L) {
             nv <- length (fs::dir_ls (
