@@ -41,7 +41,7 @@ test_that ("download tarball", {
     b <- httr2::resp_body_string (resp)
     b <- strsplit (b, ",\\s") [[1]]
     tarball <- grep ("\\.tar\\.gz", b, value = TRUE)
-    ptn <- "odbc\\_[0-9]\\.[0-9]\\.[0-9]\\.tar\\.gz"
+    ptn <- "odbc\\_[0-9](\\.[0-9]){2,}\\.tar\\.gz"
     tarball <- regmatches (tarball, regexpr (ptn, tarball))
     tarball <- gsub ("\\.tar\\.gz$", "", tarball)
 
