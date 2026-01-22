@@ -58,6 +58,7 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
     kind <- start <- NULL # no visible binding messages
 
     tags_r <- withr::with_dir (path, get_ctags ("R", has_tabs))
+    tags_r <- count_doclines_r (tags_r, path)
 
     external_calls <- external_call_network (tags_r, path, pkg_name)
 
@@ -123,10 +124,6 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
         network <- add_igraph_stats (network, directed = TRUE)
         network <- add_igraph_stats (network, directed = FALSE)
         network$line2 <- NULL
-    }
-
-    if (!is.null (tags_r)) {
-        tags_r$doclines <- NA_integer_
     }
 
     return (list (
@@ -249,6 +246,49 @@ src_objects <- function (tags) {
     }
 
     return (res)
+}
+
+#' Count non-roxygen documentation lines in R files
+#' @noRd
+count_doclines_r <- function (tags, path) {
+
+    flist <- unique (tags$file)
+    cmt_lines <- lapply (flist, function (f) {
+        code <- brio::read_lines (fs::path (path, f))
+        grep ("(\\s*)\\#", code)
+    })
+    names (cmt_lines) <- flist
+
+    tags$doclines <- vapply (seq_len (nrow (tags)), function (i) {
+        n <- 0L
+        if (!tags$kind [i] == "function") {
+            return (n)
+        }
+        if (is.na (tags$start [i]) || is.na (tags$end [i])) {
+            return (n)
+        }
+        if (tags$end [i] > tags$start [i]) {
+            doclines <- cmt_lines [[match (tags$file [i], names (cmt_lines))]]
+            doclines <- doclines [which (doclines < tags$start [i])]
+            dd <- which (diff (doclines) > 1)
+            if (length (dd) > 0L) {
+                index <- seq (max (dd) + 1L, length (doclines))
+                doclines <- doclines [index]
+            }
+            tags_file <- tags [which (tags$file == tags$file [i]), ]
+            index <- which (tags_file$end < tags$start [i])
+            if (length (index) > 0L) {
+                prev_code <- max (tags_file$end [index])
+                if (length (prev_code) > 0L) {
+                    doclines <- doclines [which (doclines > prev_code)]
+                }
+            }
+            n <- length (doclines)
+        }
+        return (n)
+    }, integer (1L))
+
+    return (tags)
 }
 
 #' Count documentation lines in src files.
