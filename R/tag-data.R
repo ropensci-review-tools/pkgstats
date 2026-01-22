@@ -261,7 +261,7 @@ count_doclines_r <- function (tags, path) {
 
     tags$doclines <- vapply (seq_len (nrow (tags)), function (i) {
         n <- 0L
-        if (!tags$kind [i] == "function") {
+        if (is.na (tags$kind [i]) || !tags$kind [i] == "function") {
             return (n)
         }
         if (is.na (tags$start [i]) || is.na (tags$end [i])) {
