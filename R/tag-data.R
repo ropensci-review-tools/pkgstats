@@ -323,7 +323,7 @@ count_doclines_src <- function (tags, path) {
             index <- which (doclines < tag_line_start & doclines > prev_code)
             doclines <- doclines [index]
 
-            if (nzchar (ext_i$cmt_open)) {
+            if (nzchar (ext_i$cmt_open) && !is.na (ext_i$cmt_open)) {
                 cmt_open <- grep (ext_i$cmt_open, code)
                 cmt_close <- grep (ext_i$cmt_close, code)
                 cmt_open <- cmt_open [which (!cmt_open %in% code_index)]
