@@ -131,37 +131,41 @@ pkgstats_from_archive <- function (path,
 
         for (f in flist) {
 
-            if (num_cores > 1L) {
-
-                res <- parallel::mclapply (f, function (i) {
-
-                    one_summary_from_archive (
-                        i,
-                        save_full,
-                        save_ex_calls,
-                        results_path
-                    )
-
-                }, mc.cores = num_cores)
-
-            } else {
-
-                res <- lapply (f, function (i) {
-
-                    one_summary_from_archive (
-                        i,
-                        save_full,
-                        save_ex_calls,
-                        results_path
-                    )
-                })
-            }
-
             fname <- fs::path (
                 results_path,
                 paste0 ("pkgstats-results-", index, ".Rds")
             )
-            saveRDS (do.call (rbind, res), fname)
+            if (!fs::file_exists (fname)) {
+
+                if (num_cores > 1L) {
+
+                    res <- parallel::mclapply (f, function (i) {
+
+                        one_summary_from_archive (
+                            i,
+                            save_full,
+                            save_ex_calls,
+                            results_path
+                        )
+
+                    }, mc.cores = num_cores)
+
+                } else {
+
+                    res <- lapply (f, function (i) {
+
+                        one_summary_from_archive (
+                            i,
+                            save_full,
+                            save_ex_calls,
+                            results_path
+                        )
+                    })
+                }
+
+                saveRDS (do.call (rbind, res), fname)
+            }
+
             results_files <- c (results_files, fname)
 
             archive_trawl_progress_message (index, chunk_size, npkgs, pt0)
