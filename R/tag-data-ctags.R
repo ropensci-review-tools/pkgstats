@@ -116,6 +116,10 @@ get_ctags <- function (d = "R", has_tabs) {
     if (nrow (tags) == 0L) {
         return (NULL)
     }
+    tags <- rm_vendored_code (tags)
+    if (nrow (tags) == 0L) {
+        return (NULL)
+    }
 
     tags$start <- suppressWarnings (
         as.integer (gsub ("^line\\:", "", tags$start))
@@ -146,6 +150,18 @@ get_ctags <- function (d = "R", has_tabs) {
     )
 
     attr (tags, "has_tabs") <- has_tabs
+
+    return (tags)
+}
+
+rm_vendored_code <- function (tags) {
+
+    is_vendored <- vapply (fs::path_split (tags$file), function (f) {
+        any (f == "vendor" | f == "vendored")
+    }, logical (1L))
+    if (any (is_vendored)) {
+        tags <- tags [which (!is_vendored), ]
+    }
 
     return (tags)
 }
