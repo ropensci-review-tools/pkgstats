@@ -306,15 +306,44 @@ count_doclines_src <- function (tags, path) {
 
     tags$language [which (is.na (tags$language))] <- ""
 
+    files <- unique (tags$file)
+    langs <- gsub ("^language\\:", "", tags$language [match (files, tags$file)])
+    doclines <- apply (cbind (files, langs), 1, function (i) {
+
+        f <- fs::path (path, i [1])
+        code <- brio::read_lines (f)
+
+        exts <- file_exts ()
+        ext_i <- exts [match (i [2], exts$type), ]
+
+        out <- grep (ext_i$cmt, code)
+        if (nzchar (ext_i$cmt_open) && !is.na (ext_i$cmt_open)) {
+            cmt_open <- grep (ext_i$cmt_open, code)
+            cmt_close <- grep (ext_i$cmt_close, code)
+            if (length (cmt_open) == length (cmt_close)) {
+                index <- cbind (cmt_open, cmt_close)
+                block_cmts <- apply (index, 1, function (j) {
+                    seq (j [1], j [2])
+                })
+                out <- c (out, unlist (block_cmts))
+            }
+        }
+        return (sort (unique (out)))
+    })
+    names (doclines) <- files
+
     res <- vapply (seq_len (nrow (tags)), function (i) {
 
         ndoclines <- 0L
+        if (is.na (tags$start [i])) {
+            return (ndoclines)
+        }
 
-        f <- fs::path (path, tags$file [i])
-        code <- brio::read_lines (f)
-        tag_line_start <- tags$start [i]
         # ctags does not tag end line numbers of Rust objects:
         if (tags$language [i] == "language:Rust") {
+            f <- fs::path (path, tags$file [i])
+            code <- brio::read_lines (f)
+            tag_line_start <- tags$start [i]
             all_ends <- grep ("^\\}", code)
             prev_end <- 1L
             if (any (all_ends < tag_line_start)) {
@@ -324,66 +353,23 @@ count_doclines_src <- function (tags, path) {
             ndoclines <- length (grep ("^\\s*\\/\\/", not_code))
         } else {
 
-            # Find position of any previous tagged code to know where to look
-            # for comments:
-            all_line_nums <- tags [
+            file_tags <- tags [
                 tags$file == tags$file [i],
                 c ("start", "end")
             ]
-            all_line_nums <- all_line_nums [
-                which (!is.na (all_line_nums$start) &
-                    !is.na (all_line_nums$end)),
-            ]
-            all_line_nums <- all_line_nums [order (all_line_nums$start), ]
-            # remove any with erroneous 'end' values after subsequent 'start' vals:
-            index <- which (
-                all_line_nums$end [-nrow (all_line_nums)] >
-                    all_line_nums$start [-1]
-            )
-            if (length (index) > 0L) {
-                all_line_nums <- all_line_nums [-(index), ]
-            }
-            code_index <- apply (all_line_nums, 1, function (i) {
-                seq (i [1], i [2])
-            })
-            code_index <- sort (unlist (code_index))
-
-            index <- which (all_line_nums$end < tag_line_start)
-            if (length (index) == 0) {
-                prev_code <- 0L
-            } else {
-                prev_code <- max (all_line_nums$end [index])
-            }
-
-            this_lang <- gsub ("^language\\:", "", tags$language [i])
-            exts <- file_exts ()
-            ext_i <- exts [match (this_lang, exts$type), ]
-
-            doclines <- grep (ext_i$cmt, code)
-            index <- which (doclines < tag_line_start & doclines > prev_code)
-            doclines <- doclines [index]
-
-            if (nzchar (ext_i$cmt_open) && !is.na (ext_i$cmt_open)) {
-                cmt_open <- grep (ext_i$cmt_open, code)
-                cmt_close <- grep (ext_i$cmt_close, code)
-                cmt_open <- cmt_open [which (!cmt_open %in% code_index)]
-                cmt_close <- cmt_close [which (!cmt_close %in% code_index)]
-                if (length (cmt_open) == length (cmt_close)) {
-                    cmt_seq <- cbind (cmt_open, cmt_close)
-                    cmt_seq <- apply (cmt_seq, 1, function (i) {
-                        seq (i [1], i [2])
-                    })
-                    cmt_seq <- sort (unlist (cmt_seq))
-                    index <- which (cmt_seq < tag_line_start & cmt_seq > prev_code)
-                    doclines <- sort (c (doclines, cmt_seq [index]))
-                    dd <- which (diff (doclines) > 1)
-                    if (length (dd) > 0L) {
-                        index <- seq (max (dd) + 1L, length (doclines))
-                        doclines <- doclines [index]
-                    }
+            file_tags <- file_tags [which (!is.na (file_tags$end)), ]
+            index <- which (file_tags$end < tags$start [i])
+            if (length (index) > 0) {
+                prev_code <- max (file_tags$end [index], na.rm = TRUE)
+                index <- which (names (doclines) == tags$file [i])
+                doclines_f <- doclines [[index]]
+                if (length (doclines_f) > 0L) {
+                    index <- which (
+                        doclines_f < tags$start [i] & doclines_f > prev_code
+                    )
+                    ndoclines <- length (index)
                 }
             }
-            ndoclines <- length (doclines)
         }
 
         return (ndoclines)
