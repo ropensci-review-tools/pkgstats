@@ -330,7 +330,9 @@ count_doclines_src <- function (tags, path) {
         }
         return (sort (unique (out)))
     })
-    names (doclines) <- files
+    if (length (doclines) > 0L) {
+        names (doclines) <- files
+    }
 
     res <- vapply (seq_len (nrow (tags)), function (i) {
 

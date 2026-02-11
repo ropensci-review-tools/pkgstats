@@ -1,6 +1,9 @@
 0.2.2.00x (dev release)
 ===================
 
+## Minor changes
+
+- Fix bug in source docline count when there are no doclines
 
 0.2.2
 ===================
