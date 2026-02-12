@@ -334,48 +334,52 @@ count_doclines_src <- function (tags, path) {
         names (doclines) <- files
     }
 
-    res <- vapply (seq_len (nrow (tags)), function (i) {
+    if (length (doclines) == 0L) {
+        res <- rep (0L, nrow (tags))
+    } else {
+        res <- vapply (seq_len (nrow (tags)), function (i) {
 
-        ndoclines <- 0L
-        if (is.na (tags$start [i])) {
-            return (ndoclines)
-        }
-
-        # ctags does not tag end line numbers of Rust objects:
-        if (tags$language [i] == "language:Rust") {
-            f <- fs::path (path, tags$file [i])
-            code <- brio::read_lines (f)
-            tag_line_start <- tags$start [i]
-            all_ends <- grep ("^\\}", code)
-            prev_end <- 1L
-            if (any (all_ends < tag_line_start)) {
-                prev_end <- max (all_ends [which (all_ends < tag_line_start)])
+            ndoclines <- 0L
+            if (is.na (tags$start [i])) {
+                return (ndoclines)
             }
-            not_code <- code [seq (prev_end + 1L, tag_line_start - 1L)]
-            ndoclines <- length (grep ("^\\s*\\/\\/", not_code))
-        } else {
 
-            file_tags <- tags [
-                tags$file == tags$file [i],
-                c ("start", "end")
-            ]
-            file_tags <- file_tags [which (!is.na (file_tags$end)), ]
-            index <- which (file_tags$end < tags$start [i])
-            if (length (index) > 0) {
-                prev_code <- max (file_tags$end [index], na.rm = TRUE)
-                index <- which (names (doclines) == tags$file [i])
-                doclines_f <- doclines [[index]]
-                if (length (doclines_f) > 0L) {
-                    index <- which (
-                        doclines_f < tags$start [i] & doclines_f > prev_code
-                    )
-                    ndoclines <- length (index)
+            # ctags does not tag end line numbers of Rust objects:
+            if (tags$language [i] == "language:Rust") {
+                f <- fs::path (path, tags$file [i])
+                code <- brio::read_lines (f)
+                tag_line_start <- tags$start [i]
+                all_ends <- grep ("^\\}", code)
+                prev_end <- 1L
+                if (any (all_ends < tag_line_start)) {
+                    prev_end <- max (all_ends [which (all_ends < tag_line_start)])
+                }
+                not_code <- code [seq (prev_end + 1L, tag_line_start - 1L)]
+                ndoclines <- length (grep ("^\\s*\\/\\/", not_code))
+            } else {
+
+                file_tags <- tags [
+                    tags$file == tags$file [i],
+                    c ("start", "end")
+                ]
+                file_tags <- file_tags [which (!is.na (file_tags$end)), ]
+                index <- which (file_tags$end < tags$start [i])
+                if (length (index) > 0) {
+                    prev_code <- max (file_tags$end [index], na.rm = TRUE)
+                    index <- which (names (doclines) == tags$file [i])
+                    doclines_f <- doclines [[index]]
+                    if (length (doclines_f) > 0L) {
+                        index <- which (
+                            doclines_f < tags$start [i] & doclines_f > prev_code
+                        )
+                        ndoclines <- length (index)
+                    }
                 }
             }
-        }
 
-        return (ndoclines)
-    }, integer (1L))
+            return (ndoclines)
+        }, integer (1L))
+    }
 
     tags$doclines <- res
 
