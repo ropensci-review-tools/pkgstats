@@ -149,7 +149,7 @@ excluded_file_ptn <- function () {
 
     exts <- c (
         "h", "rda", "rds", "Rd", "md", "Rmd", "win", "min.js",
-        "png", "svg", "jpg", "gif"
+        "png", "svg", "jpg", "gif", "json", "geojson"
     )
     paste0 ("(", paste0 ("\\.", exts, collapse = "|"), ")$")
 }
