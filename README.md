@@ -1,7 +1,7 @@
 <!-- badges: start -->
 
 [![R build
-status](https://github.com/ropensci-review-tools/pkgstats/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check)
+status](https://github.com/ropensci-review-tools/pkgstats/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/ropensci-review-tools/pkgstats/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ropensci-review-tools/pkgstats)
 [![Project Status:
 Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -101,7 +101,7 @@ p [!names (p) %in% c ("objects", "network", "external_calls")]
     ## 
     ## $desc
     ##    package version                date license
-    ## 1 pkgstats     9.9 2022-05-12 19:41:22   GPL-3
+    ## 1 pkgstats     9.9 2022-05-12 11:41:22   GPL-3
     ##                                                                                      urls
     ## 1 https://docs.ropensci.org/pkgstats/,\nhttps://github.com/ropensci-review-tools/pkgstats
     ##                                                       bugs aut ctb fnd rev ths

@@ -76,6 +76,10 @@ repos:
         name: Version has been incremeneted in DESCRIPTION
         entry: .hooks/description
         language: script
+    -   id: readme badge workflow names
+        name: Badges for GitHub workflows in readme must have proper workflow names
+        entry: .hooks/workflow-badges
+        language: script
 
 ci:
     autoupdate_schedule: monthly
