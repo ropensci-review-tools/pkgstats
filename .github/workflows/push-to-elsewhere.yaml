@@ -20,7 +20,7 @@ on:
       - main
 
 jobs:
-  build:
+  push-to-elsehwere:
     runs-on: ubuntu-latest
 
     # will only push *from* main
