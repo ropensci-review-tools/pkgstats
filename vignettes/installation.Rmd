@@ -53,6 +53,15 @@ remotes::install_github ("ropensci-review-tools/pkgstats")
 pak::pkg_install ("ropensci-review-tools/pkgstats")
 ```
 
+For those who prefer not to use GitHub, the package can also be installed with
+one of the following two additional options:
+
+```{r remotes-elsewhere, eval = FALSE}
+remotes::install_git ("https://codeberg.org/ropensci-review-tools/pkgstats")
+remotes::install_git ("https://codefloe.com/ropensci-review-tools/pkgstats")
+```
+
+
 The package can then loaded for use with:
 
 ```{r library, eval = TRUE}
