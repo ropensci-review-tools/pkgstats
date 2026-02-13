@@ -35,7 +35,7 @@ jobs:
           git config --global user.email "noreply@ropensci.org"
           git clone https://github.com/ropensci-review-tools/pkgstats.git
           git fetch --unshallow origin
-          git remote add codeberg https://${{secrets.UNAME}}:${{secrets.CODEBERG_TOKEN}}@codeberg.org/ropensci-review-tools/pkgstats.git
+          git remote add codeberg https://${{secrets.UNAME}}:${{secrets.CODEBERG}}@codeberg.org/ropensci-review-tools/pkgstats.git
           git push --tags codeberg main
-          git remote add codefloe https://${{secrets.UNAME}}:${{secrets.CODEBERG_TOKEN}}@codefloe.com/ropensci-review-tools/pkgstats.git
+          git remote add codefloe https://${{secrets.UNAME}}:${{secrets.CODEFLOE}}@codefloe.com/ropensci-review-tools/pkgstats.git
           git push --tags codefloe main
