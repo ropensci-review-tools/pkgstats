@@ -67,13 +67,12 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
 
     extra_paths <- extra_manifest_paths (path)
     if (length (extra_paths) > 0L) {
-        extra_paths_rel <- fs::path_rel (extra_paths, path)
+        path_base <- fs::path_common (c (path, extra_paths))
+        extra_paths_rel <- fs::path_rel (extra_paths, path_base)
         extra_tags_src <- lapply (seq_along (extra_paths), function (i) {
-            extra_tags <- withr::with_dir (extra_paths [i], get_ctags (".", has_tabs))
-            # tag files then include the final bit of "extra_paths", which must
-            # be removed:
-            extra_tags$file <- fs::path (extra_paths_rel [i], extra_tags$file)
-            extra_tags$file <- fs::path_norm (extra_tags$file)
+            extra_tags <- withr::with_dir (path_base, get_ctags (extra_paths_rel [i], has_tabs))
+            path_full <- fs::path (path_base, extra_tags$file)
+            extra_tags$file <- fs::path_rel (path_full, path)
             return (extra_tags)
         })
         extra_tags_src <- do.call (rbind, extra_tags_src)

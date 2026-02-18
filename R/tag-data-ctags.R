@@ -14,9 +14,11 @@ get_ctags <- function (d = "R", has_tabs) {
     # tempdir() and the new path returned. `path_sub` in the following is the
     # path to substitute out of file names given by ctags
     wd <- path_sub <- fs::path_wd ()
+    path_tmp_prepend <- "."
     if (has_tabs) {
+        path_tmp_prepend <- fs::path_dir (d)
         path_sub <- path_dir <- rm_tabs (path_dir)
-        path_dir <- expand_path (fs::path (path_dir, d))
+        path_dir <- expand_path (fs::path (path_dir, fs::path_file (d)))
         wd <- setwd (path_dir)
         on.exit ({
             unlink (path_sub, recursive = TRUE)
@@ -138,16 +140,10 @@ get_ctags <- function (d = "R", has_tabs) {
     # storage.mode does not:
     storage.mode (tags$end) <- "integer"
 
-    files <- fs::path_split (tags$file)
-    len_path_sub <- length (fs::path_split (path_sub) [[1]])
-    index <- which (vapply (files, length, integer (1L)) >= len_path_sub)
-    tags$file <- NA_character_
-    tags$file [index] <- vapply (
-        files [index], function (i) {
-            do.call (file.path, as.list (i [-seq (len_path_sub)]))
-        },
-        character (1)
-    )
+    tags$file <- fs::path_rel (tags$file, path_sub)
+    if (path_tmp_prepend != ".") {
+        tags$file <- fs::path (path_tmp_prepend, tags$file)
+    }
 
     attr (tags, "has_tabs") <- has_tabs
 
