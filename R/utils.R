@@ -5,7 +5,7 @@ get_Rd_metadata <- utils::getFromNamespace (".Rd_get_metadata", "tools") # nolin
 #' Uses `rprojroot::is_r_package` criterion:
 #' "contains a file "DESCRIPTION" with contents matching "^Package: "
 #' @noRd
-check_path <- function (path) {
+check_path <- function (path, max_subdirs = 2L) {
 
     path <- fs::path_real (path)
 
@@ -17,26 +17,29 @@ check_path <- function (path) {
 
         checkmate::assert_directory_exists (path)
 
-        count <- 1L
-        flist <- basename (fs::dir_ls (path))
-        while (!"DESCRIPTION" %in% flist && count < 5L) {
-
-            path <- fs::path_real (fs::path (path, ".."))
-            flist <- basename (fs::dir_ls (path))
-            count <- count + 1L
-        }
-
-        desc <- fs::dir_ls (
-            path,
-            regexp = "DESCRIPTION"
+        proj_root <- tryCatch (
+            rprojroot::find_package_root_file (path = path),
+            error = function (e) NULL
         )
-        if (length (desc) == 0L) {
-            stop ("Path does not correspond to an R package")
+        if (is.null (proj_root)) {
+            subdirs <- fs::dir_ls (path, type = "directory", recurse = max_subdirs)
+            proj_root <- lapply (subdirs, function (d) {
+                tryCatch (
+                    rprojroot::find_root (rprojroot::is_r_package, path = d),
+                    error = function (e) NULL
+                )
+            })
+            proj_root <- unique (unlist (unname (proj_root)))
         }
-        desc <- brio::read_lines (desc)
-        if (!any (grepl ("^Package:\\s", desc))) {
-            stop ("Path does not correspond to an R package")
+
+        if (length (proj_root) != 1L) {
+            stop (
+                "Could not find unambiguous project root from {proj_root}",
+                call. = FALSE
+            )
         }
+
+        path <- proj_root
     }
 
     return (path)
