@@ -81,7 +81,10 @@ loc_stats <- function (path) {
 
     dirs <- c ("R", "src", "inst", "tests", "vignettes")
     paths <- fs::path (path, dirs)
-    paths <- paths [which (fs::dir_exists (paths))]
+    paths <- c (
+        paths [which (fs::dir_exists (paths))],
+        extra_manifest_paths (path)
+    )
 
     flist <- fs::dir_ls (paths, recurse = TRUE)
     # .Rmd files generally excluded except in vignettes:
