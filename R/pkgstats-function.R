@@ -51,7 +51,7 @@ pkgstats <- function (path = ".") {
     s2 <- desc_stats (path)
     s3 <- rd_stats (path)
 
-    fns <- all_functions (path)
+    fns <- all_r_functions (path)
 
     if (nrow (fns) > 0L) {
 
@@ -113,12 +113,12 @@ pkgstats <- function (path = ".") {
     )
 }
 
-#' Get all exported and internal functions
+#' Get all exported and internal R functions
 #' @noRd
-all_functions <- function (path) {
+all_r_functions <- function (path) {
 
     if (Sys.getenv ("PKGSTATS_CRAN_TESTS") == "true") {
-        return (all_functions_dummy ())
+        return (all_r_functions_dummy ())
     }
 
     r_files <- expand_path (fs::dir_ls (
@@ -127,7 +127,7 @@ all_functions <- function (path) {
     ))
 
     if (length (r_files) == 0L) {
-        return (all_functions_dummy ())
+        return (all_r_functions_dummy ())
     }
 
     eval1 <- function (f) {
@@ -185,7 +185,7 @@ all_functions <- function (path) {
 
     ret <- do.call (rbind, lapply (r_files, eval1))
     if (length (ret) == 0L) {
-        return (all_functions_dummy ())
+        return (all_r_functions_dummy ())
     }
     if (nrow (ret) > 0L) {
         # append "R" directory to file names:
@@ -198,7 +198,7 @@ all_functions <- function (path) {
 #' Dummy return from `all_funcitons()` function, triggered only on CRAN tests
 #' which otherwise take too long because of the `parse` calls.
 #' @noRd
-all_functions_dummy <- function () {
+all_r_functions_dummy <- function () {
 
     data.frame (
         "file_name" = character (0),
@@ -262,7 +262,7 @@ add_src_to_fn_data <- function (fns, src) {
             src [n] <- NA_integer_
         }
         src <- src [, match (names (fns), names (src))]
-        index <- which (src$language %in%  c ("R", "S4Class"))
+        index <- which (src$language %in% c ("R", "S4Class"))
         src_r <- src [index, ]
         src <- src [-(index), ]
 
