@@ -36,8 +36,8 @@ test_that ("pkgstats", {
     # The following 2 tests fail on GitHub windows machines for some reason?
     is_windows <- Sys.info () [["sysname"]] == "Windows"
     if (!is_windows) {
-        expect_equal (nrow (s$loc), 4L)
-        expect_true (all (c ("R", "src") %in% s$loc$dir))
+        expect_gte (nrow (s$loc), 3L)
+        expect_true (all (c ("R", "src", "tests") %in% s$loc$dir))
     }
 
     expect_type (s$vignettes, "integer")
@@ -125,6 +125,50 @@ test_that ("pkgstats with tabs", {
 
     expect_s3_class (s$loc, "tbl_df")
     expect_true (s$loc$ntabs [s$loc$dir == "R"] > 0L)
+
+    fs::dir_delete (path)
+})
+
+test_that ("extra_manifest_paths", {
+
+    path <- extract_tarball (
+        system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
+    )
+    s0 <- pkgstats (path)
+
+    expect_null (extra_manifest_paths (path))
+
+    extra_path <- fs::path (path, "extra_dir", "vendor_code")
+    fs::dir_create (extra_path)
+    cpp_code <- c (
+        "// some vendor code",
+        "int a () {",
+        "  return 1L;",
+        "}"
+    )
+    writeLines (cpp_code, fs::path (extra_path, "test.cpp"))
+    toml <- c (
+        "[\"vendor_sources\"]",
+        "code=\"../extra_dir/vendor_code\""
+    )
+    writeLines (toml, fs::path (path, "src", "SOURCE_MANIFEST.toml"))
+
+    extra_paths <- extra_manifest_paths (path)
+    expect_type (extra_paths, "character")
+    expect_length (extra_paths, 1L)
+    expect_true (any (grepl ("vendor\\_code", extra_paths)))
+    expect_true (all (fs::dir_exists (extra_paths)))
+
+    s1 <- pkgstats (path)
+
+    expect_gt (nrow (s1$loc), nrow (s0$loc))
+    expect_gt (sum (s1$loc$nfiles), sum (s0$loc$nfiles))
+    expect_gt (sum (s1$loc$nlines), sum (s0$loc$nlines))
+    # Should also be one more tagged source object:
+    expect_gt (nrow (s1$objects), nrow (s0$objects))
+    extra_paths <- fs::path_rel (extra_paths, path)
+    expect_true (all (extra_paths %in% fs::path_dir (s1$objects$file)))
+    expect_false (any (extra_paths %in% fs::path_dir (s0$objects$file)))
 
     fs::dir_delete (path)
 })

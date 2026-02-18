@@ -5,7 +5,7 @@ get_Rd_metadata <- utils::getFromNamespace (".Rd_get_metadata", "tools") # nolin
 #' Uses `rprojroot::is_r_package` criterion:
 #' "contains a file "DESCRIPTION" with contents matching "^Package: "
 #' @noRd
-check_path <- function (path) {
+check_path <- function (path, max_subdirs = 2L) {
 
     path <- fs::path_real (path)
 
@@ -17,26 +17,29 @@ check_path <- function (path) {
 
         checkmate::assert_directory_exists (path)
 
-        count <- 1L
-        flist <- basename (fs::dir_ls (path))
-        while (!"DESCRIPTION" %in% flist && count < 5L) {
-
-            path <- fs::path_real (fs::path (path, ".."))
-            flist <- basename (fs::dir_ls (path))
-            count <- count + 1L
-        }
-
-        desc <- fs::dir_ls (
-            path,
-            regexp = "DESCRIPTION"
+        proj_root <- tryCatch (
+            rprojroot::find_package_root_file (path = path),
+            error = function (e) NULL
         )
-        if (length (desc) == 0L) {
-            stop ("Path does not correspond to an R package")
+        if (is.null (proj_root)) {
+            subdirs <- fs::dir_ls (path, type = "directory", recurse = max_subdirs)
+            proj_root <- lapply (subdirs, function (d) {
+                tryCatch (
+                    rprojroot::find_root (rprojroot::is_r_package, path = d),
+                    error = function (e) NULL
+                )
+            })
+            proj_root <- unique (unlist (unname (proj_root)))
         }
-        desc <- brio::read_lines (desc)
-        if (!any (grepl ("^Package:\\s", desc))) {
-            stop ("Path does not correspond to an R package")
+
+        if (length (proj_root) != 1L) {
+            stop (
+                "Could not find unambiguous project root from {proj_root}",
+                call. = FALSE
+            )
         }
+
+        path <- proj_root
     }
 
     return (path)
@@ -152,6 +155,51 @@ excluded_file_ptn <- function () {
         "png", "svg", "jpg", "gif", "json", "geojson"
     )
     paste0 ("(", paste0 ("\\.", exts, collapse = "|"), ")$")
+}
+
+extra_manifest_paths <- function (path) {
+
+    path_src <- fs::path (path, "src")
+    if (!fs::dir_exists (path_src)) {
+        return (NULL)
+    }
+    f_manifest <- fs::dir_ls (
+        path_src,
+        type = "file",
+        regexp = "source.*manifest",
+        ignore.case = TRUE
+    )
+    if (length (f_manifest) == 0L) {
+        return (NULL)
+    }
+    f_ext <- fs::path_ext (f_manifest)
+    manifest_parse_fn <- paste0 ("parse_manifest_", f_ext)
+    pkg_fns <- ls (envir = asNamespace ("pkgstats"), all = TRUE)
+    index <- which (manifest_parse_fn %in% pkg_fns)
+    if (length (index) == 0L) {
+        return (NULL)
+    }
+    # If multiple versions, parse only first
+    x <- do.call (manifest_parse_fn [1], list (f_manifest [1]))
+    if (!"vendor_sources" %in% names (x)) {
+        return (NULL)
+    }
+    vendor_sources <- vapply (x$vendor_sources, function (v) {
+        fs::path_abs (fs::path (path_src, v))
+    }, character (1L))
+    vendor_sources <- vendor_sources [which (fs::dir_exists (vendor_sources))]
+
+    return (vendor_sources)
+}
+
+parse_manifest_toml <- function (f) {
+    requireNamespace ("toml", quietly = TRUE)
+    toml::parse_toml (readLines (f))
+}
+
+parse_manifest_json <- function (f) {
+    requireNamespace ("jsonlite", quietly = TRUE)
+    jsonlite::read_json (f)
 }
 
 which_unix <- function () {
