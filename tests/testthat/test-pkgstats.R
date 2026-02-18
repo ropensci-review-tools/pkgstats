@@ -134,13 +134,19 @@ test_that ("extra_manifest_paths", {
     path <- extract_tarball (
         system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
     )
-    loc0 <- loc_stats (path)
+    s0 <- pkgstats (path)
 
     expect_null (extra_manifest_paths (path))
 
     extra_path <- fs::path (path, "extra_dir", "vendor_code")
     fs::dir_create (extra_path)
-    writeLines ("// some vendor code", fs::path (extra_path, "test.cpp"))
+    cpp_code <- c (
+        "// some vendor code",
+        "int a () {",
+        "  return 1L;",
+        "}"
+    )
+    writeLines (cpp_code, fs::path (extra_path, "test.cpp"))
     toml <- c (
         "[\"vendor_sources\"]",
         "code=\"../extra_dir/vendor_code\""
@@ -151,11 +157,18 @@ test_that ("extra_manifest_paths", {
     expect_type (extra_paths, "character")
     expect_length (extra_paths, 1L)
     expect_true (any (grepl ("vendor\\_code", extra_paths)))
+    expect_true (all (fs::dir_exists (extra_paths)))
 
-    loc1 <- loc_stats (path)
-    expect_gt (nrow (loc1), nrow (loc0))
-    expect_gt (sum (loc1$nfiles), sum (loc0$nfiles))
-    expect_gt (sum (loc1$nlines), sum (loc0$nlines))
+    s1 <- pkgstats (path)
+
+    expect_gt (nrow (s1$loc), nrow (s0$loc))
+    expect_gt (sum (s1$loc$nfiles), sum (s0$loc$nfiles))
+    expect_gt (sum (s1$loc$nlines), sum (s0$loc$nlines))
+    # Should also be one more tagged source object:
+    expect_gt (nrow (s1$objects), nrow (s0$objects))
+    extra_paths <- fs::path_rel (extra_paths, path)
+    expect_true (all (extra_paths %in% fs::path_dir (s1$objects$file)))
+    expect_false (any (extra_paths %in% fs::path_dir (s0$objects$file)))
 
     fs::dir_delete (path)
 })

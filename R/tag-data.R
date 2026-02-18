@@ -69,12 +69,12 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
     if (length (extra_paths) > 0L) {
         extra_paths_rel <- fs::path_rel (extra_paths, path)
         extra_tags_src <- lapply (seq_along (extra_paths), function (i) {
-            tags <- withr::with_dir (extra_paths [i], get_ctags (".", has_tabs))
+            extra_tags <- withr::with_dir (extra_paths [i], get_ctags (".", has_tabs))
             # tag files then include the final bit of "extra_paths", which must
             # be removed:
-            tags$file <- fs::path (extra_paths_rel [i], "..", tags$file)
-            tags$file <- fs::path_norm (tags$file)
-            return (tags)
+            extra_tags$file <- fs::path (extra_paths_rel [i], extra_tags$file)
+            extra_tags$file <- fs::path_norm (extra_tags$file)
+            return (extra_tags)
         })
         extra_tags_src <- do.call (rbind, extra_tags_src)
         tags_src <- rbind (tags_src, extra_tags_src)
