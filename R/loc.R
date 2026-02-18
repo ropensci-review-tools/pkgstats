@@ -86,21 +86,20 @@ loc_stats <- function (path) {
         extra_manifest_paths (path)
     )
 
-    flist <- fs::dir_ls (paths, recurse = TRUE)
+    flist <- lapply (paths, function (p) {
+        paths_p <- fs::dir_ls (p, recurse = TRUE)
+        cbind (rep (p, length (paths_p)), paths_p)
+    })
+    flist <- unname (do.call (rbind, flist))
+
     # .Rmd files generally excluded except in vignettes:
-    rmd_vignettes <- grep ("vignettes.*\\.Rmd$", flist, value = TRUE)
-    flist <- flist [which (!grepl (excluded_file_ptn (), flist))]
-    flist <- c (flist, rmd_vignettes)
+    index <- grep ("vignettes.*\\.Rmd$", flist [, 2])
+    rmd_vignettes <- flist [index, ]
+    flist <- flist [which (!grepl (excluded_file_ptn (), flist [, 2])), ]
+    flist <- rbind (flist, rmd_vignettes)
 
-    ftypes <- get_file_types (flist)
-
-    fdirs <- gsub (paste0 (path, .Platform$file.sep), "", ftypes$file)
-    fdirs <- vapply (strsplit (fdirs, .Platform$file.sep), function (i) {
-        paste0 (i [-length (i)], collapse = .Platform$file.sep)
-    },
-    character (1),
-    USE.NAMES = FALSE
-    )
+    ftypes <- get_file_types (flist [, 2])
+    flist_dir <- flist [match (ftypes$file, flist [, 2]), 1]
 
     s <- cpp_loc (
         ftypes$file,
@@ -135,7 +134,7 @@ loc_stats <- function (path) {
     s$language <- s$dir <- ""
     if (nrow (ftypes) > 0) { # data pkgs may have no code
         s$language <- ftypes$type
-        s$dir <- fdirs
+        s$dir <- fs::path_rel (flist_dir, path)
     }
 
     # suprress no visible binding notes:

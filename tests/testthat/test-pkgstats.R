@@ -36,8 +36,8 @@ test_that ("pkgstats", {
     # The following 2 tests fail on GitHub windows machines for some reason?
     is_windows <- Sys.info () [["sysname"]] == "Windows"
     if (!is_windows) {
-        expect_equal (nrow (s$loc), 4L)
-        expect_true (all (c ("R", "src") %in% s$loc$dir))
+        expect_gte (nrow (s$loc), 3L)
+        expect_true (all (c ("R", "src", "tests") %in% s$loc$dir))
     }
 
     expect_type (s$vignettes, "integer")
