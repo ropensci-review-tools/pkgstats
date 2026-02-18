@@ -128,3 +128,34 @@ test_that ("pkgstats with tabs", {
 
     fs::dir_delete (path)
 })
+
+test_that ("extra_manifest_paths", {
+
+    path <- extract_tarball (
+        system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
+    )
+    loc0 <- loc_stats (path)
+
+    expect_null (extra_manifest_paths (path))
+
+    extra_path <- fs::path (path, "extra_dir", "vendor_code")
+    fs::dir_create (extra_path)
+    writeLines ("// some vendor code", fs::path (extra_path, "test.cpp"))
+    toml <- c (
+        "[\"vendor_sources\"]",
+        "code=\"../extra_dir/vendor_code\""
+    )
+    writeLines (toml, fs::path (path, "src", "SOURCE_MANIFEST.toml"))
+
+    extra_paths <- extra_manifest_paths (path)
+    expect_type (extra_paths, "character")
+    expect_length (extra_paths, 1L)
+    expect_true (any (grepl ("vendor\\_code", extra_paths)))
+
+    loc1 <- loc_stats (path)
+    expect_gt (nrow (loc1), nrow (loc0))
+    expect_gt (sum (loc1$nfiles), sum (loc0$nfiles))
+    expect_gt (sum (loc1$nlines), sum (loc0$nlines))
+
+    fs::dir_delete (path)
+})
