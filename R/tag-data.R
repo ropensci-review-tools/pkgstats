@@ -58,7 +58,9 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
     kind <- start <- NULL # no visible binding messages
 
     tags_r <- withr::with_dir (path, get_ctags ("R", has_tabs))
-    tags_r <- count_doclines_r (tags_r, path)
+    if (!is.null (tags_r)) {
+        tags_r <- count_doclines_r (tags_r, path)
+    }
 
     external_calls <- external_call_network (tags_r, path, pkg_name)
 
