@@ -174,7 +174,7 @@ extra_manifest_paths <- function (path) {
     }
     f_ext <- fs::path_ext (f_manifest)
     manifest_parse_fn <- paste0 ("parse_manifest_", f_ext)
-    pkg_fns <- ls (envir = asNamespace ("pkgstats"), all = TRUE)
+    pkg_fns <- ls (envir = asNamespace ("pkgstats"), all.names = TRUE)
     index <- which (manifest_parse_fn %in% pkg_fns)
     if (length (index) == 0L) {
         return (NULL)
