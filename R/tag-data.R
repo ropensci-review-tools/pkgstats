@@ -93,6 +93,14 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
         # gtags does not parse R code, so may return NULL if there is no code in
         # other languages
         gtags <- withr::with_dir (path, get_gtags ())
+        if (length (extra_paths) > 0) {
+            gtags_extra <- lapply (extra_paths, function (p) {
+                withr::with_dir (p, {
+                    make_gtags ()
+                    get_gtags ()
+                })
+            })
+        }
 
         ctags <- dplyr::arrange (rbind (tags_src, tags_inst), file, start)
         ctags <- dplyr::filter (ctags, kind %in%
