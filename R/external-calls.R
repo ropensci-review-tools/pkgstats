@@ -220,6 +220,42 @@ list_base_recommend_pkgs <- function (base = TRUE) {
     return (pkgs)
 }
 
+list_recommended_pkg_fns <- function (pkg_name) {
+
+    ll <- .libPaths ()
+
+    index <- vapply (ll, function (p) {
+        fs::dir_exists (fs::path (p, pkg_name))
+    }, logical (1L))
+    if (!any (index)) {
+        return (NULL)
+    }
+    rpath <- fs::path (ll [which (index) [1]], pkg_name)
+    if (!fs::dir_exists (rpath)) {
+        return (NULL)
+    }
+
+    f <- fs::path (rpath, "NAMESPACE")
+    if (!fs::file_exists (f)) {
+        return (NULL)
+    }
+
+    n <- brio::read_lines (f)
+    fns <- parse (text = n)
+    fns <- gsub (
+        "export\\s?\\(|\\)$", "",
+        grep ("export", fns, value = TRUE)
+    )
+    fns <- do.call (c, strsplit (fns, ","))
+    fns <- gsub ("^\\n\\s*|^\\s*", "", fns)
+
+    data.frame (
+        pkg = pkg_name,
+        fn = fns,
+        stringsAsFactors = FALSE
+    )
+}
+
 #' Use ctags to get list of fns from each pkg
 #'
 #' @param calls `data.frame` of calls constructed in `external_call_network`.
@@ -234,39 +270,8 @@ add_base_recommended_pkgs <- function (calls) {
         calls$package [calls$call %in% f & is.na (calls$package)] <- b
     }
 
-
-    ll <- .libPaths ()
-
     rcmds <- list_base_recommend_pkgs (base = FALSE)
-    pkg_calls <- lapply (rcmds, function (i) {
-
-        rpath <- fs::path (ll [1], i)
-        if (!fs::dir_exists (rpath)) {
-            return (NULL)
-        }
-
-        f <- fs::path (rpath, "NAMESPACE")
-        if (!fs::file_exists (f)) {
-            return (NULL)
-        }
-
-        n <- brio::read_lines (f)
-        fns <- parse (text = n)
-        fns <- gsub (
-            "export\\s?\\(|\\)$", "",
-            grep ("export", fns, value = TRUE)
-        )
-        fns <- do.call (c, strsplit (fns, ","))
-        fns <- gsub ("^\\n\\s*|^\\s*", "", fns)
-
-        data.frame (
-            pkg = i,
-            fn = fns,
-            stringsAsFactors = FALSE
-        )
-    })
-
-    pkg_calls <- do.call (rbind, pkg_calls)
+    pkg_calls <- do.call (rbind, lapply (rcmds, list_recommended_pkg_fns))
 
     if (length (pkg_calls) > 0L) {
 
