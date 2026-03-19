@@ -222,7 +222,11 @@ list_base_recommend_pkgs <- function (base = TRUE) {
 
 list_recommended_pkg_fns <- function (pkg_name) {
 
-    df0 <- data.frame (pkg = character (0L), fn = character (0L))
+    df0 <- data.frame (
+        pkg = character (0L),
+        vers = character (0L),
+        fn = character (0L)
+    )
     ll <- .libPaths ()
 
     index <- vapply (ll, function (p) {
@@ -235,6 +239,12 @@ list_recommended_pkg_fns <- function (pkg_name) {
     if (!fs::dir_exists (rpath)) {
         return (df0)
     }
+
+    f <- fs::path (rpath, "DESCRIPTION")
+    if (!fs::file_exists (f)) {
+        return (df0)
+    }
+    pkg_version <- read.dcf (f) [1, "Version"]
 
     f <- fs::path (rpath, "NAMESPACE")
     if (!fs::file_exists (f)) {
@@ -252,6 +262,7 @@ list_recommended_pkg_fns <- function (pkg_name) {
 
     data.frame (
         pkg = rep (pkg_name, length (fns)),
+        vers = rep (pkg_version, length (fns)),
         fn = fns,
         stringsAsFactors = FALSE
     )

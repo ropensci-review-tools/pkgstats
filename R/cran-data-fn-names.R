@@ -252,6 +252,10 @@ pkgstats_fns_update <- function (prev_results = NULL,
     if (!is.null (res) && !is.null (results_file)) {
 
         out <- rbind (out, base_rmd_fns_df ())
+        index <- which (duplicated (out))
+        if (length (index) > 0L) {
+            out <- out [-(index), ]
+        }
 
         results_file <- archive_results_file_name (results_file)
         saveRDS (out, results_file)
@@ -272,14 +276,19 @@ base_rmd_fns_df <- function () {
 
     fns_extra <- do.call (rbind, lapply (pkgs, function (p) {
         f <- ls (asNamespace (p))
-        data.frame (pkg = rep (p, length (f)), fn = f)
+        v <- as.character (packageVersion (p))
+        data.frame (
+            pkg = rep (p, length (f)),
+            vers = rep (v, length (f)),
+            fn = f
+        )
     }))
 
     fns <- rbind (fns_extra, fns)
 
     data.frame (
         package = fns$pkg,
-        version = NA_character_,
+        version = fns$vers,
         fn_name = fns$fn
     )
 }
