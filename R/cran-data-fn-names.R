@@ -116,7 +116,9 @@ pkgstats_fns_from_archive <- function (path,
 
     chk <- fs::file_delete (results_files) # nolint
 
-    if (!is.null (res) && !is.null (results_file)) {
+    if (!is.null (out) && !is.null (results_file)) {
+
+        out <- add_base_rmd_fn_names (out)
 
         if (!grepl (.Platform$file.sep, results_file)) {
             results_file <- fs::path (".", results_file)
@@ -249,10 +251,36 @@ pkgstats_fns_update <- function (prev_results = NULL,
 
     if (!is.null (res) && !is.null (results_file)) {
 
+        out <- rbind (out, base_rmd_fns_df ())
+
         results_file <- archive_results_file_name (results_file)
         saveRDS (out, results_file)
     }
 
     invisible (out)
+}
+
+base_rmd_fns_df <- function () {
+
+    pkgs <- c (
+        list_base_recommend_pkgs (base = TRUE),
+        list_base_recommend_pkgs (base = FALSE)
+    )
+    fns <- do.call (rbind, lapply (pkgs, list_recommended_pkg_fns))
+
+    pkgs <- pkgs [which (!pkgs %in% fns$pkg)]
+
+    fns_extra <- do.call (rbind, lapply (pkgs, function (p) {
+        f <- ls (asNamespace (p))
+        data.frame (pkg = rep (p, length (f)), fn = f)
+    }))
+
+    fns <- rbind (fns_extra, fns)
+
+    data.frame (
+        package = fns$pkg,
+        version = NA_character_,
+        fn_name = fns$fn
+    )
 }
 # nocov end

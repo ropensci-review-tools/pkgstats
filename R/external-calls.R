@@ -222,22 +222,23 @@ list_base_recommend_pkgs <- function (base = TRUE) {
 
 list_recommended_pkg_fns <- function (pkg_name) {
 
+    df0 <- data.frame (pkg = character (0L), fn = character (0L))
     ll <- .libPaths ()
 
     index <- vapply (ll, function (p) {
         fs::dir_exists (fs::path (p, pkg_name))
     }, logical (1L))
     if (!any (index)) {
-        return (NULL)
+        return (df0)
     }
     rpath <- fs::path (ll [which (index) [1]], pkg_name)
     if (!fs::dir_exists (rpath)) {
-        return (NULL)
+        return (df0)
     }
 
     f <- fs::path (rpath, "NAMESPACE")
     if (!fs::file_exists (f)) {
-        return (NULL)
+        return (df0)
     }
 
     n <- brio::read_lines (f)
@@ -250,7 +251,7 @@ list_recommended_pkg_fns <- function (pkg_name) {
     fns <- gsub ("^\\n\\s*|^\\s*", "", fns)
 
     data.frame (
-        pkg = pkg_name,
+        pkg = rep (pkg_name, length (fns)),
         fn = fns,
         stringsAsFactors = FALSE
     )
