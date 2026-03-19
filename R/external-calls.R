@@ -181,6 +181,45 @@ extract_call_content <- function (tags_r) {
     return (calls)
 }
 
+list_base_recommend_pkgs <- function (base = TRUE) {
+
+    if (base) {
+        # namespaces of base packages are loaded, so fns can be grabbed directly
+        pkgs <- c (
+            "base", "stats", "graphics", "grDevices",
+            "utils", "datasets", "methods"
+        )
+    } else {
+        # recommended pkgs, which can not be (assumed to be) loaded. This
+        # list from https://cran.r-project.org/src/contrib/4.1.0/Recommended/
+        pkgs <- c (
+            "boot",
+            "class",
+            "cluster",
+            "codetools",
+            "foreign",
+            "KernSmooth",
+            "lattice",
+            "MASS",
+            "Matrix",
+            "mgcv",
+            "nlme",
+            "nnet",
+            "rpart",
+            "spatial",
+            "survival"
+        )
+        is_installed <- vapply (pkgs, function (i) {
+            tryCatch (
+                find.package (i),
+                error = function (e) ""
+            )}, character (1L))
+        pkgs <- pkgs [which (nzchar (is_installed))]
+    }
+
+    return (pkgs)
+}
+
 #' Use ctags to get list of fns from each pkg
 #'
 #' @param calls `data.frame` of calls constructed in `external_call_network`.
@@ -189,44 +228,16 @@ extract_call_content <- function (tags_r) {
 #' @noRd
 add_base_recommended_pkgs <- function (calls) {
 
-    # namespaces of base packages are loaded, so fns can be grabbed directly
-    base_pkgs <- c (
-        "base", "stats", "graphics", "grDevices",
-        "utils", "datasets", "methods"
-    )
+    base_pkgs <- list_base_recommend_pkgs (base = TRUE)
     for (b in base_pkgs) {
         f <- ls (paste0 ("package:", b))
         calls$package [calls$call %in% f & is.na (calls$package)] <- b
     }
 
-    # recommended pkgs can not be (assumed to be) loaded. This list from
-    # https://cran.r-project.org/src/contrib/4.1.0/Recommended/
-    rcmds <- c (
-        "boot",
-        "class",
-        "cluster",
-        "codetools",
-        "foreign",
-        "KernSmooth",
-        "lattice",
-        "MASS",
-        "Matrix",
-        "mgcv",
-        "nlme",
-        "nnet",
-        "rpart",
-        "spatial",
-        "survival"
-    )
-    is_installed <- vapply (rcmds, function (i) {
-        tryCatch (
-            find.package (i),
-            error = function (e) ""
-        )}, character (1L))
-    rcmds <- rcmds [which (nzchar (is_installed))]
 
     ll <- .libPaths ()
 
+    rcmds <- list_base_recommend_pkgs (base = FALSE)
     pkg_calls <- lapply (rcmds, function (i) {
 
         rpath <- fs::path (ll [1], i)
