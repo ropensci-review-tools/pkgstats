@@ -61,7 +61,7 @@ get_gtags <- function () {
 
     rm_file_no_err (f)
     gtags <- rm_vendored_code (gtags)
-    if (nrow (gtags) == 0L) {
+    if (is.null (gtags) || nrow (gtags) == 0L) {
         return (NULL)
     }
 
