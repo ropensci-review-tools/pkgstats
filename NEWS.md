@@ -4,6 +4,7 @@
 ## Minor changes
 
 - Fix bug in source docline count when there are no doclines
+- Fix output of translations in summary fn
 
 0.2.2
 ===================
