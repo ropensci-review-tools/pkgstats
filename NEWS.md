@@ -5,6 +5,7 @@
 
 - Fix bug in source docline count when there are no doclines
 - Fix output of translations in summary fn
+- Fix bug in `dl_pkgstats_data()` - defaulted to latest release, but data are fixed for a previous release.
 
 0.2.2
 ===================

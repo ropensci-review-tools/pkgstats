@@ -15,12 +15,27 @@ dl_pkgstats_data <- function (current = TRUE,
     requireNamespace ("curl", quietly = TRUE)
     requireNamespace ("jsonlite", quietly = TRUE)
 
+    cran_data_version <- "v0.1.6"
+
+    # First get integer "release_id" of that version:
     u <- paste0 (
         "https://api.github.com/repos/",
         "ropensci-review-tools/pkgstats/",
-        "releases/latest"
+        "releases"
     )
+    res <- curl::curl_fetch_memory (u)
+    res <- jsonlite::fromJSON (rawToChar (res$content))
+    row_num <- match (cran_data_version, res$tag_name)
+    if (is.na (row_num)) {
+        stop (
+            "Release for CRAN data {cran_data_version} not found.",
+            call. = FALSE
+        )
+    }
+    release_id <- res$id [row_num]
 
+    # Then get that release:
+    u <- paste0 (u, "/", release_id)
     res <- curl::curl_fetch_memory (u)
     hdrs <- curl::parse_headers (res$headers)
     http_code <- as.integer (gsub (
