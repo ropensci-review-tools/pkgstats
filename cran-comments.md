@@ -1,6 +1,10 @@
-# CRAN notes for pkgstats_0.2.2 submission
+# CRAN notes for pkgstats_0.2.3 submission
 
-Current submission generates no notes, warnings, or errors on any CRAN machines. The submission nevertheless currently generates one note on some win-builder machines regarding a possibly invalid URL. This is, however, for Wikipedia, through a "429: Too Many Requests" error. The URL is valid.
+This submission is in response to an email regarding hard dependency on 'ami' package. That has now been moved to a soft dependency by putting 'ami' in 'Suggests' only, and skipping gracefully if `requireNamespace('ami')` fails.
+
+Current submission generates no notes, warnings, or errors on any CRAN machines.
+
+This submission also currently generates one note on some win-builder machines regarding a possibly invalid URL. This is, however, for Wikipedia, through a "429: Too Many Requests" error. The URL is valid.
 
 
 ## Test environments
