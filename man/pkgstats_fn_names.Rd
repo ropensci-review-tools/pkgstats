@@ -28,7 +28,7 @@ path <- extract_tarball (f)
 s <- pkgstats_fn_names (path)
 }
 \seealso{
-Other misc: 
-\code{\link{extract_tarball}()}
+Other misc:
+\code{\link[=extract_tarball]{extract_tarball()}}
 }
 \concept{misc}

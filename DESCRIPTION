@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.2.2.024
+Version: 0.2.2.025
 Authors@R: 
     c(person("Mark", "Padgham", , "mark.padgham@email.com", role = c("aut", "cre"),
              comment = c(ORCID = "0000-0003-2172-5265")),
@@ -61,5 +61,5 @@ Language: en-US
 LazyData: true
 NeedsCompilation: yes
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 SystemRequirements: ctags, global
+Config/roxygen2/version: 8.0.0

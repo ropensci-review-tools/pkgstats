@@ -18,11 +18,11 @@ unauthorized users will error and have no effect unless run with \code{upload = 
 "pkgstats-results" of R's current temporary directory.
 }
 \seealso{
-Other archive: 
-\code{\link{dl_pkgstats_data}()},
-\code{\link{pkgstats_cran_current_from_full}()},
-\code{\link{pkgstats_fns_from_archive}()},
-\code{\link{pkgstats_fns_update}()},
-\code{\link{pkgstats_from_archive}()}
+Other archive:
+\code{\link[=dl_pkgstats_data]{dl_pkgstats_data()}},
+\code{\link[=pkgstats_cran_current_from_full]{pkgstats_cran_current_from_full()}},
+\code{\link[=pkgstats_fns_from_archive]{pkgstats_fns_from_archive()}},
+\code{\link[=pkgstats_fns_update]{pkgstats_fns_update()}},
+\code{\link[=pkgstats_from_archive]{pkgstats_from_archive()}}
 }
 \concept{archive}

@@ -30,8 +30,8 @@ ctags_install (bin_dir = "/usr/local") # default Linux location.
 }
 }
 \seealso{
-Other tags: 
-\code{\link{ctags_test}()},
-\code{\link{tags_data}()}
+Other tags:
+\code{\link[=ctags_test]{ctags_test()}},
+\code{\link[=tags_data]{tags_data()}}
 }
 \concept{tags}

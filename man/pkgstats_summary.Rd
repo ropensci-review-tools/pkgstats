@@ -47,10 +47,10 @@ s <- pkgstats_summary (p)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other stats: 
-\code{\link{desc_stats}()},
-\code{\link{loc_stats}()},
-\code{\link{pkgstats}()},
-\code{\link{rd_stats}()}
+Other stats:
+\code{\link[=desc_stats]{desc_stats()}},
+\code{\link[=loc_stats]{loc_stats()}},
+\code{\link[=pkgstats]{pkgstats()}},
+\code{\link[=rd_stats]{rd_stats()}}
 }
 \concept{stats}
