@@ -118,7 +118,8 @@ pkgstats_fns_from_archive <- function (path,
 
     if (!is.null (out) && !is.null (results_file)) {
 
-        out <- add_base_rmd_fn_names (out)
+        out <- rbind (out, base_rmd_fns_df ())
+        out <- out [which (!duplicated (out)), ]
 
         if (!grepl (.Platform$file.sep, results_file)) {
             results_file <- fs::path (".", results_file)
@@ -276,7 +277,7 @@ base_rmd_fns_df <- function () {
 
     fns_extra <- do.call (rbind, lapply (pkgs, function (p) {
         f <- ls (asNamespace (p))
-        v <- as.character (packageVersion (p))
+        v <- as.character (utils::packageVersion (p))
         data.frame (
             pkg = rep (p, length (f)),
             vers = rep (v, length (f)),
