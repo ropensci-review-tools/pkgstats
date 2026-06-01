@@ -22,11 +22,11 @@ package.
 Download latest version of 'pkgstats' data
 }
 \seealso{
-Other archive: 
-\code{\link{pkgstats_cran_current_from_full}()},
-\code{\link{pkgstats_fns_from_archive}()},
-\code{\link{pkgstats_fns_update}()},
-\code{\link{pkgstats_from_archive}()},
-\code{\link{pkgstats_update}()}
+Other archive:
+\code{\link[=pkgstats_cran_current_from_full]{pkgstats_cran_current_from_full()}},
+\code{\link[=pkgstats_fns_from_archive]{pkgstats_fns_from_archive()}},
+\code{\link[=pkgstats_fns_update]{pkgstats_fns_update()}},
+\code{\link[=pkgstats_from_archive]{pkgstats_from_archive()}},
+\code{\link[=pkgstats_update]{pkgstats_update()}}
 }
 \concept{archive}

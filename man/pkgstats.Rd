@@ -45,10 +45,10 @@ s <- pkgstats (path)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other stats: 
-\code{\link{desc_stats}()},
-\code{\link{loc_stats}()},
-\code{\link{pkgstats_summary}()},
-\code{\link{rd_stats}()}
+Other stats:
+\code{\link[=desc_stats]{desc_stats()}},
+\code{\link[=loc_stats]{loc_stats()}},
+\code{\link[=pkgstats_summary]{pkgstats_summary()}},
+\code{\link[=rd_stats]{rd_stats()}}
 }
 \concept{stats}

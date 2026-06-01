@@ -59,11 +59,11 @@ and the following columns:
 Trawl a local CRAN archive to extract function names only from all packages
 }
 \seealso{
-Other archive: 
-\code{\link{dl_pkgstats_data}()},
-\code{\link{pkgstats_cran_current_from_full}()},
-\code{\link{pkgstats_fns_update}()},
-\code{\link{pkgstats_from_archive}()},
-\code{\link{pkgstats_update}()}
+Other archive:
+\code{\link[=dl_pkgstats_data]{dl_pkgstats_data()}},
+\code{\link[=pkgstats_cran_current_from_full]{pkgstats_cran_current_from_full()}},
+\code{\link[=pkgstats_fns_update]{pkgstats_fns_update()}},
+\code{\link[=pkgstats_from_archive]{pkgstats_from_archive()}},
+\code{\link[=pkgstats_update]{pkgstats_update()}}
 }
 \concept{archive}

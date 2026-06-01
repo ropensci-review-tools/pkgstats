@@ -49,8 +49,8 @@ tags <- tags_data (path)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other tags: 
-\code{\link{ctags_install}()},
-\code{\link{ctags_test}()}
+Other tags:
+\code{\link[=ctags_install]{ctags_install()}},
+\code{\link[=ctags_test]{ctags_test()}}
 }
 \concept{tags}

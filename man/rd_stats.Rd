@@ -24,10 +24,10 @@ path <- extract_tarball (f)
 rd_stats (path)
 }
 \seealso{
-Other stats: 
-\code{\link{desc_stats}()},
-\code{\link{loc_stats}()},
-\code{\link{pkgstats}()},
-\code{\link{pkgstats_summary}()}
+Other stats:
+\code{\link[=desc_stats]{desc_stats()}},
+\code{\link[=loc_stats]{loc_stats()}},
+\code{\link[=pkgstats]{pkgstats()}},
+\code{\link[=pkgstats_summary]{pkgstats_summary()}}
 }
 \concept{stats}

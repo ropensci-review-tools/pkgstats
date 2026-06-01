@@ -26,11 +26,11 @@ summary statistics generated from the \link{pkgstats_summary} function.
 Reduce \code{data.frame} of full CRAN archive data to current packages only.
 }
 \seealso{
-Other archive: 
-\code{\link{dl_pkgstats_data}()},
-\code{\link{pkgstats_fns_from_archive}()},
-\code{\link{pkgstats_fns_update}()},
-\code{\link{pkgstats_from_archive}()},
-\code{\link{pkgstats_update}()}
+Other archive:
+\code{\link[=dl_pkgstats_data]{dl_pkgstats_data()}},
+\code{\link[=pkgstats_fns_from_archive]{pkgstats_fns_from_archive()}},
+\code{\link[=pkgstats_fns_update]{pkgstats_fns_update()}},
+\code{\link[=pkgstats_from_archive]{pkgstats_from_archive()}},
+\code{\link[=pkgstats_update]{pkgstats_update()}}
 }
 \concept{archive}

@@ -34,8 +34,8 @@ ctags_okay <- !is.null (tryCatch (
 }
 }
 \seealso{
-Other tags: 
-\code{\link{ctags_install}()},
-\code{\link{tags_data}()}
+Other tags:
+\code{\link[=ctags_install]{ctags_install()}},
+\code{\link[=tags_data]{tags_data()}}
 }
 \concept{tags}
