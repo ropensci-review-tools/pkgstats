@@ -1,4 +1,4 @@
-0.2.2.00x (dev release)
+0.2.3
 ===================
 
 ## Minor changes

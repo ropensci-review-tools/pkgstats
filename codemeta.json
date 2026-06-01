@@ -4,20 +4,17 @@
   "identifier": "pkgstats",
   "description": "Static code analyses for R packages using the external code-tagging libraries 'ctags' and 'gtags'. Static analyses enable packages to be analysed very quickly, generally a couple of seconds at most. The package also provides access to a database generating by applying the main function to the full 'CRAN' archive, enabling the statistical properties of any package to be compared with all other 'CRAN' packages.",
   "name": "pkgstats: Metrics of R Packages",
-  "relatedLink": [
-    "https://docs.ropensci.org/pkgstats/",
-    "https://CRAN.R-project.org/package=pkgstats"
-  ],
+  "relatedLink": ["https://docs.ropensci.org/pkgstats/", "https://CRAN.R-project.org/package=pkgstats"],
   "codeRepository": "https://github.com/ropensci-review-tools/pkgstats",
   "issueTracker": "https://github.com/ropensci-review-tools/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.2.2.029",
+  "version": "0.2.3",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.5.2 (2025-10-31)",
+  "runtimePlatform": "R version 4.6.0 (2026-04-24)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -63,6 +60,18 @@
     }
   ],
   "softwareSuggestions": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "ami",
+      "name": "ami",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ami"
+    },
     {
       "@type": "SoftwareApplication",
       "identifier": "callr",
@@ -215,6 +224,18 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "toml",
+      "name": "toml",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=toml"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "visNetwork",
       "name": "visNetwork",
       "provider": {
@@ -229,18 +250,6 @@
   "softwareRequirements": {
     "1": {
       "@type": "SoftwareApplication",
-      "identifier": "ami",
-      "name": "ami",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=ami"
-    },
-    "2": {
-      "@type": "SoftwareApplication",
       "identifier": "brio",
       "name": "brio",
       "provider": {
@@ -251,7 +260,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=brio"
     },
-    "3": {
+    "2": {
       "@type": "SoftwareApplication",
       "identifier": "checkmate",
       "name": "checkmate",
@@ -263,7 +272,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=checkmate"
     },
-    "4": {
+    "3": {
       "@type": "SoftwareApplication",
       "identifier": "dplyr",
       "name": "dplyr",
@@ -275,7 +284,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=dplyr"
     },
-    "5": {
+    "4": {
       "@type": "SoftwareApplication",
       "identifier": "fs",
       "name": "fs",
@@ -287,7 +296,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=fs"
     },
-    "6": {
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "igraph",
       "name": "igraph",
@@ -299,7 +308,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=igraph"
     },
-    "7": {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "memoise",
       "name": "memoise",
@@ -311,12 +320,12 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=memoise"
     },
-    "8": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "methods",
       "name": "methods"
     },
-    "9": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "readr",
       "name": "readr",
@@ -328,7 +337,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=readr"
     },
-    "10": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "roxygen2",
       "name": "roxygen2",
@@ -339,6 +348,18 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=roxygen2"
+    },
+    "10": {
+      "@type": "SoftwareApplication",
+      "identifier": "rprojroot",
+      "name": "rprojroot",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rprojroot"
     },
     "11": {
       "@type": "SoftwareApplication",
@@ -366,18 +387,10 @@
     },
     "SystemRequirements": "ctags, global"
   },
-  "fileSize": "36683.55KB",
+  "fileSize": "1786.902KB",
   "releaseNotes": "https://github.com/ropensci-review-tools/pkgstats/blob/main/NEWS.md",
   "readme": "https://github.com/ropensci-review-tools/pkgstats/blob/main/README.md",
-  "contIntegration": [
-    "https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check",
-    "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"
-  ],
+  "contIntegration": ["https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check.yaml", "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"],
   "developmentStatus": "https://www.repostatus.org/#active",
-  "keywords": [
-    "code-analysis",
-    "code-statistics",
-    "r",
-    "software-analysis"
-  ]
+  "keywords": ["code-analysis", "code-statistics", "r", "software-analysis"]
 }
