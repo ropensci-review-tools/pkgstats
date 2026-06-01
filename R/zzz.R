@@ -1,7 +1,12 @@
 # nocov start
 .onAttach <- function (libname, pkgname) { # nolint
 
-    if (!interactive () || ami::on_cran ()) {
+    exit_now <- !interactive ()
+    has_ami <- requireNamespace ("ami", quietly = TRUE)
+    if (requireNamespace ("ami", quietly = TRUE)) {
+        exit_now <- exit_now || ami::on_cran ()
+    }
+    if (exit_now) {
         return ()
     }
 

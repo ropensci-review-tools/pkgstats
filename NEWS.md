@@ -6,6 +6,7 @@
 - Fix bug in source docline count when there are no doclines
 - Fix output of translations in summary fn
 - Fix bug in `dl_pkgstats_data()` - defaulted to latest release, but data are fixed for a previous release.
+- Mv 'ami' to 'Suggests' only (#112; 'ami' might get archived on CRAN, so this pkg too)
 
 0.2.2
 ===================
