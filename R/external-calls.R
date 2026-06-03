@@ -45,6 +45,7 @@ external_call_network <- function (tags_r, path, pkg_name) {
 
 extract_call_content <- function (tags_r) {
 
+    tags_r$content <- iconv(tags_r$content, to = "UTF-8", sub = "")
     content <- gsub ("\\\"$", "", tags_r$content)
     # Remove everything within quotes - this presumes only single quotations in
     # each line, which is almost always the case.
