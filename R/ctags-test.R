@@ -60,6 +60,14 @@ ctags_test <- function (quiet = TRUE, noerror = FALSE) {
     cmd <- paste0 ("ctags --sort=no --fields=+KZ -f ", f_out, " ", f_in)
     system (cmd)
 
+    if (!fs::file_exists (f_out)) {
+      if (noerror) {
+        message ("Existing ctags installation is incomplete")
+        return (FALSE)
+      }
+      stop ("Existing ctags installation is incomplete")
+    }
+
     # remove header lines:
     x <- brio::read_lines (f_out)
     x <- x [-which (grepl ("^\\!", x))]
