@@ -22,21 +22,15 @@
 #' }
 #' @export
 ctags_test <- function (quiet = TRUE, noerror = FALSE) {
-    if (!has_ctags ()) {
-        if (noerror) {
-            message ("No ctags installation found.")
-            return (FALSE)
-        } else {
-            stop ("No ctags installation found.", call. = FALSE)
-        }
+
+    msg <- "No ctags installation found."
+    if (!has_ctags () && !ctags_test_check (msg, noerror = noerror)) {
+        return (FALSE)
     }
-    if (!has_gtags ()) {
-        if (noerror) {
-            message ("No GNU global installation found.")
-            return (FALSE)
-        } else {
-            stop ("No GNU global installation found.", call. = FALSE)
-        }
+
+    msg <- "No GNU global installation found."
+    if (!has_gtags () && !ctags_test_check (msg, noerror = noerror)) {
+        return (FALSE)
     }
 
     f_in <- tempfile (fileext = ".R")
@@ -64,11 +58,13 @@ ctags_test <- function (quiet = TRUE, noerror = FALSE) {
     )
 
     if (chk > 0L || !fs::file_exists (f_out)) {
-      if (noerror) {
-        message ("Existing ctags installation is incomplete")
-        return (FALSE)
-      }
-      stop ("Existing ctags installation is incomplete")
+        msg <- paste0 (
+            "Existing ctags installation is incomplete; ",
+            "this package requires 'universal-ctags'."
+        )
+        if (!ctags_test_check (msg, noerror = noerror)) {
+            return (FALSE)
+        }
     }
 
     # remove header lines:
@@ -172,6 +168,15 @@ ctags_test <- function (quiet = TRUE, noerror = FALSE) {
     }
 
     return (ret)
+}
+
+ctags_test_check <- function (msg = "", noerror = FALSE) {
+    if (noerror) {
+        message (msg)
+        return (FALSE)
+    } else {
+        stop (msg, call. = FALSE)
+    }
 }
 
 has_ctags <- function () {
