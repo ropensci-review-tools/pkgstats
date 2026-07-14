@@ -58,7 +58,10 @@ ctags_test <- function (quiet = TRUE, noerror = FALSE) {
 
     f_out <- fs::file_temp (ext = ".txt")
     cmd <- paste0 ("ctags --sort=no --fields=+KZ -f ", f_out, " ", f_in)
-    system (cmd)
+    chk <- tryCatch (
+        system (cmd),
+        error = function (e) 127L
+    )
 
     if (!fs::file_exists (f_out)) {
       if (noerror) {
