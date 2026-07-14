@@ -63,7 +63,7 @@ ctags_test <- function (quiet = TRUE, noerror = FALSE) {
         error = function (e) 127L
     )
 
-    if (!fs::file_exists (f_out)) {
+    if (chk > 0L || !fs::file_exists (f_out)) {
       if (noerror) {
         message ("Existing ctags installation is incomplete")
         return (FALSE)
