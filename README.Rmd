@@ -390,6 +390,7 @@ project, you agree to abide by its terms.
 
 
 
+
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
@@ -420,11 +421,33 @@ All contributions to this project are gratefully acknowledged using the [`allcon
 <a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=jeroen">jeroen</a>
 </td>
 <td align="center">
+<a href="https://github.com/e-kotov">
+<img src="https://avatars.githubusercontent.com/u/8681379?v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=e-kotov">e-kotov</a>
+</td>
+<td align="center">
+<a href="https://github.com/mcol">
+<img src="https://avatars.githubusercontent.com/u/6078177?v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=mcol">mcol</a>
+</td>
+<td align="center">
+<a href="https://github.com/maelle">
+<img src="https://avatars.githubusercontent.com/u/8360597?v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=maelle">maelle</a>
+</td>
+<td align="center">
 <a href="https://github.com/Bisaloo">
 <img src="https://avatars.githubusercontent.com/u/10783929?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=Bisaloo">Bisaloo</a>
 </td>
+</tr>
+
+
+<tr>
 <td align="center">
 <a href="https://github.com/thomaszwagerman">
 <img src="https://avatars.githubusercontent.com/u/36264706?v=4" width="100px;" alt=""/>
@@ -485,6 +508,16 @@ All contributions to this project are gratefully acknowledged using the [`allcon
 </td>
 </tr>
 
+
+<tr>
+<td align="center">
+<a href="https://github.com/etiennebacher">
+<img src="https://avatars.githubusercontent.com/u/52219252?u=66331618d799d2d4567ecab2812236c9928be368&v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+author%3Aetiennebacher">etiennebacher</a>
+</td>
+</tr>
+
 </table>
 
 
@@ -506,10 +539,16 @@ All contributions to this project are gratefully acknowledged using the [`allcon
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Anoamross">noamross</a>
 </td>
 <td align="center">
-<a href="https://github.com/maelle">
-<img src="https://avatars.githubusercontent.com/u/8360597?u=824f03caa87c92420352e3dd9a05470320a67412&v=4" width="100px;" alt=""/>
+<a href="https://github.com/schneiderpy">
+<img src="https://avatars.githubusercontent.com/u/77991319?u=4242d4c5942fced6368dd5c68221e6618092cbf8&v=4" width="100px;" alt=""/>
 </a><br>
-<a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Amaelle">maelle</a>
+<a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Aschneiderpy">schneiderpy</a>
+</td>
+<td align="center">
+<a href="https://github.com/ScottClaessens">
+<img src="https://avatars.githubusercontent.com/u/26170108?u=af7101b58069fc6dae648825e6aeb1bd4be561e0&v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3AScottClaessens">ScottClaessens</a>
 </td>
 <td align="center">
 <a href="https://github.com/mdsumner">
@@ -522,18 +561,6 @@ All contributions to this project are gratefully acknowledged using the [`allcon
 <img src="https://avatars.githubusercontent.com/u/4108564?u=503d9aecc5fadf069c75e493e5abf72c7537b06f&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Akellijohnson-NOAA">kellijohnson-NOAA</a>
-</td>
-<td align="center">
-<a href="https://github.com/ScottClaessens">
-<img src="https://avatars.githubusercontent.com/u/26170108?u=af7101b58069fc6dae648825e6aeb1bd4be561e0&v=4" width="100px;" alt=""/>
-</a><br>
-<a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3AScottClaessens">ScottClaessens</a>
-</td>
-<td align="center">
-<a href="https://github.com/schneiderpy">
-<img src="https://avatars.githubusercontent.com/u/77991319?u=4242d4c5942fced6368dd5c68221e6618092cbf8&v=4" width="100px;" alt=""/>
-</a><br>
-<a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Aschneiderpy">schneiderpy</a>
 </td>
 </tr>
 

@@ -355,201 +355,182 @@ project, you agree to abide by its terms.
 
 ## Contributors
 
+
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-
 <!-- prettier-ignore-start -->
-
 <!-- markdownlint-disable -->
 
-All contributions to this project are gratefully acknowledged using the
-[`allcontributors` package](https://github.com/ropensci/allcontributors)
-following the [allcontributors](https://allcontributors.org)
-specification. Contributions of any kind are welcome!
+All contributions to this project are gratefully acknowledged using the [`allcontributors` package](https://github.com/ropensci/allcontributors) following the [allcontributors](https://allcontributors.org) specification. Contributions of any kind are welcome!
 
 ### Code
 
 <table>
 
 <tr>
-
 <td align="center">
-
 <a href="https://github.com/mpadge">
 <img src="https://avatars.githubusercontent.com/u/6697851?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=mpadge">mpadge</a>
 </td>
-
 <td align="center">
-
 <a href="https://github.com/jhollist">
 <img src="https://avatars.githubusercontent.com/u/5438539?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=jhollist">jhollist</a>
 </td>
-
 <td align="center">
-
 <a href="https://github.com/jeroen">
 <img src="https://avatars.githubusercontent.com/u/216319?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=jeroen">jeroen</a>
 </td>
-
 <td align="center">
-
+<a href="https://github.com/e-kotov">
+<img src="https://avatars.githubusercontent.com/u/8681379?v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=e-kotov">e-kotov</a>
+</td>
+<td align="center">
+<a href="https://github.com/mcol">
+<img src="https://avatars.githubusercontent.com/u/6078177?v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=mcol">mcol</a>
+</td>
+<td align="center">
+<a href="https://github.com/maelle">
+<img src="https://avatars.githubusercontent.com/u/8360597?v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=maelle">maelle</a>
+</td>
+<td align="center">
 <a href="https://github.com/Bisaloo">
 <img src="https://avatars.githubusercontent.com/u/10783929?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=Bisaloo">Bisaloo</a>
 </td>
+</tr>
 
+
+<tr>
 <td align="center">
-
 <a href="https://github.com/thomaszwagerman">
 <img src="https://avatars.githubusercontent.com/u/36264706?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/commits?author=thomaszwagerman">thomaszwagerman</a>
 </td>
-
 </tr>
 
 </table>
+
 
 ### Issue Authors
 
 <table>
 
 <tr>
-
 <td align="center">
-
 <a href="https://github.com/helske">
 <img src="https://avatars.githubusercontent.com/u/1560448?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+author%3Ahelske">helske</a>
 </td>
-
 <td align="center">
-
 <a href="https://github.com/rpodcast">
 <img src="https://avatars.githubusercontent.com/u/1043111?u=bb3a363381b39a5172b817ae513c6d10ab1d239a&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+author%3Arpodcast">rpodcast</a>
 </td>
-
 <td align="center">
-
 <a href="https://github.com/assignUser">
 <img src="https://avatars.githubusercontent.com/u/16141871?u=b8095df6a10813031922a72335bd6579d5494c16&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+author%3AassignUser">assignUser</a>
 </td>
-
 <td align="center">
-
 <a href="https://github.com/GFabien">
 <img src="https://avatars.githubusercontent.com/u/39873986?u=0c2a28f666efccb0c0b9b23e8584749ab41da789&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+author%3AGFabien">GFabien</a>
 </td>
-
 <td align="center">
-
 <a href="https://github.com/pawelru">
 <img src="https://avatars.githubusercontent.com/u/12943682?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+author%3Apawelru">pawelru</a>
 </td>
-
 <td align="center">
-
 <a href="https://github.com/stitam">
 <img src="https://avatars.githubusercontent.com/u/49147718?u=c8736db475d31efad6ebd07b7bc76e4d7241d884&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+author%3Astitam">stitam</a>
 </td>
-
 <td align="center">
-
 <a href="https://github.com/willgearty">
 <img src="https://avatars.githubusercontent.com/u/7232514?v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+author%3Awillgearty">willgearty</a>
 </td>
+</tr>
 
+
+<tr>
+<td align="center">
+<a href="https://github.com/etiennebacher">
+<img src="https://avatars.githubusercontent.com/u/52219252?u=66331618d799d2d4567ecab2812236c9928be368&v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+author%3Aetiennebacher">etiennebacher</a>
+</td>
 </tr>
 
 </table>
+
 
 ### Issue Contributors
 
 <table>
 
 <tr>
-
 <td align="center">
-
 <a href="https://github.com/krlmlr">
 <img src="https://avatars.githubusercontent.com/u/1741643?u=caaf26641c159b84fe1b6d506f57fcea302a556c&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Akrlmlr">krlmlr</a>
 </td>
-
 <td align="center">
-
 <a href="https://github.com/noamross">
 <img src="https://avatars.githubusercontent.com/u/571752?u=49b086850e1716aa25615cea39250c51e085a5d8&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Anoamross">noamross</a>
 </td>
-
 <td align="center">
-
-<a href="https://github.com/maelle">
-<img src="https://avatars.githubusercontent.com/u/8360597?u=824f03caa87c92420352e3dd9a05470320a67412&v=4" width="100px;" alt=""/>
-</a><br>
-<a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Amaelle">maelle</a>
-</td>
-
-<td align="center">
-
-<a href="https://github.com/mdsumner">
-<img src="https://avatars.githubusercontent.com/u/4107631?u=77e928f4bb904a5c2e8927a02194b86662408329&v=4" width="100px;" alt=""/>
-</a><br>
-<a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Amdsumner">mdsumner</a>
-</td>
-
-<td align="center">
-
-<a href="https://github.com/kellijohnson-NOAA">
-<img src="https://avatars.githubusercontent.com/u/4108564?u=503d9aecc5fadf069c75e493e5abf72c7537b06f&v=4" width="100px;" alt=""/>
-</a><br>
-<a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Akellijohnson-NOAA">kellijohnson-NOAA</a>
-</td>
-
-<td align="center">
-
-<a href="https://github.com/ScottClaessens">
-<img src="https://avatars.githubusercontent.com/u/26170108?u=af7101b58069fc6dae648825e6aeb1bd4be561e0&v=4" width="100px;" alt=""/>
-</a><br>
-<a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3AScottClaessens">ScottClaessens</a>
-</td>
-
-<td align="center">
-
 <a href="https://github.com/schneiderpy">
 <img src="https://avatars.githubusercontent.com/u/77991319?u=4242d4c5942fced6368dd5c68221e6618092cbf8&v=4" width="100px;" alt=""/>
 </a><br>
 <a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Aschneiderpy">schneiderpy</a>
 </td>
-
+<td align="center">
+<a href="https://github.com/ScottClaessens">
+<img src="https://avatars.githubusercontent.com/u/26170108?u=af7101b58069fc6dae648825e6aeb1bd4be561e0&v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3AScottClaessens">ScottClaessens</a>
+</td>
+<td align="center">
+<a href="https://github.com/mdsumner">
+<img src="https://avatars.githubusercontent.com/u/4107631?u=77e928f4bb904a5c2e8927a02194b86662408329&v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Amdsumner">mdsumner</a>
+</td>
+<td align="center">
+<a href="https://github.com/kellijohnson-NOAA">
+<img src="https://avatars.githubusercontent.com/u/4108564?u=503d9aecc5fadf069c75e493e5abf72c7537b06f&v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/ropensci-review-tools/pkgstats/issues?q=is%3Aissue+commenter%3Akellijohnson-NOAA">kellijohnson-NOAA</a>
+</td>
 </tr>
 
 </table>
 
 <!-- markdownlint-enable -->
-
 <!-- prettier-ignore-end -->
-
 <!-- ALL-CONTRIBUTORS-LIST:END -->
