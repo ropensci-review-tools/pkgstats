@@ -1,7 +1,9 @@
 0.2.3.00x (dev release)
 ===================
 
+## Minor changes
 
+- Improve diagnosis of wrong ctags version on MacOS (#115; thanks to @mcol)
 
 0.2.3
 ===================
