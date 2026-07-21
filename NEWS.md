@@ -1,6 +1,10 @@
 0.2.3.00x (dev release)
 ===================
 
+## Major changes
+
+- Added new `fn` parameter to `plot_network()`, to enable plots only of connections to specific functions.
+
 ## Minor changes
 
 - Improve diagnosis of wrong ctags version on MacOS (#115; thanks to @mcol)
