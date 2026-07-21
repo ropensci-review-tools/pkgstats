@@ -21,8 +21,9 @@
 #' f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 #' \donttest{
 #' p <- pkgstats (f)
-#' plot_network (p)
+#' net <- plot_network (p, plot = FALSE)
 #' }
+#' # use default 'plot = TRUE' to automatically open network in browser.
 #' @export
 plot_network <- function (s, plot = TRUE, vis_save = NULL) {
 

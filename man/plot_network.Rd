@@ -35,7 +35,8 @@ internet connection or additional R packages are required to view it.
 f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 \donttest{
 p <- pkgstats (f)
-plot_network (p)
+net <- plot_network (p, plot = FALSE)
 }
+# use default 'plot = TRUE' to automatically open network in browser.
 }
 \concept{output}
