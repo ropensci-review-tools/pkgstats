@@ -75,6 +75,7 @@ plot_network <- function (s, fn = NULL, plot = TRUE, vis_save = NULL) {
             group = nodes$language,
             n = NA_integer_,
             value = 1L,
+            file = nodes$file_name,
             stringsAsFactors = FALSE
         )
         edges <- data.frame (
@@ -109,6 +110,7 @@ plot_network <- function (s, fn = NULL, plot = TRUE, vis_save = NULL) {
             label = obj$fn_name,
             name = obj$fn_name,
             language = obj$language,
+            file = obj$file_name,
             stringsAsFactors = FALSE
         )
         nodes$group <- nodes$language
@@ -183,7 +185,7 @@ pkgstats_network_html <- function (nodes, edges, title, subtitle = "") {
     requireNamespace ("jsonlite", quietly = TRUE)
 
     data <- list (
-        nodes = nodes [, c ("id", "label", "group", "value")],
+        nodes = nodes [, c ("id", "label", "group", "value", "file")],
         edges = edges [, c ("from", "to", "width")]
     )
     data_json <- jsonlite::toJSON (

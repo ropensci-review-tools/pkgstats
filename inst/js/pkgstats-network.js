@@ -116,7 +116,10 @@
       .call (drag (simulation))
       .on ("mouseover", function (event, d) {
         tooltip.transition ().duration (100).style ("opacity", 0.95);
-        tooltip.html ("<strong>" + d.label + "</strong><br>" + d.group)
+        tooltip.html (
+          "<strong>" + d.label + "</strong><br>" +
+          d.file
+        )
           .style ("left", (event.pageX + 12) + "px")
           .style ("top", (event.pageY - 20) + "px");
       })
@@ -127,10 +130,6 @@
       .on ("mouseout", function () {
         tooltip.transition ().duration (200).style ("opacity", 0);
       });
-
-    node.append ("title").text (function (d) {
-      return d.label;
-    });
 
     var label = g.append ("g")
       .attr ("class", "pkgstats-node-labels")

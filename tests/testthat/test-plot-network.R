@@ -18,7 +18,7 @@ test_that ("plot-network", {
 
     nodes0 <- net0$nodes
     edges0 <- net0$edges
-    expect_equal (ncol (nodes0), 7L)
+    expect_equal (ncol (nodes0), 8L)
     expect_equal (ncol (edges0), 6L)
     expect_gt (nrow (nodes0), 50L)
     expect_gt (nrow (edges0), 50L)
