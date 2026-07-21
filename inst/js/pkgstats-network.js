@@ -83,11 +83,13 @@
       updateHighlight ();
     });
 
-    svg.call (d3.zoom ()
+    var zoom = d3.zoom ()
       .scaleExtent ([0.1, 8])
       .on ("zoom", function (event) {
         g.attr ("transform", event.transform);
-      }));
+      });
+
+    svg.call (zoom);
 
     var simulation = d3.forceSimulation (nodes)
       .force ("link", d3.forceLink (links).id (function (d) {
@@ -141,6 +143,58 @@
         });
     }
 
+    // pan/zoom the view so the selected node and its direct connections are
+    // centred and occupy at most half of the viewBox, in either dimension
+    function zoomToSelection (id) {
+      var selected = nodes.find (function (d) {
+        return d.id === id;
+      });
+      if (!selected) return;
+
+      var connectedIds = new Set ([id]);
+      links.forEach (function (l) {
+        if (l.source.id === id) connectedIds.add (l.target.id);
+        if (l.target.id === id) connectedIds.add (l.source.id);
+      });
+      var clusterNodes = nodes.filter (function (d) {
+        return connectedIds.has (d.id);
+      });
+
+      var x0 = d3.min (clusterNodes, function (d) {
+        return d.x - radius (d.value);
+      });
+      var x1 = d3.max (clusterNodes, function (d) {
+        return d.x + radius (d.value);
+      });
+      var y0 = d3.min (clusterNodes, function (d) {
+        return d.y - radius (d.value);
+      });
+      var y1 = d3.max (clusterNodes, function (d) {
+        return d.y + radius (d.value);
+      });
+
+      var bw = Math.max (x1 - x0, 1);
+      var bh = Math.max (y1 - y0, 1);
+      var cx = (x0 + x1) / 2;
+      var cy = (y0 + y1) / 2;
+
+      var scale = Math.min (
+        (width * 0.5) / bw,
+        (height * 0.5) / bh,
+        8
+      );
+      scale = Math.max (scale, 0.1);
+
+      var transform = d3.zoomIdentity
+        .translate (width / 2, height / 2)
+        .scale (scale)
+        .translate (-cx, -cy);
+
+      svg.transition ()
+        .duration (750)
+        .call (zoom.transform, transform);
+    }
+
     var select = document.getElementById ("pkgstats-node-select");
     if (select) {
       var placeholder = document.createElement ("option");
@@ -162,6 +216,7 @@
       select.addEventListener ("change", function () {
         selectedNodeId = select.value || null;
         updateHighlight ();
+        if (selectedNodeId) zoomToSelection (selectedNodeId);
       });
     }
 
