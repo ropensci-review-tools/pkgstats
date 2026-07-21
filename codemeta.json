@@ -4,20 +4,17 @@
   "identifier": "pkgstats",
   "description": "Static code analyses for R packages using the external code-tagging libraries 'ctags' and 'gtags'. Static analyses enable packages to be analysed very quickly, generally a couple of seconds at most. The package also provides access to a database generating by applying the main function to the full 'CRAN' archive, enabling the statistical properties of any package to be compared with all other 'CRAN' packages.",
   "name": "pkgstats: Metrics of R Packages",
-  "relatedLink": [
-    "https://docs.ropensci.org/pkgstats/",
-    "https://CRAN.R-project.org/package=pkgstats"
-  ],
+  "relatedLink": ["https://docs.ropensci.org/pkgstats/", "https://CRAN.R-project.org/package=pkgstats"],
   "codeRepository": "https://github.com/ropensci-review-tools/pkgstats",
   "issueTracker": "https://github.com/ropensci-review-tools/pkgstats/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.2.3.011",
+  "version": "0.2.3.12",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.6.0 (2026-04-24)",
+  "runtimePlatform": "R version 4.6.1 (2026-06-24)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -224,18 +221,6 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=toml"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "visNetwork",
-      "name": "visNetwork",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=visNetwork"
     }
   ],
   "softwareRequirements": {
@@ -378,18 +363,10 @@
     },
     "SystemRequirements": "ctags, global"
   },
-  "fileSize": "1786.926KB",
+  "fileSize": "2034.976KB",
   "releaseNotes": "https://github.com/ropensci-review-tools/pkgstats/blob/main/NEWS.md",
   "readme": "https://github.com/ropensci-review-tools/pkgstats/blob/main/README.md",
-  "contIntegration": [
-    "https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check.yaml",
-    "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"
-  ],
+  "contIntegration": ["https://github.com/ropensci-review-tools/pkgstats/actions?query=workflow%3AR-CMD-check.yaml", "https://app.codecov.io/gh/ropensci-review-tools/pkgstats"],
   "developmentStatus": "https://www.repostatus.org/#active",
-  "keywords": [
-    "code-analysis",
-    "code-statistics",
-    "r",
-    "software-analysis"
-  ]
+  "keywords": ["code-analysis", "code-statistics", "r", "software-analysis"]
 }
