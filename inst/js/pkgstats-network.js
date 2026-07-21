@@ -53,10 +53,12 @@
       .attr ("style", "max-width: 100%; height: auto;");
 
     var highlightColor = "#e6194b";
+    // default stroke/arrow colour for edges
+    var edgeColor = "#888";
 
     svg.append ("defs").selectAll ("marker")
       .data ([
-        { id: "pkgstats-arrow", fill: "#999" },
+        { id: "pkgstats-arrow", fill: edgeColor },
         { id: "pkgstats-arrow-highlight", fill: highlightColor },
       ])
       .join ("marker")
@@ -105,7 +107,7 @@
       .selectAll ("line")
       .data (links)
       .join ("line")
-      .attr ("stroke", "#999")
+      .attr ("stroke", edgeColor)
       .attr ("stroke-opacity", 0.6)
       .attr ("stroke-width", function (d) {
         return strokeWidth (d.width);
@@ -122,7 +124,7 @@
     function updateHighlight () {
       link
         .attr ("stroke", function (d) {
-          return isConnected (d) ? highlightColor : "#999";
+          return isConnected (d) ? highlightColor : edgeColor;
         })
         .attr ("stroke-opacity", function (d) {
           return selectedNodeId !== null && !isConnected (d) ? 0.15 : 0.6;
