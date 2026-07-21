@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>__TITLE__</title>
+<style>
+__CSS__
+</style>
+</head>
+<body>
+<div id="pkgstats-header">
+<h1>__TITLE__</h1>
+<p id="pkgstats-subtitle">__SUBTITLE__</p>
+</div>
+<div id="pkgstats-controls">
+<label for="pkgstats-node-select">Highlight function:</label>
+<select id="pkgstats-node-select"></select>
+</div>
+<div id="pkgstats-legend"></div>
+<div id="pkgstats-network"></div>
+<script>
+__D3_JS__
+</script>
+<script>
+__NETWORK_JS__
+</script>
+<script>
+var pkgstatsData = __DATA__;
+pkgstatsNetworkPlot (pkgstatsData);
+</script>
+</body>
+</html>

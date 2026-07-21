@@ -8,12 +8,21 @@ test_that ("plot-network", {
     path <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
     s <- pkgstats (path)
 
-    requireNamespace ("visNetwork")
     expect_silent (
         net <- plot_network (s, plot = FALSE)
     )
 
-    expect_s3_class (net, "visNetwork")
+    expect_s3_class (net, "pkgstats_network")
     expect_type (net, "list")
     expect_true (length (net) > 1L)
+
+    nodes0 <- net$nodes
+    edges0 <- net$edges
+    expect_equal (ncol (nodes0), 8L)
+    expect_equal (ncol (edges0), 6L)
+    expect_gt (nrow (nodes0), 50L)
+    expect_gt (nrow (edges0), 50L)
+
+    expect_type (net$html, "character")
+    expect_true (grepl ("pkgstatsNetworkPlot", net$html, fixed = TRUE))
 })

@@ -2,37 +2,41 @@
 % Please edit documentation in R/plot.R
 \name{plot_network}
 \alias{plot_network}
-\title{Plot interactive \pkg{visNetwork} visualisation of object-relationship
-network of package.}
+\title{Plot interactive visualisation of object-relationship network of package.}
 \usage{
 plot_network(s, plot = TRUE, vis_save = NULL)
 }
 \arguments{
 \item{s}{Package statistics obtained from \link{pkgstats} function.}
 
-\item{plot}{If \code{TRUE}, plot the network using \pkg{visNetwork} which opens an
-interactive browser pane.}
+\item{plot}{If \code{TRUE}, plot the network which opens an interactive browser
+pane.}
 
 \item{vis_save}{Name of local file in which to save \code{html} file of network
 visualisation (will override \code{plot} to \code{FALSE}).}
 }
 \value{
-(Invisibly) A \pkg{visNetwork} representation of the package network.
+(Invisibly) A \code{pkgstats_network} object: a list of the \code{nodes} and
+\code{edges} used to construct the network, along with the self-contained
+\code{html} document itself.
 }
 \description{
-Plot interactive \pkg{visNetwork} visualisation of object-relationship
-network of package.
+Plot interactive visualisation of object-relationship network of package.
 }
 \note{
 Edge thicknesses are scaled to centrality within the package function
 call network. Node sizes are scaled to numbers of times each function is
-called from all other functions within a package.
+called from all other functions within a package. The visualisation is
+rendered with a small bundle of \pkg{D3}-based JavaScript shipped with
+this package (see \code{system.file ("js", package = "pkgstats")}), so no
+internet connection or additional R packages are required to view it.
 }
 \examples{
 f <- system.file ("extdata", "pkgstats_9.9.tar.gz", package = "pkgstats")
 \donttest{
 p <- pkgstats (f)
-plot_network (p)
+net <- plot_network (p, plot = FALSE)
 }
+# use default 'plot = TRUE' to automatically open network in browser.
 }
 \concept{output}

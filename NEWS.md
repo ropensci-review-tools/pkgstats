@@ -1,6 +1,11 @@
 0.2.3.00x (dev release)
 ===================
 
+## Major changes
+
+- `plot_network()` no longer depends on the 'visNetwork' package; the interactive network visualisation is now rendered with a bundled 'D3'-based JavaScript skeleton shipped in `inst/js` (see #118)
+- That new network plot includes additional interactive capabilities, like function selection and highlighting.
+
 ## Minor changes
 
 - Improve diagnosis of wrong ctags version on MacOS (#115; thanks to @mcol)
