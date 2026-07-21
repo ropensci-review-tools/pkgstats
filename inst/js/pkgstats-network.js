@@ -52,11 +52,16 @@
       .attr ("height", height)
       .attr ("style", "max-width: 100%; height: auto;");
 
+    var highlightColor = "#e6194b";
+
     svg.append ("defs").selectAll ("marker")
-      .data (["pkgstats-arrow"])
+      .data ([
+        { id: "pkgstats-arrow", fill: "#999" },
+        { id: "pkgstats-arrow-highlight", fill: highlightColor },
+      ])
       .join ("marker")
       .attr ("id", function (d) {
-        return d;
+        return d.id;
       })
       .attr ("viewBox", "0 -5 10 10")
       .attr ("refX", 16)
@@ -65,10 +70,17 @@
       .attr ("markerHeight", 5)
       .attr ("orient", "auto")
       .append ("path")
-      .attr ("fill", "#999")
+      .attr ("fill", function (d) {
+        return d.fill;
+      })
       .attr ("d", "M0,-5L10,0L0,5");
 
     var g = svg.append ("g");
+
+    svg.on ("click", function () {
+      selectedNodeId = null;
+      updateHighlight ();
+    });
 
     svg.call (d3.zoom ()
       .scaleExtent ([0.1, 8])
@@ -87,15 +99,42 @@
       }));
 
     var link = g.append ("g")
-      .attr ("stroke", "#999")
-      .attr ("stroke-opacity", 0.6)
       .selectAll ("line")
       .data (links)
       .join ("line")
+      .attr ("stroke", "#999")
+      .attr ("stroke-opacity", 0.6)
       .attr ("stroke-width", function (d) {
         return strokeWidth (d.width);
       })
       .attr ("marker-end", "url(#pkgstats-arrow)");
+
+    var selectedNodeId = null;
+
+    function isConnected (d) {
+      return selectedNodeId !== null &&
+        (d.source.id === selectedNodeId || d.target.id === selectedNodeId);
+    }
+
+    function updateHighlight () {
+      link
+        .attr ("stroke", function (d) {
+          return isConnected (d) ? highlightColor : "#999";
+        })
+        .attr ("stroke-opacity", function (d) {
+          return selectedNodeId !== null && !isConnected (d) ? 0.15 : 0.6;
+        })
+        .attr ("stroke-width", function (d) {
+          return isConnected (d) ?
+            strokeWidth (d.width) + 4 :
+            strokeWidth (d.width);
+        })
+        .attr ("marker-end", function (d) {
+          return isConnected (d) ?
+            "url(#pkgstats-arrow-highlight)" :
+            "url(#pkgstats-arrow)";
+        });
+    }
 
     var tooltip = d3.select ("body").append ("div")
       .attr ("class", "pkgstats-tooltip")
@@ -113,7 +152,13 @@
       .attr ("fill", function (d) {
         return color (d.group);
       })
+      .style ("cursor", "pointer")
       .call (drag (simulation))
+      .on ("click", function (event, d) {
+        event.stopPropagation ();
+        selectedNodeId = (selectedNodeId === d.id) ? null : d.id;
+        updateHighlight ();
+      })
       .on ("mouseover", function (event, d) {
         tooltip.transition ().duration (100).style ("opacity", 0.95);
         tooltip.html (
