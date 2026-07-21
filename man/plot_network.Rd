@@ -4,13 +4,10 @@
 \alias{plot_network}
 \title{Plot interactive visualisation of object-relationship network of package.}
 \usage{
-plot_network(s, fn = NULL, plot = TRUE, vis_save = NULL)
+plot_network(s, plot = TRUE, vis_save = NULL)
 }
 \arguments{
 \item{s}{Package statistics obtained from \link{pkgstats} function.}
-
-\item{fn}{Optional name of function. If specified, plot only network
-connections to or from the specified function.}
 
 \item{plot}{If \code{TRUE}, plot the network which opens an interactive browser
 pane.}

@@ -3,8 +3,8 @@
 
 ## Major changes
 
-- Added new `fn` parameter to `plot_network()`, to enable plots only of connections to specific functions.
-- `plot_network()` no longer depends on the 'visNetwork' package; the interactive network visualisation is now rendered with a bundled 'D3'-based JavaScript skeleton shipped in `inst/js`.
+- `plot_network()` no longer depends on the 'visNetwork' package; the interactive network visualisation is now rendered with a bundled 'D3'-based JavaScript skeleton shipped in `inst/js` (see #118)
+- That new network plot includes additional interactive capabilities, like function selection and highlighting.
 
 ## Minor changes
 

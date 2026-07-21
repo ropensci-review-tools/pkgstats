@@ -1,8 +1,6 @@
 #' Plot interactive visualisation of object-relationship network of package.
 #'
 #' @param s Package statistics obtained from \link{pkgstats} function.
-#' @param fn Optional name of function. If specified, plot only network
-#' connections to or from the specified function.
 #' @param plot If `TRUE`, plot the network which opens an interactive browser
 #' pane.
 #' @param vis_save Name of local file in which to save `html` file of network
@@ -26,22 +24,10 @@
 #' plot_network (p)
 #' }
 #' @export
-plot_network <- function (s, fn = NULL, plot = TRUE, vis_save = NULL) {
+plot_network <- function (s, plot = TRUE, vis_save = NULL) {
 
     # suppress no visible binding notes:
     kind <- NULL
-
-    network <- s$network
-    rm_isolated_nodes <- FALSE
-    if (!is.null (fn)) {
-        checkmate::assert_character (fn)
-        if (!all (fn %in% s$objects$fn_name)) {
-            stop ("fn '", fn, "' not found.")
-        }
-        index <- which (s$network$from %in% fn | s$network$to %in% fn)
-        network <- network [index, , drop = FALSE]
-        rm_isolated_nodes <- TRUE
-    }
 
     if (!all (c (
         "loc", "vignettes", "data_stats", "desc",
@@ -56,11 +42,11 @@ plot_network <- function (s, fn = NULL, plot = TRUE, vis_save = NULL) {
 
     pkg_title <- paste0 (s$desc$package, " network")
 
-    if (nrow (network) == 0L && nrow (s$objects) == 0L) {
+    if (nrow (s$network) == 0L && nrow (s$objects) == 0L) {
 
         return (NULL)
 
-    } else if (nrow (network) == 0L) {
+    } else if (nrow (s$network) == 0L) {
 
         # pkg has no internal fn_calls, so plot network of vertices only (#12)
         index <- which (s$objects$kind == "function" &
@@ -92,10 +78,10 @@ plot_network <- function (s, fn = NULL, plot = TRUE, vis_save = NULL) {
     } else {
 
         edges <- data.frame (
-            from = network$from,
-            to = network$to,
-            centrality = network$centrality_undir,
-            language = network$language,
+            from = s$network$from,
+            to = s$network$to,
+            centrality = s$network$centrality_undir,
+            language = s$network$language,
             stringsAsFactors = FALSE
         )
         from <- language <- centrality <- NULL # suppress no visible binding msg
@@ -120,11 +106,6 @@ plot_network <- function (s, fn = NULL, plot = TRUE, vis_save = NULL) {
         nodes <- dplyr::left_join (nodes, n, by = c ("name" = "to"))
         nodes$value <- nodes$n
         nodes$value [is.na (nodes$value)] <- 1
-
-        if (rm_isolated_nodes) {
-            index <- which (nodes$name %in% c (network$from, network$to))
-            nodes <- nodes [index, , drop = FALSE]
-        }
 
         edges$width <- edges$centrality * 10 / max (edges$centrality)
 
