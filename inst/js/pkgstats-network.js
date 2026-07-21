@@ -79,6 +79,7 @@
 
     svg.on ("click", function () {
       selectedNodeId = null;
+      if (select) select.value = "";
       updateHighlight ();
     });
 
@@ -134,11 +135,50 @@
             "url(#pkgstats-arrow-highlight)" :
             "url(#pkgstats-arrow)";
         });
+      nodeHighlight
+        .attr ("opacity", function (d) {
+          return d.id === selectedNodeId ? 0.9 : 0;
+        });
+    }
+
+    var select = document.getElementById ("pkgstats-node-select");
+    if (select) {
+      var placeholder = document.createElement ("option");
+      placeholder.value = "";
+      placeholder.textContent = "(none)";
+      select.appendChild (placeholder);
+
+      nodes.slice ()
+        .sort (function (a, b) {
+          return a.label.localeCompare (b.label);
+        })
+        .forEach (function (d) {
+          var option = document.createElement ("option");
+          option.value = d.id;
+          option.textContent = d.label;
+          select.appendChild (option);
+        });
+
+      select.addEventListener ("change", function () {
+        selectedNodeId = select.value || null;
+        updateHighlight ();
+      });
     }
 
     var tooltip = d3.select ("body").append ("div")
       .attr ("class", "pkgstats-tooltip")
       .style ("opacity", 0);
+
+    var nodeHighlight = g.append ("g")
+      .selectAll ("circle")
+      .data (nodes)
+      .join ("circle")
+      .attr ("class", "pkgstats-node-highlight")
+      .attr ("r", function (d) {
+        return radius (d.value) + 5;
+      })
+      .attr ("fill", highlightColor)
+      .attr ("opacity", 0);
 
     var node = g.append ("g")
       .attr ("stroke", "#fff")
@@ -157,6 +197,7 @@
       .on ("click", function (event, d) {
         event.stopPropagation ();
         selectedNodeId = (selectedNodeId === d.id) ? null : d.id;
+        if (select) select.value = selectedNodeId || "";
         updateHighlight ();
       })
       .on ("mouseover", function (event, d) {
@@ -201,6 +242,13 @@
           return d.target.y;
         });
       node
+        .attr ("cx", function (d) {
+          return d.x;
+        })
+        .attr ("cy", function (d) {
+          return d.y;
+        });
+      nodeHighlight
         .attr ("cx", function (d) {
           return d.x;
         })
