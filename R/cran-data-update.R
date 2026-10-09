@@ -83,9 +83,13 @@ pkgstats_update <- function (upload = TRUE) {
         stats$date <- as.POSIXct (stats$date, "%y-%m-%d %H-%M-%S")
     }
 
-    stats <- rbind (stats_prev, stats [which (!is.na (stats$package)), ])
+    # The two data sets are not in sync: 'fn_names' holds current packages
+    # only, and lacks packages for which no function names were found. Packages
+    # listed as new for one may thus already be present in the other, so each
+    # is appended only for combinations absent from its own previous data.
+    stats <- append_new_pkgs (stats_prev, stats)
     stats_current <- pkgstats_cran_current_from_full (stats)
-    fn_names <- rbind (fn_names_prev, fn_names [which (!is.na (fn_names$package)), ])
+    fn_names <- append_new_pkgs (fn_names_prev, fn_names)
 
     # Reduce fn_names to only current pkgs:
     stats_pkgs_current <- paste0 (stats_current$package, "_", stats_current$version)
