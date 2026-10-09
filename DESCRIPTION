@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.2.4.003
+Version: 0.2.4.004
 Authors@R: 
     c(person("Mark", "Padgham", , "mark.padgham@email.com", role = c("aut", "cre"),
              comment = c(ORCID = "0000-0003-2172-5265")),
@@ -43,6 +43,7 @@ Suggests:
     parallel,
     piggyback,
     pkgbuild,
+    quarto,
     Rcpp,
     rmarkdown,
     testthat (>= 3.0.0),
@@ -50,8 +51,9 @@ Suggests:
     toml
 LinkingTo: 
     cpp11
-VignetteBuilder: 
-    knitr
+VignetteBuilder:
+    knitr,
+    quarto
 Config/testthat/edition: 3
 Config/ropensci/maintainer: staff
 Encoding: UTF-8

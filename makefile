@@ -1,5 +1,5 @@
 LFILE = README
-VIGNETTE = pkgstats
+VIGNETTE = pkgstats-data
 
 all: help
 
