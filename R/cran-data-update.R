@@ -23,7 +23,7 @@ pkgstats_update <- function (upload = TRUE) {
     results_path <- fs::dir_create (fs::path (fs::path_temp (), "pkgstats-results"))
 
     stats_prev_path <- dl_prev_data (results_path, what = "all")
-    stats_prev <- rm_duplicate_rows (readRDS (stats_prev_path))
+    stats_prev <- restore_column_types (rm_duplicate_rows (readRDS (stats_prev_path)))
     fn_names_prev_path <- dl_prev_data (results_path, what = "fn_names")
     fn_names_prev <- rm_duplicate_rows (readRDS (fn_names_prev_path))
 
@@ -66,7 +66,9 @@ pkgstats_update <- function (upload = TRUE) {
             # 'one_summary_from_archive()' can only get names and versions from
             # tarball paths, not from extracted directories, so failed
             # analyses have to be named here.
-            if (is.na (stats$package)) {
+            # A failed analysis is named "" rather than NA, because
+            # 'get_pkg_version()' finds no version in a directory name.
+            if (is.na (stats$package) || !nzchar (stats$package)) {
                 pkg_vers <- get_pkg_version (paste0 (new_cran_pkgs [p], ".tar.gz"))
                 stats ["package"] <- pkg_vers [1]
                 stats ["version"] <- pkg_vers [2]
@@ -85,7 +87,7 @@ pkgstats_update <- function (upload = TRUE) {
         list (stats = stats, fn_names = fn_names)
     })
 
-    stats <- do.call (rbind, lapply (res, function (i) i$stats))
+    stats <- rbind_summaries (lapply (res, function (i) i$stats))
     fn_names <- do.call (rbind, lapply (res, function (i) i$fn_names))
 
     if (!inherits (stats$date, "POSIXt")) {
@@ -106,6 +108,9 @@ pkgstats_update <- function (upload = TRUE) {
         "pkgstats-CRAN-current.Rds" = stats_current,
         "pkgstats-fn-names.Rds" = fn_names
     )
+
+    check_column_types (stats)
+    check_column_types (stats_current)
 
     for (i in seq_along (dat)) {
         fpath <- fs::path (results_path, names (dat) [i])
@@ -204,6 +209,86 @@ rm_duplicate_rows <- function (prev_results) {
     rownames (out) <- NULL
 
     return (out)
+}
+
+#' Columns of summary data which hold text. All others except "date" are
+#' numeric.
+#' @noRd
+summary_char_cols <- c (
+    "package", "version", "license", "translations", "urls", "bugs",
+    "depends", "imports", "suggests", "enhances", "linking_to", "languages",
+    "external_calls"
+)
+
+summary_num_cols <- function (x) {
+    setdiff (names (x), c (summary_char_cols, "date"))
+}
+
+#' Restore numeric columns of summary data which have been coerced to
+#' character, and drop rows which hold error messages rather than results.
+#'
+#' Results from 'mclapply' include errors as "try-error" strings, and binding
+#' one of those to summary data coerces every column to character (as in the
+#' data uploaded on 2026-10-09). Such rows have the same message in every
+#' column.
+#' @noRd
+restore_column_types <- function (x) {
+
+    if (!inherits (x, "data.frame") || !"files_R" %in% names (x)) {
+        return (x)
+    }
+
+    err_rows <- which (grepl ("^Error", x$package) & x$package == x$version)
+    if (length (err_rows) > 0L) {
+        x <- x [-err_rows, ]
+        rownames (x) <- NULL
+    }
+
+    for (i in summary_num_cols (x)) {
+        if (!is.character (x [[i]])) {
+            next
+        }
+        v <- suppressWarnings (as.numeric (x [[i]]))
+        if (any (is.na (v) & !is.na (x [[i]]) & x [[i]] != "NaN")) {
+            stop (
+                "Column [", i, "] has values which are not numbers",
+                call. = FALSE
+            )
+        }
+        vf <- v [which (is.finite (v))]
+        if (!any (is.nan (v)) && all (vf == round (vf)) &&
+            all (abs (vf) < .Machine$integer.max)) {
+            v <- as.integer (v)
+        }
+        x [[i]] <- v
+    }
+
+    if (is.character (x$date)) {
+        x$date <- as.POSIXct (x$date, format = "%Y-%m-%d %H:%M:%S", tz = "UTC")
+    }
+
+    return (x)
+}
+
+#' Error unless all numeric columns of summary data are numeric. Called before
+#' upload, because 'pkgcheck' compares packages against these data, and fails
+#' on character columns.
+#' @noRd
+check_column_types <- function (x) {
+
+    nms <- summary_num_cols (x)
+    ok <- vapply (nms, function (i) {
+        is.numeric (x [[i]]) || all (is.na (x [[i]]))
+    }, logical (1L))
+    if (!all (ok)) {
+        stop (
+            "Columns which should be numeric are not: ",
+            paste (nms [!ok], collapse = ", "),
+            call. = FALSE
+        )
+    }
+
+    invisible (TRUE)
 }
 
 check_prev_results <- function (prev_results) {

@@ -1,6 +1,11 @@
 0.2.4.00x (dev release)
 ===================
 
+## Bug fixes
+
+- Archive trawls run in parallel no longer share log files between workers. A worker deleting another's log file made 'mclapply' return an error string, and binding that to the results coerced every column to character, as in the data uploaded on 2026-10-09. Failed results are now dropped with a warning, numeric columns are restored when previous data are read, and `pkgstats_update()` errors before upload if any numeric column is not numeric.
+- Packages which fail analysis in `pkgstats_update()` are now named by package and version; they were previously named `""`.
+
 0.2.4
 ===================
 

@@ -164,7 +164,7 @@ pkgstats_from_archive <- function (path,
                     })
                 }
 
-                saveRDS (do.call (rbind, res), fname)
+                saveRDS (rbind_summaries (res), fname)
             }
 
             results_files <- c (results_files, fname)
@@ -189,6 +189,27 @@ pkgstats_from_archive <- function (path,
     }
 
     invisible (out)
+}
+
+#' Bind a list of single-package summaries, dropping anything which is not a
+#' `data.frame`. 'mclapply' returns errors as "try-error" character strings,
+#' and binding one of those coerces every column of the result to character.
+#' @noRd
+rbind_summaries <- function (res) {
+
+    res <- res [which (!vapply (res, is.null, logical (1L)))]
+    is_df <- vapply (res, is.data.frame, logical (1L))
+    if (any (!is_df)) {
+        warning (
+            "Dropping ", sum (!is_df), " failed result(s): ",
+            paste (unique (vapply (res [!is_df], function (i) {
+                paste0 (as.character (i), collapse = "")
+            }, character (1L))), collapse = "; "),
+            call. = FALSE
+        )
+    }
+
+    do.call (rbind, res [is_df])
 }
 
 #' Append new results to previous results, only for ("package", "version")
@@ -354,16 +375,17 @@ exclude_these_tarballs <- function (flist) {
 one_summary_from_archive <- function (path, save_full,
                                       save_ex_calls, results_path) {
 
+    # Forked 'mclapply' workers share one temp dir, so log files must be named
+    # per process. Shared names let one worker delete another's file, and the
+    # resulting error was returned by 'mclapply' as a character string which
+    # 'rbind' then wrote into every column of the results.
+    pid <- Sys.getpid ()
     logfiles <- list (
-        stdout = fs::path (fs::path_temp (), "pkgstats-stdout"),
-        stderr = fs::path (fs::path_temp (), "pkgstats-stderr")
+        stdout = fs::path (fs::path_temp (), paste0 ("pkgstats-stdout-", pid)),
+        stderr = fs::path (fs::path_temp (), paste0 ("pkgstats-stderr-", pid))
     )
-    if (fs::file_exists (logfiles$stdout)) {
-        fs::file_delete (logfiles$stdout)
-    }
-    if (fs::file_exists (logfiles$stderr)) {
-        fs::file_delete (logfiles$stderr)
-    }
+    tryCatch (fs::file_delete (logfiles$stdout), error = function (e) NULL)
+    tryCatch (fs::file_delete (logfiles$stderr), error = function (e) NULL)
 
     ps <- callr::r_bg (
         func = pkgstats::pkgstats,
