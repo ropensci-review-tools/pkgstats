@@ -63,6 +63,14 @@ pkgstats_update <- function (upload = TRUE) {
                 save_ex_calls = FALSE,
                 results_path
             )
+            # 'one_summary_from_archive()' can only get names and versions from
+            # tarball paths, not from extracted directories, so failed
+            # analyses have to be named here.
+            if (is.na (stats$package)) {
+                pkg_vers <- get_pkg_version (paste0 (new_cran_pkgs [p], ".tar.gz"))
+                stats ["package"] <- pkg_vers [1]
+                stats ["version"] <- pkg_vers [2]
+            }
             fn_names <- tryCatch (
                 pkgstats::pkgstats_fn_names (tarball_dir),
                 error = function (e) NULL
