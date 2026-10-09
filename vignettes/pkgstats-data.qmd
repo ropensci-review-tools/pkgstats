@@ -10,21 +10,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r}
-#| label: setup
-#| include: false
-knitr::opts_chunk$set (
-    collapse = TRUE,
-    warning = TRUE,
-    message = TRUE,
-    width = 120,
-    comment = "#>",
-    fig.retina = 2,
-    fig.path = "README-"
-)
-library (pkgstats)
-```
-
 The `pkgstats` package is also intended to compare the statistics of an R
 package to equivalent statistics from all R packages that are, or ever were, on
 CRAN. For these comparisons, the package also includes developer-only functions
