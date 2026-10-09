@@ -96,6 +96,7 @@ pkgstats_from_archive <- function (path,
                 "'data.frame' of 'pkgstats' summaries"
             )
         }
+        prev_results <- rm_duplicate_rows (prev_results)
     }
 
     res <- NULL
