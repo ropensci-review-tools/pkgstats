@@ -11,6 +11,7 @@
 
 ## Minor changes
 
+- New internal `force_col_types()` function to assert and force-convert col types to a fixed dictionary (#121; thanks to @rootcoder007)
 - Improve diagnosis of wrong ctags version on MacOS (#115; thanks to @mcol)
 
 0.2.3

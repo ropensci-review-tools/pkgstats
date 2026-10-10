@@ -355,15 +355,10 @@ one_summary_from_archive <- function (path, save_full,
                                       save_ex_calls, results_path) {
 
     logfiles <- list (
-        stdout = fs::path (fs::path_temp (), "pkgstats-stdout"),
-        stderr = fs::path (fs::path_temp (), "pkgstats-stderr")
+        stdout = fs::file_temp (pattern = "pkgstats-stdout-"),
+        stderr = fs::file_temp (pattern = "pkgstats-stderr-")
     )
-    if (fs::file_exists (logfiles$stdout)) {
-        fs::file_delete (logfiles$stdout)
-    }
-    if (fs::file_exists (logfiles$stderr)) {
-        fs::file_delete (logfiles$stderr)
-    }
+    on.exit (unlink (unlist (logfiles)), add = TRUE)
 
     ps <- callr::r_bg (
         func = pkgstats::pkgstats,
@@ -386,9 +381,6 @@ one_summary_from_archive <- function (path, save_full,
         ps$kill ()
         s <- NULL
     }
-
-    tryCatch (fs::file_delete (logfiles$stdout), error = function (e) NULL)
-    tryCatch (fs::file_delete (logfiles$stderr), error = function (e) NULL)
 
     if (save_full || save_ex_calls) {
         pkg <- utils::tail (decompose_path (path) [[1]], 1L)
