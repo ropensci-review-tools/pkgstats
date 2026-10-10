@@ -1,7 +1,7 @@
 name,type
 package,character
 version,character
-date,POSIXct
+date,Date
 license,character
 files_R,integer
 files_src,integer

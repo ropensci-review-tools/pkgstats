@@ -2,7 +2,7 @@ test_that ("force_col_types", {
 
     dict <- read_col_types ()
     expect_equal (names (dict), c ("name", "type"))
-    expect_true (all (dict$type %in% c ("character", "numeric", "integer", "POSIXct")))
+    expect_true (all (dict$type %in% c ("character", "numeric", "integer", "Date")))
     expect_identical (dict$name, names (null_stats ()))
 
     x <- null_stats ()
@@ -17,7 +17,8 @@ test_that ("force_col_types", {
     y <- force_col_types (x)
     expect_type (y$loc_R, "integer")
     expect_type (y$rel_space, "double")
-    expect_s3_class (y$date, "POSIXct")
+    expect_s3_class (y$date, "Date")
+    expect_equal (y$date, as.Date ("2024-08-16"))
     expect_type (y$package, "character")
     expect_equal (y$loc_R, 12L)
     expect_identical (force_col_types (y), y)

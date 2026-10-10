@@ -7,7 +7,8 @@
 #' packages which failed to be analysed) become `NA`, but only up to a maximum
 #' proportion `max_loss` of the non-missing values in each column. Greater loss
 #' indicates that the dictionary does not match the data, and triggers an
-#' error.
+#' error. The exception is "Date" columns, which retain only the date part of
+#' any value, and for which any loss is accepted.
 #'
 #' @param x A `data.frame` of summary data, such as returned from
 #' \link{pkgstats_from_archive} or \link{pkgstats_update}.
@@ -36,7 +37,7 @@ force_col_types <- function (x, max_loss = 0.001) {
 
         n_orig <- sum (!is.na (x [[nm]]))
         n_lost <- sum (!is.na (x [[nm]]) & is.na (new) & !is.nan (new))
-        if (n_orig > 0L && n_lost / n_orig > max_loss) {
+        if (type != "Date" && n_orig > 0L && n_lost / n_orig > max_loss) {
             stop (
                 "Forcing column '", nm, "' to '", type, "' would lose ",
                 n_lost, " of ", n_orig, " non-missing values. ",
@@ -60,7 +61,7 @@ read_col_types <- function () {
     }
     dict <- utils::read.csv (f, stringsAsFactors = FALSE)
 
-    types <- c ("character", "numeric", "integer", "POSIXct")
+    types <- c ("character", "numeric", "integer", "Date")
     stopifnot (identical (names (dict), c ("name", "type")))
     stopifnot (!anyDuplicated (dict$name))
     stopifnot (all (dict$type %in% types))
@@ -74,7 +75,7 @@ col_type_ok <- function (v, type) {
         "character" = is.character (v),
         "numeric" = is.double (v),
         "integer" = is.integer (v),
-        "POSIXct" = inherits (v, "POSIXct")
+        "Date" = inherits (v, "Date")
     )
 }
 
@@ -93,23 +94,18 @@ force_one_col_type <- function (v, type) {
             num [which (num != round (num) | abs (num) > .Machine$integer.max)] <- NA_real_
             as.integer (num)
         },
-        "POSIXct" = force_posixct (v)
+        "Date" = force_date (v)
     )
 }
 
-force_posixct <- function (v) {
+force_date <- function (v) {
 
-    if (inherits (v, "POSIXct")) {
+    if (inherits (v, "Date")) {
         return (v)
     }
-    v <- as.character (v)
-
-    # Date-only values are also accepted, as midnight:
-    out <- as.POSIXct (v, tz = "UTC", format = "%Y-%m-%d %H:%M:%S")
-    index <- which (is.na (out) & !is.na (v))
-    if (length (index) > 0L) {
-        out [index] <- as.POSIXct (v [index], tz = "UTC", format = "%Y-%m-%d")
+    if (inherits (v, "POSIXt")) {
+        return (as.Date (v, tz = "UTC"))
     }
-
-    return (out)
+    # Only the date part is retained, and anything else becomes `NA`:
+    as.Date (substr (as.character (v), 1L, 10L), format = "%Y-%m-%d")
 }
