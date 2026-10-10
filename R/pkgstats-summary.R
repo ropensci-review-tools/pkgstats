@@ -150,7 +150,8 @@ null_stats <- function () {
     out$external_calls <- NA_character_
     out$cpl_instability_pkg <- NA
 
-    return (out)
+    # force_col_types is in R/cran-data-utils.R
+    return (force_col_types (out))
 }
 
 #' @param x the 'loc` component of `pkgstats` output.
