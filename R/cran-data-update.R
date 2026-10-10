@@ -88,11 +88,8 @@ pkgstats_update <- function (upload = TRUE) {
     stats <- do.call (rbind, lapply (res, function (i) i$stats))
     fn_names <- do.call (rbind, lapply (res, function (i) i$fn_names))
 
-    if (!inherits (stats$date, "POSIXt")) {
-        stats$date <- as.POSIXct (stats$date, "%y-%m-%d %H-%M-%S")
-    }
-
     stats <- append_new_pkgs (stats_prev, stats)
+    stats <- force_col_types (stats)
     stats_current <- pkgstats_cran_current_from_full (stats)
     fn_names <- append_new_pkgs (fn_names_prev, fn_names)
 
