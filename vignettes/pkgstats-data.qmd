@@ -71,7 +71,7 @@ The `pkgstats_update()` function will automatically upload data to the [GitHub
 release](https://github.com/ropensci-review-tools/pkgstats/releases/tag/v0.1.6).
 The `pkgstats_from_archive()` returns the data without uploading, so you then
 have to do that manually -- either via
-[`piggyyback`](https://docs.ropensci.org/piggyback), or through the GitHub
+[`piggyyback`](https://docs.ropensci.org/piggyback/), or through the GitHub
 website.
 
 :::

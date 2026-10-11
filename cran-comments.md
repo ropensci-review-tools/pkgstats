@@ -1,4 +1,4 @@
-# CRAN notes for pkgstats_0.2.4 submission
+# CRAN notes for pkgstats_0.2.5 submission
 
 Current submission generates no notes, warnings, or errors on any CRAN machines.
 
