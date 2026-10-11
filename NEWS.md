@@ -1,5 +1,9 @@
-0.2.4.00x (dev release)
+0.2.5
 ===================
+
+## Minor changes
+
+- Added `inst/extdata/pkgstats-col-types.csv` dictionary to assert and enforce column types in summary data.
 
 0.2.4
 ===================
