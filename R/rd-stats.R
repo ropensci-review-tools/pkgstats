@@ -15,7 +15,11 @@ rd_stats <- function (path) {
 
     path <- check_path (path)
 
-    rd_files <- fs::dir_ls (fs::path (path, "man"), regexp = "\\.Rd$")
+    man_dir <- fs::path (path, "man")
+    rd_files <- character (0L)
+    if (fs::dir_exists (man_dir)) {
+        rd_files <- fs::dir_ls (man_dir, regexp = "\\.Rd$")
+    }
 
     suppressWarnings (
         params <- lapply (rd_files, get_one_params)
