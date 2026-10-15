@@ -268,11 +268,6 @@ base_rmd_fns_df <- function () {
     )
 }
 
-#' Download one CRAN tarball and extract function names
-#'
-#' @param pkg_version "<package>_<version>" string, as returned from
-#' `list_new_cran_updates()`.
-#' @noRd
 fn_names_from_cran <- function (pkg_version, results_path) {
 
     tarball <- dl_one_tarball (results_path, pkg_version)

@@ -101,7 +101,6 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
                     chk <- rm_gtags_files (p)
                 }
                 if (!is.null (g)) {
-                    # Paths relative to package, as for 'extra_tags_src':
                     g$file <- as.character (fs::path_rel (fs::path (p, g$file), path))
                 }
                 return (g)

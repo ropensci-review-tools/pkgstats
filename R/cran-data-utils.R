@@ -110,14 +110,6 @@ force_date <- function (v) {
     as.Date (substr (as.character (v), 1L, 10L), format = "%Y-%m-%d")
 }
 
-#' Row-bind results of parallel jobs
-#'
-#' Jobs which fail within `parallel::mclapply` return "try-error" strings
-#' rather than `data.frame` objects. These are dropped with a warning, so that
-#' one failed job does not abort an entire archive trawl.
-#'
-#' @param res List of results from `lapply` or `parallel::mclapply`.
-#' @noRd
 rbind_results <- function (res) {
 
     ok <- vapply (res, function (i) is.null (i) || is.data.frame (i), logical (1L))

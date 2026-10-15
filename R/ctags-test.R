@@ -70,8 +70,6 @@ ctags_test <- function (quiet = TRUE, noerror = FALSE) {
     # remove header lines:
     x <- brio::read_lines (f_out)
     x <- x [which (!grepl ("^\\!", x))]
-    # Lines have varying numbers of fields, and content fields end in ';"', so
-    # are split here rather than read as tsv:
     fields <- strsplit (x, "\t", fixed = TRUE)
     tags <- data.frame (
         tag = vapply (fields, function (i) i [1], character (1L)),

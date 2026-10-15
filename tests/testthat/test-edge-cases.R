@@ -10,8 +10,6 @@ mk_tags <- function (tag, file, content, kind, start, end) {
 
 test_that ("local variables removed from calls in all files", {
 
-    # 'df' is a local variable in both functions, which are in different
-    # files, so start lines and rows of 'tags_r' differ for 'fb':
     tags_r <- rbind (
         mk_tags ("fa", "R/a.R", "fa <- function (x) {", "function", 1L, 3L),
         mk_tags ("df", "R/a.R", "    df <- data.frame (x)", "functionVar", 2L, 2L),
@@ -30,8 +28,6 @@ test_that ("local variables removed from calls in all files", {
 
 test_that ("calls to recommended packages", {
 
-    # 'R CMD check --as-cran' hides recommended packages which are not
-    # dependencies:
     rec <- c ("MASS", "rpart")
     skip_if (any (vapply (rec, function (p) {
         nrow (list_recommended_pkg_fns (p)) == 0L
@@ -85,7 +81,6 @@ test_that ("doclines from ctags matched to function names", {
 
 test_that ("network summary counts unique edges", {
 
-    # 'a' calls 3 functions once each; 'b' calls 'c' three times:
     net <- data.frame (
         file = "R/a.R",
         from = c ("a", "a", "a", "b", "b", "b"),
@@ -111,7 +106,6 @@ test_that ("packages without man directory", {
     )
     out_no_man <- rd_stats (path)
     expect_s3_class (out_no_man, "data.frame")
-    # Same as for empty 'man' directory:
     fs::dir_create (fs::path (path, "man"))
     expect_identical (out_no_man, rd_stats (path))
     fs::dir_delete (path)
@@ -125,7 +119,6 @@ test_that ("rm_tabs removes tabs", {
     out <- rm_tabs (path)
     f <- fs::dir_ls (out, recurse = TRUE, type = "file")
     expect_false (any (grepl ("\\t", readLines (f))))
-    # Original files are not modified:
     expect_true (any (grepl ("\\t", readLines (fs::path (path, "f.R")))))
     fs::dir_delete (fs::path_dir (path))
 })
@@ -154,7 +147,6 @@ test_that ("fn names only from main NAMESPACE", {
         expect_identical (unique (out$package), "multins")
     }
 
-    # Directory without NAMESPACE:
     fs::file_delete (fs::path (path, "NAMESPACE"))
     expect_null (get_namespace_contents (path))
 
@@ -237,7 +229,6 @@ test_that ("pkgstats_fns_from_archive with nothing new", {
     out2 <- pkgstats_fns_from_archive (tarball_path, prev_results = out)
     expect_identical (out2, out)
 
-    # 'results_file' with regex characters:
     results_dir <- fs::path (fs::path_temp (), "fns(1)")
     fs::dir_create (results_dir)
     out3 <- pkgstats_fns_from_archive (

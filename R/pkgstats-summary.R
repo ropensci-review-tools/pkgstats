@@ -79,7 +79,6 @@ pkgstats_summary <- function (s = NULL) {
     # collation of all data (issue #32)
     out$cpl_instability_pkg <- coupling_instability (s)
 
-    # force_col_types is in R/cran-data-utils.R
     return (force_col_types (out))
 }
 
@@ -501,8 +500,6 @@ network_summary <- function (x) {
 
     n_clusters <- length (unique (x$cluster_dir))
     from <- to <- NULL # suppress no visible binding notes
-    # Count unique edges only; 'x' may include multiple calls between
-    # identical pairs of functions:
     n_edges <- 0L
     if (!is.null (x) && nrow (x) > 0L) {
         n_edges <- nrow (dplyr::distinct (x, from, to))

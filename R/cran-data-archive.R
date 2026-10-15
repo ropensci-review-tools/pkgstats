@@ -463,7 +463,7 @@ get_pkg_version <- function (path) {
 
     pkg <- basename (path)
     v_i <- regexpr ("\\_([0-9]|[[:punct:]]).*\\.tar\\.gz$", pkg)
-    if (v_i < 0L) { # not a tarball, such as an extracted directory
+    if (v_i < 0L) {
         return (c (NA_character_, NA_character_))
     }
     v <- gsub ("^\\_|\\.tar\\.gz$", "", regmatches (pkg, v_i))
