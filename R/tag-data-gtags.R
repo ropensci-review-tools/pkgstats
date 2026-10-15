@@ -52,6 +52,7 @@ get_gtags <- function () {
                 col_names = cnames,
                 col_types = ctypes,
                 col_select = cnames,
+                quote = "",
                 progress = FALSE,
                 lazy = FALSE
             ),

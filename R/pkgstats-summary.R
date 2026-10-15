@@ -54,7 +54,7 @@ pkgstats_summary <- function (s = NULL) {
     out$data_size_total <- s$data_stats [2]
     out$data_size_median <- s$data_stats [3]
 
-    tr <- grepv ("^R\\-", basename (s$translations))
+    tr <- grep ("^R\\-", basename (s$translations), value = TRUE)
     out$translations <- paste0 (gsub ("^R\\-", "", tr), collapse = ", ")
 
     out <- cbind (out, desc_summary (s$desc))
@@ -79,7 +79,8 @@ pkgstats_summary <- function (s = NULL) {
     # collation of all data (issue #32)
     out$cpl_instability_pkg <- coupling_instability (s)
 
-    return (out)
+    # force_col_types is in R/cran-data-utils.R
+    return (force_col_types (out))
 }
 
 null_stats <- function () {
@@ -499,7 +500,13 @@ object_summary <- function (x) {
 network_summary <- function (x) {
 
     n_clusters <- length (unique (x$cluster_dir))
-    n_edges <- ifelse (is.null (x), 0L, nrow (x))
+    from <- to <- NULL # suppress no visible binding notes
+    # Count unique edges only; 'x' may include multiple calls between
+    # identical pairs of functions:
+    n_edges <- 0L
+    if (!is.null (x) && nrow (x) > 0L) {
+        n_edges <- nrow (dplyr::distinct (x, from, to))
+    }
 
     dirs <- vapply (x$file, function (i) {
         strsplit (i, .Platform$file.sep) [[1]] [1]
@@ -543,7 +550,6 @@ network_summary <- function (x) {
         num_terminal_edges_undir <- length (which (x$centrality_undir == 0))
     }
 
-    from <- to <- NULL # suppress no visible binding notes
     node_degree <-
         node_degree_mn <-
         node_degree_md <-
@@ -551,8 +557,8 @@ network_summary <- function (x) {
 
     if (nrow (x) > 0) {
 
-        node_degree <- dplyr::group_by (x, from)
-        node_degree <- dplyr::count (node_degree, to)
+        node_degree <- dplyr::distinct (x, from, to)
+        node_degree <- dplyr::count (node_degree, from)
         node_degree_mn <- mean (node_degree$n)
         node_degree_md <- stats::median (node_degree$n)
         node_degree_max <- max (node_degree$n)

@@ -95,11 +95,18 @@ tags_data <- function (path, has_tabs = NULL, pkg_name = NULL) {
         gtags <- withr::with_dir (path, get_gtags ())
         if (length (extra_paths) > 0) {
             gtags_extra <- lapply (extra_paths, function (p) {
-                withr::with_dir (p, {
-                    make_gtags ()
-                    get_gtags ()
-                })
+                no_gtags_p <- withr::with_dir (p, make_gtags ())
+                g <- withr::with_dir (p, get_gtags ())
+                if (no_gtags_p) {
+                    chk <- rm_gtags_files (p)
+                }
+                if (!is.null (g)) {
+                    # Paths relative to package, as for 'extra_tags_src':
+                    g$file <- as.character (fs::path_rel (fs::path (p, g$file), path))
+                }
+                return (g)
             })
+            gtags <- rbind (gtags, do.call (rbind, gtags_extra))
         }
 
         ctags <- dplyr::arrange (rbind (tags_src, tags_inst), file, start)
@@ -226,7 +233,7 @@ rm_tabs <- function (d, nspaces = 2) {
             # And replace non-leading tabs with single
             xt <- tryCatch (gsub ("\\t", " ", xt), error = function (e) xt)
             if (!identical (x, xt)) {
-                brio::write_lines (x, path = f)
+                brio::write_lines (xt, path = f)
             }
         }
     }

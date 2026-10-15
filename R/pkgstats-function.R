@@ -266,9 +266,7 @@ add_src_to_fn_data <- function (fns, src) {
         src_r <- src [index, ]
         src <- src [-(index), ]
 
-        src_r <- src_r [which (src_r$fn_name %in% fns$fn_name), ]
-        index <- match (src_r$fn_name, fns$fn_name)
-        doclines_from_src <- src_r$num_doclines [index]
+        doclines_from_src <- src_r$num_doclines [match (fns$fn_name, src_r$fn_name)]
         index <- which (is.na (fns$num_doclines) | fns$num_doclines == 0L)
         fns$num_doclines [index] <- doclines_from_src [index]
     }

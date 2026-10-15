@@ -17,6 +17,10 @@ test_that ("archive trawl", {
     expect_type (v, "character")
     expect_length (v, 2L)
     expect_identical (v, c ("pkgstats", "9.9"))
+    expect_identical (
+        get_pkg_version (fs::path_temp ("pkgstats")),
+        c (NA_character_, NA_character_)
+    )
 
     f <- archive_results_file_name ("aaa.txt")
     expect_equal (basename (f), "aaa.Rds")
