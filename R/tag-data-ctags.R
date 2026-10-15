@@ -61,7 +61,7 @@ get_ctags <- function (d = "R", has_tabs) {
 
     # remove header lines:
     x <- brio::read_lines (f)
-    x <- x [-which (grepl ("^\\!", x))]
+    x <- x [which (!grepl ("^\\!", x))]
 
     if (length (x) == 0L) {
         chk <- rm_file_no_err (f)
@@ -101,6 +101,7 @@ get_ctags <- function (d = "R", has_tabs) {
                 col_names = cnames,
                 col_types = ctypes,
                 col_select = cnames,
+                quote = "",
                 progress = FALSE,
                 lazy = FALSE
             ),
