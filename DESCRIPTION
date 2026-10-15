@@ -1,6 +1,6 @@
 Package: pkgstats
 Title: Metrics of R Packages
-Version: 0.2.5.001
+Version: 0.2.5.002
 Authors@R: 
     c(person("Mark", "Padgham", , "mark.padgham@email.com", role = c("aut", "cre"),
              comment = c(ORCID = "0000-0003-2172-5265")),
@@ -9,7 +9,9 @@ Authors@R:
       person("Jeffrey", "Hollister", role = c("ctb"), 
              comment = c(ORCID = "0000-0002-9254-9740")),
       person("Egor", "Kotov", role = c("ctb"), 
-             comment = c(ORCID = "0000-0001-6690-5345")))
+             comment = c(ORCID = "0000-0001-6690-5345")),
+      person("Vansh Singh", "Ruhela", , "278967282+rootcoder007@users.noreply.github.com", role = c("ctb"),
+             comment = c(ORCID = "0009-0004-1750-3592")))
 Description: Static code analyses for R packages using the external code-tagging
     libraries 'ctags' and 'gtags'. Static analyses enable packages to be
     analysed very quickly, generally a couple of seconds at most. The package
