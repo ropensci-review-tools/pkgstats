@@ -109,3 +109,18 @@ force_date <- function (v) {
     # Only the date part is retained, and anything else becomes `NA`:
     as.Date (substr (as.character (v), 1L, 10L), format = "%Y-%m-%d")
 }
+
+rbind_results <- function (res) {
+
+    ok <- vapply (res, function (i) is.null (i) || is.data.frame (i), logical (1L))
+    if (any (!ok)) {
+        errs <- vapply (res [!ok], function (i) as.character (i) [1], character (1L))
+        warning (
+            "Dropped ", sum (!ok), " results which errored: ",
+            paste0 (unique (trimws (errs)), collapse = "; "),
+            call. = FALSE
+        )
+    }
+
+    do.call (rbind, res [ok])
+}
