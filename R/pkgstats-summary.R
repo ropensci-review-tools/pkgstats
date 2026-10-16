@@ -498,6 +498,10 @@ object_summary <- function (x) {
 #' @noRd
 network_summary <- function (x) {
 
+    from <- to <- NULL # suppress no visible binding notes
+    if (!is.null (x) && nrow (x) > 0L) {
+        x <- x [which (!duplicated (x [, c ("from", "to")])), ]
+    }
     n_clusters <- length (unique (x$cluster_dir))
     n_edges <- ifelse (is.null (x), 0L, nrow (x))
 
@@ -543,7 +547,6 @@ network_summary <- function (x) {
         num_terminal_edges_undir <- length (which (x$centrality_undir == 0))
     }
 
-    from <- to <- NULL # suppress no visible binding notes
     node_degree <-
         node_degree_mn <-
         node_degree_md <-
@@ -551,8 +554,8 @@ network_summary <- function (x) {
 
     if (nrow (x) > 0) {
 
-        node_degree <- dplyr::group_by (x, from)
-        node_degree <- dplyr::count (node_degree, to)
+        node_degree <- dplyr::distinct (x, from, to)
+        node_degree <- dplyr::count (node_degree, from)
         node_degree_mn <- mean (node_degree$n)
         node_degree_md <- stats::median (node_degree$n)
         node_degree_max <- max (node_degree$n)
