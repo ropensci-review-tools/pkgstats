@@ -17,6 +17,17 @@ test_that ("doclines from ctags matched to function names", {
     out <- add_src_to_fn_data (fns, src)
     out <- out [out$language == "R", ]
     expect_identical (out$num_doclines, c (10L, 20L, 30L))
+
+    fns$file_name <- c ("R/f.R", "R/f.R", "R/g.R")
+    fns$fn_name <- c ("a", "b", "a")
+    src <- data.frame (
+        file_name = c ("R/g.R", "R/f.R", "R/f.R"), fn_name = c ("a", "a", "b"),
+        kind = "function", language = "R", loc = 3L, npars = NA_integer_,
+        has_dots = NA, num_doclines = c (7L, 10L, 20L)
+    )
+    out <- add_src_to_fn_data (fns, src)
+    out <- out [out$language == "R", ]
+    expect_identical (out$num_doclines, c (10L, 20L, 7L))
 })
 
 test_that ("packages without man directory", {
@@ -72,6 +83,16 @@ test_that ("fn names only from main NAMESPACE", {
 
     fs::file_delete (fs::path (path, "NAMESPACE"))
     expect_null (get_namespace_contents (path))
+
+    writeLines (c ("export(foo)", "export(bar)"), fs::path (path, "NAMESPACE"))
+    fs::file_delete (fs::path (path, "DESCRIPTION"))
+    expect_null (get_desc_path (path))
+    expect_identical (get_pkg_name_version (NULL), c (NA_character_, NA_character_))
+
+    nodesc <- fs::path (fs::path_temp (), "nodesc_1.0.tar.gz")
+    withr::with_dir (build, utils::tar (nodesc, "multins", compression = "gzip", tar = "internal"))
+    expect_null (get_desc_path (nodesc))
+    fs::file_delete (nodesc)
 
     fs::dir_delete (build)
     fs::file_delete (tarball)

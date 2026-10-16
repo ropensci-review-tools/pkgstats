@@ -147,6 +147,9 @@ get_desc_path <- function (path) {
         )
 
         desc <- grep ("^[^/]+/DESCRIPTION$", flist, value = TRUE)
+        if (length (desc) == 0L) {
+            return (NULL)
+        }
         chk <- utils::untar (
             path,
             files = desc,
@@ -156,7 +159,11 @@ get_desc_path <- function (path) {
 
     } else {
 
-        desc <- expand_path (fs::path (path, "DESCRIPTION"))
+        desc <- fs::path (path, "DESCRIPTION")
+        if (!fs::file_exists (desc)) {
+            return (NULL)
+        }
+        desc <- expand_path (desc)
     }
 
     return (desc)
@@ -292,6 +299,9 @@ aliases_from_rd <- function (path, nmsp) {
 
 get_pkg_name_version <- function (desc) {
 
+    if (is.null (desc)) {
+        return (c (NA_character_, NA_character_))
+    }
     d <- data.frame (read.dcf (desc))
 
     return (c (d$Package, d$Version))
