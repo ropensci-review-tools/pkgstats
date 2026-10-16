@@ -498,12 +498,12 @@ object_summary <- function (x) {
 #' @noRd
 network_summary <- function (x) {
 
-    n_clusters <- length (unique (x$cluster_dir))
     from <- to <- NULL # suppress no visible binding notes
-    n_edges <- 0L
     if (!is.null (x) && nrow (x) > 0L) {
-        n_edges <- nrow (dplyr::distinct (x, from, to))
+        x <- x [which (!duplicated (x [, c ("from", "to")])), ]
     }
+    n_clusters <- length (unique (x$cluster_dir))
+    n_edges <- ifelse (is.null (x), 0L, nrow (x))
 
     dirs <- vapply (x$file, function (i) {
         strsplit (i, .Platform$file.sep) [[1]] [1]

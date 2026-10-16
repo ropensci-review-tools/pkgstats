@@ -48,7 +48,7 @@ get_gtags <- function () {
     suppressWarnings (
         gtags <- tryCatch (
             readr::read_tsv (
-                paste0 (x, collapse = "\n"),
+                I (paste0 (x, collapse = "\n")),
                 col_names = cnames,
                 col_types = ctypes,
                 col_select = cnames,

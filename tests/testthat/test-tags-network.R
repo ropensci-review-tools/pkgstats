@@ -74,6 +74,14 @@ test_that ("network summary counts unique edges", {
     expect_equal (s$node_degree_max, 3L)
     expect_equal (s$node_degree_mn, 2)
 
+    net$file <- c ("R/a.R", "R/a.R", "src/a.c", "R/a.R", "R/a.R", "R/a.R")
+    net$centrality_dir <- c (0, 1, 0, 1, 1, 1)
+    s <- network_summary (net)
+    expect_equal (s$n_edges, 4L)
+    expect_equal (s$n_edges_r + s$n_edges_src, s$n_edges)
+    expect_equal (s$n_edges_src, 1L)
+    expect_equal (s$num_terminal_edges_dir, 2L)
+
     s0 <- network_summary (net [0L, ])
     expect_equal (s0$n_edges, 0L)
 })
@@ -123,4 +131,19 @@ test_that ("gtags from extra manifest paths", {
     expect_false (any (fs::file_exists (fs::path (extra_path, c ("GTAGS", "GRTAGS", "GPATH")))))
 
     fs::dir_delete (path)
+})
+
+test_that ("gtags with a single reference line", {
+
+    skip_if (!nzchar (Sys.which ("global")) || !nzchar (Sys.which ("gtags")))
+
+    path <- withr::local_tempdir ()
+    writeLines (
+        c ("int f (void) { return 1; }", "int g (void) { return f (); }"),
+        fs::path (path, "a.c")
+    )
+    withr::with_dir (path, make_gtags ())
+    g <- withr::with_dir (path, get_gtags ())
+    expect_equal (nrow (g), 1L)
+    expect_equal (g$tag, "f")
 })

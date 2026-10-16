@@ -1,3 +1,13 @@
+0.2.5.001
+===================
+
+## Minor changes
+
+- `ctags` and `gtags` output is read with `quote = ""`, so tags whose content contains quotes are kept; a single line of `gtags` output is read as data, not as a file path (#127, @rootcoder007).
+- `ctags_test()` splits fields on tabs and expects the `vector` kind (#127, @rootcoder007).
+- Local variables are removed from function calls by source line in every file; calls to recommended packages are matched against the whole table, and imported functions are matched exactly (#127, @rootcoder007).
+- The call-network summary counts each edge once: edge, node-degree, terminal-edge and centrality statistics all come from the de-duplicated edges, so `n_edges_r + n_edges_src == n_edges` (#127, @rootcoder007).
+
 0.2.5
 ===================
 
