@@ -84,7 +84,7 @@ pkgstats_fns_from_archive <- function (path,
                 results_path,
                 paste0 ("pkgstats-fn-names-results-", index, ".Rds")
             )
-            saveRDS (rbind_results (res), fname)
+            saveRDS (rbind_results (res, f, failed_fn_names), fname)
             results_files <- c (results_files, fname)
 
             prog <- index * chunk_size / nfiles
@@ -206,7 +206,7 @@ pkgstats_fns_update <- function (prev_results = NULL,
                 results_path,
                 paste0 ("pkgstats-results-", index, ".Rds")
             )
-            saveRDS (rbind_results (res), fname)
+            saveRDS (rbind_results (res, paste0 (f, ".tar.gz"), failed_fn_names), fname)
             results_files <- c (results_files, fname)
 
             archive_trawl_progress_message (index, chunk_size, npkgs, pt0)

@@ -164,7 +164,7 @@ pkgstats_from_archive <- function (path,
                     })
                 }
 
-                saveRDS (rbind_results (res), fname)
+                saveRDS (rbind_results (res, f, failed_summary), fname)
             }
 
             results_files <- c (results_files, fname)
@@ -401,10 +401,7 @@ one_summary_from_archive <- function (path, save_full,
     )
 
     if (is.null (summ) || is.na (summ$package)) { # pkgstats failed
-        summ <- pkgstats_summary () # null summary
-        pkg_vers <- get_pkg_version (path)
-        summ ["package"] <- pkg_vers [1]
-        summ ["version"] <- pkg_vers [2]
+        summ <- failed_summary (path)
     }
 
     return (summ)

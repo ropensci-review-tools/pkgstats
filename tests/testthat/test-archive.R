@@ -14,19 +14,33 @@ test_that ("results file names with regex characters", {
     expect_equal (f, fs::path (expand_path (path), "out.Rds"))
 })
 
-test_that ("rbind_results drops errors", {
+test_that ("rbind_results records failed packages", {
 
+    paths <- c ("a_1.0.tar.gz", "b_2.0.tar.gz", "c_3.0.tar.gz", "d_4.0.tar.gz")
+    ok <- failed_summary ("a_1.0.tar.gz")
+    ok$loc_R <- 10L
     res <- list (
-        data.frame (a = 1),
+        ok,
         structure ("Error in f() : oops\n", class = "try-error"),
         NULL,
-        data.frame (a = 2)
+        failed_summary ("d_4.0.tar.gz")
     )
-    expect_warning (
-        out <- rbind_results (res),
-        "Dropped 1 results which errored: Error in f\\(\\) : oops"
+    expect_silent (out <- rbind_results (res, paths, failed_summary))
+    expect_identical (out$package, c ("a", "b", "c", "d"))
+    expect_identical (out$version, c ("1.0", "2.0", "3.0", "4.0"))
+    expect_identical (out$loc_R, c (10L, NA, NA, NA))
+    expect_identical (names (out), names (pkgstats_summary ()))
+
+    res <- list (
+        data.frame (package = "a", version = "1.0", fn_name = c ("f", "g")),
+        structure ("Error in f() : oops\n", class = "try-error"),
+        data.frame (package = character (0), version = character (0), fn_name = character (0)),
+        NULL
     )
-    expect_equal (out$a, c (1, 2))
+    out <- rbind_results (res, paths, failed_fn_names)
+    expect_identical (out$package, c ("a", "a", "b", "c", "d"))
+    expect_identical (out$fn_name, c ("f", "g", NA, NA, NA))
+    expect_length (rm_prev_files (fs::path ("x", paths), out), 0L)
 })
 
 test_that ("get_pkg_version on non-tarballs", {
@@ -60,6 +74,28 @@ test_that ("pkgstats_fns_from_archive with nothing new", {
     )
     expect_true (fs::file_exists (fs::path (results_dir, "fns(1).Rds")))
     fs::dir_delete (results_dir)
+
+    unlink (archive$archive_path, recursive = TRUE)
+})
+
+test_that ("failed archive packages are recorded and not retried", {
+
+    archive <- setup_test_archive ()
+    tarball_path <- setup_test_tarball (archive)
+    broken <- fs::path (tarball_path, "broken_1.0.tar.gz")
+    writeLines ("not a tarball", broken)
+
+    out <- pkgstats_fns_from_archive (tarball_path)
+    expect_true ("broken" %in% out$package)
+    expect_true (all (is.na (out$fn_name [out$package == "broken"])))
+
+    out2 <- pkgstats_fns_from_archive (tarball_path, prev_results = out)
+    expect_identical (out2, out)
+
+    summ <- pkgstats_from_archive (tarball_path)
+    expect_true ("broken" %in% summ$package)
+    expect_identical (summ$version [summ$package == "broken"], "1.0")
+    expect_true (is.na (summ$loc_R [summ$package == "broken"]))
 
     unlink (archive$archive_path, recursive = TRUE)
 })
