@@ -226,7 +226,7 @@ rm_tabs <- function (d, nspaces = 2) {
             # And replace non-leading tabs with single
             xt <- tryCatch (gsub ("\\t", " ", xt), error = function (e) xt)
             if (!identical (x, xt)) {
-                brio::write_lines (x, path = f)
+                brio::write_lines (xt, path = f)
             }
         }
     }

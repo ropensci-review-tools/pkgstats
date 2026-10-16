@@ -87,7 +87,7 @@ get_namespace_contents <- function (path) {
             tar = "internal"
         )
 
-        nmsp <- grep ("NAMESPACE", flist, value = TRUE)
+        nmsp <- grep ("^[^/]+/NAMESPACE$", flist, value = TRUE)
         # Some archived pkgs do not have NAMESPACE files; these are not
         # processed here:
         if (length (nmsp) == 0L) {
@@ -114,12 +114,11 @@ get_namespace_contents <- function (path) {
 
     } else {
 
-        nmsp <- fs::dir_ls (
-            path,
-            recurse = TRUE,
-            regexp = "NAMESPACE"
-        )
-        nmsp <- expand_path (nmsp [1])
+        nmsp <- fs::path (path, "NAMESPACE")
+        if (!fs::file_exists (nmsp)) {
+            return (NULL)
+        }
+        nmsp <- expand_path (nmsp)
 
     }
 
@@ -147,7 +146,10 @@ get_desc_path <- function (path) {
             tar = "internal"
         )
 
-        desc <- grep ("DESCRIPTION", flist, value = TRUE)
+        desc <- grep ("^[^/]+/DESCRIPTION$", flist, value = TRUE)
+        if (length (desc) == 0L) {
+            return (NULL)
+        }
         chk <- utils::untar (
             path,
             files = desc,
@@ -157,12 +159,11 @@ get_desc_path <- function (path) {
 
     } else {
 
-        desc <- fs::dir_ls (
-            path,
-            recurse = TRUE,
-            regexp = "DESCRIPTION"
-        )
-        desc <- expand_path (desc [1])
+        desc <- fs::path (path, "DESCRIPTION")
+        if (!fs::file_exists (desc)) {
+            return (NULL)
+        }
+        desc <- expand_path (desc)
     }
 
     return (desc)
@@ -298,6 +299,9 @@ aliases_from_rd <- function (path, nmsp) {
 
 get_pkg_name_version <- function (desc) {
 
+    if (is.null (desc)) {
+        return (c (NA_character_, NA_character_))
+    }
     d <- data.frame (read.dcf (desc))
 
     return (c (d$Package, d$Version))

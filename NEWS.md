@@ -1,3 +1,12 @@
+0.2.5.001
+===================
+
+## Minor changes
+
+- Function names come only from the package's own top-level `NAMESPACE` and `DESCRIPTION`, not from files of the same name in sub-directories; a directory without `NAMESPACE` or `DESCRIPTION` gives `NULL` or `NA` package details instead of an error (#128, @rootcoder007).
+- Documentation lines from source code are matched to functions by file and function name (#128, @rootcoder007).
+- `pkgstats_summary()` forces column types on real summaries; packages without a `man` directory are summarised; `rm_tabs()` writes the de-tabbed files; translations use `grep()` (#128, @rootcoder007).
+
 0.2.5
 ===================
 
