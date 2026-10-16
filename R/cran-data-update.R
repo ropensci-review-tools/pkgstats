@@ -75,6 +75,9 @@ pkgstats_update <- function (upload = TRUE) {
                 pkgstats::pkgstats_fn_names (tarball_dir),
                 error = function (e) NULL
             )
+            if (!is.data.frame (fn_names) || nrow (fn_names) == 0L) {
+                fn_names <- failed_fn_names (paste0 (new_cran_pkgs [p], ".tar.gz"))
+            }
 
             unlink (tarball_dir, recursive = TRUE)
             unlink (tarball_path, recursive = TRUE)
@@ -88,8 +91,10 @@ pkgstats_update <- function (upload = TRUE) {
     stats <- do.call (rbind, lapply (res, function (i) i$stats))
     fn_names <- do.call (rbind, lapply (res, function (i) i$fn_names))
 
-    stats <- append_new_pkgs (stats_prev, stats)
-    stats <- force_col_types (stats)
+    if (!is.null (stats)) {
+        stats <- force_col_types (stats)
+    }
+    stats <- force_col_types (append_new_pkgs (stats_prev, stats))
     stats_current <- pkgstats_cran_current_from_full (stats)
     fn_names <- append_new_pkgs (fn_names_prev, fn_names)
 

@@ -66,7 +66,7 @@ pkgstats_from_archive <- function (path,
 
     checkmate::assert_string (path)
     checkmate::assert_directory_exists (path)
-    if (!is.null (prev_results)) {
+    if (is.character (prev_results)) {
         checkmate::assert_string (prev_results)
         checkmate::assert_file_exists (prev_results)
     }
@@ -164,7 +164,7 @@ pkgstats_from_archive <- function (path,
                     })
                 }
 
-                saveRDS (do.call (rbind, res), fname)
+                saveRDS (rbind_results (res, f, failed_summary), fname)
             }
 
             results_files <- c (results_files, fname)
@@ -401,10 +401,7 @@ one_summary_from_archive <- function (path, save_full,
     )
 
     if (is.null (summ) || is.na (summ$package)) { # pkgstats failed
-        summ <- pkgstats_summary () # null summary
-        pkg_vers <- get_pkg_version (path)
-        summ ["package"] <- pkg_vers [1]
-        summ ["version"] <- pkg_vers [2]
+        summ <- failed_summary (path)
     }
 
     return (summ)
@@ -437,11 +434,7 @@ archive_results_file_name <- function (results_file) {
     }
     results_file <- expand_path (results_file)
 
-    results_path <- gsub (
-        basename (results_file), "",
-        results_file
-    )
-    results_path <- expand_path (results_path)
+    results_path <- expand_path (fs::path_dir (results_file))
     if (!fs::dir_exists (results_path)) {
         stop ("Directory [", results_path, "] does not exist")
     }
@@ -467,6 +460,9 @@ get_pkg_version <- function (path) {
 
     pkg <- basename (path)
     v_i <- regexpr ("\\_([0-9]|[[:punct:]]).*\\.tar\\.gz$", pkg)
+    if (v_i < 0L) {
+        return (c (NA_character_, NA_character_))
+    }
     v <- gsub ("^\\_|\\.tar\\.gz$", "", regmatches (pkg, v_i))
     pkg <- substr (pkg, 1, v_i - 1)
 

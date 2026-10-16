@@ -1,3 +1,12 @@
+0.2.5.001
+===================
+
+## Minor changes
+
+- Archive and update trawls record every failed package, including results from a crashed `mclapply()` worker, as a row with its package name and version, so it is not analysed again in later runs; function-name trawls record a row with `fn_name = NA` for packages that fail or export no functions (#129, @rootcoder007).
+- `pkgstats_update()` forces column types on new results and again on the combined table (#129, @rootcoder007).
+- `pkgstats_fns_update()` downloads tarballs before analysing them, `get_pkg_version()` returns `NA` for paths that are not tarballs, and results-file paths are built with `fs::path_dir()` (#129, @rootcoder007).
+
 0.2.5
 ===================
 

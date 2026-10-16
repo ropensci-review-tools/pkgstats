@@ -109,3 +109,36 @@ force_date <- function (v) {
     # Only the date part is retained, and anything else becomes `NA`:
     as.Date (substr (as.character (v), 1L, 10L), format = "%Y-%m-%d")
 }
+
+rbind_results <- function (res, paths, placeholder) {
+
+    for (i in seq_along (res)) {
+        if (!is.data.frame (res [[i]]) || nrow (res [[i]]) == 0L) {
+            res [[i]] <- placeholder (paths [[i]])
+        }
+    }
+
+    do.call (rbind, res)
+}
+
+failed_summary <- function (path) {
+
+    summ <- pkgstats_summary ()
+    pkg_vers <- get_pkg_version (path)
+    summ ["package"] <- pkg_vers [1]
+    summ ["version"] <- pkg_vers [2]
+
+    return (summ)
+}
+
+failed_fn_names <- function (path) {
+
+    pkg_vers <- get_pkg_version (path)
+
+    data.frame (
+        package = pkg_vers [1],
+        version = pkg_vers [2],
+        fn_name = NA_character_,
+        stringsAsFactors = FALSE
+    )
+}

@@ -43,7 +43,7 @@ pkgstats_fns_from_archive <- function (path,
     flist <- fs::dir_ls (
         path,
         recurse = archive,
-        regexpr = "\\.tar\\.gz$"
+        regexp = "\\.tar\\.gz$"
     )
     flist <- expand_path (flist)
     flist <- rm_prev_files (flist, prev_results)
@@ -84,7 +84,7 @@ pkgstats_fns_from_archive <- function (path,
                 results_path,
                 paste0 ("pkgstats-fn-names-results-", index, ".Rds")
             )
-            saveRDS (do.call (rbind, res), fname)
+            saveRDS (rbind_results (res, f, failed_fn_names), fname)
             results_files <- c (results_files, fname)
 
             prog <- index * chunk_size / nfiles
@@ -106,42 +106,21 @@ pkgstats_fns_from_archive <- function (path,
         }
 
         res <- do.call (rbind, lapply (results_files, readRDS))
-    }
+        chk <- fs::file_delete (results_files) # nolint
 
-    t_total <- hms::hms (as.integer (proc.time () [3] - pt0 [3]))
-    message ("\nTotal time = ", t_total)
+        t_total <- hms::hms (as.integer (proc.time () [3] - pt0 [3]))
+        message ("\nTotal time = ", t_total)
+    }
 
     out <- rbind (out, res)
     rownames (out) <- NULL
-
-    chk <- fs::file_delete (results_files) # nolint
 
     if (!is.null (out) && !is.null (results_file)) {
 
         out <- rbind (out, base_rmd_fns_df ())
         out <- out [which (!duplicated (out)), ]
 
-        if (!grepl (.Platform$file.sep, results_file)) {
-            results_file <- fs::path (".", results_file)
-        }
-        results_file <- expand_path (results_file)
-
-        results_path <- gsub (
-            basename (results_file), "",
-            results_file
-        )
-        results_path <- expand_path (results_path)
-        if (!fs::dir_exists (results_path)) {
-            stop ("Directory [", results_path, "] does not exist")
-        }
-
-        results_file <- basename (results_file)
-        results_file <- tools::file_path_sans_ext (results_file)
-        results_file <- fs::path (
-            results_path,
-            paste0 (results_file, ".Rds")
-        )
-
+        results_file <- archive_results_file_name (results_file)
         saveRDS (out, results_file)
     }
 
@@ -201,6 +180,7 @@ pkgstats_fns_update <- function (prev_results = NULL,
             fs::dir_create (results_path, recurse = TRUE)
         }
 
+        results_files <- NULL
         index <- 1 # name of temporary files
         pt0 <- proc.time ()
 
@@ -210,10 +190,7 @@ pkgstats_fns_update <- function (prev_results = NULL,
 
                 res <- parallel::mclapply (f, function (i) {
 
-                    tryCatch (
-                        pkgstats::pkgstats_fn_names (i),
-                        error = function (e) NULL
-                    )
+                    fn_names_from_cran (i, results_path)
 
                 }, mc.cores = num_cores)
 
@@ -221,10 +198,7 @@ pkgstats_fns_update <- function (prev_results = NULL,
 
                 res <- lapply (f, function (i) {
 
-                    tryCatch (
-                        pkgstats::pkgstats_fn_names (i),
-                        error = function (e) NULL
-                    )
+                    fn_names_from_cran (i, results_path)
                 })
             }
 
@@ -232,7 +206,7 @@ pkgstats_fns_update <- function (prev_results = NULL,
                 results_path,
                 paste0 ("pkgstats-results-", index, ".Rds")
             )
-            saveRDS (do.call (rbind, res), fname)
+            saveRDS (rbind_results (res, paste0 (f, ".tar.gz"), failed_fn_names), fname)
             results_files <- c (results_files, fname)
 
             archive_trawl_progress_message (index, chunk_size, npkgs, pt0)
@@ -291,6 +265,20 @@ base_rmd_fns_df <- function () {
         package = fns$pkg,
         version = fns$vers,
         fn_name = fns$fn
+    )
+}
+
+fn_names_from_cran <- function (pkg_version, results_path) {
+
+    tarball <- dl_one_tarball (results_path, pkg_version)
+    if (is.null (tarball)) {
+        return (NULL)
+    }
+    on.exit (fs::file_delete (tarball))
+
+    tryCatch (
+        pkgstats::pkgstats_fn_names (tarball),
+        error = function (e) NULL
     )
 }
 # nocov end
