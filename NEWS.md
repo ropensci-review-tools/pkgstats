@@ -1,3 +1,13 @@
+0.2.5.00x (current dev version)
+===================
+
+## Minor changes
+
+- `ctags` and `gtags` output now read with `quote = ""` to keep content containing quotes (#127, @rootcoder007).
+- `ctags_test()` splits fields on tabs and expects R-specific `vector` kind (#127, @rootcoder007).
+- Local variables removed from function calls; calls to recommended packages matched against whole table (#127, @rootcoder007).
+- Call-network summary de-duplicates edges (#127, @rootcoder007).
+
 0.2.5
 ===================
 
