@@ -163,11 +163,11 @@ extract_call_content <- function (tags_r) {
     for (f in unique (fn_lines$fn_name)) {
 
         these_lines <- fn_lines$lines [fn_lines$fn_name == f]
-        this_file <- fn_lines$file [these_lines [1]]
+        this_file <- fn_lines$file [fn_lines$fn_name == f] [1]
         these_vars <- fn_vars$tag [fn_vars$file == this_file &
             fn_vars$start %in% these_lines]
 
-        index <- which (calls$tags_line %in% these_lines &
+        index <- which (tags_r$start [calls$tags_line] %in% these_lines &
             calls$file == this_file)
         calls$call [index] [calls$call [index] %in% these_vars] <- NA_character_
     }
@@ -288,7 +288,7 @@ add_base_recommended_pkgs <- function (calls) {
     if (length (pkg_calls) > 0L) {
 
         na_calls <- which (is.na (calls$package))
-        index <- match (calls$call [na_calls], pkg_calls$fn [na_calls])
+        index <- match (calls$call [na_calls], pkg_calls$fn)
         calls$package [na_calls] <- pkg_calls$pkg [index]
     }
 
@@ -351,7 +351,6 @@ add_other_pkgs_to_calls <- function (calls, path) {
         fs::path (path, "R"),
         regexp = "\\.(r|R|q|s|S)$"
     ))
-    all_calls <- paste0 (imports_not_called$fn, collapse = "|")
     tokens <- c ("FUNCTION", "SYMBOL_FUNCTION_CALL", "SPECIAL")
 
     external_calls <- lapply (r_files, function (i) {
@@ -360,7 +359,7 @@ add_other_pkgs_to_calls <- function (calls, path) {
         if (is.null (pd)) {
             return (NULL)
         }
-        pd <- pd [grep (all_calls, pd$text), ]
+        pd <- pd [which (pd$text %in% imports_not_called$fn), ]
         pd <- pd [which (pd$token %in% tokens), ]
 
         if (nrow (pd) == 0L) {
