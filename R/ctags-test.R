@@ -69,34 +69,18 @@ ctags_test <- function (quiet = TRUE, noerror = FALSE) {
 
     # remove header lines:
     x <- brio::read_lines (f_out)
-    x <- x [-which (grepl ("^\\!", x))]
-    brio::write_lines (x, path = f_out)
-
-    ctypes <- list (
-        readr::col_character (),
-        readr::col_character (),
-        readr::col_character (),
-        readr::col_character (),
-        readr::col_character (),
-        readr::col_character (),
-        readr::col_character ()
-    )
-    cnames <- c ("tag", "file", "content", "kind", "start", "language", "end")
-
-    suppressWarnings (
-        tags <- readr::read_tsv (f_out,
-            col_names = cnames,
-            col_types = ctypes,
-            col_select = cnames,
-            progress = FALSE,
-            lazy = FALSE
-        )
+    x <- x [which (!grepl ("^\\!", x))]
+    fields <- strsplit (x, "\t", fixed = TRUE)
+    tags <- data.frame (
+        tag = vapply (fields, function (i) i [1], character (1L)),
+        kind = vapply (fields, function (i) i [4], character (1L))
     )
 
     fs::file_delete (c (f_in, f_out))
 
     expected_kinds <- c (
         "globalVar",
+        "vector",
         "list",
         "dataframe",
         "nameattr",
