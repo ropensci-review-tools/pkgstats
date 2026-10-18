@@ -54,7 +54,7 @@ pkgstats_summary <- function (s = NULL) {
     out$data_size_total <- s$data_stats [2]
     out$data_size_median <- s$data_stats [3]
 
-    tr <- grepv ("^R\\-", basename (s$translations))
+    tr <- grep ("^R\\-", basename (s$translations), value = TRUE)
     out$translations <- paste0 (gsub ("^R\\-", "", tr), collapse = ", ")
 
     out <- cbind (out, desc_summary (s$desc))
@@ -79,7 +79,7 @@ pkgstats_summary <- function (s = NULL) {
     # collation of all data (issue #32)
     out$cpl_instability_pkg <- coupling_instability (s)
 
-    return (out)
+    return (force_col_types (out))
 }
 
 null_stats <- function () {
