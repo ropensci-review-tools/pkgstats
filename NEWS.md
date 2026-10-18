@@ -3,6 +3,9 @@
 
 ## Minor changes
 
+- Archive and update trawls record every failed package, including results from a crashed `mclapply()` worker, as a row with its package name and version, so it is not analysed again in later runs; function-name trawls record a row with `fn_name = NA` for packages that fail or export no functions (#129, @rootcoder007).
+- `pkgstats_update()` forces column types on new results and again on the combined table (#129, @rootcoder007).
+- `pkgstats_fns_update()` downloads tarballs before analysing them, `get_pkg_version()` returns `NA` for paths that are not tarballs, and results-file paths are built with `fs::path_dir()` (#129, @rootcoder007).
 - Function names come only from the package's own top-level `NAMESPACE` and `DESCRIPTION`, not from files of the same name in sub-directories; a directory without `NAMESPACE` or `DESCRIPTION` gives `NULL` or `NA` package details instead of an error (#128, @rootcoder007).
 - Documentation lines from source code are matched to functions by file and function name (#128, @rootcoder007).
 - `pkgstats_summary()` forces column types on real summaries; packages without a `man` directory are summarised; `rm_tabs()` writes the de-tabbed files; translations use `grep()` (#128, @rootcoder007).
