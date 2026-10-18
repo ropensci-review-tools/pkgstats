@@ -1,4 +1,4 @@
-0.2.5.001
+0.2.5.00x (current dev version)
 ===================
 
 ## Minor changes
@@ -6,6 +6,10 @@
 - Archive and update trawls record every failed package, including results from a crashed `mclapply()` worker, as a row with its package name and version, so it is not analysed again in later runs; function-name trawls record a row with `fn_name = NA` for packages that fail or export no functions (#129, @rootcoder007).
 - `pkgstats_update()` forces column types on new results and again on the combined table (#129, @rootcoder007).
 - `pkgstats_fns_update()` downloads tarballs before analysing them, `get_pkg_version()` returns `NA` for paths that are not tarballs, and results-file paths are built with `fs::path_dir()` (#129, @rootcoder007).
+- `ctags` and `gtags` output now read with `quote = ""` to keep content containing quotes (#127, @rootcoder007).
+- `ctags_test()` splits fields on tabs and expects R-specific `vector` kind (#127, @rootcoder007).
+- Local variables removed from function calls; calls to recommended packages matched against whole table (#127, @rootcoder007).
+- Call-network summary de-duplicates edges (#127, @rootcoder007).
 
 0.2.5
 ===================
