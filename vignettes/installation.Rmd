@@ -1,6 +1,6 @@
 ---
 title: "Installation"
-author: 
+author:
   - "Mark Padgham"
 date: "`r Sys.Date()`"
 vignette: >
@@ -9,7 +9,10 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
+```{r}
+#| label: setup
+#| include: false
+
 knitr::opts_chunk$set (
     collapse = TRUE,
     warning = TRUE,
@@ -26,18 +29,24 @@ options (repos = c (
 ```
 
 The `pkgstats` package [is on
-CRAN](https://cran.r-project.org/package=pkgstats), so can be installed
-directly with,
+CRAN](https://cran.r-project.org/package=pkgstats), so can be installed directly
+with,
 
-```{r install, eval = FALSE}
+```{r}
+#| label: install
+#| eval: false
+
 install.packages ("pkgstats")
 ```
 
 The latest development version can be installed [via the associated
-`r-universe`](https://ropensci-review-tools.r-universe.dev/pkgstats). As
-shown there, simply enable the universe with
+`r-universe`](https://ropensci-review-tools.r-universe.dev/pkgstats). As shown
+there, simply enable the universe with
 
-```{r options, eval = FALSE}
+```{r}
+#| label: options
+#| eval: false
+#| 
 options (repos = c (
     ropenscireviewtools = "https://ropensci-review-tools.r-universe.dev",
     CRAN = "https://cloud.r-project.org"
@@ -45,34 +54,28 @@ options (repos = c (
 ```
 
 And then call `install.packages()` the same way. Alternatively, the development
-version of the package can be installed by running one of the following lines:
+version of the package can be installed by running:
 
+```{r}
+#| label: remotes
+#| eval: false
 
-```{r remotes, eval = FALSE}
-remotes::install_github ("ropensci-review-tools/pkgstats")
-pak::pkg_install ("ropensci-review-tools/pkgstats")
+pak::pak("ropensci-review-tools/pkgstats")
 ```
-
-For those who prefer not to use GitHub, the package can also be installed with
-one of the following two additional options:
-
-```{r remotes-elsewhere, eval = FALSE}
-remotes::install_git ("https://codeberg.org/ropensci-review-tools/pkgstats")
-remotes::install_git ("https://codefloe.com/ropensci-review-tools/pkgstats")
-```
-
 
 The package can then loaded for use with:
 
-```{r library, eval = TRUE}
+```{r}
+#| label: library
+#| eval: true
+
 library (pkgstats)
 ```
 
 ## Installation on Linux systems
 
-This package requires the [system libraries
-`ctags-universal`](https://ctags.io) and [GNU
-`global`](https://www.gnu.org/software/global/), both of which are
+This package requires the [system libraries `ctags-universal`](https://ctags.io)
+and [GNU `global`](https://www.gnu.org/software/global/), both of which are
 automatically installed along with the package on both Windows and MacOS
 systems. Most Linux distributions do not include a sufficiently up-to-date
 version of [`ctags-universal`](https://ctags.io), and so it must be compiled
@@ -80,11 +83,14 @@ from source. This can be done by running a single function, `ctags_install()`,
 which will install both [`ctags-universal`](https://ctags.io) and [GNU
 `global`](https://www.gnu.org/software/global/).
 
-The `pkgstats` package includes a function to ensure your local installations
-of `universal-ctags` and `global` work correctly. Please ensure you see the
+The `pkgstats` package includes a function to ensure your local installations of
+`universal-ctags` and `global` work correctly. Please ensure you see the
 following prior to proceeding:
 
-```{r ctags-check, eval = FALSE}
+```{r}
+#| label: ctags-check
+#| eval: false
+
 ctags_test ()
 #> [1] TRUE
 ```
@@ -100,13 +106,20 @@ the Universal Ctags parser is ultimately discarded anyway, yet parsing may take
 considerably longer. If this is the case, "default" behaviour may be recovered
 by first running the following command:
 
-```{r unsetenv, eval = FALSE}
+```{r}
+#| label: unsetenv
+#| eval: false
+
 Sys.unsetenv (c ("GTAGSCONF", "GTAGSLABEL"))
 ```
 
 # Installation on macOS systems
 
-On macOS, [GNU `global` and `universal-ctags`](https://formulae.brew.sh/formula/global) can be easily installed with Homebrew. First follow the instructions at [https://brew.sh/](https://brew.sh/) to install Homebrew if you don't have it already. Then run the following command in your terminal:
+On macOS, [GNU `global` and
+`universal-ctags`](https://formulae.brew.sh/formula/global) can be easily
+installed with Homebrew. First follow the instructions at
+[https://brew.sh/](https://brew.sh/) to install Homebrew if you don't have it
+already. Then run the following command in your terminal:
 
 ```bash
 brew install global
@@ -115,5 +128,10 @@ brew install global
 This will install both `global` and a compatible version of `universal-ctags`.
 
 ::: callout-note
-Do not install `ctags` via Homebrew with `brew install ctags` as the installed version will conflict with `global`'s required `universal-ctags` dependency. If you have `ctags` already installed for another purpose, see Homebrew's messages in the console on how to proceed after attempting to intall `global`, it will usually involve unlinking the existing `ctags` with `brew unlink ctags` or removing it completely with `brew rm ctags`.
+Do not install `ctags` via Homebrew with `brew install ctags` as the installed
+version will conflict with `global`'s required `universal-ctags` dependency. If
+you have `ctags` already installed for another purpose, see Homebrew's messages
+in the console on how to proceed after attempting to intall `global`, it will
+usually involve unlinking the existing `ctags` with `brew unlink ctags` or
+removing it completely with `brew rm ctags`.
 :::
