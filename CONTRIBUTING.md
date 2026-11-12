@@ -139,6 +139,28 @@ flow](https://guides.github.com/introduction/flow/) for development.
 6. Submit a [pull
    request](https://guides.github.com/activities/forking/#making-a-pull-request).
 
+## Notes for maintainers: effects on `pkgcheck`
+
+[`pkgcheck`](https://github.com/ropensci-review-tools/pkgcheck) imports the
+current CRAN version of `pkgstats`. Before releasing a new version of `pkgstats`
+to CRAN, check the effect of the changes on `pkgcheck` by temporarily adding
+this to [`pkgcheck`'s `DESCRIPTION`
+file](https://github.com/ropensci-review-tools/pkgcheck/blob/main/DESCRIPTION):
+
+```
+Remotes:
+    ropensci-review-tools/pkgstats
+```
+
+`pkgcheck` already has a `Remotes:` field, so add `pkgstats` to it rather than
+creating a second one. Make sure all of `pkgcheck`'s GitHub workflows pass. The
+dependency only goes one way, so release `pkgstats` to CRAN first, followed by
+any `pkgcheck` updates.
+
+Maintenance of the `pkgstats` data, which a GitHub workflow updates daily, is
+described in [the `pkgstats-data`
+vignette](https://docs.ropensci.org/pkgstats/articles/pkgstats-data.html).
+
 ## Code style
 
 The `pkgstats` coding style diverges somewhat from [the commonly used tidyverse
